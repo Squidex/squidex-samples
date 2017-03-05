@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squidex.ClientLibrary", "Squidex.ClientLibrary\Squidex.ClientLibrary.csproj", "{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|x64.ActiveCfg = Debug|x64
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|x64.Build.0 = Debug|x64
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|x86.ActiveCfg = Debug|x86
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Debug|x86.Build.0 = Debug|x86
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|x64.ActiveCfg = Release|x64
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|x64.Build.0 = Release|x64
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|x86.ActiveCfg = Release|x86
+		{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

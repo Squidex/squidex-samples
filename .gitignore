@@ -1,0 +1,20 @@
+# User-specific files
+*.suo
+*.user
+*.vs
+*.log
+
+# Build results
+build/
+bin/
+obj/
+publish/
+
+# Test Output
+_test-output/
+
+# NodeJS 
+node_modules/
+
+# Scripts (should be copied from node_modules on build)
+**/wwwroot/scripts/**/*.*
