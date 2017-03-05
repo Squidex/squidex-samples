@@ -101,9 +101,9 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        public async Task CreateAsync(string id, TEntity entity)
+        public async Task<TEntity> CreateAsync(string id, TData data)
         {
-            Guard.NotNull(entity, nameof(entity));
+            Guard.NotNull(data, nameof(data));
             Guard.NotNullOrEmpty(id, nameof(id));
 
             using (var httpClient = new HttpClient())
@@ -111,16 +111,11 @@ namespace Squidex.ClientLibrary
                 await SetBearerTokenAsync(httpClient);
 
                 var requestUri = BuildUrl($"{id}/");
-                var response = await httpClient.PutAsJsonAsync(requestUri, entity.Data);
+                var response = await httpClient.PutAsJsonAsync(requestUri, data);
 
                 await EnsureResponseIsValidAsync(response);
 
-                var created = await response.Content.ReadAsJsonAsync<EntityCreated>();
-
-                entity.Id = created.Id;
-
-                entity.MarkAsCreated();
-                entity.MarkAsUpdated();
+                return await response.Content.ReadAsJsonAsync<TEntity>();
             }
         }
 
