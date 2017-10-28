@@ -60,7 +60,7 @@ namespace Squidex.ClientLibrary
         {
             using (var httpClient = new HttpClient())
             {
-                var url = $"{serviceUrl}/identity-server/connect/token/";
+                var url = $"{serviceUrl}/identity-server/connect/token";
 
                 var bodyString = $"grant_type=client_credentials&client_id={this.clientId}&client_secret={this.clientSecret}&scope=squidex-api";
                 var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
