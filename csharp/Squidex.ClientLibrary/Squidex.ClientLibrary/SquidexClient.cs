@@ -38,67 +38,51 @@ namespace Squidex.ClientLibrary
 
         public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null)
         {
-            using (var httpClient = new HttpClient())
+            var queries = new List<string>();
+
+            if (skip.HasValue)
             {
-                await SetBearerTokenAsync(httpClient);
-
-                var queries = new List<string>();
-
-                if (skip.HasValue)
-                {
-                    queries.Add($"$skip={skip.Value}");
-                }
-
-                if (top.HasValue)
-                {
-                    queries.Add($"$top={top.Value}");
-                }
-
-                if (!string.IsNullOrWhiteSpace(orderBy))
-                {
-                    queries.Add($"$orderby={orderBy}");
-                }
-
-                if (!string.IsNullOrWhiteSpace(search))
-                {
-                    queries.Add($"$search={search}");
-                }
-                else if (!string.IsNullOrWhiteSpace(filter))
-                {
-                    queries.Add($"$filter={filter}");
-                }
-
-                var query = string.Join("&", queries);
-
-                if (!string.IsNullOrWhiteSpace(query))
-                {
-                    query = "?" + query;
-                }
-
-                var requestUri = BuildUrl(query);
-                var response = await httpClient.GetAsync(requestUri);
-
-                await EnsureResponseIsValidAsync(response);
-
-                return await response.Content.ReadAsJsonAsync<SquidexEntities<TEntity, TData>>();
+                queries.Add($"$skip={skip.Value}");
             }
+
+            if (top.HasValue)
+            {
+                queries.Add($"$top={top.Value}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(orderBy))
+            {
+                queries.Add($"$orderby={orderBy}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                queries.Add($"$search={search}");
+            }
+            else if (!string.IsNullOrWhiteSpace(filter))
+            {
+                queries.Add($"$filter={filter}");
+            }
+
+            var query = string.Join("&", queries);
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                query = "?" + query;
+            }
+
+            var response = await RequestAsync(HttpMethod.Get, query);
+
+            return await response.Content.ReadAsJsonAsync<SquidexEntities<TEntity, TData>>();
         }
- 
+
         public async Task<TEntity> GetAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
+;
+            var response = await RequestAsync(HttpMethod.Get, $"{id}/");
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
-
-                var requestUri = BuildUrl($"{id}/");
-                var response = await httpClient.GetAsync(requestUri);
-
-                await EnsureResponseIsValidAsync(response);
-
-                return await response.Content.ReadAsJsonAsync<TEntity>();
-            }
+            return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
         public async Task<TEntity> CreateAsync(string id, TData data)
@@ -106,85 +90,111 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(data, nameof(data));
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
+            var response = await RequestAsync(HttpMethod.Post, $"{id}/", data.ToContent());
 
-                var requestUri = BuildUrl($"{id}/");
-                var response = await httpClient.PutAsJsonAsync(requestUri, data);
-
-                await EnsureResponseIsValidAsync(response);
-
-                return await response.Content.ReadAsJsonAsync<TEntity>();
-            }
+            return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
-        public async Task UpdateAsync(string id, TEntity entity)
+        public Task UpdateAsync(string id, TData data)
+        {
+            Guard.NotNull(data, nameof(data));
+            Guard.NotNullOrEmpty(id, nameof(id));
+
+            return RequestAsync(HttpMethod.Put, $"{id}/", data.ToContent());
+        }
+
+        public async Task UpdateAsync(TEntity entity)
         {
             Guard.NotNull(entity, nameof(entity));
-            Guard.NotNullOrEmpty(id, nameof(id));
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
+            await UpdateAsync(entity.Id, entity.Data);
 
-                var requestUri = BuildUrl($"{id}/");
-                var response = await httpClient.PutAsJsonAsync(requestUri, entity.Data);
-
-                await EnsureResponseIsValidAsync(response);
-
-                entity.MarkAsUpdated();
-            }
+            entity.MarkAsUpdated();
         }
 
-        public async Task PublishAsync(string id)
+        public Task PublishAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
-
-                var requestUri = BuildUrl($"{id}/publish/");
-                var response = await httpClient.PutAsync(requestUri, new ByteArrayContent(new byte[0]));
-
-                await EnsureResponseIsValidAsync(response);
-            }
+            return RequestAsync(HttpMethod.Put, $"{id}/publish/");
         }
 
-        public async Task UnpublishAsync(string id)
+        public async Task PublishAsync(TEntity entity)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            await PublishAsync(entity.Id);
+
+            entity.MarkAsUpdated();
+        }
+
+        public Task UnpublishAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
-
-                var requestUri = BuildUrl($"{id}/unpublish/");
-                var response = await httpClient.PutAsync(requestUri, new ByteArrayContent(new byte[0]));
-
-                await EnsureResponseIsValidAsync(response);
-            }
+            return RequestAsync(HttpMethod.Put, $"{id}/unpublish/");
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task UnpublishAsync(TEntity entity)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            await UnpublishAsync(entity.Id);
+
+            entity.MarkAsUpdated();
+        }
+
+        public Task ArchiveAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            using (var httpClient = new HttpClient())
-            {
-                await SetBearerTokenAsync(httpClient);
+            return RequestAsync(HttpMethod.Put, $"{id}/archive/");
+        }
 
-                var requestUri = BuildUrl($"{id}/publish/");
-                var response = await httpClient.DeleteAsync(requestUri);
+        public async Task ArchiveAsync(TEntity entity)
+        {
+            Guard.NotNull(entity, nameof(entity));
 
-                await EnsureResponseIsValidAsync(response);
-            }
+            await ArchiveAsync(entity.Id);
+
+            entity.MarkAsUpdated();
+        }
+
+        public Task RestoreAsync(string id)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+
+            return RequestAsync(HttpMethod.Put, $"{id}/restore/");
+        }
+
+        public async Task RestoreAsync(TEntity entity)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            await RestoreAsync(entity.Id);
+
+            entity.MarkAsUpdated();
+        }
+
+        public Task DeleteAsync(string id)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+            
+            return RequestAsync(HttpMethod.Delete, $"{id}/");
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            await DeleteAsync(entity.Id);
+
+            entity.MarkAsUpdated();
         }
 
         private static async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
         {
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 var message = await response.Content.ReadAsStringAsync();
 
@@ -201,14 +211,24 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        private Uri BuildUrl(string path = "")
+        private async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path = "", HttpContent content = null)
         {
-            return new Uri(serviceUrl, $"api/content/{applicationName}/{schemaName}/{path}");
-        }
+            var uri = new Uri(serviceUrl, $"api/content/{applicationName}/{schemaName}/{path}");
 
-        private async Task SetBearerTokenAsync(HttpClient httpClient)
-        {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await authenticator.GetBearerTokenAsync());
+            var request = new HttpRequestMessage(method, uri);
+
+            if (content != null)
+            {
+                request.Content = content;
+            }
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await authenticator.GetBearerTokenAsync());
+
+            var response = await SquidexHttpClient.Instance.SendAsync(request);
+
+            await EnsureResponseIsValidAsync(response);
+
+            return response;
         }
     }
 }

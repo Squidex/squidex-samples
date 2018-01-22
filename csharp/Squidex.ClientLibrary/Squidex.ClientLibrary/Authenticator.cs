@@ -58,22 +58,19 @@ namespace Squidex.ClientLibrary
 
         private async Task<string> GetBearerTokenFromServerAsync()
         {
-            using (var httpClient = new HttpClient())
-            {
-                var url = $"{serviceUrl}/identity-server/connect/token";
+            var url = $"{serviceUrl}/identity-server/connect/token";
 
-                var bodyString = $"grant_type=client_credentials&client_id={this.clientId}&client_secret={this.clientSecret}&scope=squidex-api";
-                var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
+            var bodyString = $"grant_type=client_credentials&client_id={clientId}&client_secret={clientSecret}&scope=squidex-api";
+            var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-                var response = await httpClient.PostAsync(url, bodyContent);
+            var response = await SquidexHttpClient.Instance.PostAsync(url, bodyContent);
 
-                response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var jsonToken = JToken.Parse(jsonString);
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var jsonToken = JToken.Parse(jsonString);
 
-                return jsonToken["access_token"].ToString();
-            }
+            return jsonToken["access_token"].ToString();
         }
     }
 }

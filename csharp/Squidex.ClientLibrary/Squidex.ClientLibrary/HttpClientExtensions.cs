@@ -6,7 +6,6 @@
 //  All rights reserved.
 // ==========================================================================
 
-using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,32 +15,11 @@ namespace Squidex.ClientLibrary
 {
     public static class HttpClientExtensions
     {
-        public static Task<HttpResponseMessage> PutAsJsonAsync<T>(this HttpClient httpClient, string requestUri, T value)
+        public static HttpContent ToContent<T>(this T value)
         {
             var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
 
-            return httpClient.PutAsync(requestUri, content);
-        }
-
-        public static Task<HttpResponseMessage> PutAsJsonAsync<T>(this HttpClient httpClient, Uri requestUri, T value)
-        {
-            var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
-
-            return httpClient.PutAsync(requestUri, content);
-        }
-
-        public static Task<HttpResponseMessage> PostAsJsonAsync<T>(this HttpClient httpClient, string requestUri, T value)
-        {
-            var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
-
-            return httpClient.PostAsync(requestUri, content);
-        }
-
-        public static Task<HttpResponseMessage> PostAsJsonAsync<T>(this HttpClient httpClient, Uri requestUri, T value)
-        {
-            var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8, "application/json");
-
-            return httpClient.PostAsync(requestUri, content);
+            return content;
         }
 
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
