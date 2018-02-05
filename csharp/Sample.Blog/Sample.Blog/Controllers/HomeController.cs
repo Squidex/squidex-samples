@@ -44,6 +44,19 @@ namespace Sample.Blog.Controllers
             return View(vm);
         }
 
+        [Route("/{slug}/")]
+        public async Task<IActionResult> Page(string slug)
+        {
+            var page = await apiClient.GetPageAsync(slug);
+
+            var vm = new PageVM
+            {
+                Page = page
+            };
+
+            return View(vm);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorVM { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

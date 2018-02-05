@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@inject IApiClient ApiClient
+
+@{ 
+    var pages = await ApiClient.GetPagesAsync();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,14 +11,21 @@
     <title>@ViewData["Title"] - Squidex Blog Sample</title>
 
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar fixed-top navbar-dark bg-primary">
         <div class="container">
-            <div class="navbar-header">
-                <a asp-controller="Home" asp-action="Posts" class="navbar-brand">Squidex Blog Sample</a>
-            </div>
+            <a asp-controller="Home" asp-action="Posts" class="navbar-brand">Squidex Blog Sample</a>
+
+            <ul class="navbar-nav mr-auto">
+                @foreach (var pageItem in pages)
+                {
+                    <li class="nav-item">
+                        <a asp-controller="Home" asp-action="Page" asp-route-slug="@pageItem.Data.Slug" class="nav-link">@pageItem.Data.Title</a>
+                    </li>
+                }
+            </ul>
         </div>
     </nav>
 
