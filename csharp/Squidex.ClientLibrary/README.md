@@ -69,5 +69,4 @@ var post = client.GetAsync(id);
 
 // Read posts by slug.
 var posts = await client.GetAsync(filter: $"data/slug/iv eq '{slug}'");
-
 ````
