@@ -1,5 +1,7 @@
 # C# Blog Sample
 
+WORK IN PROGRESS: WILL LOOK MUCH BETTER SOON
+
 You can create an app with prepulated schemas directly in Squidex.
 
 ## How to run it?
