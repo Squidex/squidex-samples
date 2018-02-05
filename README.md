@@ -8,5 +8,5 @@ This repository contains samples for Squidex CMS.
 
 ## C#
 
-* [Client Library for .NET Standard](csharp/Squidex.ClientLibrary). Also available on [nuget](https://www.nuget.org/packages/Squidex.ClientLibrary/)
+* [Client Library for .NET Standard](csharp/Squidex.ClientLibrary). Also available on [nuget.org](https://www.nuget.org/packages/Squidex.ClientLibrary/).
 * [Sample Blog](csharp/Sample.Blog)
