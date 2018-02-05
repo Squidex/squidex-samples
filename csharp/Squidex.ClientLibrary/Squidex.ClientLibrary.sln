@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+<<<<<<< HEAD
 VisualStudioVersion = 15.0.27130.2026
+=======
+VisualStudioVersion = 15.0.27130.2020
+>>>>>>> 11fde6a842636c4f24f3cb13e93a237aaf05ace2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.ClientLibrary", "Squidex.ClientLibrary\Squidex.ClientLibrary.csproj", "{BA11EE52-1AD3-46D3-A78B-349886CBD0DB}"
 EndProject

@@ -1,12 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    
+    <Authors>sebastianstehle</Authors>
+    <Company>Squidex UG (haftungsbeschränkt)</Company>
+    <Description>ClientLibrary for Squidex Headless CMS</Description>
+    <Copyright>MIT</Copyright>
+    <PackageTags>Squidex HeadlessCMS</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/Squidex/squidex/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
+    <Version>0.2.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.1-beta3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
 </Project>

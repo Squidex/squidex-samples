@@ -9,11 +9,9 @@ using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-// ReSharper disable InvertIf
-
 namespace Squidex.ClientLibrary
 {
-    public static class Guard
+    internal static class Guard
     {
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

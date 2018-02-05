@@ -16,7 +16,7 @@ namespace Squidex.ClientLibrary
         private readonly IAuthenticator authenticator;
 
         public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret)
-            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, new Authenticator(serviceUrl, clientId, clientSecret))
+            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, new CachingAuthenticator(serviceUrl, clientId, clientSecret))
         {
         }
 

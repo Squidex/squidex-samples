@@ -19,11 +19,6 @@ namespace Squidex.ClientLibrary
 
         public T Data { get; } = new T();
 
-        internal void MarkAsCreated()
-        {
-            Created = DateTimeOffset.UtcNow;
-        }
-
         internal void MarkAsUpdated()
         {
             LastModified = DateTimeOffset.UtcNow;
