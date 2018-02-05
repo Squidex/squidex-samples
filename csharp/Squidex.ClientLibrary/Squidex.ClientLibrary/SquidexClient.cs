@@ -1,9 +1,8 @@
 ﻿// ==========================================================================
-//  SquidexClient.cs
 //  Squidex Headless CMS
 // ==========================================================================
-//  Copyright (c) Squidex Group
-//  All rights reserved.
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
 using System;
@@ -184,7 +183,7 @@ namespace Squidex.ClientLibrary
 
         private static async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
         {
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 var message = await response.Content.ReadAsStringAsync();
 

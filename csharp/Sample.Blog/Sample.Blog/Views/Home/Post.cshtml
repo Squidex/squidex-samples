@@ -1,0 +1,11 @@
+﻿@model PostVM
+
+@{
+    ViewData["Title"] = Model.Post.Data.Title;
+}
+
+<div>
+    <h2>@Model.Post.Data.Title</h2>
+
+    @Html.Raw(Model.Post.Data.Text)
+</div>

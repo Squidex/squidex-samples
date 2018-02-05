@@ -1,9 +1,8 @@
 ﻿// ==========================================================================
-//  Guard.cs
 //  Squidex Headless CMS
 // ==========================================================================
-//  Copyright (c) Squidex Group
-//  All rights reserved.
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
 using System;

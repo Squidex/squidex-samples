@@ -1,9 +1,8 @@
 ﻿// ==========================================================================
-//  Authenticator.cs
 //  Squidex Headless CMS
 // ==========================================================================
-//  Copyright (c) Squidex Group
-//  All rights reserved.
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
 using System;
@@ -21,6 +20,11 @@ namespace Squidex.ClientLibrary
         private readonly string clientId;
         private readonly string clientSecret;
         private readonly Uri serviceUrl;
+
+        public Authenticator(string serviceUrl, string clientId, string clientSecret)
+            : this(new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret)
+        {
+        }
 
         public Authenticator(Uri serviceUrl, string clientId, string clientSecret)
         {
@@ -60,7 +64,7 @@ namespace Squidex.ClientLibrary
         {
             using (var httpClient = new HttpClient())
             {
-                var url = $"{serviceUrl}/identity-server/connect/token/";
+                var url = $"{serviceUrl}identity-server/connect/token";
 
                 var bodyString = $"grant_type=client_credentials&client_id={this.clientId}&client_secret={this.clientSecret}&scope=squidex-api";
                 var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
