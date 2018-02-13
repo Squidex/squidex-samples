@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Sample.Profile.Models
+{
+    public sealed class HomeVM
+    {
+        public BasiscData Basics { get; set; }
+
+        public List<Skill> Skills { get; set; }
+
+        public List<Project> Projects { get; set; }
+
+        public List<Education> Education { get; set; }
+
+        public List<Experience> Experiences { get; set; }
+
+        public List<Publication> Publications { get; set; }
+
+        public Func<string, string> BuildImageUrl { get; set; }
+    }
+}

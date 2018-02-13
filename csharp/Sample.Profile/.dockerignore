@@ -1,0 +1,24 @@
+# User-specific files
+*.suo
+*.user
+*.vs
+*.log
+
+.vs
+.git
+
+# Build results
+**/bin/
+**/obj/
+**/publish/
+
+# Test Output
+**/_test-output/
+
+# NodeJS 
+**/node_modules/
+
+# Scripts (should be copied from node_modules on build)
+**/wwwroot/scripts/**/*.*
+
+**/src/Squidex/appsettings.Development.json

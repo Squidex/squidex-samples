@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -195,6 +196,11 @@ namespace Squidex.ClientLibrary
         {
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new SquidexException("The app or schema does not exist.");
+                }
+
                 var message = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(message))

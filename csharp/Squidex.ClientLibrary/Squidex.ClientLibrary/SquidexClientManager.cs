@@ -36,6 +36,17 @@ namespace Squidex.ClientLibrary
             this.serviceUrl = serviceUrl;
         }
 
+        public static SquidexClientManager FromOption(SquidexOptions options)
+        {
+            Guard.NotNull(options, nameof(options));
+
+            return new SquidexClientManager(
+                options.Url,
+                options.AppName,
+                options.ClientId,
+                options.ClientSecret);
+        }
+
         public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName) where TData : class, new() where TEntity : SquidexEntityBase<TData>
         {
             return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
