@@ -1,0 +1,210 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+*, *:before, *:after {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+img {
+	border: 0;
+	max-width: 100%;
+}
+input, select {
+	vertical-align: middle;
+}
+label {
+	/*color:rgba(255,255,255,0.8);*/
+
+	font-size: 14px;
+	text-transform: uppercase;
+	display: block;
+	margin-bottom: 4px;
+	color: #9c9ca0;
+	font-family: 'HelveticaNeuebold';
+	letter-spacing: 1.5px;
+}
+label sub {
+	font-weight: lighter;
+	text-transform: capitalize;
+}
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input, textarea {
+	display: block;
+	padding: 14px;
+	height: 42px;
+	font-size: 16px;
+	color: #1b1b1c;
+	vertical-align: middle;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background-color: #fff;
+	border: 1px solid rgba(255,255,255,0.2);
+	font-family: "Paralucent W00 Medium";
+	-webkit-transition: all 0.6s ease;
+	-moz-transition: all 0.6s ease;
+	-o-transition: all 0.6s ease;
+	-ms-transition: all 0.6s ease;
+	font-weight: 100;
+	letter-spacing: 1.5px;
+}
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus, .SelectDropdonw:focus {
+	background: #503b96;
+	color: #fff !important;
+	outline: 0;
+	outline: none;
+	-webkit-transition: all 0.6s ease;
+	-moz-transition: all 0.6s ease;
+	-o-transition: all 0.6s ease;
+	-ms-transition: all 0.6s ease;
+	box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
+	color: #393f58;
+}
+.services textarea:focus, .services input[type="text"]:focus, .services input[type="password"]:focus, .services input[type="datetime"]:focus, .services input[type="datetime-local"]:focus, .services input[type="date"]:focus, .services input[type="month"]:focus, .services input[type="time"]:focus, .services input[type="week"]:focus, .services input[type="number"]:focus, .services input[type="email"]:focus, .services input[type="url"]:focus, .services input[type="search"]:focus, .services input[type="tel"]:focus, input[type="color"]:focus, .services .uneditable-input:focus, .SelectDropdonw:focus {
+	background: #fff !important;
+	color: #323435 !important;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+ color: #a2a7a7;
+}
+ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+ color: #a2a7a7;
+}
+ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+ color: #a2a7a7;
+}
+select {
+	height: 40px;
+	padding: 7px 10px;
+	appearance: none;
+	-moz-appearance: none; /* Firefox */
+	-webkit-appearance: none; /* Safari and Chrome */
+	background: #fff url(../images/select-arrow.png) no-repeat right center;
+	-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+	-o-transition: border linear 0.2s, box-shadow linear 0.2s;
+	transition: border linear 0.2s, box-shadow linear 0.2s;
+	outline: none;
+}
+select:focus {
+	border-color: #8a8a8a;
+}
+textarea {
+	resize: none;
+	height: 100px;
+}
+input[type=submit], input[type=button], a.red-bt {
+	border: 0;
+	background: #d00000;
+	font-size: 18px;
+	padding: 0 20px;
+	line-height: 52px;
+	color: #fff;
+	border-radius: 2px;
+	cursor: pointer;
+	font-weight: bold;
+	text-transform: uppercase;
+	outline: 0;
+	-o-transition: color .2s ease-out, background .2s ease-in;
+	-ms-transition: color .2s ease-out, background .2s ease-in;
+	-moz-transition: color .2s ease-out, background .2s ease-in;
+	-webkit-transition: color .2s ease-out, background .2s ease-in;
+	transition: color .2s ease-out, background .2s ease-in;
+	width: 100%
+}
+input.medium[type=button]:hover, input[type=submit]:hover, input[type=button]:hover, a.red-bt:hover {
+	background: #1f1f1f;
+	color: #fff;
+	text-decoration: none;
+}
+input[type=submit] {
+	text-align: center;
+	width: 100%;
+	margin-top: 20px;
+	margin-left: 0;
+	margin-right: 0;
+	background: #f9376c;
+	border-radius: 50px;
+}
+input[type=submit]:hover {
+	background: #ce2d59 !important;
+}
+a.red-bt {
+	float: left;
+	width: 100%;
+	text-align: center;
+	margin-top: 30px;
+}
+a.red-bt span {
+	display: inline-block;
+	background: url(../images/white-arrow-small.png) no-repeat right 21px;
+	padding-right: 25px;
+}
+.pull-left {
+	float: left !important;	
+}
+.pull-right {
+	float: right !important;
+}
+
+::-webkit-scrollbar {
+ width:7px;
+ height:7px
+}
+
+::-webkit-scrollbar-button {
+ background-color:#ccc;
+ height:0
+}
+
+::-webkit-scrollbar-track {
+ background-color:#efefef
+}
+
+::-webkit-scrollbar-track-piece {
+ background-color:#efefef
+}
+
+::-webkit-scrollbar-thumb {
+ height:50px;
+ background-color:#ccc;
+ border-radius:7px
+}
+
+::-webkit-scrollbar-corner {
+ background-color:#ccc
+}
+
+::-webkit-resizer {
+ background-color:#ccc
+}
+input[type=submit]:hover {
+	background: #ce2d59 !important;
+}
+button {
+	cursor: pointer;
+}

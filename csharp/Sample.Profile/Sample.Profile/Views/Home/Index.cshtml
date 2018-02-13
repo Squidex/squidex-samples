@@ -1,0 +1,322 @@
+﻿@model HomeVM
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>@Model.Basics.FirstName @Model.Basics.LastName</title>
+
+    <link href="assets/css/styles.css" rel="stylesheet">
+    <link href="assets/css/animation.css" rel="stylesheet">
+    <link href="assets/css/slick.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+        <script src="assets/js/html5shiv.js"></script>
+        <script src="assets/js/respond.min.js"></script>
+        <script src="assets/js/placeholder.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <!-- SECTION ONE STARTS HERE -->
+    <section class="section-one">
+        <div class="container">
+            <div class="col-left wow fadeInLeft" data-wow-delay="0.1s">
+                <h1>@Model.Basics.FirstName<br />@Model.Basics.LastName</h1>
+                <h3>@Model.Basics.Profession</h3>
+
+                <p>@Model.Basics.Summary.</p>
+
+                <ul class="social">
+                    @if (!string.IsNullOrWhiteSpace(Model.Basics.TwitterLink))
+                    {
+                        <li>
+                            <a href="@Model.Basics.TwitterLink" target="_blank">
+                                <img src="assets/images/social-twitter.png" />
+                                <span class="tooltiptext">Twitter</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Basics.LinkedInLink))
+                    {
+                        <li>
+                            <a href="@Model.Basics.LinkedInLink" target="_blank">
+                                <img src="assets/images/social-linked.png" />
+                                <span class="tooltiptext">LinkedIn</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Basics.GithubLink))
+                    {
+                        <li>
+                            <a href="@Model.Basics.GithubLink" target="_blank">
+                                <img src="assets/images/social-github.png" />
+                                <span class="tooltiptext">Github</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Basics.BlogLink))
+                    {
+                        <li>
+                            <a href="@Model.Basics.BlogLink" target="_blank">
+                                <img src="assets/images/social-blog.png" />
+                                <span class="tooltiptext">Blog</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-right wow fadeInRight" data-wow-delay="0.2s">
+                @if (!string.IsNullOrWhiteSpace(Model.Basics.EmailAddress))
+                {
+                    <a href="mailto:@Model.Basics.EmailAddress" title="@Model.Basics.EmailAddress" class="email-icon"></a>
+                }
+
+                @if (Model.Basics.Image?.Length > 0)
+                {
+                    <img src="@Model.BuildImageUrl(Model.Basics.Image[0])" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
+                }
+                else
+                {
+                    <img src="assets/images/placeholder.jpg" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
+                }
+
+                <div class="top"></div>
+                <div class="bottom"></div>
+            </div>
+        </div>
+    </section>
+    <!-- SECTION ONE ENDS HERE -->
+
+    <!-- SECTION TWO STARTS HERE -->
+    <section class="section-2">
+        <div class="container">
+            <h2 class="wow fadeInUp" data-wow-delay="0.3s">Projects I have built</h2>
+            <ul class="slider wow fadeInUp" data-wow-delay="0.4s">
+                @foreach (var project in Model.Projects.OrderByDescending(x => x.Data.Year))
+                {
+                    <li>
+                        <a href="@project.Data.Link" target="_blank">
+                            @if (project.Data.Image?.Length > 0)
+                            {
+                                <img src="@Model.BuildImageUrl(project.Data.Image[0])?width=305&height=236&mode=Crop" alt="@project.Data.Name" />
+                            }
+                            else
+                            {
+                                <img src="assets/images/placeholder.jpg" alt="@project.Data.Name" />
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(project.Data.Label))
+                            {
+                                <span class="project-tag">@project.Data.Label</span>
+                            }
+                            <div class="project-detail">
+                                <h3>@project.Data.Name</h3>
+                                <p>
+                                    @project.Data.Description
+                                </p>
+                                <span class="arrow"></span>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </section>
+    <!-- SECTION TWO ENDS HERE -->
+    <!-- SECTION THREE STARTS HERE -->
+    <section class="section-3">
+        <div class="container">
+            <h2 class="wow fadeInUp" data-wow-delay="0.1s">
+                My Experience
+                <span><a class="linkedin" href="#" title="View my Linkedin Profile">View my Linkedin Profile</a></span>
+            </h2>
+            <ul class="load-more-list" id="exp-list">
+                @{ 
+                    var experienceDelay = 0.2;
+                }
+                @foreach (var experience in Model.Experiences.OrderByDescending(x => x.Data.From))
+                {
+                    experienceDelay += 0.1;
+
+                    <li class="wow fadeInUp" data-wow-delay="@(experienceDelay)s">
+                        <div class="img-cell">
+                            @if (experience.Data.Logo?.Length > 0)
+                            {
+                                <img src="@Model.BuildImageUrl(experience.Data.Logo[0])?width=80&height=80&mode=Crop" alt="@experience.Data.Company" />
+                            }
+                            else
+                            {
+                                <img src="assets/images/placeholder.jpg" alt="@experience.Data.Company" />
+                            }
+                        </div>
+                        <div class="detail">
+                            <h3>@experience.Data.Position</h3>
+                            <h4>@experience.Data.Company</h4>
+
+                            <p>@experience.Data.From.ToString("MMM yyyy") - @(experience.Data.To?.ToString("MMM yyyy") ?? "Now")</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+            @if (Model.Experiences.Count > 3)
+            {
+                <a href="#" class="show-more exp-list-show wow fadeInUp" data-wow-delay="0.5s" title="Show More...">Show More...</a>
+            }
+
+            <h2 class="wow fadeInUp" data-wow-delay="0.2s">
+                My Skills
+
+                @if (!string.IsNullOrWhiteSpace(Model.Basics.EmailAddress))
+                {
+                    <span>
+                        <a href="mailto:@Model.Basics.EmailAddress" title="Want to test? let mev know!">
+                            Want to test? let mev know!
+                        </a>
+                    </span>
+                }
+            </h2>
+            <ul class="skills">
+                @{ 
+                    var skillDelay = 0.2;
+                }
+                @foreach (var skill in Model.Skills.OrderBy(x => x.Data.Name))
+                {
+                    skillDelay += 0.1;
+
+                    <li class="wow fadeIn" data-wow-delay="@(skillDelay)s">@skill.Data.Name <span>- @skill.Data.Experience</span></li>
+                }
+            </ul>
+
+            <h2 class="wow fadeInUp" data-wow-delay="0.1s">My Education</h2>
+            <ul class="load-more-list" id="edu-list">
+                @{ 
+                    var educationDelay = 0.2;
+                }
+                @foreach (var education in Model.Education.OrderByDescending(x => x.Data.From))
+                {
+                    educationDelay += 0.1;
+
+                    <li class="wow fadeInUp" data-wow-delay="@(educationDelay)s">
+                        <div class="img-cell">
+                            @if (education.Data.Logo?.Length > 0)
+                            {
+                                <img src="@Model.BuildImageUrl(education.Data.Logo[0])?width=80&height=80&mode=Pad" alt="@education.Data.Degree" />
+                            }
+                            else
+                            {
+                                <img src="assets/images/placeholder.jpg" alt="@education.Data.Degree" />
+                            }
+                        </div>
+                        <div class="detail">
+                            <h3>@education.Data.Degree</h3>
+                            <h4>@education.Data.School</h4>
+
+                            <p>@education.Data.From.ToString("MMM yyyy") - @(education.Data.To?.ToString("MMM yyyy") ?? "Now")</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            @if (Model.Education.Count > 1)
+            {
+                <a href="#" class="show-more edu-list-show wow fadeInUp" data-wow-delay="0.3s" title="Show More...">Show More...</a>
+            }
+
+            <div class="box"></div>
+            <div class="line"></div>
+        </div>
+    </section>
+    <!-- SECTION THREE ENDS HERE -->
+    <!-- SECTION FOUR STARTS HERE -->
+    <section class="section-4">
+        <div class="container">
+            <h2 class="wow fadeInUp" data-wow-delay="0.1s">Publications</h2>
+            <ul class="pub-list">
+                @{ 
+                    var publicationDelay = 0.2;
+                }
+                @foreach (var publication in Model.Publications)
+                {
+                    publicationDelay += 0.1;
+
+                    <li class="wow fadeInUp" data-wow-delay="0.2s">
+                        <a href="@publication.Data.Link" target="_blank">
+                            <div class="img">
+                                @if (publication.Data.Cover?.Length > 0)
+                                {
+                                    <img src="@Model.BuildImageUrl(publication.Data.Cover[0])?width=188&height=238&mode=Crop" alt="@publication.Data.Name" />
+                                }
+                                else
+                                {
+                                    <img src="assets/images/placeholder.jpg" alt="@publication.Data.Name" />
+                                }
+                            </div>
+                            <div class="detail">
+                                <h3>@publication.Data.Name</h3>
+                                <p>
+                                    @publication.Data.Description
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </section>
+    <!-- SECTION FOUR ENDS HERE -->
+    <!-- FOOTER STARTS HERE -->
+    <footer>
+        <div class="container">
+            <h2 class="wow fadeInUp" data-wow-delay="0.1s">would you like to discuss your next project?</h2><br />
+
+            @if (!string.IsNullOrWhiteSpace(Model.Basics.EmailAddress))
+            {
+                <a title="Email Me" data-wow-delay="0.2s" href="@Model.Basics.EmailAddress" class="btn-email-me wow fadeInUp">
+                    <span>Email Me</span>
+                </a>
+            }
+            <div class="row">
+                <div class="pull-right wow fadeInRight" data-wow-delay="0.3s"><a title="Powered By Squidex" href="http://squidex.io"><img src="assets/images/power-by.png" alt="Power By Squidex" /></a></div>
+                <div class="pull-left">
+                    <a href="#" class="wow fadeInLeft open" data-wow-delay="0.3s" title="Legal Terms">Legal Terms</a>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="box"></div>
+        </div>
+    </footer>
+    <!-- FOOTER ENDS HERE -->
+
+    <!-- POPUP LEGAL TERMS STARTS HERE -->
+    <div class="modal-frame">
+        <div class="modal">
+            <div class="modal-inset">
+                <div class="button close"><i class="fa fa-close"></i></div>
+                <div class="modal-body">
+                    <h3>Legal Terms</h3>
+                    <p>
+                        @Model.Basics.LegalTerms
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay"></div>
+    <!-- POPUP LEGAL TERMS ENDS HERE -->
+
+    <!-- JS SCRIPTS -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/smoothanimation.js"></script>
+    <script src="assets/js/easing.js"></script>
+    <script src="assets/js/slick.js"></script>
+    <script src="assets/js/custom.js"></script>
+</body>
+</html>
