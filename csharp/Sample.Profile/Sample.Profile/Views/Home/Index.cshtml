@@ -31,6 +31,16 @@
                 <p>@Model.Basics.Summary.</p>
 
                 <ul class="social">
+                    @if (!string.IsNullOrWhiteSpace(Model.Basics.GithubLink))
+                    {
+                        <li>
+                            <a href="@Model.Basics.GithubLink" target="_blank">
+                                <img src="assets/images/social-github.png" />
+                                <span class="tooltiptext">Github</span>
+                            </a>
+                        </li>
+                    }
+
                     @if (!string.IsNullOrWhiteSpace(Model.Basics.TwitterLink))
                     {
                         <li>
@@ -45,18 +55,8 @@
                     {
                         <li>
                             <a href="@Model.Basics.LinkedInLink" target="_blank">
-                                <img src="assets/images/social-linked.png" />
+                                <img src="assets/images/social-linkedin.png" />
                                 <span class="tooltiptext">LinkedIn</span>
-                            </a>
-                        </li>
-                    }
-
-                    @if (!string.IsNullOrWhiteSpace(Model.Basics.GithubLink))
-                    {
-                        <li>
-                            <a href="@Model.Basics.GithubLink" target="_blank">
-                                <img src="assets/images/social-github.png" />
-                                <span class="tooltiptext">Github</span>
                             </a>
                         </li>
                     }
@@ -234,43 +234,48 @@
         </div>
     </section>
     <!-- SECTION THREE ENDS HERE -->
-    <!-- SECTION FOUR STARTS HERE -->
-    <section class="section-4">
-        <div class="container">
-            <h2 class="wow fadeInUp" data-wow-delay="0.1s">Publications</h2>
-            <ul class="pub-list">
-                @{ 
-                    var publicationDelay = 0.2;
-                }
-                @foreach (var publication in Model.Publications)
-                {
-                    publicationDelay += 0.1;
 
-                    <li class="wow fadeInUp" data-wow-delay="0.2s">
-                        <a href="@publication.Data.Link" target="_blank">
-                            <div class="img">
-                                @if (publication.Data.Cover?.Length > 0)
-                                {
-                                    <img src="@Model.BuildImageUrl(publication.Data.Cover[0])?width=188&height=238&mode=Crop" alt="@publication.Data.Name" />
-                                }
-                                else
-                                {
-                                    <img src="assets/images/placeholder.jpg" alt="@publication.Data.Name" />
-                                }
-                            </div>
-                            <div class="detail">
-                                <h3>@publication.Data.Name</h3>
-                                <p>
-                                    @publication.Data.Description
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </section>
-    <!-- SECTION FOUR ENDS HERE -->
+    @if (Model.Publications.Count > 0)
+    {
+        <!-- SECTION FOUR STARTS HERE -->
+        <section class="section-4">
+            <div class="container">
+                <h2 class="wow fadeInUp" data-wow-delay="0.1s">Publications</h2>
+                <ul class="pub-list">
+                    @{ 
+                        var publicationDelay = 0.2;
+                    }
+                    @foreach (var publication in Model.Publications)
+                    {
+                        publicationDelay += 0.1;
+
+                        <li class="wow fadeInUp" data-wow-delay="0.2s">
+                            <a href="@publication.Data.Link" target="_blank">
+                                <div class="img">
+                                    @if (publication.Data.Cover?.Length > 0)
+                                    {
+                                        <img src="@Model.BuildImageUrl(publication.Data.Cover[0])?width=188&height=238&mode=Crop" alt="@publication.Data.Name" />
+                                    }
+                                    else
+                                    {
+                                        <img src="assets/images/placeholder.jpg" alt="@publication.Data.Name" />
+                                    }
+                                </div>
+                                <div class="detail">
+                                    <h3>@publication.Data.Name</h3>
+                                    <p>
+                                        @publication.Data.Description
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+        <!-- SECTION FOUR ENDS HERE -->
+    }
+
     <!-- FOOTER STARTS HERE -->
     <footer>
         <div class="container">
