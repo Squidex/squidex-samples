@@ -4,6 +4,8 @@
 *.vs
 *.log
 
+.vscode
+
 # Build results
 build/
 bin/
@@ -18,3 +20,5 @@ node_modules/
 
 # Scripts (should be copied from node_modules on build)
 **/wwwroot/scripts/**/*.*
+
+*.Development.json

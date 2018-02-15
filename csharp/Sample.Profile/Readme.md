@@ -19,3 +19,13 @@ You have to change the following settings:
 Optionally:
 
 * `url`: The url to your squidex instance, e.g. `http://localhost:5000` if you run it locally.
+
+## How to run with docker?
+
+    docker run \
+    -d \
+    -p 80:80 \
+    -e app:appName='YOUR_APP' \
+    -e app:clientId='YOUR_APP:sample-client' \
+    -e app:clientSecret='SECRET' \
+    squidex/sample-profile:latest

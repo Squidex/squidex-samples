@@ -80,7 +80,7 @@
 
                 @if (Model.Basics.Image?.Length > 0)
                 {
-                    <img src="@Model.BuildImageUrl(Model.Basics.Image[0])" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
+                    <img src="@Model.BuildImageUrl(Model.Basics.Image[0])?width=512&height=516&mode=Crop" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
                 }
                 else
                 {
