@@ -78,9 +78,9 @@ namespace Sample.Profile.Controllers
 
         private async Task LoadBasics(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Basics, BasiscData>("basics").GetAsync(top: 1);
+            var records = await clientManager.GetClient<Basics, BasicsData>("basics").GetAsync(top: 1);
 
-            vm.Basics = records.Items.FirstOrDefault()?.Data ?? new BasiscData();
+            vm.Basics = records.Items.FirstOrDefault()?.Data ?? new BasicsData();
         }
 
         public IActionResult Error()
