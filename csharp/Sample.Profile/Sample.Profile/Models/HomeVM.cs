@@ -5,7 +5,7 @@ namespace Sample.Profile.Models
 {
     public sealed class HomeVM
     {
-        public BasiscData Basics { get; set; }
+        public BasicsData Basics { get; set; }
 
         public List<Skill> Skills { get; set; }
 

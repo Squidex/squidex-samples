@@ -3,11 +3,11 @@ using Squidex.ClientLibrary;
 
 namespace Sample.Profile.Models
 {
-    public class Basics : SquidexEntityBase<BasiscData>
+    public class Basics : SquidexEntityBase<BasicsData>
     {
     }
 
-    public class BasiscData
+    public class BasicsData
     {
         [JsonConverter(typeof(InvariantConverter))]
         public string FirstName { get; set; }
