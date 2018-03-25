@@ -45,17 +45,23 @@ namespace Squidex.ClientLibrary.Tests
             AssertItems(items, 8, 7, 6, 5, 4);
         }
 
-        [Fact(Skip = "Squidex has a bug with total")]
+        [Fact]
         public async Task Should_return_items_with_filter()
         {
             var items = await Fixture.Client.GetAsync(filter: "data/value/iv gt 3 and data/value/iv lt 7");
 
-            AssertItems(items, 4, 5, 6);
+            AssertItems(items, 3, 4, 5, 6);
         }
 
         private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, params int[] expected)
         {
             Assert.Equal(10, entities.Total);
+            Assert.Equal(expected, entities.Items.Select(x => x.Data.Value).ToArray());
+        }
+
+        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int total, params int[] expected)
+        {
+            Assert.Equal(total, entities.Total);
             Assert.Equal(expected, entities.Items.Select(x => x.Data.Value).ToArray());
         }
     }
