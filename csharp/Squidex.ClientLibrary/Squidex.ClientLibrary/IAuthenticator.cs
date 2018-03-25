@@ -12,5 +12,7 @@ namespace Squidex.ClientLibrary
     public interface IAuthenticator
     {
         Task<string> GetBearerTokenAsync();
+
+        Task RemoveTokenAsync(string token);
     }
 }

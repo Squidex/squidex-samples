@@ -45,6 +45,11 @@ namespace Squidex.ClientLibrary
             return cache.Get<string>(cacheKey);
         }
 
+        protected override void RemoveFromCache(string token)
+        {
+            cache.Remove(cacheKey);
+        }
+
         protected override void SetToCache(string result, DateTimeOffset expires)
         {
             cache.Set(cacheKey, result, expires);

@@ -85,12 +85,11 @@ namespace Squidex.ClientLibrary
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
-        public async Task<TEntity> CreateAsync(string id, TData data)
+        public async Task<TEntity> CreateAsync(TData data, bool publish = false)
         {
             Guard.NotNull(data, nameof(data));
-            Guard.NotNullOrEmpty(id, nameof(id));
 
-            var response = await RequestAsync(HttpMethod.Post, $"{id}/", data.ToContent());
+            var response = await RequestAsync(HttpMethod.Post, $"?publish={publish}", data.ToContent());
 
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
@@ -192,13 +191,46 @@ namespace Squidex.ClientLibrary
             entity.MarkAsUpdated();
         }
 
-        private static async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
+        private async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path = "", HttpContent content = null)
+        {
+            var uri = new Uri(serviceUrl, $"api/content/{applicationName}/{schemaName}/{path}");
+
+            var requestToken = await authenticator.GetBearerTokenAsync();
+            var request = BuildRequest(method, content, uri, requestToken);
+
+            var response = await SquidexHttpClient.Instance.SendAsync(request);
+
+            await EnsureResponseIsValidAsync(response, requestToken);
+
+            return response;
+        }
+
+        private static HttpRequestMessage BuildRequest(HttpMethod method, HttpContent content, Uri uri, string requestToken)
+        {
+            var request = new HttpRequestMessage(method, uri);
+
+            if (content != null)
+            {
+                request.Content = content;
+            }
+
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requestToken);
+
+            return request;
+        }
+
+        private async Task EnsureResponseIsValidAsync(HttpResponseMessage response, string token)
         {
             if (!response.IsSuccessStatusCode)
             {
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    await authenticator.RemoveTokenAsync(token);
+                }
+
                 if (response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new SquidexException("The app or schema does not exist.");
+                    throw new SquidexException("The app, schema or entity does not exist.");
                 }
 
                 var message = await response.Content.ReadAsStringAsync();
@@ -214,26 +246,6 @@ namespace Squidex.ClientLibrary
 
                 throw new SquidexException(message);
             }
-        }
-
-        private async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path = "", HttpContent content = null)
-        {
-            var uri = new Uri(serviceUrl, $"api/content/{applicationName}/{schemaName}/{path}");
-
-            var request = new HttpRequestMessage(method, uri);
-
-            if (content != null)
-            {
-                request.Content = content;
-            }
-
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", await authenticator.GetBearerTokenAsync());
-
-            var response = await SquidexHttpClient.Instance.SendAsync(request);
-
-            await EnsureResponseIsValidAsync(response);
-
-            return response;
         }
     }
 }

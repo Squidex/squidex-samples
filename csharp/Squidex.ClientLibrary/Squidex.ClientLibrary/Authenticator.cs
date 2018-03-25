@@ -51,7 +51,18 @@ namespace Squidex.ClientLibrary
             return result;
         }
 
+        public Task RemoveTokenAsync(string token)
+        {
+            RemoveFromCache(token);
+
+            return Task.CompletedTask;
+        }
+
         protected virtual void SetToCache(string result, DateTimeOffset expires)
+        {
+        }
+
+        protected virtual void RemoveFromCache(string token)
         {
         }
 
