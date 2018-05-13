@@ -30,7 +30,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
             Guard.NotNull(authenticator, nameof(authenticator));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
-            
+
             this.authenticator = authenticator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;

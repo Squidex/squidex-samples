@@ -1,4 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿// ==========================================================================
+//  Squidex Headless CMS
+// ==========================================================================
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
+// ==========================================================================
+
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
@@ -116,7 +123,6 @@ namespace Squidex.ClientLibrary.Tests
             {
                 await Fixture.Client.DeleteAsync(item.Id);
             }
-
         }
     }
 }

@@ -178,7 +178,7 @@ namespace Squidex.ClientLibrary
         public Task DeleteAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
-            
+
             return RequestAsync(HttpMethod.Delete, $"{id}/");
         }
 

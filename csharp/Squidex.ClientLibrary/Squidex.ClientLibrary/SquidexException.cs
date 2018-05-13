@@ -15,12 +15,12 @@ namespace Squidex.ClientLibrary
         {
         }
 
-        public SquidexException(string message) 
+        public SquidexException(string message)
             : base(message)
         {
         }
 
-        public SquidexException(string message, Exception inner) 
+        public SquidexException(string message, Exception inner)
             : base(message, inner)
         {
         }

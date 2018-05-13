@@ -32,7 +32,7 @@ namespace Squidex.ClientLibrary
         {
         }
 
-        public CachingAuthenticator(IMemoryCache cache, Uri serviceUrl, string clientId, string clientSecret) 
+        public CachingAuthenticator(IMemoryCache cache, Uri serviceUrl, string clientId, string clientSecret)
             : base(serviceUrl, clientId, clientSecret)
         {
             this.cache = cache;
