@@ -1,4 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿// ==========================================================================
+//  Squidex Headless CMS
+// ==========================================================================
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
+// ==========================================================================
+
+using Newtonsoft.Json;
 using Squidex.ClientLibrary;
 
 namespace Sample.Blog.Models
