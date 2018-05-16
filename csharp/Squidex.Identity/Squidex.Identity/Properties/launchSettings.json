@@ -17,11 +17,10 @@
     },
     "Squidex.Identity": {
       "commandName": "Project",
-      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:54191/"
+      "applicationUrl": "http://localhost:3500/"
     }
   }
 }

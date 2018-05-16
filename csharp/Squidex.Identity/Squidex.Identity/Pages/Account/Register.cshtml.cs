@@ -38,35 +38,28 @@ namespace Squidex.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [BindProperty]
         public string ReturnUrl { get; set; }
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [Required, EmailAddress]
             public string Email { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
             public string Password { get; set; }
 
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public void OnGet()
         {
-            ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()
         {
-            ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new SquidexUser();
@@ -76,14 +69,14 @@ namespace Squidex.Identity.Pages.Account
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    logger.LogInformation("User created a new account with password.");
+                    var callbackCode = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, callbackCode, Request.Scheme);
 
-                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await emailSender.SendEmailConfirmationAsync(Input.Email, callbackUrl);
 
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                    await signInManager.SignInAsync(user, false);
+
+                    return LocalRedirect(ReturnUrl);
                 }
 
                 foreach (var error in result.Errors)

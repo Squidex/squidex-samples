@@ -5,17 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
-namespace Squidex.Identity.Pages
+namespace Squidex.Identity.Model
 {
-    public class AboutModel : PageModel
+    public interface ISettingsProvider
     {
-        public string Message { get; set; }
-
-        public void OnGet()
-        {
-            Message = "Your application description page.";
-        }
+        Task<SquidexSettingsData> GetSettingsAsync();
     }
 }

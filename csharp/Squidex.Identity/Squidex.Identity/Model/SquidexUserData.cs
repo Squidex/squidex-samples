@@ -48,9 +48,6 @@ namespace Squidex.Identity.Model
         public bool LockoutEnabled { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public bool TwoFactorEnabled { get; set; }
-
-        [JsonConverter(typeof(InvariantConverter))]
         public int AccessFailedCount { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]

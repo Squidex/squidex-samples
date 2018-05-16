@@ -24,7 +24,6 @@ namespace Squidex.Identity.Model
         IUserEmailStore<SquidexUser>,
         IUserClaimStore<SquidexUser>,
         IUserPhoneNumberStore<SquidexUser>,
-        IUserTwoFactorStore<SquidexUser>,
         IUserLockoutStore<SquidexUser>,
         IUserAuthenticationTokenStore<SquidexUser>
     {
@@ -56,21 +55,21 @@ namespace Squidex.Identity.Model
 
         public async Task<SquidexUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            var result = await apiClient.GetAsync(filter: $"data/normalizedEmail/iv eq '{normalizedEmail}");
+            var result = await apiClient.GetAsync(filter: $"data/normalizedEmail/iv eq '{normalizedEmail}'");
 
             return result.Items.SingleOrDefault();
         }
 
         public async Task<SquidexUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var result = await apiClient.GetAsync(filter: $"data/normalizedUserName/iv eq '{normalizedUserName}");
+            var result = await apiClient.GetAsync(filter: $"data/normalizedUserName/iv eq '{normalizedUserName}'");
 
             return result.Items.SingleOrDefault();
         }
 
         public async Task<SquidexUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
         {
-            var result = await apiClient.GetAsync(filter: $"data/loginKeys/iv eq '{SquidexUserData.LoginKey(loginProvider, providerKey)}");
+            var result = await apiClient.GetAsync(filter: $"data/loginKeys/iv eq '{SquidexUserData.LoginKey(loginProvider, providerKey)}'");
 
             return result.Items.SingleOrDefault();
         }
@@ -166,11 +165,6 @@ namespace Squidex.Identity.Model
         public Task<bool> GetPhoneNumberConfirmedAsync(SquidexUser user, CancellationToken cancellationToken)
         {
             return Task.FromResult(user.Data.PhoneNumberConfirmed);
-        }
-
-        public Task<bool> GetTwoFactorEnabledAsync(SquidexUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.Data.TwoFactorEnabled);
         }
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(SquidexUser user, CancellationToken cancellationToken)
@@ -306,13 +300,6 @@ namespace Squidex.Identity.Model
         public Task SetPhoneNumberConfirmedAsync(SquidexUser user, bool confirmed, CancellationToken cancellationToken)
         {
             user.Data.PhoneNumberConfirmed = confirmed;
-
-            return Task.CompletedTask;
-        }
-
-        public Task SetTwoFactorEnabledAsync(SquidexUser user, bool enabled, CancellationToken cancellationToken)
-        {
-            user.Data.TwoFactorEnabled = enabled;
 
             return Task.CompletedTask;
         }

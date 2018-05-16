@@ -78,11 +78,11 @@ namespace Squidex.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (result.Succeeded)
             {
                 logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
-                return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                return LocalRedirect(returnUrl);
             }
 
             if (result.IsLockedOut)
@@ -129,7 +129,7 @@ namespace Squidex.Identity.Pages.Account
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
                         logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                        return LocalRedirect(returnUrl);
                     }
                 }
 

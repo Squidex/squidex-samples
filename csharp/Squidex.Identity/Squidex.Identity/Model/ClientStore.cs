@@ -12,7 +12,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public class ClientStore : IClientStore
+    public sealed class ClientStore : IClientStore
     {
         private readonly SquidexClient<SquidexClient, SquidexClientData> apiClient;
 
@@ -32,8 +32,18 @@ namespace Squidex.Identity.Model
 
             return new Client
             {
+                AllowedCorsOrigins = client.Data.AllowedCorsOrigins.ToListFromCommataSeparated(),
+                AllowedGrantTypes = client.Data.AllowedGrantTypes.ToListFromCommataSeparated(),
+                AllowedScopes = client.Data.AllowedScopes.ToListFromCommataSeparated(),
+                AllowOfflineAccess = client.Data.AllowOfflineAccess,
                 ClientId = clientId,
-                ClientName = client.Data.ClientName
+                ClientName = client.Data.ClientName,
+                ClientSecrets = client.Data.ClientSecrets.ToSecretsListFromCommataSeparated(),
+                ClientUri = client.Data.ClientUri,
+                // LogoUri = client.Data.Logo,
+                RedirectUris = client.Data.RedirectUris.ToListFromCommataSeparated(),
+                RequireConsent = client.Data.RequireConsent,
+                PostLogoutRedirectUris = client.Data.PostLogoutRedirectUris.ToListFromCommataSeparated()
             };
         }
     }

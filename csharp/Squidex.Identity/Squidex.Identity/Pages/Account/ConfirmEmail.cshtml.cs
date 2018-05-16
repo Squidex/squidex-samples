@@ -31,12 +31,14 @@ namespace Squidex.Identity.Pages.Account
             }
 
             var user = await userManager.FindByIdAsync(userId);
+
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
 
             var result = await userManager.ConfirmEmailAsync(user, code);
+
             if (!result.Succeeded)
             {
                 throw new ApplicationException($"Error confirming email for user with ID '{userId}':");

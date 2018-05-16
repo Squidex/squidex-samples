@@ -9,5 +9,8 @@ namespace Squidex.Identity.Model
 {
     public class SquidexRole
     {
+        public string Name { get; set; }
+
+        public string NormalizedName { get; set; }
     }
 }

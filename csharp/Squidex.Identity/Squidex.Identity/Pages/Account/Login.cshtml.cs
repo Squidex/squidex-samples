@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Squidex.Identity.Model;
 
@@ -21,86 +22,69 @@ namespace Squidex.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<SquidexUser> signInManager;
+        private readonly IStringLocalizer<AppResources> localizer;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<SquidexUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<SquidexUser> signInManager, ILogger<LoginModel> logger, IStringLocalizer<AppResources> localizer)
         {
             this.signInManager = signInManager;
+            this.localizer = localizer;
             this.logger = logger;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
+        [BindProperty]
         public string ReturnUrl { get; set; }
 
         [TempData]
         public string ErrorMessage { get; set; }
 
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required, EmailAddress]
             public string Email { get; set; }
 
             [Required]
-            [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync()
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()
         {
-            ReturnUrl = returnUrl;
-
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, true);
+
                 if (result.Succeeded)
                 {
-                    logger.LogInformation("User logged in.");
-                    return LocalRedirect(Url.GetLocalUrl(returnUrl));
-                }
-
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return LocalRedirect(ReturnUrl);
                 }
 
                 if (result.IsLockedOut)
                 {
-                    logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+
+                ModelState.AddModelError(string.Empty, localizer["InvalidLoginAttempt"]);
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

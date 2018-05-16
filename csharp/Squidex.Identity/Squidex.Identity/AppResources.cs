@@ -5,16 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
-namespace Squidex.Identity.Pages
+namespace Squidex.Identity
 {
-    public class IndexModel : PageModel
+    public sealed class AppResources
     {
-        public IActionResult OnGet()
-        {
-            return RedirectToPage("/Account/Login");
-        }
     }
 }

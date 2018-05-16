@@ -5,17 +5,11 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Squidex.ClientLibrary;
 
-namespace Squidex.Identity.Pages
+namespace Squidex.Identity.Model
 {
-    public class ContactModel : PageModel
+    public sealed class SquidexSettings : SquidexEntityBase<SquidexSettingsData>
     {
-        public string Message { get; set; }
-
-        public void OnGet()
-        {
-            Message = "Your contact page.";
-        }
     }
 }

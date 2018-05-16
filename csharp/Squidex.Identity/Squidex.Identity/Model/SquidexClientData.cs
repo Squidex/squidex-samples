@@ -25,7 +25,7 @@ namespace Squidex.Identity.Model
         public string ClientUri { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string LogoUri { get; set; }
+        public string[] Logo { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
         public string AllowedCorsOrigins { get; set; }

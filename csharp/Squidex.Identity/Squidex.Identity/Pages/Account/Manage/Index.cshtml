@@ -9,11 +9,13 @@
 <div class="row">
     <div class="col-md-6">
         <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" disabled />
             </div>
+
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 @if (Model.IsEmailConfirmed)
@@ -28,18 +30,16 @@
                     <input asp-for="Input.Email" class="form-control" />
                     <button asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
                 }
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <span asp-validation-for="Input.Email" class="invalid-feedback"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <span asp-validation-for="Input.PhoneNumber" class="invalid-feedback"></span>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
+
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
