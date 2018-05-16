@@ -16,7 +16,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexUserStore :
+    public sealed class UserStore :
         IUserPasswordStore<SquidexUser>,
         IUserRoleStore<SquidexUser>,
         IUserLoginStore<SquidexUser>,
@@ -28,11 +28,11 @@ namespace Squidex.Identity.Model
         IUserLockoutStore<SquidexUser>,
         IUserAuthenticationTokenStore<SquidexUser>
     {
-        private readonly SquidexClient<SquidexUser, SquidexUserData> client;
+        private readonly SquidexClient<SquidexUser, SquidexUserData> apiClient;
 
-        public SquidexUserStore(SquidexClientManager squidexClientManager)
+        public UserStore(SquidexClientManager clientManager)
         {
-            client = squidexClientManager.GetClient<SquidexUser, SquidexUserData>("users");
+            apiClient = clientManager.GetClient<SquidexUser, SquidexUserData>("users");
         }
 
         public void Dispose()
@@ -51,33 +51,33 @@ namespace Squidex.Identity.Model
 
         public Task<SquidexUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            return client.GetAsync(userId);
+            return apiClient.GetAsync(userId);
         }
 
         public async Task<SquidexUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            var result = await client.GetAsync(filter: $"data/normalizedEmail/iv eq '{normalizedEmail}");
+            var result = await apiClient.GetAsync(filter: $"data/normalizedEmail/iv eq '{normalizedEmail}");
 
             return result.Items.SingleOrDefault();
         }
 
         public async Task<SquidexUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var result = await client.GetAsync(filter: $"data/normalizedUserName/iv eq '{normalizedUserName}");
+            var result = await apiClient.GetAsync(filter: $"data/normalizedUserName/iv eq '{normalizedUserName}");
 
             return result.Items.SingleOrDefault();
         }
 
         public async Task<SquidexUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
         {
-            var result = await client.GetAsync(filter: $"data/loginKeys/iv eq '{SquidexUserData.LoginKey(loginProvider, providerKey)}");
+            var result = await apiClient.GetAsync(filter: $"data/loginKeys/iv eq '{SquidexUserData.LoginKey(loginProvider, providerKey)}");
 
             return result.Items.SingleOrDefault();
         }
 
         public async Task<IdentityResult> CreateAsync(SquidexUser user, CancellationToken cancellationToken)
         {
-            var result = await client.CreateAsync(user.Data);
+            var result = await apiClient.CreateAsync(user.Data);
 
             user.Id = result.Id;
 
@@ -86,14 +86,14 @@ namespace Squidex.Identity.Model
 
         public async Task<IdentityResult> UpdateAsync(SquidexUser user, CancellationToken cancellationToken)
         {
-            await client.UpdateAsync(user);
+            await apiClient.UpdateAsync(user);
 
             return IdentityResult.Success;
         }
 
         public async Task<IdentityResult> DeleteAsync(SquidexUser user, CancellationToken cancellationToken)
         {
-            await client.DeleteAsync(user);
+            await apiClient.DeleteAsync(user);
 
             return IdentityResult.Success;
         }
