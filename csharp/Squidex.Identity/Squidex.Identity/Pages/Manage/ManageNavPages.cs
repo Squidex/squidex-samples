@@ -8,7 +8,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Squidex.Identity.Pages.Account.Manage
+namespace Squidex.Identity.Pages.Manage
 {
     public static class ManageNavPages
     {

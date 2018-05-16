@@ -8,30 +8,34 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Controllers
 {
-    [Route("[controller]/[action]")]
-    public class AccountController : Controller
+    public sealed class AccountController : Controller
     {
         private readonly SignInManager<SquidexUser> signInManager;
-        private readonly ILogger logger;
 
-        public AccountController(SignInManager<SquidexUser> signInManager, ILogger<AccountController> logger)
+        public AccountController(SignInManager<SquidexUser> signInManager)
         {
             this.signInManager = signInManager;
-            this.logger = logger;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public IActionResult Index()
+        {
+            return RedirectToPage("/login");
         }
 
         [HttpPost]
+        [Route("/logout")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            logger.LogInformation("User logged out.");
-            return RedirectToPage("/Index");
+
+            return RedirectToPage("/login");
         }
     }
 }

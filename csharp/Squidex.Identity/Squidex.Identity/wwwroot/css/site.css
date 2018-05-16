@@ -1,0 +1,36 @@
+header,
+content,
+footer {
+    display: block;
+}
+
+header {
+    padding: 20px 0;
+}
+
+content {
+    padding: 30px 0;
+}
+
+footer {
+    border-top: 1px solid #ced4da;
+    background: 0;
+    color: #ced4da;
+    font-size: .9rem;
+    font-weight: normal;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.input-validation-error ~ .invalid-tooltip, 
+.input-validation-error ~ .invalid-feedback {
+    display: block;
+}
+
+.form-control.input-validation-error {
+    border-color: #dc3545;
+}
+
+.form-control.input-validation-error:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+}

@@ -5,31 +5,34 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Squidex.Identity.Model;
+using Squidex.Identity.Services;
 
-namespace Squidex.Identity.Pages.Account
+namespace Squidex.Identity.Pages
 {
-    public class LoginModel : PageModel
+    public class RegisterModel : PageModel
     {
         private readonly SignInManager<SquidexUser> signInManager;
-        private readonly IStringLocalizer<AppResources> localizer;
+        private readonly UserManager<SquidexUser> userManager;
         private readonly ILogger<LoginModel> logger;
+        private readonly IEmailSender emailSender;
 
-        public LoginModel(SignInManager<SquidexUser> signInManager, ILogger<LoginModel> logger, IStringLocalizer<AppResources> localizer)
+        public RegisterModel(
+            UserManager<SquidexUser> userManager,
+            SignInManager<SquidexUser> signInManager,
+            ILogger<LoginModel> logger,
+            IEmailSender emailSender)
         {
+            this.userManager = userManager;
             this.signInManager = signInManager;
-            this.localizer = localizer;
             this.logger = logger;
+            this.emailSender = emailSender;
         }
 
         [BindProperty]
@@ -37,11 +40,6 @@ namespace Squidex.Identity.Pages.Account
 
         [BindProperty]
         public string ReturnUrl { get; set; }
-
-        [TempData]
-        public string ErrorMessage { get; set; }
-
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
         {
@@ -51,38 +49,41 @@ namespace Squidex.Identity.Pages.Account
             [Required]
             public string Password { get; set; }
 
-            public bool RememberMe { get; set; }
+            [Required]
+            public bool AcceptPrivacyPolicy { get; set; }
+
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
-
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, true);
+                var user = SquidexUser.Create(Input.Email);
+
+                var result = await userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
+                    var callbackCode = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, callbackCode, Request.Scheme);
+
+                    await emailSender.SendEmailConfirmationAsync(Input.Email, callbackUrl);
+
+                    await signInManager.SignInAsync(user, false);
+
                     return LocalRedirect(ReturnUrl);
                 }
 
-                if (result.IsLockedOut)
+                foreach (var error in result.Errors)
                 {
-                    return RedirectToPage("./Lockout");
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
-
-                ModelState.AddModelError(string.Empty, localizer["InvalidLoginAttempt"]);
             }
 
             return Page();

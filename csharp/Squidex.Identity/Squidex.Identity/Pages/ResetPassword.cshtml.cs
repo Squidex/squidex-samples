@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Squidex.Identity.Model;
 
-namespace Squidex.Identity.Pages.Account
+namespace Squidex.Identity.Pages
 {
     public class ResetPasswordModel : PageModel
     {

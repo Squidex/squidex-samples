@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Squidex.Identity.Model;
 using Squidex.Identity.Services;
 
-namespace Squidex.Identity.Pages.Account.Manage
+namespace Squidex.Identity.Pages.Manage
 {
     public partial class IndexModel : PageModel
     {

@@ -7,7 +7,6 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.0.3" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" />
-    <PackageReference Include="Squidex.ClientLibrary" Version="0.4.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
@@ -19,5 +18,8 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Squidex.ClientLibrary\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />
   </ItemGroup>
 </Project>

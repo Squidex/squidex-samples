@@ -7,7 +7,7 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Squidex.Identity.Pages.Account
+namespace Squidex.Identity.Pages
 {
     public class AccessDeniedModel : PageModel
     {

@@ -15,10 +15,12 @@ namespace Squidex.Identity.Model
     public sealed class ClientStore : IClientStore
     {
         private readonly SquidexClient<SquidexClient, SquidexClientData> apiClient;
+        private readonly SquidexClientManager apiClientManager;
 
         public ClientStore(SquidexClientManager clientManager)
         {
             apiClient = clientManager.GetClient<SquidexClient, SquidexClientData>("clients");
+            apiClientManager = clientManager;
         }
 
         public async Task<Client> FindClientByIdAsync(string clientId)
@@ -40,7 +42,7 @@ namespace Squidex.Identity.Model
                 ClientName = client.Data.ClientName,
                 ClientSecrets = client.Data.ClientSecrets.ToSecretsListFromCommataSeparated(),
                 ClientUri = client.Data.ClientUri,
-                // LogoUri = client.Data.Logo,
+                LogoUri = apiClientManager.GenerateImageUrl(client.Data.Logo),
                 RedirectUris = client.Data.RedirectUris.ToListFromCommataSeparated(),
                 RequireConsent = client.Data.RequireConsent,
                 PostLogoutRedirectUris = client.Data.PostLogoutRedirectUris.ToListFromCommataSeparated()

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Squidex.Identity.Model;
 
-namespace Squidex.Identity.Pages.Account.Manage
+namespace Squidex.Identity.Pages.Manage
 {
     public class ChangePasswordModel : PageModel
     {
@@ -98,7 +98,7 @@ namespace Squidex.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            await signInManager.SignInAsync(user, isPersistent: false);
+            await signInManager.SignInAsync(user, false);
             logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 

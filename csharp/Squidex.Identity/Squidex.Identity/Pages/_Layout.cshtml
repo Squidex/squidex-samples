@@ -1,5 +1,7 @@
-﻿@inject ISettingsProvider SettingsProvider;
-@{ 
+﻿@inject ISettingsProvider SettingsProvider
+@inject IHtmlLocalizer<AppResources> T
+@inject SquidexClientManager SquidexClientManager
+@{
     var settings = await SettingsProvider.GetSettingsAsync();
 }
 
@@ -11,15 +13,68 @@
 
     <title>@ViewData["Title"] - @settings.SiteName</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    @if (!string.IsNullOrWhiteSpace(settings.BootstrapUrl))
+    {
+        <link rel="stylesheet" href="@settings.BootstrapUrl" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    }
+
+    @if (!string.IsNullOrWhiteSpace(settings.StylesUrl))
+    {
+        <link rel="stylesheet" href="@settings.StylesUrl" />
+    }
+
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <div class="container">
-        @RenderBody()
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <header>
+                    @{
+                        var image = SquidexClientManager.GenerateImageUrl(settings.Logo);
+                    }
 
-        <footer>
-            <p>@settings.FooterText</p>
-        </footer>
+                    @if (!string.IsNullOrWhiteSpace(image))
+                    {
+                        <img src="@image" alt="@settings.SiteName" />
+                    }
+                    else
+                    {
+                        <img src="~/images/logo-half.png" alt="@settings.SiteName" />
+                    }
+                </header>
+
+                <content>
+                    @RenderBody()
+                </content>
+
+                <footer>
+                    <p>@settings.FooterText</p>
+
+                    @if (!string.IsNullOrWhiteSpace(settings.PrivacyUrl) || !string.IsNullOrWhiteSpace(settings.LegalUrl))
+                    {
+                        <p>
+                            @if (!string.IsNullOrWhiteSpace(settings.LegalUrl))
+                            {
+                                <a href="@settings.LegalUrl" target="_blank" rel="nofollow">
+                                    @T["Legal"]
+                                </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(settings.PrivacyUrl))
+                            {
+                                <a href="@settings.PrivacyUrl" target="_blank" rel="nofollow">
+                                    @T["Privacy"]
+                                </a>
+                            }
+                        </p>
+                    }
+                </footer>
+            </div>
+        </div>
     </div>
 
     @RenderSection("Scripts", required: false)

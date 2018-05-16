@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Squidex.Identity.Model;
 
-namespace Squidex.Identity.Pages.Account.Manage
+namespace Squidex.Identity.Pages.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
@@ -69,7 +69,7 @@ namespace Squidex.Identity.Pages.Account.Manage
                 throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{user.Id}'.");
             }
 
-            await signInManager.SignInAsync(user, isPersistent: false);
+            await signInManager.SignInAsync(user, false);
             StatusMessage = "The external login was removed.";
             return RedirectToPage();
         }
@@ -80,7 +80,7 @@ namespace Squidex.Identity.Pages.Account.Manage
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Page("./ExternalLogins", pageHandler: "LinkLoginCallback");
+            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
             var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, userManager.GetUserId(User));
             return new ChallengeResult(provider, properties);
         }

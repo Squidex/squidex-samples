@@ -31,9 +31,15 @@ namespace Squidex.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SquidexOptions>(Configuration.GetSection("app"));
+            services.Configure<SquidexSettingsData>(Configuration.GetSection("defaultSettings"));
 
             services.AddSingleton(c =>
                 SquidexClientManager.FromOption(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
+
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
 
             services.AddIdentity<SquidexUser, SquidexRole>()
                 .AddUserStore<UserStore>()
@@ -54,15 +60,18 @@ namespace Squidex.Identity
                 .AddResourceStoreCache<ResourceStore>();
 
             services.AddMvc()
-                .AddViewLocalization()
+                .AddViewLocalization(options =>
+                {
+                    options.ResourcesPath = "Resources";
+                })
                 .AddDataAnnotationsLocalization(options =>
                 {
                     options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(AppResources));
                 })
                 .AddRazorPagesOptions(options =>
                 {
-                    options.Conventions.AuthorizeFolder("/Account/Manage");
-                    options.Conventions.AuthorizePage("/Account/Logout");
+                    options.Conventions.AuthorizeFolder("/Manage");
+                    options.Conventions.AuthorizePage("/Logout");
                 });
 
             services.AddSingleton<ISettingsProvider,

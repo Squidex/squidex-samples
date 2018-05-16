@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Squidex.Identity.Model;
 using Squidex.Identity.Services;
 
-namespace Squidex.Identity.Pages.Account
+namespace Squidex.Identity.Pages
 {
     public class ForgotPasswordModel : PageModel
     {
@@ -31,8 +31,7 @@ namespace Squidex.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required, EmailAddress]
             public string Email { get; set; }
         }
 
@@ -41,17 +40,17 @@ namespace Squidex.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(Input.Email);
+
                 if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                var callbackCode = await userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, callbackCode, Request.Scheme);
+
                 await emailSender.SendResetPasswordAsync(Input.Email, callbackUrl);
+
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 

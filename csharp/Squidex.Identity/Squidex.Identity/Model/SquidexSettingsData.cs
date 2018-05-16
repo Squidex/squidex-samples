@@ -23,5 +23,38 @@ namespace Squidex.Identity.Model
 
         [JsonConverter(typeof(InvariantConverter))]
         public string LegalUrl { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string BootstrapUrl { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string StylesUrl { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string EmailConfirmationText { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string EmailConfirmationSubject { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string EmailPasswordResetText { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string EmailPasswordResetSubject { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string SmtpFrom { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string SmtpServer { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string SmtpUsername { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string SmtpPassword { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string[] Logo { get; set; }
     }
 }

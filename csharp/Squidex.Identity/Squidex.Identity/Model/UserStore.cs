@@ -76,7 +76,7 @@ namespace Squidex.Identity.Model
 
         public async Task<IdentityResult> CreateAsync(SquidexUser user, CancellationToken cancellationToken)
         {
-            var result = await apiClient.CreateAsync(user.Data);
+            var result = await apiClient.CreateAsync(user.Data, true);
 
             user.Id = result.Id;
 
