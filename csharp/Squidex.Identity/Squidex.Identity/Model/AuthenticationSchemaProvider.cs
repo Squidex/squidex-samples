@@ -31,8 +31,14 @@ namespace Squidex.Identity.Model
         private readonly List<AuthenticationScheme> defaultSchemes = new List<AuthenticationScheme>();
         private readonly SquidexClient<AuthenticationSchemeEntity, AuthenticationSchemeData> apiClient;
         private readonly IOptions<AuthenticationOptions> options;
+        private readonly IEnumerable<IPostConfigureOptions<GoogleOptions>> configureGoogle;
+        private readonly IEnumerable<IPostConfigureOptions<MicrosoftAccountOptions>> configureMicrosoft;
 
-        public AuthenticationSchemaProvider(SquidexClientManager clientManager, IMemoryCache cache, IOptions<AuthenticationOptions> options)
+        public AuthenticationSchemaProvider(SquidexClientManager clientManager,
+            IMemoryCache cache,
+            IOptions<AuthenticationOptions> options,
+            IEnumerable<IPostConfigureOptions<GoogleOptions>> configureGoogle,
+            IEnumerable<IPostConfigureOptions<MicrosoftAccountOptions>> configureMicrosoft)
             : base(cache)
         {
             apiClient = clientManager.GetClient<AuthenticationSchemeEntity, AuthenticationSchemeData>("authentication-schemes");
@@ -49,6 +55,8 @@ namespace Squidex.Identity.Model
             }
 
             this.options = options;
+            this.configureGoogle = configureGoogle;
+            this.configureMicrosoft = configureMicrosoft;
         }
 
         public void AddScheme(AuthenticationScheme scheme)
@@ -157,11 +165,18 @@ namespace Squidex.Identity.Model
 
             if (scheme != null)
             {
-                return new GoogleOptions
+                var result = new GoogleOptions
                 {
                     ClientId = scheme.ClientId,
                     ClientSecret = scheme.ClientSecret
                 };
+
+                foreach (var configurator in configureGoogle)
+                {
+                    configurator.PostConfigure(name, result);
+                }
+
+                return result;
             }
 
             return null;
@@ -173,11 +188,18 @@ namespace Squidex.Identity.Model
 
             if (scheme != null)
             {
-                return new MicrosoftAccountOptions
+                var result = new MicrosoftAccountOptions
                 {
                     ClientId = scheme.ClientId,
                     ClientSecret = scheme.ClientSecret
                 };
+
+                foreach (var configurator in configureMicrosoft)
+                {
+                    configurator.PostConfigure(name, result);
+                }
+
+                return result;
             }
 
             return null;

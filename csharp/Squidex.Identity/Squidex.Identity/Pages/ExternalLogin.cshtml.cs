@@ -36,9 +36,10 @@ namespace Squidex.Identity.Pages
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public string LoginProvider { get; set; }
-
+        [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
+
+        public string LoginProvider { get; set; }
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -55,10 +56,11 @@ namespace Squidex.Identity.Pages
             return RedirectToPage("./Login");
         }
 
-        public IActionResult OnPost(string provider, string returnUrl = null)
+        public IActionResult OnPost(string provider)
         {
             // Request a redirect to the external login provider.
-            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
+            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl = ReturnUrl });
+
             var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }

@@ -27,54 +27,51 @@
         <link rel="stylesheet" href="@settings.StylesUrl" />
     }
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <header>
-                    @{
-                        var image = SquidexClientManager.GenerateImageUrl(settings.Logo);
-                    }
+    <div class="container2">
+        <header>
+            @{
+                var image = SquidexClientManager.GenerateImageUrl(settings.Logo);
+            }
 
-                    @if (!string.IsNullOrWhiteSpace(image))
+            @if (!string.IsNullOrWhiteSpace(image))
+            {
+                <img class="logo" src="@image" alt="@settings.SiteName" />
+            }
+            else
+            {
+                <img class="logo" src="~/images/logo-half.png" alt="@settings.SiteName" />
+            }
+        </header>
+
+        <content>
+            @RenderBody()
+        </content>
+
+        <footer>
+            <p>@settings.FooterText</p>
+
+            @if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl) || !string.IsNullOrWhiteSpace(settings.LegalUrl))
+            {
+                <p>
+                    @if (!string.IsNullOrWhiteSpace(settings.LegalUrl))
                     {
-                        <img src="@image" alt="@settings.SiteName" />
+                        <a href="@settings.LegalUrl" target="_blank" rel="nofollow">
+                            @T["Legal"]
+                        </a>
                     }
-                    else
+                    @if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
                     {
-                        <img src="~/images/logo-half.png" alt="@settings.SiteName" />
+                        <a href="@settings.PrivacyPolicyUrl" target="_blank" rel="nofollow">
+                            @T["PrivacyPolicy"]
+                        </a>
                     }
-                </header>
-
-                <content>
-                    @RenderBody()
-                </content>
-
-                <footer>
-                    <p>@settings.FooterText</p>
-
-                    @if (!string.IsNullOrWhiteSpace(settings.PrivacyUrl) || !string.IsNullOrWhiteSpace(settings.LegalUrl))
-                    {
-                        <p>
-                            @if (!string.IsNullOrWhiteSpace(settings.LegalUrl))
-                            {
-                                <a href="@settings.LegalUrl" target="_blank" rel="nofollow">
-                                    @T["Legal"]
-                                </a>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(settings.PrivacyUrl))
-                            {
-                                <a href="@settings.PrivacyUrl" target="_blank" rel="nofollow">
-                                    @T["Privacy"]
-                                </a>
-                            }
-                        </p>
-                    }
-                </footer>
-            </div>
-        </div>
+                </p>
+            }
+        </footer>
     </div>
 
     @RenderSection("Scripts", required: false)

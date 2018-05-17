@@ -19,13 +19,16 @@ namespace Squidex.Identity.Model
         public string FooterText { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string PrivacyUrl { get; set; }
+        public string PrivacyPolicyUrl { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
         public string LegalUrl { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
         public string BootstrapUrl { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string TermsOfServiceUrl { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
         public string StylesUrl { get; set; }

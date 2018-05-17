@@ -210,7 +210,7 @@ namespace Squidex.Identity.Model
 
         public static string LoginKey(string loginProvider, string providerKey)
         {
-            return string.Empty;
+            return $"{loginProvider}_{providerKey}";
         }
 
         public static string TokenKey(string loginProvider, string name)

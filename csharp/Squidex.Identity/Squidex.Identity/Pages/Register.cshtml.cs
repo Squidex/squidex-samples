@@ -9,51 +9,73 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Squidex.Identity.Model;
 using Squidex.Identity.Services;
 
 namespace Squidex.Identity.Pages
 {
-    public class RegisterModel : PageModel
+    public sealed class RegisterModel : PageModel
     {
         private readonly SignInManager<UserEntity> signInManager;
+        private readonly ISettingsProvider settingsProvider;
         private readonly UserManager<UserEntity> userManager;
         private readonly ILogger<LoginModel> logger;
+        private readonly IStringLocalizer<AppResources> localizer;
         private readonly IEmailSender emailSender;
 
         public RegisterModel(
-            UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager,
+            IEmailSender emailSender,
             ILogger<LoginModel> logger,
-            IEmailSender emailSender)
+            ISettingsProvider settingsProvider,
+            IStringLocalizer<AppResources> localizer,
+            SignInManager<UserEntity> signInManager,
+            UserManager<UserEntity> userManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.logger = logger;
             this.emailSender = emailSender;
+            this.localizer = localizer;
+            this.logger = logger;
+            this.settingsProvider = settingsProvider;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public RequestInputModel Input { get; set; }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
 
-        public class InputModel
+        public string TermsOfServiceUrl { get; set; }
+
+        public string PrivacyPolicyUrl { get; set; }
+
+        public bool MustAcceptsTermsOfService { get; set; }
+
+        public bool MustAcceptsPrivacyPolicy { get; set; }
+
+        public async override Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            [Required, EmailAddress]
-            public string Email { get; set; }
+            var settings = await settingsProvider.GetSettingsAsync();
 
-            [Required]
-            public string Password { get; set; }
+            if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
+            {
+                PrivacyPolicyUrl = settings.PrivacyPolicyUrl;
 
-            [Required]
-            public bool AcceptPrivacyPolicy { get; set; }
+                MustAcceptsPrivacyPolicy = true;
+            }
 
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            if (!string.IsNullOrWhiteSpace(settings.TermsOfServiceUrl))
+            {
+                TermsOfServiceUrl = settings.TermsOfServiceUrl;
+
+                MustAcceptsTermsOfService = true;
+            }
+
+            await next();
         }
 
         public void OnGet()
@@ -62,6 +84,20 @@ namespace Squidex.Identity.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (MustAcceptsPrivacyPolicy && !Input.AcceptPrivacyPolicy)
+            {
+                var field = nameof(Input.AcceptPrivacyPolicy);
+
+                ModelState.AddModelError($"{nameof(Input)}.{field}", localizer[$"{field}Error"]);
+            }
+
+            if (MustAcceptsTermsOfService && !Input.AcceptTermsOfService)
+            {
+                var field = nameof(Input.AcceptTermsOfService);
+
+                ModelState.AddModelError($"{nameof(Input)}.{field}", localizer[$"{field}Error"]);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = UserEntity.Create(Input.Email);
@@ -88,5 +124,23 @@ namespace Squidex.Identity.Pages
 
             return Page();
         }
+    }
+
+    public sealed class RequestInputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public bool AcceptPrivacyPolicy { get; set; }
+
+        [Required]
+        public bool AcceptTermsOfService { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Compare(nameof(Password), ErrorMessage = "PasswordsNotSame")]
+        public string ConfirmPassword { get; set; }
     }
 }

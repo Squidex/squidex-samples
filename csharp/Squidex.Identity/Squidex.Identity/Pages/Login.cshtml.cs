@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -25,17 +26,20 @@ namespace Squidex.Identity.Pages
         private readonly IStringLocalizer<AppResources> localizer;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<UserEntity> signInManager, ILogger<LoginModel> logger, IStringLocalizer<AppResources> localizer)
+        public LoginModel(
+            ILogger<LoginModel> logger,
+            IStringLocalizer<AppResources> localizer,
+            SignInManager<UserEntity> signInManager)
         {
-            this.signInManager = signInManager;
             this.localizer = localizer;
             this.logger = logger;
+            this.signInManager = signInManager;
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public LoginInputModel Input { get; set; }
 
-        [BindProperty, FromQuery]
+        [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
 
         [TempData]
@@ -43,15 +47,11 @@ namespace Squidex.Identity.Pages
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        public class InputModel
+        public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            [Required, EmailAddress]
-            public string Email { get; set; }
+            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            [Required]
-            public string Password { get; set; }
-
-            public bool RememberMe { get; set; }
+            await next();
         }
 
         public async Task OnGetAsync()
@@ -62,8 +62,6 @@ namespace Squidex.Identity.Pages
             }
 
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -87,5 +85,17 @@ namespace Squidex.Identity.Pages
 
             return Page();
         }
+    }
+
+    public sealed class LoginInputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        public bool RememberMe { get; set; }
     }
 }

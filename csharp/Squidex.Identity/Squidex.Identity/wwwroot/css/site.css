@@ -1,11 +1,22 @@
-header,
-content,
-footer {
+/*
+ * LAYOUT
+ */
+.container2 {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header, content, footer {
     display: block;
 }
 
 header {
     padding: 20px 0;
+}
+
+header .logo {
+    max-width: 100%;
 }
 
 content {
@@ -22,6 +33,26 @@ footer {
     padding: 30px 0;
 }
 
+footer a {
+    margin: 0 .375rem;
+}
+
+/*
+ * LOGIN
+ */
+
+.login-separator {
+    color: #aaa;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/*
+ * FORMS
+ */
 .input-validation-error ~ .invalid-tooltip, 
 .input-validation-error ~ .invalid-feedback {
     display: block;
@@ -32,5 +63,42 @@ footer {
 }
 
 .form-control.input-validation-error:focus {
-    box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, .25);
+}
+
+.btn-google {
+    background: #d34836 !important;
+    border-color: #d34836 !important;
+}
+
+.btn-google:focus {
+    box-shadow: 0 0 0 0.2rem rgba(211, 72, 54, .25) !important;
+}
+
+/*
+ * SOCIAL ICONS
+ */
+.btn-google:focus,
+.btn-google:hover,
+.btn-google:active,
+.btn-google.active {
+    background: #b02c1b !important;
+    border-color: #b02c1b !important;
+}
+
+.btn-microsoft {
+    background: #004185 !important;
+    border-color: #004185 !important;
+}
+
+.btn-microsoft:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 65, 133, .25) !important;
+}
+
+.btn-microsoft:focus,
+.btn-microsoft:hover,
+.btn-microsoft:active,
+.btn-microsoft.active {
+    background: #1b67b7 !important;
+    border-color: #1b67b7 !important;
 }
