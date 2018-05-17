@@ -10,7 +10,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexSettingsData
+    public sealed class SettingsData
     {
         [JsonConverter(typeof(InvariantConverter))]
         public string SiteName { get; set; }

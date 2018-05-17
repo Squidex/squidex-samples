@@ -5,12 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Newtonsoft.Json;
+using Squidex.ClientLibrary;
+
 namespace Squidex.Identity.Model
 {
-    public class SquidexRole
+    public sealed class AuthenticationSchemeData
     {
-        public string Name { get; set; }
+        [JsonConverter(typeof(InvariantConverter))]
+        public AuthenticationSchemeProvider Provider { get; set; }
 
-        public string NormalizedName { get; set; }
+        [JsonConverter(typeof(InvariantConverter))]
+        public string ClientId { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string ClientSecret { get; set; }
     }
 }

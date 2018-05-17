@@ -16,9 +16,9 @@ namespace Squidex.Identity.Pages
 {
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
+        private readonly UserManager<UserEntity> userManager;
 
-        public ConfirmEmailModel(UserManager<SquidexUser> userManager)
+        public ConfirmEmailModel(UserManager<UserEntity> userManager)
         {
             this.userManager = userManager;
         }

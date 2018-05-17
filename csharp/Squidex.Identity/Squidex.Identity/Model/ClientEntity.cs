@@ -9,7 +9,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexClient : SquidexEntityBase<SquidexClientData>
+    public sealed class ClientEntity : SquidexEntityBase<ClientData>
     {
     }
 }

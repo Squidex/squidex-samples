@@ -18,14 +18,14 @@ namespace Squidex.Identity.Pages
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<SquidexUser> signInManager;
-        private readonly UserManager<SquidexUser> userManager;
+        private readonly SignInManager<UserEntity> signInManager;
+        private readonly UserManager<UserEntity> userManager;
         private readonly ILogger<LoginModel> logger;
         private readonly IEmailSender emailSender;
 
         public RegisterModel(
-            UserManager<SquidexUser> userManager,
-            SignInManager<SquidexUser> signInManager,
+            UserManager<UserEntity> userManager,
+            SignInManager<UserEntity> signInManager,
             ILogger<LoginModel> logger,
             IEmailSender emailSender)
         {
@@ -64,7 +64,7 @@ namespace Squidex.Identity.Pages
         {
             if (ModelState.IsValid)
             {
-                var user = SquidexUser.Create(Input.Email);
+                var user = UserEntity.Create(Input.Email);
 
                 var result = await userManager.CreateAsync(user, Input.Password);
 

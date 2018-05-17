@@ -10,7 +10,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexClientData
+    public sealed class ClientData
     {
         [JsonConverter(typeof(InvariantConverter))]
         public string AllowedScopes { get; set; }

@@ -14,9 +14,9 @@ namespace Squidex.Identity.Controllers
 {
     public sealed class AccountController : Controller
     {
-        private readonly SignInManager<SquidexUser> signInManager;
+        private readonly SignInManager<UserEntity> signInManager;
 
-        public AccountController(SignInManager<SquidexUser> signInManager)
+        public AccountController(SignInManager<UserEntity> signInManager)
         {
             this.signInManager = signInManager;
         }

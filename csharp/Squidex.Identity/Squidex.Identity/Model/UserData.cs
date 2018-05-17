@@ -15,7 +15,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexUserData
+    public sealed class UserData
     {
         [JsonConverter(typeof(InvariantConverter))]
         public string UserName { get; set; }
@@ -66,14 +66,14 @@ namespace Squidex.Identity.Model
         public Dictionary<string, string> Tokens { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public List<SquidexUserLogin> LoginVals { get; set; }
+        public List<UserLogin> LoginVals { get; set; }
 
         public void EnsureLogins()
         {
             if (LoginVals == null)
             {
                 LoginKeys = new HashSet<string>();
-                LoginVals = new List<SquidexUserLogin>();
+                LoginVals = new List<UserLogin>();
             }
         }
 
@@ -126,7 +126,7 @@ namespace Squidex.Identity.Model
         {
             EnsureLogins();
 
-            LoginVals.Add(new SquidexUserLogin { LoginProvider = login.LoginProvider, DisplayName = login.ProviderDisplayName, ProviderKey = login.ProviderKey });
+            LoginVals.Add(new UserLogin { LoginProvider = login.LoginProvider, DisplayName = login.ProviderDisplayName, ProviderKey = login.ProviderKey });
             LoginKeys.Add(LoginKey(login.LoginProvider, login.ProviderKey));
         }
 

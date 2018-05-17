@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,27 +13,26 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class CachedSettingsProvider : ISettingsProvider
+    public sealed class SettingsProvider : CachingProvider, ISettingsProvider
     {
-        private readonly SquidexClient<SquidexSettings, SquidexSettingsData> apiClient;
-        private readonly IMemoryCache cache;
-        private readonly IOptions<SquidexSettingsData> defaults;
+        private readonly SquidexClient<SettingsEntity, SettingsData> apiClient;
+        private readonly IOptions<SettingsData> defaults;
 
-        public CachedSettingsProvider(SquidexClientManager clientManager, IMemoryCache cache, IOptions<SquidexSettingsData> defaults)
+        public SettingsProvider(SquidexClientManager clientManager, IMemoryCache cache, IOptions<SettingsData> defaults)
+            : base(cache)
         {
-            apiClient = clientManager.GetClient<SquidexSettings, SquidexSettingsData>("settings");
+            apiClient = clientManager.GetClient<SettingsEntity, SettingsData>("settings");
 
-            this.cache = cache;
             this.defaults = defaults;
         }
 
-        public async Task<SquidexSettingsData> GetSettingsAsync()
+        public Task<SettingsData> GetSettingsAsync()
         {
-            if (!cache.TryGetValue<SquidexSettingsData>("Settings", out var result))
+            return GetOrAddAsync(nameof(SettingsProvider), async () =>
             {
                 var settings = await apiClient.GetAsync();
 
-                result = settings.Items.FirstOrDefault()?.Data ?? new SquidexSettingsData();
+                var result = settings.Items.FirstOrDefault()?.Data ?? new SettingsData();
 
                 foreach (var property in result.GetType().GetProperties())
                 {
@@ -44,10 +42,8 @@ namespace Squidex.Identity.Model
                     }
                 }
 
-                cache.Set("Settings", result, TimeSpan.FromMinutes(10));
-            }
-
-            return result;
+                return result;
+            });
         }
     }
 }

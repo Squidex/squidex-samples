@@ -19,13 +19,13 @@ namespace Squidex.Identity.Pages
 {
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<SquidexUser> signInManager;
-        private readonly UserManager<SquidexUser> userManager;
+        private readonly SignInManager<UserEntity> signInManager;
+        private readonly UserManager<UserEntity> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
 
         public ExternalLoginModel(
-            SignInManager<SquidexUser> signInManager,
-            UserManager<SquidexUser> userManager,
+            SignInManager<UserEntity> signInManager,
+            UserManager<UserEntity> userManager,
             ILogger<ExternalLoginModel> logger)
         {
             this.signInManager = signInManager;
@@ -117,7 +117,7 @@ namespace Squidex.Identity.Pages
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
 
-                var user = new SquidexUser();
+                var user = new UserEntity();
                 user.Data.Email = Input.Email;
                 user.Data.UserName = Input.Email;
 

@@ -5,11 +5,11 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary;
-
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexSettings : SquidexEntityBase<SquidexSettingsData>
+    public enum AuthenticationSchemeProvider
     {
+        Google,
+        MicrosoftAccount
     }
 }

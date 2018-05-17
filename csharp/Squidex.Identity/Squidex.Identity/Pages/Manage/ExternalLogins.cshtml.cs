@@ -19,12 +19,12 @@ namespace Squidex.Identity.Pages.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
-        private readonly SignInManager<SquidexUser> signInManager;
+        private readonly UserManager<UserEntity> userManager;
+        private readonly SignInManager<UserEntity> signInManager;
 
         public ExternalLoginsModel(
-            UserManager<SquidexUser> userManager,
-            SignInManager<SquidexUser> signInManager)
+            UserManager<UserEntity> userManager,
+            SignInManager<UserEntity> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;

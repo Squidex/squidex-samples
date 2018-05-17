@@ -18,13 +18,13 @@ namespace Squidex.Identity.Pages.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
-        private readonly SignInManager<SquidexUser> signInManager;
+        private readonly UserManager<UserEntity> userManager;
+        private readonly SignInManager<UserEntity> signInManager;
         private readonly ILogger<ChangePasswordModel> logger;
 
         public ChangePasswordModel(
-            UserManager<SquidexUser> userManager,
-            SignInManager<SquidexUser> signInManager,
+            UserManager<UserEntity> userManager,
+            SignInManager<UserEntity> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             this.userManager = userManager;

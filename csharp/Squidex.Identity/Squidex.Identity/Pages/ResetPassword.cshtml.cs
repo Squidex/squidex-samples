@@ -17,9 +17,9 @@ namespace Squidex.Identity.Pages
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
+        private readonly UserManager<UserEntity> userManager;
 
-        public ResetPasswordModel(UserManager<SquidexUser> userManager)
+        public ResetPasswordModel(UserManager<UserEntity> userManager)
         {
             this.userManager = userManager;
         }

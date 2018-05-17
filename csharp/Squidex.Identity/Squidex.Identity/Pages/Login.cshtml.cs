@@ -21,11 +21,11 @@ namespace Squidex.Identity.Pages
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<SquidexUser> signInManager;
+        private readonly SignInManager<UserEntity> signInManager;
         private readonly IStringLocalizer<AppResources> localizer;
         private readonly ILogger<LoginModel> logger;
 
-        public LoginModel(SignInManager<SquidexUser> signInManager, ILogger<LoginModel> logger, IStringLocalizer<AppResources> localizer)
+        public LoginModel(SignInManager<UserEntity> signInManager, ILogger<LoginModel> logger, IStringLocalizer<AppResources> localizer)
         {
             this.signInManager = signInManager;
             this.localizer = localizer;

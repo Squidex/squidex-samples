@@ -18,13 +18,13 @@ namespace Squidex.Identity.Pages.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
-        private readonly SignInManager<SquidexUser> signInManager;
+        private readonly UserManager<UserEntity> userManager;
+        private readonly SignInManager<UserEntity> signInManager;
         private readonly IEmailSender emailSender;
 
         public IndexModel(
-            UserManager<SquidexUser> userManager,
-            SignInManager<SquidexUser> signInManager,
+            UserManager<UserEntity> userManager,
+            SignInManager<UserEntity> signInManager,
             IEmailSender emailSender)
         {
             this.userManager = userManager;

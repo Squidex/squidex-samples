@@ -6,6 +6,9 @@
 // ==========================================================================
 
 using IdentityServer4.Validation;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +34,7 @@ namespace Squidex.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SquidexOptions>(Configuration.GetSection("app"));
-            services.Configure<SquidexSettingsData>(Configuration.GetSection("defaultSettings"));
+            services.Configure<SettingsData>(Configuration.GetSection("defaultSettings"));
 
             services.AddSingleton(c =>
                 SquidexClientManager.FromOption(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
@@ -41,7 +44,12 @@ namespace Squidex.Identity
                 options.ResourcesPath = "Resources";
             });
 
-            services.AddIdentity<SquidexUser, SquidexRole>()
+            services.AddAuthentication()
+                .AddGoogle()
+                .AddMicrosoftAccount()
+                .AddCookie();
+
+            services.AddIdentity<UserEntity, Role>()
                 .AddUserStore<UserStore>()
                 .AddRoleStore<RoleStore>()
                 .AddDefaultTokenProviders();
@@ -74,8 +82,19 @@ namespace Squidex.Identity
                     options.Conventions.AuthorizePage("/Logout");
                 });
 
+            services.AddSingleton<AuthenticationSchemaProvider>();
+
+            services.AddSingleton<IAuthenticationSchemeProvider>(
+                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+
+            services.AddSingleton<IOptionsMonitor<GoogleOptions>>(
+                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+
+            services.AddSingleton<IOptionsMonitor<MicrosoftAccountOptions>>(
+                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+
             services.AddSingleton<ISettingsProvider,
-                CachedSettingsProvider>();
+                SettingsProvider>();
 
             services.AddSingleton<IEmailSender,
                 EmailSender>();

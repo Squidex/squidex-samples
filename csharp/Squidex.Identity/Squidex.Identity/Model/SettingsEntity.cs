@@ -5,14 +5,11 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Squidex.ClientLibrary;
+
 namespace Squidex.Identity.Model
 {
-    public sealed class SquidexUserLogin
+    public sealed class SettingsEntity : SquidexEntityBase<SettingsData>
     {
-        public string LoginProvider { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string ProviderKey { get; set; }
     }
 }

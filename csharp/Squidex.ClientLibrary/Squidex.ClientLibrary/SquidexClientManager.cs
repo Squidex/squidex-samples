@@ -6,6 +6,8 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Squidex.ClientLibrary
 {
@@ -34,6 +36,16 @@ namespace Squidex.ClientLibrary
             this.authenticator = authenticator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;
+        }
+
+        public string GenerateImageUrl(string id)
+        {
+            return id != null ? $"{serviceUrl}api/assets/{id}" : id;
+        }
+
+        public string GenerateImageUrl(IEnumerable<string> id)
+        {
+            return GenerateImageUrl(id?.FirstOrDefault());
         }
 
         public static SquidexClientManager FromOption(SquidexOptions options)

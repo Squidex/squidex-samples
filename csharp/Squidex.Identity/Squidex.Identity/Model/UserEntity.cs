@@ -5,12 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
+using Squidex.ClientLibrary;
 
 namespace Squidex.Identity.Model
 {
-    public interface ISettingsProvider
+    public sealed class UserEntity : SquidexEntityBase<UserData>
     {
-        Task<SettingsData> GetSettingsAsync();
+        public static UserEntity Create(string email)
+        {
+            var result = new UserEntity();
+
+            result.Data.UserName = email;
+            result.Data.Email = email;
+
+            return result;
+        }
     }
 }

@@ -5,12 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
-
 namespace Squidex.Identity.Model
 {
-    public interface ISettingsProvider
+    public sealed class UserLogin
     {
-        Task<SettingsData> GetSettingsAsync();
+        public string LoginProvider { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public string ProviderKey { get; set; }
     }
 }

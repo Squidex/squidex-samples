@@ -14,12 +14,12 @@ namespace Squidex.Identity.Model
 {
     public sealed class ClientStore : IClientStore
     {
-        private readonly SquidexClient<SquidexClient, SquidexClientData> apiClient;
+        private readonly SquidexClient<ClientEntity, ClientData> apiClient;
         private readonly SquidexClientManager apiClientManager;
 
         public ClientStore(SquidexClientManager clientManager)
         {
-            apiClient = clientManager.GetClient<SquidexClient, SquidexClientData>("clients");
+            apiClient = clientManager.GetClient<ClientEntity, ClientData>("clients");
             apiClientManager = clientManager;
         }
 

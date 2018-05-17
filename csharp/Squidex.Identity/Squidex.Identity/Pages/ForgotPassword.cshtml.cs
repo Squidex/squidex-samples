@@ -17,10 +17,10 @@ namespace Squidex.Identity.Pages
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<SquidexUser> userManager;
+        private readonly UserManager<UserEntity> userManager;
         private readonly IEmailSender emailSender;
 
-        public ForgotPasswordModel(UserManager<SquidexUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<UserEntity> userManager, IEmailSender emailSender)
         {
             this.userManager = userManager;
             this.emailSender = emailSender;
