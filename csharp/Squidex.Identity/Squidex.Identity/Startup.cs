@@ -71,6 +71,10 @@ namespace Squidex.Identity
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseErrorEvents = true;
                     options.Events.RaiseInformationEvents = true;
+                    options.UserInteraction.LoginUrl = "/login";
+                    options.UserInteraction.LogoutUrl = "/logout";
+                    options.UserInteraction.ErrorUrl = "/error";
+                    options.UserInteraction.ConsentUrl = "/consent";
                 })
                 .AddAppAuthRedirectUriValidator()
                 .AddAspNetIdentity<UserEntity>()
