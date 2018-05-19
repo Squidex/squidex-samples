@@ -14,13 +14,17 @@
     <section class="subsection">
         <h4>@T["ExternalLoginsList"]</h4>
 
-        <table class="table">
+        <table class="table table-fixed">
+            <colgroup>
+                <col style="width: 100%" />
+                <col style="width: 200px" />
+            </colgroup>
             <tbody>
                 @foreach (var login in Model.CurrentLogins)
                 {
                     <tr>
-                        <td>@login.LoginProvider</td>
-                        <td>
+                        <td class="td-pl0">@login.LoginProvider</td>
+                        <td class="td-pr0 text-right">
                             @if (Model.ShowRemoveButton)
                             {
                                 <form asp-page-handler="RemoveLogin" method="post">
@@ -28,7 +32,7 @@
                                         <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                         <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
 
-                                        <button type="submit" class="btn btn-danger">
+                                        <button type="submit" class="btn btn-sm btn-danger">
                                             @T["ExternalLoginsRemove"]
                                         </button>
                                     </div>

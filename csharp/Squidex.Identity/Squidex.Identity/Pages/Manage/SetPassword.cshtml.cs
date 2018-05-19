@@ -52,9 +52,11 @@ namespace Squidex.Identity.Pages.Manage
     public sealed class SetPasswordInputModel
     {
         [Required, StringLength(100,  MinimumLength = 6)]
+        [Display(Name = nameof(NewPassword))]
         public string NewPassword { get; set; }
 
         [Compare(nameof(NewPassword), ErrorMessage = "PasswordsNotSame")]
+        [Display(Name = nameof(ConfirmPassword))]
         public string ConfirmPassword { get; set; }
     }
 }

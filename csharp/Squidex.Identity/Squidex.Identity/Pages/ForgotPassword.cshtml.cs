@@ -23,7 +23,7 @@ namespace Squidex.Identity.Pages
         }
 
         [BindProperty]
-        public ForgotPasswordModelInputModel Input { get; set; }
+        public ForgotPasswordInputModel Input { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -46,9 +46,10 @@ namespace Squidex.Identity.Pages
         }
     }
 
-    public sealed class ForgotPasswordModelInputModel
+    public sealed class ForgotPasswordInputModel
     {
         [Required, EmailAddress]
+        [Display(Name = nameof(Email))]
         public string Email { get; set; }
     }
 }

@@ -160,12 +160,15 @@ namespace Squidex.Identity.Pages
     public sealed class ExternalLoginInputModel
     {
         [Required, EmailAddress]
+        [Display(Name = nameof(Email))]
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = nameof(AcceptPrivacyPolicy))]
         public bool AcceptPrivacyPolicy { get; set; }
 
         [Required]
+        [Display(Name = nameof(AcceptTermsOfService))]
         public bool AcceptTermsOfService { get; set; }
     }
 }

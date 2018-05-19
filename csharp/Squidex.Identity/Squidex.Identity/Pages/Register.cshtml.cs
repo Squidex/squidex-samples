@@ -25,7 +25,7 @@ namespace Squidex.Identity.Pages
         }
 
         [BindProperty]
-        public RequestInputModel Input { get; set; }
+        public RegisterInputModel Input { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
@@ -104,21 +104,26 @@ namespace Squidex.Identity.Pages
         }
     }
 
-    public sealed class RequestInputModel
+    public sealed class RegisterInputModel
     {
         [Required, EmailAddress]
+        [Display(Name = nameof(Email))]
         public string Email { get; set; }
 
         [Required]
-        public bool AcceptPrivacyPolicy { get; set; }
-
-        [Required]
-        public bool AcceptTermsOfService { get; set; }
-
-        [Required]
+        [Display(Name = nameof(Password))]
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "PasswordsNotSame")]
+        [Display(Name = nameof(ConfirmPassword))]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = nameof(AcceptPrivacyPolicy))]
+        public bool AcceptPrivacyPolicy { get; set; }
+
+        [Required]
+        [Display(Name = nameof(AcceptTermsOfService))]
+        public bool AcceptTermsOfService { get; set; }
     }
 }

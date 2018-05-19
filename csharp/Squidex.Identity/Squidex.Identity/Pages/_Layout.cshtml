@@ -76,5 +76,14 @@
     </div>
 
     @RenderSection("Scripts", required: false)
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script>
+        $(function () {
+            $('.close').click(function () {
+                $(this).parent().remove();
+            });
+        });
+    </script>
 </body>
 </html>

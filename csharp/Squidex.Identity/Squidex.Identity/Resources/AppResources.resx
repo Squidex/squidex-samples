@@ -129,13 +129,22 @@
   <data name="AgreeToTermsOfService" xml:space="preserve">
     <value>I agree to the &lt;a href="{0}" target="_blank"&gt;Privacy policy&lt;/a&gt;.</value>
   </data>
+  <data name="ChangePasswordButton" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="ChangePasswordLink" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="ChangePasswordTitle" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
+    <value>confirm password</value>
+  </data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve">
     <value>Confirm password</value>
   </data>
-  <data name="Email" xml:space="preserve">
+  <data name="EmailLabel" xml:space="preserve">
     <value>E-Mail</value>
   </data>
   <data name="ExternalCallbackText" xml:space="preserve">
@@ -187,12 +196,24 @@
     <value>Login with Twitter</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
+    <value>new password</value>
+  </data>
+  <data name="NewPasswordLabel" xml:space="preserve">
     <value>New password</value>
   </data>
   <data name="NoAccountQuestion" xml:space="preserve">
     <value>Register</value>
   </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>old password</value>
+  </data>
+  <data name="OldPasswordLabel" xml:space="preserve">
+    <value>Old password</value>
+  </data>
   <data name="Password" xml:space="preserve">
+    <value>password</value>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="PasswordsNotSame" xml:space="preserve">
@@ -226,6 +247,9 @@
     <value>Set Password</value>
   </data>
   <data name="UserName" xml:space="preserve">
+    <value>username</value>
+  </data>
+  <data name="UserNameLabel" xml:space="preserve">
     <value>Username</value>
   </data>
 </root>

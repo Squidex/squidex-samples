@@ -90,8 +90,34 @@ footer {
 }
 
 /*
+ * TABLES
+ */
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.table {
+    td.td-pl0 {
+        padding-left: 0;
+    }
+
+    td.td-pr0 {
+        padding-right: 0;
+    }
+}
+
+/*
  * FORMS
  */
+
+@mixin error-style() {
+    color: white !important;
+    background: #c82333;
+    border-color: #c82333;
+    font-size: .8rem;
+}
+
 .input-validation-error ~ .invalid-tooltip, 
 .input-validation-error ~ .invalid-feedback {
     display: block;
@@ -105,9 +131,39 @@ footer {
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, .25);
 }
 
+.field-validation-error {
+    @include error-style;
+    @include border-radius;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding: .25rem .5rem;
+    position: relative;
+
+    &::before {
+        @include caret-top(#c82333, 8px);
+        @include absolute(-16px, 0, 0, 10px);
+        content: '';
+    }
+}
+
+.validation-summary-errors {
+    & {
+        @include error-style;
+    }
+
+    ul {
+        list-style: none;
+        margin-left: 0;
+        margin-bottom: 0;
+        padding: 0;
+    }
+}
+
 /*
  * SOCIAL ICONS
  */
+
 @mixin social-button($color) {
     & {
         background: $color !important;

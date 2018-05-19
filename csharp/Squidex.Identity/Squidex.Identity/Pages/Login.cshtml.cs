@@ -64,12 +64,15 @@ namespace Squidex.Identity.Pages
     public sealed class LoginInputModel
     {
         [Required, EmailAddress]
+        [Display(Name = nameof(Email))]
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = nameof(Password))]
         public string Password { get; set; }
 
         [Required]
+        [Display(Name = nameof(RememberMe))]
         public bool RememberMe { get; set; }
     }
 }

@@ -78,6 +78,7 @@ namespace Squidex.Identity.Pages.Manage
     public sealed class ChangeProfileInputModel
     {
         [Required, EmailAddress]
+        [Display(Name = nameof(Email))]
         public string Email { get; set; }
     }
 }
