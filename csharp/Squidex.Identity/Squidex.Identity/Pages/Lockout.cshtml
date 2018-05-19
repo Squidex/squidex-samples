@@ -1,10 +1,11 @@
 ﻿@page
+@inject IHtmlLocalizer<AppResources> T
 @model LockoutModel
 @{
-    ViewData["Title"] = "Locked out";
+    ViewData["Title"] = T["LockedOutTitle"];
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 <p>
-    This account has been locked out, please try again later.
+    @T["LockedOutText"]
 </p>

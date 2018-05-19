@@ -1,10 +1,11 @@
 @page
+@inject IHtmlLocalizer<AppResources> T
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = T["ProfileTitle"];
 }
 
-<h4>@ViewData["Title"]</h4>
+<h2>@ViewData["Title"]</h2>
 
 @{await Html.RenderPartialAsync("_StatusMessage", Model.StatusMessage);}
 
@@ -12,28 +13,34 @@
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
     <div class="form-group">
-        <label asp-for="UserInfo.Data.UserName"></label>
+        <label asp-for="UserInfo.Data.UserName">@T["UserName"]</label>
         <input asp-for="UserInfo.Data.UserName" class="form-control" disabled />
     </div>
 
     <div class="form-group">
-        <label asp-for="Input.Email"></label>
+        <label asp-for="Input.Email">@T["Email"]</label>
 
         @if (Model.IsEmailConfirmed)
         {
             <div class="input-group">
                 <input asp-for="Input.Email" class="form-control" />
-                <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+
+                <span class="input-group-addon" aria-hidden="true">
+                    <span class="fa-check"></span>
+                </span>
             </div>
         }
         else
         {
             <input asp-for="Input.Email" class="form-control" />
-            <button asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+
+            <button asp-page-handler="SendVerificationEmail" class="btn btn-link btn-sm btn-confirm">
+                @T["SendVerificationEmail"]
+            </button>
         }
 
         <span asp-validation-for="Input.Email" class="invalid-feedback"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">@T["Save"]</button>
 </form>

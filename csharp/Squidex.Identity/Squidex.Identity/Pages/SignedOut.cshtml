@@ -1,10 +1,11 @@
 @page
+@inject IHtmlLocalizer<AppResources> T
 @model SignedOutModel
 @{
-    ViewData["Title"] = "Signed out";
+    ViewData["Title"] = T["SignedOutTitle"];
 }
 
-<h2>@ViewData["Title"]</h2>
+<h1>@ViewData["Title"]</h1>
 <p>
-    You have successfully signed out.
+    @T["SignedOutText"]
 </p>

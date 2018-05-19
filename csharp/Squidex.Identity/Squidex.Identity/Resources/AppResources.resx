@@ -129,11 +129,32 @@
   <data name="AgreeToTermsOfService" xml:space="preserve">
     <value>I agree to the &lt;a href="{0}" target="_blank"&gt;Privacy policy&lt;/a&gt;.</value>
   </data>
+  <data name="ChangePasswordLink" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm password</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
   <data name="ExternalCallbackText" xml:space="preserve">
     <value>You've successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;. Please enter an email address for this site below and click the Register button to finish logging in.</value>
+  </data>
+  <data name="ExternalLoginsLink" xml:space="preserve">
+    <value>Logins</value>
+  </data>
+  <data name="ExternalLoginsList" xml:space="preserve">
+    <value>External logins</value>
+  </data>
+  <data name="ExternalLoginsNew" xml:space="preserve">
+    <value>Add another service to log in.</value>
+  </data>
+  <data name="ExternalLoginsRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="ExternalLoginsTitle" xml:space="preserve">
+    <value>Manage your external logins</value>
   </data>
   <data name="ExternalSeperator" xml:space="preserve">
     <value>- Or -</value>
@@ -165,6 +186,9 @@
   <data name="LoginWithTwitter" xml:space="preserve">
     <value>Login with Twitter</value>
   </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
   <data name="NoAccountQuestion" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -177,10 +201,31 @@
   <data name="PrivacyPolicy" xml:space="preserve">
     <value>Privacy policy</value>
   </data>
+  <data name="ProfileLink" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="RegisterButton" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Register</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="SendVerificationEmail" xml:space="preserve">
+    <value>Send verification email</value>
+  </data>
+  <data name="SetPasswordButton" xml:space="preserve">
+    <value>Set Password</value>
+  </data>
+  <data name="SetPasswordText" xml:space="preserve">
+    <value>You do not have a local username/password for this site. Add a local account so you can log in without an external login.</value>
+  </data>
+  <data name="SetPasswordTitle" xml:space="preserve">
+    <value>Set Password</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

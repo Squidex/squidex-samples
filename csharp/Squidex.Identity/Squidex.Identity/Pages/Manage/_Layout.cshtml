@@ -1,4 +1,5 @@
 ﻿@inject SignInManager<UserEntity> SignInManager
+@inject IHtmlLocalizer<AppResources> T
 @{
     Layout = "/Pages/_Layout.cshtml";
 
@@ -7,17 +8,23 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link @ViewContext.ActiveClass("Index")" asp-page="./Index">Profile</a>
+        <a class="nav-link @ViewContext.ActiveClass("Index")" asp-page="./Index">
+            @T["ProfileLink"]
+        </a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link @ViewContext.ActiveClass("ChangePassword")" asp-page="./ChangePassword">Password</a>
+        <a class="nav-link @ViewContext.ActiveClass("ChangePassword") @ViewContext.ActiveClass("SetPassword")" asp-page="./ChangePassword">
+            @T["ChangePasswordLink"]
+        </a>
     </li>
 
     @if (hasExternalLogins)
     {
         <li class="nav-item">
-            <a class="nav-link @ViewContext.ActiveClass("ExternalLogins")" asp-page="./ExternalLogins">External logins</a>
+            <a class="nav-link @ViewContext.ActiveClass("ExternalLogins")" asp-page="./ExternalLogins">
+                @T["ExternalLoginsLink"]
+            </a>
         </li>
     }
 </ul>

@@ -86,7 +86,7 @@ namespace Squidex.Identity.Extensions
             }
             else
             {
-                return Redirect("~/Index");
+                return Redirect("~/");
             }
         }
 

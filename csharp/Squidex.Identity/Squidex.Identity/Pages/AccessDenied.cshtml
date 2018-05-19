@@ -1,10 +1,11 @@
 @page
+@inject IHtmlLocalizer<AppResources> T
 @model AccessDeniedModel
 @{
-    ViewData["Title"] = "Access denied";
+    ViewData["Title"] = T["AccessDeniedTitle"];
 }
 
-<header>
-    <h1 class="invalid-feedback">@ViewData["Title"]</h1>
-    <p class="invalid-feedback">You do not have access to this resource.</p>
-</header>
+<h1>@ViewData["Title"]</h1>
+<p>
+    @T["AccessDeniedText"]
+</p>
