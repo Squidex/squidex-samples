@@ -14,7 +14,7 @@ public sealed class SignedOutModel : PageModel
     {
         if (User.Identity.IsAuthenticated)
         {
-            return RedirectToPage("/Index");
+            return RedirectToPage("~/");
         }
 
         return Page();

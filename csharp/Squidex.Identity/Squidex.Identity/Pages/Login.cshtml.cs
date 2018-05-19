@@ -25,9 +25,6 @@ namespace Squidex.Identity.Pages
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
@@ -39,11 +36,6 @@ namespace Squidex.Identity.Pages
 
         public async Task OnGetAsync()
         {
-            if (!string.IsNullOrEmpty(ErrorMessage))
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
-
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
         }
 

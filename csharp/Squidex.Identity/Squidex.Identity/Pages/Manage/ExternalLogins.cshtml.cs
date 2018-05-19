@@ -13,15 +13,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Squidex.Identity.Extensions;
-using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public sealed class ExternalLoginsModel : PageModelBase<ExternalLoginsModel>
+    public sealed class ExternalLoginsModel : ManagePageModelBase<ExternalLoginsModel>
     {
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public bool ShowRemoveButton { get; set; }
 
         public IList<UserLoginInfo> CurrentLogins { get; set; }
@@ -30,70 +26,63 @@ namespace Squidex.Identity.Pages.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await GetUserAsync();
+            CurrentLogins = await UserManager.GetLoginsAsync(UserInfo);
 
-            CurrentLogins = await userManager.GetLoginsAsync(user);
-            OtherLogins = (await signInManager.GetExternalAuthenticationSchemesAsync())
-                .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
-                .ToList();
-            ShowRemoveButton = user.Data.PasswordHash != null || CurrentLogins.Count > 1;
+            OtherLogins =
+                (await SignInManager.GetExternalAuthenticationSchemesAsync())
+                    .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider)).ToList();
+
+            ShowRemoveButton = UserInfo.Data.PasswordHash != null || CurrentLogins.Count > 1;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
         {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
+            var result = await UserManager.RemoveLoginAsync(UserInfo, loginProvider, providerKey);
 
-            var result = await userManager.RemoveLoginAsync(user, loginProvider, providerKey);
             if (!result.Succeeded)
             {
-                throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{UserInfo.Id}'.");
             }
 
-            await signInManager.SignInAsync(user, false);
-            StatusMessage = "The external login was removed.";
+            await SignInManager.SignInAsync(UserInfo, false);
+
+            StatusMessage = T["ExternalLoginRemoved"];
+
             return RedirectToPage();
         }
 
         public async Task<IActionResult> OnPostLinkLoginAsync(string provider)
         {
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
-            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, userManager.GetUserId(User));
-            return new ChallengeResult(provider, properties);
+            var authenticationRedirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
+            var authenticationProperties = SignInManager.ConfigureExternalAuthenticationProperties(provider, authenticationRedirectUrl, UserInfo.Id);
+
+            return new ChallengeResult(provider, authenticationProperties);
         }
 
         public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
         {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
+            var loginInfo = await SignInManager.GetExternalLoginInfoAsync(UserInfo.Id);
+
+            if (loginInfo == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{UserInfo.Id}'.");
             }
 
-            var info = await signInManager.GetExternalLoginInfoAsync(await userManager.GetUserIdAsync(user));
-            if (info == null)
-            {
-                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
-            }
+            var result = await UserManager.AddLoginAsync(UserInfo, loginInfo);
 
-            var result = await userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{UserInfo.Id}'.");
             }
 
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = T["ExternalLoginAdded"];
+
             return RedirectToPage();
         }
     }

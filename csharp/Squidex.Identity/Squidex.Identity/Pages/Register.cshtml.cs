@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -95,20 +94,10 @@ namespace Squidex.Identity.Pages
 
                     await SignInManager.SignInAsync(user, false);
 
-                    if (Uri.IsWellFormedUriString(ReturnUrl, UriKind.Absolute))
-                    {
-                        return LocalRedirect(ReturnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToPage("./Index");
-                    }
+                    return RedirectTo(ReturnUrl);
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelErrors(result);
             }
 
             return Page();

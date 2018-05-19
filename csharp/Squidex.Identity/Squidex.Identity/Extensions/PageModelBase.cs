@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -50,6 +51,12 @@ namespace Squidex.Identity.Extensions
             get { return localizer.Value; }
         }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
+
         protected PageModelBase()
         {
             SetupService(ref localizer);
@@ -64,6 +71,11 @@ namespace Squidex.Identity.Extensions
 #pragma warning disable RECS0002 // Convert anonymous method to method group
             value = new Lazy<TService>(() => HttpContext.RequestServices.GetRequiredService<TService>());
 #pragma warning restore RECS0002 // Convert anonymous method to method group
+        }
+
+        public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+        {
+            base.OnPageHandlerExecuting(context);
         }
 
         protected IActionResult RedirectTo(string returnUrl)

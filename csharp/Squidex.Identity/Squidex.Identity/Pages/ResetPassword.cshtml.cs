@@ -48,10 +48,7 @@ namespace Squidex.Identity.Pages
                     return RedirectToPage("./ResetPasswordConfirmation");
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelErrors(result);
             }
 
             return Page();

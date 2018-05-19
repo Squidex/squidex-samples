@@ -16,7 +16,7 @@ using Squidex.Identity.Services;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public sealed class IndexModel : PageModelBase<IndexModel>
+    public sealed class IndexModel : ManagePageModelBase<IndexModel>
     {
         private readonly IEmailSender emailSender;
 
@@ -26,25 +26,13 @@ namespace Squidex.Identity.Pages.Manage
         }
 
         [BindProperty]
-        public ProfileInputModel Input { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
+        public ChangeProfileInputModel Input { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
 
-        public UserEntity UserInfo { get; set; }
-
-        public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
-        {
-            UserInfo = await GetUserAsync();
-
-            await next();
-        }
-
         public async Task<IActionResult> OnGetAsync()
         {
-            Input = new ProfileInputModel { Email = UserInfo.Data.Email };
+            Input = new ChangeProfileInputModel { Email = UserInfo.Data.Email };
 
             IsEmailConfirmed = await UserManager.IsEmailConfirmedAsync(UserInfo);
 
@@ -89,7 +77,7 @@ namespace Squidex.Identity.Pages.Manage
         }
     }
 
-    public sealed class ProfileInputModel
+    public sealed class ChangeProfileInputModel
     {
         [Required, EmailAddress]
         public string Email { get; set; }

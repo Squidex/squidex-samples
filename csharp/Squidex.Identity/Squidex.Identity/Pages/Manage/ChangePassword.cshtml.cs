@@ -8,28 +8,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Squidex.Identity.Extensions;
-using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public class ChangePasswordModel : PageModelBase<ChangePasswordModel>
+    public sealed class ChangePasswordModel : ManagePageModelBase<ChangePasswordModel>
     {
         [BindProperty]
-        public ChangePasswordModelInputModel Input { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
-        public UserEntity UserInfo { get; set; }
-
-        public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
-        {
-            UserInfo = await GetUserAsync();
-
-            await next();
-        }
+        public ChangePasswordInputModel Input { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -43,29 +29,27 @@ namespace Squidex.Identity.Pages.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
+                var result = await UserManager.ChangePasswordAsync(UserInfo, Input.OldPassword, Input.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(UserInfo, false);
+
+                    StatusMessage = T["PasswordChanged"];
+
+                    return RedirectToPage();
+                }
+
+                ModelState.AddModelErrors(result);
             }
 
-            var changePasswordResult = await UserManager.ChangePasswordAsync(UserInfo, Input.OldPassword, Input.NewPassword);
-
-            if (!changePasswordResult.Succeeded)
-            {
-                ModelState.AddModelErrors(changePasswordResult);
-
-                return Page();
-            }
-
-            await SignInManager.SignInAsync(UserInfo, false);
-
-            StatusMessage = T["PasswordChanged"];
-
-            return RedirectToPage();
+            return Page();
         }
     }
 
-    public sealed class ChangePasswordModelInputModel
+    public sealed class ChangePasswordInputModel
     {
         [Required]
         public string OldPassword { get; set; }

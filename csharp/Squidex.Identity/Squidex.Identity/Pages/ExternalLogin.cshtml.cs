@@ -24,9 +24,6 @@ namespace Squidex.Identity.Pages
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
 
-        [TempData]
-        public string ErrorMessage { get; set; }
-
         public string LoginProvider { get; set; }
 
         public string TermsOfServiceUrl { get; set; }
@@ -65,11 +62,11 @@ namespace Squidex.Identity.Pages
 
         public IActionResult OnPost(string provider)
         {
-            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl = ReturnUrl });
+            var authenticationRedirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl = ReturnUrl });
 
-            var properties = SignInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var authenticationProperties = SignInManager.ConfigureExternalAuthenticationProperties(provider, authenticationRedirectUrl);
 
-            return new ChallengeResult(provider, properties);
+            return new ChallengeResult(provider, authenticationProperties);
         }
 
         public async Task<IActionResult> OnGetCallbackAsync(string remoteError = null)
@@ -153,10 +150,7 @@ namespace Squidex.Identity.Pages
                     }
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                ModelState.AddModelErrors(result);
             }
 
             return Page();

@@ -8,28 +8,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Squidex.Identity.Extensions;
-using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public sealed class SetPasswordModel : PageModelBase<SetPasswordModel>
+    public sealed class SetPasswordModel : ManagePageModelBase<SetPasswordModel>
     {
         [BindProperty]
         public SetPasswordInputModel Input { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
-        public UserEntity UserInfo { get; set; }
-
-        public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
-        {
-            UserInfo = await GetUserAsync();
-
-            await next();
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {
