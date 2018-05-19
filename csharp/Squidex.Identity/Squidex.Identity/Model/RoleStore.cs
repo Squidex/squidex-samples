@@ -11,60 +11,60 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Squidex.Identity.Model
 {
-    public sealed class RoleStore : IRoleStore<Role>
+    public sealed class RoleStore : IRoleStore<RoleEntity>
     {
         public void Dispose()
         {
         }
 
-        public Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+        public Task<RoleEntity> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new Role { Name = roleId, NormalizedName = roleId });
+            return Task.FromResult(new RoleEntity { Name = roleId, NormalizedName = roleId });
         }
 
-        public Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+        public Task<RoleEntity> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new Role { Name = normalizedRoleName, NormalizedName = normalizedRoleName });
+            return Task.FromResult(new RoleEntity { Name = normalizedRoleName, NormalizedName = normalizedRoleName });
         }
 
-        public Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(IdentityResult.Success);
-        }
-
-        public Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
+        public Task<IdentityResult> CreateAsync(RoleEntity role, CancellationToken cancellationToken)
         {
             return Task.FromResult(IdentityResult.Success);
         }
 
-        public Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
+        public Task<IdentityResult> DeleteAsync(RoleEntity role, CancellationToken cancellationToken)
         {
             return Task.FromResult(IdentityResult.Success);
         }
 
-        public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
+        public Task<IdentityResult> UpdateAsync(RoleEntity role, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(IdentityResult.Success);
+        }
+
+        public Task<string> GetNormalizedRoleNameAsync(RoleEntity role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.NormalizedName);
         }
 
-        public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
+        public Task<string> GetRoleIdAsync(RoleEntity role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.Name);
         }
 
-        public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
+        public Task<string> GetRoleNameAsync(RoleEntity role, CancellationToken cancellationToken)
         {
             return Task.FromResult(role.Name);
         }
 
-        public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedRoleNameAsync(RoleEntity role, string normalizedName, CancellationToken cancellationToken)
         {
             role.NormalizedName = normalizedName;
 
             return Task.CompletedTask;
         }
 
-        public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
+        public Task SetRoleNameAsync(RoleEntity role, string roleName, CancellationToken cancellationToken)
         {
             role.Name = roleName;
 

@@ -8,7 +8,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-public class SignedOutModel : PageModel
+public sealed class SignedOutModel : PageModel
 {
     public IActionResult OnGet()
     {

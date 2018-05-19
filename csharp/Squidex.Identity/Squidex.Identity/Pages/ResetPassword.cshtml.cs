@@ -8,43 +8,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Squidex.Identity.Model;
+using Squidex.Identity.Extensions;
 
 namespace Squidex.Identity.Pages
 {
-    public class ResetPasswordModel : PageModel
+    public sealed class ResetPasswordModel : PageModelBase<ResetPasswordModel>
     {
-        private readonly UserManager<UserEntity> userManager;
-
-        public ResetPasswordModel(UserManager<UserEntity> userManager)
-        {
-            this.userManager = userManager;
-        }
-
         [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            public string Code { get; set; }
-        }
+        public ResetPasswordInputModel Input { get; set; }
 
         public IActionResult OnGet(string code = null)
         {
@@ -52,42 +24,51 @@ namespace Squidex.Identity.Pages
             {
                 throw new ApplicationException("A code must be supplied for password reset.");
             }
-            else
-            {
-                Input = new InputModel
-                {
-                    Code = code
-                };
-                return Page();
-            }
+
+            Input = new ResetPasswordInputModel { Code = code };
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
-            }
+                var user = await UserManager.FindByEmailAsync(Input.Email);
 
-            var user = await userManager.FindByEmailAsync(Input.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToPage("./ResetPasswordConfirmation");
-            }
+                if (user == null)
+                {
+                    return RedirectToPage("./ResetPasswordConfirmation");
+                }
 
-            var result = await userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToPage("./ResetPasswordConfirmation");
-            }
+                var result = await UserManager.ResetPasswordAsync(user, Input.Code, Input.Password);
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
+                if (result.Succeeded)
+                {
+                    return RedirectToPage("./ResetPasswordConfirmation");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
 
             return Page();
         }
+    }
+
+    public sealed class ResetPasswordInputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required, StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; }
+
+        [Compare(nameof(Password), ErrorMessage = "PasswordsNotSame")]
+        public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
     }
 }

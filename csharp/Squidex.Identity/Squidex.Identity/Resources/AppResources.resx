@@ -132,11 +132,17 @@
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Confirm password</value>
   </data>
+  <data name="ExternalCallbackText" xml:space="preserve">
+    <value>You've successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;. Please enter an email address for this site below and click the Register button to finish logging in.</value>
+  </data>
   <data name="ExternalSeperator" xml:space="preserve">
     <value>- Or -</value>
   </data>
   <data name="ForgotPasswordQuestion" xml:space="preserve">
     <value>Forgot your password?</value>
+  </data>
+  <data name="IndexTitle" xml:space="preserve">
+    <value>Welcome</value>
   </data>
   <data name="Legal" xml:space="preserve">
     <value>Legal</value>
@@ -147,11 +153,17 @@
   <data name="LoginTitle" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="LoginWithFacebook" xml:space="preserve">
+    <value>Login with Facebook</value>
+  </data>
   <data name="LoginWithGoogle" xml:space="preserve">
     <value>Login with Google</value>
   </data>
   <data name="LoginWithMicrosoft" xml:space="preserve">
     <value>Login with Microsoft</value>
+  </data>
+  <data name="LoginWithTwitter" xml:space="preserve">
+    <value>Login with Twitter</value>
   </data>
   <data name="NoAccountQuestion" xml:space="preserve">
     <value>Register</value>

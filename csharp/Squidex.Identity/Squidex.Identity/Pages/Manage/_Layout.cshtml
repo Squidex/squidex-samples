@@ -5,36 +5,24 @@
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 
-<h2>Manage your account</h2>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link @ViewContext.ActiveClass("Index")" asp-page="./Index">Profile</a>
+    </li>
 
-<div>
-    <h4>Change your account settings</h4>
+    <li class="nav-item">
+        <a class="nav-link @ViewContext.ActiveClass("ChangePassword")" asp-page="./ChangePassword">Password</a>
+    </li>
 
-    <div class="row">
-        <div class="col-md-3">
-            <ul class="nav nav-pills nav-stacked">
-                <li class="@ManageNavPages.IndexNavClass(ViewContext)">
-                    <a asp-page="./Index">Profile</a>
-                </li>
+    @if (hasExternalLogins)
+    {
+        <li class="nav-item">
+            <a class="nav-link @ViewContext.ActiveClass("ExternalLogins")" asp-page="./ExternalLogins">External logins</a>
+        </li>
+    }
+</ul>
 
-                <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)">
-                    <a asp-page="./ChangePassword">Password</a>
-                </li>
-
-                @if (hasExternalLogins)
-                {
-                    <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)">
-                        <a asp-page="./ExternalLogins">External logins</a>
-                    </li>
-                }
-            </ul>
-
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
-    </div>
-</div>
+@RenderBody()
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

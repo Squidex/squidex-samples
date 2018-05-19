@@ -38,11 +38,7 @@
                 </div>
 
                 <div class="form-group">
-                    <a asp-page="./ForgotPassword">@T["ForgotPasswordQuestion"]</a>
-
-                    | 
-
-                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@T["NoAccountQuestion"]</a>
+                    <a asp-page="./ForgotPassword">@T["ForgotPasswordQuestion"]</a> | <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@T["NoAccountQuestion"]</a>
                 </div>
             </form>
         </section>
@@ -59,8 +55,10 @@
                         <p>
                             @foreach (var provider in Model.ExternalLogins)
                             {
-                                <button type="submit" class="btn btn-block btn-dark btn-@provider.DisplayName.ToLowerInvariant()" name="provider" value="@provider.Name">
-                                    <i class="fab fa-@provider.DisplayName.ToLowerInvariant()"></i>  @T[$"LoginWith{provider.DisplayName}"]        
+                                var lowerName = @provider.DisplayName.ToLowerInvariant();
+
+                                <button type="submit" class="btn btn-block btn-dark btn-@lowerName" name="provider" value="@provider.Name">
+                                    <i class="fab fa-@lowerName"></i> @T[$"LoginWith{provider.DisplayName}"]        
                                 </button>
                             }
                         </p>

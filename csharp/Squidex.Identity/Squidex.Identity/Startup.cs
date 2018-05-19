@@ -7,17 +7,19 @@
 
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary;
 using Squidex.Identity.Model;
+using Squidex.Identity.Model.Authentication;
 using Squidex.Identity.Services;
 
 namespace Squidex.Identity
@@ -45,11 +47,20 @@ namespace Squidex.Identity
             });
 
             services.AddAuthentication()
+                .AddCookie()
+                .AddFacebook()
                 .AddGoogle()
                 .AddMicrosoftAccount()
-                .AddCookie();
+                .AddTwitter();
 
-            services.AddIdentity<UserEntity, Role>()
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/logout";
+                options.AccessDeniedPath = "/accessdenied";
+            });
+
+            services.AddIdentity<UserEntity, RoleEntity>()
                 .AddUserStore<UserStore>()
                 .AddRoleStore<RoleStore>()
                 .AddDefaultTokenProviders();
@@ -62,6 +73,7 @@ namespace Squidex.Identity
                     options.Events.RaiseInformationEvents = true;
                 })
                 .AddAppAuthRedirectUriValidator()
+                .AddAspNetIdentity<UserEntity>()
                 .AddClientConfigurationValidator<DefaultClientConfigurationValidator>()
                 .AddClientStoreCache<ClientStore>()
                 .AddDeveloperSigningCredential()
@@ -82,16 +94,23 @@ namespace Squidex.Identity
                     options.Conventions.AuthorizePage("/Logout");
                 });
 
-            services.AddSingleton<AuthenticationSchemaProvider>();
+            services.AddAuthenticationConfigurator<FacebookOptions, FacebookHandler>(
+                AuthenticationSchemeType.Facebook, Factories.OAuth<FacebookOptions>);
 
-            services.AddSingleton<IAuthenticationSchemeProvider>(
-                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+            services.AddAuthenticationConfigurator<GoogleOptions, GoogleHandler>(
+                AuthenticationSchemeType.Google, Factories.OAuth<GoogleOptions>);
 
-            services.AddSingleton<IOptionsMonitor<GoogleOptions>>(
-                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+            services.AddAuthenticationConfigurator<MicrosoftAccountOptions, MicrosoftAccountHandler>(
+                AuthenticationSchemeType.Microsoft, Factories.OAuth<MicrosoftAccountOptions>);
 
-            services.AddSingleton<IOptionsMonitor<MicrosoftAccountOptions>>(
-                c => c.GetRequiredService<AuthenticationSchemaProvider>());
+            services.AddAuthenticationConfigurator<TwitterOptions, TwitterHandler>(
+                AuthenticationSchemeType.Twitter, Factories.Twitter);
+
+            services.AddSingleton<IAuthenticationSchemeProvider,
+                SquidexAuthenticationSchemeProvider>();
+
+            services.AddSingleton<IAuthenticationSchemeStore,
+                AuthenticationSchemeStore>();
 
             services.AddSingleton<ISettingsProvider,
                 SettingsProvider>();

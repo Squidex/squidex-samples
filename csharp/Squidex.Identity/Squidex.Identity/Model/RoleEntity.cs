@@ -7,7 +7,7 @@
 
 namespace Squidex.Identity.Model
 {
-    public sealed class Role
+    public sealed class RoleEntity
     {
         public string Name { get; set; }
 

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Squidex.Identity.Pages
 {
-    public class ForgotPasswordConfirmation : PageModel
+    public sealed class ForgotPasswordConfirmation : PageModel
     {
         public void OnGet()
         {

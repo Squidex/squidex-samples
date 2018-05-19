@@ -25,7 +25,14 @@ namespace Squidex.Identity.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            return RedirectToPage("/login");
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("~/manage");
+            }
+            else
+            {
+                return Redirect("~/login");
+            }
         }
 
         [HttpPost]
@@ -35,7 +42,7 @@ namespace Squidex.Identity.Controllers
         {
             await signInManager.SignOutAsync();
 
-            return RedirectToPage("/login");
+            return Redirect("~/login");
         }
     }
 }

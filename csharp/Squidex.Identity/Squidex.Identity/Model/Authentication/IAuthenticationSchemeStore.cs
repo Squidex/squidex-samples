@@ -5,11 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Squidex.Identity.Model
+namespace Squidex.Identity.Model.Authentication
 {
-    public sealed class AuthenticationSchemeEntity : SquidexEntityBase<AuthenticationSchemeData>
+    public interface IAuthenticationSchemeStore
     {
+        Task<List<AuthenticationSchemeData>> GetSchemesAsync();
     }
 }

@@ -8,128 +8,90 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Squidex.Identity.Extensions;
 using Squidex.Identity.Model;
 using Squidex.Identity.Services;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public partial class IndexModel : PageModel
+    public sealed class IndexModel : PageModelBase<IndexModel>
     {
-        private readonly UserManager<UserEntity> userManager;
-        private readonly SignInManager<UserEntity> signInManager;
         private readonly IEmailSender emailSender;
 
-        public IndexModel(
-            UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager,
-            IEmailSender emailSender)
+        public IndexModel(IEmailSender emailSender)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
             this.emailSender = emailSender;
         }
 
-        public string Username { get; set; }
-
-        public bool IsEmailConfirmed { get; set; }
+        [BindProperty]
+        public ProfileInputModel Input { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        public bool IsEmailConfirmed { get; set; }
 
-        public class InputModel
+        public UserEntity UserInfo { get; set; }
+
+        public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            UserInfo = await GetUserAsync();
 
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            await next();
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
+            Input = new ProfileInputModel { Email = UserInfo.Data.Email };
 
-            Username = user.Data.UserName;
-
-            Input = new InputModel
-            {
-                Email = user.Data.Email,
-                PhoneNumber = user.Data.PhoneNumber
-            };
-
-            IsEmailConfirmed = await userManager.IsEmailConfirmedAsync(user);
+            IsEmailConfirmed = await UserManager.IsEmailConfirmedAsync(UserInfo);
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
-            }
-
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
-
-            if (Input.Email != user.Data.Email)
-            {
-                var setEmailResult = await userManager.SetEmailAsync(user, Input.Email);
-
-                if (!setEmailResult.Succeeded)
+                if (!string.Equals(Input.Email, UserInfo.Data.Email, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    var result = await UserManager.SetEmailAsync(UserInfo, Input.Email);
+
+                    if (!result.Succeeded)
+                    {
+                        throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{UserInfo.Id}'.");
+                    }
+
+                    StatusMessage = T["ProfileUpdated"];
                 }
+
+                return RedirectToPage();
             }
 
-            if (Input.PhoneNumber != user.Data.PhoneNumber)
-            {
-                var setPhoneResult = await userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
-            }
-
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
+                var callbackCode = await UserManager.GenerateEmailConfirmationTokenAsync(UserInfo);
+                var callbackUrl = Url.EmailConfirmationLink(UserInfo.Id, callbackCode, Request.Scheme);
+
+                StatusMessage = T["VerificationEmailSent"];
+
+                return RedirectToPage();
             }
 
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
-
-            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            await emailSender.SendEmailConfirmationAsync(user.Data.Email, callbackUrl);
-
-            StatusMessage = "Verification email sent. Please check your email.";
-            return RedirectToPage();
+            return Page();
         }
+    }
+
+    public sealed class ProfileInputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
     }
 }

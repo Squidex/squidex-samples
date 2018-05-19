@@ -5,42 +5,24 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
+using Squidex.Identity.Extensions;
 using Squidex.Identity.Model;
 using Squidex.Identity.Services;
 
 namespace Squidex.Identity.Pages
 {
-    public sealed class RegisterModel : PageModel
+    public sealed class RegisterModel : PageModelBase<RegisterModel>
     {
-        private readonly SignInManager<UserEntity> signInManager;
-        private readonly ISettingsProvider settingsProvider;
-        private readonly UserManager<UserEntity> userManager;
-        private readonly ILogger<LoginModel> logger;
-        private readonly IStringLocalizer<AppResources> localizer;
         private readonly IEmailSender emailSender;
 
-        public RegisterModel(
-            IEmailSender emailSender,
-            ILogger<LoginModel> logger,
-            ISettingsProvider settingsProvider,
-            IStringLocalizer<AppResources> localizer,
-            SignInManager<UserEntity> signInManager,
-            UserManager<UserEntity> userManager)
+        public RegisterModel(IEmailSender emailSender)
         {
             this.emailSender = emailSender;
-            this.localizer = localizer;
-            this.logger = logger;
-            this.settingsProvider = settingsProvider;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
         }
 
         [BindProperty]
@@ -59,7 +41,7 @@ namespace Squidex.Identity.Pages
 
         public async override Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            var settings = await settingsProvider.GetSettingsAsync();
+            var settings = await Settings.GetSettingsAsync();
 
             if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
             {
@@ -88,32 +70,39 @@ namespace Squidex.Identity.Pages
             {
                 var field = nameof(Input.AcceptPrivacyPolicy);
 
-                ModelState.AddModelError($"{nameof(Input)}.{field}", localizer[$"{field}Error"]);
+                ModelState.AddModelError($"{nameof(Input)}.{field}", T[$"{field}Error"]);
             }
 
             if (MustAcceptsTermsOfService && !Input.AcceptTermsOfService)
             {
                 var field = nameof(Input.AcceptTermsOfService);
 
-                ModelState.AddModelError($"{nameof(Input)}.{field}", localizer[$"{field}Error"]);
+                ModelState.AddModelError($"{nameof(Input)}.{field}", T[$"{field}Error"]);
             }
 
             if (ModelState.IsValid)
             {
                 var user = UserEntity.Create(Input.Email);
 
-                var result = await userManager.CreateAsync(user, Input.Password);
+                var result = await UserManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    var callbackCode = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackCode = await UserManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, callbackCode, Request.Scheme);
 
                     await emailSender.SendEmailConfirmationAsync(Input.Email, callbackUrl);
 
-                    await signInManager.SignInAsync(user, false);
+                    await SignInManager.SignInAsync(user, false);
 
-                    return LocalRedirect(ReturnUrl);
+                    if (Uri.IsWellFormedUriString(ReturnUrl, UriKind.Absolute))
+                    {
+                        return LocalRedirect(ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToPage("./Index");
+                    }
                 }
 
                 foreach (var error in result.Errors)

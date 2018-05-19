@@ -1,26 +1,52 @@
 @page
+@inject IHtmlLocalizer<AppResources> T
 @model ExternalLoginModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = T["RegisterTitle"];
 }
 
 <h2>@ViewData["Title"]</h2>
-<h4>Associate your @Model.LoginProvider account.</h4>
 
-<p class="text-info">
-    You've successfully authenticated with <strong>@Model.LoginProvider</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+<p class="text-muted">
+    @T["ExternalLoginText", Model.LoginProvider]
 </p>
 
 <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-            
+
     <div class="form-group">
         <label asp-for="Input.Email"></label>
         <input asp-for="Input.Email" class="form-control" />
         <span asp-validation-for="Input.Email" class="invalid-feedback"></span>
     </div>
 
-    <button type="submit" class="btn btn-default">Register</button>
+    @if (Model.MustAcceptsTermsOfService)
+    {
+        <div class="form-group">
+            <div class="form-check">
+                <input asp-for="Input.AcceptTermsOfService" class="form-check-input" />
+                <label asp-for="Input.AcceptPrivacyPolicy" class="form-check-label">
+                    @T["AgreeToTermsOfService", Model.TermsOfServiceUrl]
+                </label>
+
+                <span asp-validation-for="Input.AcceptTermsOfService" class="invalid-feedback"></span>
+            </div>
+        </div>
+    }
+
+    @if (Model.MustAcceptsPrivacyPolicy)
+    {
+        <div class="form-group">
+            <div class="form-check">
+                <input asp-for="Input.AcceptPrivacyPolicy" class="form-check-input" />
+                <label asp-for="Input.AcceptPrivacyPolicy" class="form-check-label">
+                    @T["AgreeToPrivacyPolicy", Model.PrivacyPolicyUrl]
+                </label>
+
+                <span asp-validation-for="Input.AcceptPrivacyPolicy" class="invalid-feedback"></span>
+            </div>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">@T["RegisterButton"]</button>
 </form>

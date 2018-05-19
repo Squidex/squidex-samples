@@ -7,41 +7,30 @@
 
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Squidex.Identity.Model;
+using Squidex.Identity.Extensions;
 
 namespace Squidex.Identity.Pages
 {
-    public class ConfirmEmailModel : PageModel
+    public sealed class ConfirmEmailModel : PageModelBase<ConfirmEmailModel>
     {
-        private readonly UserManager<UserEntity> userManager;
-
-        public ConfirmEmailModel(UserManager<UserEntity> userManager)
-        {
-            this.userManager = userManager;
-        }
-
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
-            if (userId == null || code == null)
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
             {
                 return RedirectToPage("/Index");
             }
 
-            var user = await userManager.FindByIdAsync(userId);
+            var user = await UserManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (user != null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
-            }
+                var result = await UserManager.ConfirmEmailAsync(user, code);
 
-            var result = await userManager.ConfirmEmailAsync(user, code);
-
-            if (!result.Succeeded)
-            {
-                throw new ApplicationException($"Error confirming email for user with ID '{userId}':");
+                if (!result.Succeeded)
+                {
+                    throw new ApplicationException($"Error confirming email for user with ID '{userId}':");
+                }
             }
 
             return Page();

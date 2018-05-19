@@ -13,29 +13,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
-using Squidex.Identity.Model;
+using Squidex.Identity.Extensions;
 
 namespace Squidex.Identity.Pages
 {
-    public class LoginModel : PageModel
+    public sealed class LoginModel : PageModelBase<LoginModel>
     {
-        private readonly SignInManager<UserEntity> signInManager;
-        private readonly IStringLocalizer<AppResources> localizer;
-        private readonly ILogger<LoginModel> logger;
-
-        public LoginModel(
-            ILogger<LoginModel> logger,
-            IStringLocalizer<AppResources> localizer,
-            SignInManager<UserEntity> signInManager)
-        {
-            this.localizer = localizer;
-            this.logger = logger;
-            this.signInManager = signInManager;
-        }
-
         [BindProperty]
         public LoginInputModel Input { get; set; }
 
@@ -49,7 +32,7 @@ namespace Squidex.Identity.Pages
 
         public override async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             await next();
         }
@@ -68,19 +51,18 @@ namespace Squidex.Identity.Pages
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, true);
+                var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, true);
 
                 if (result.Succeeded)
                 {
-                    return LocalRedirect(ReturnUrl);
+                    return RedirectTo(ReturnUrl);
                 }
-
-                if (result.IsLockedOut)
+                else if (result.IsLockedOut)
                 {
                     return RedirectToPage("./Lockout");
                 }
 
-                ModelState.AddModelError(string.Empty, localizer["InvalidLoginAttempt"]);
+                ModelState.AddModelError(string.Empty, T["InvalidLoginAttempt"]);
             }
 
             return Page();

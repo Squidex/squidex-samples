@@ -9,46 +9,53 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Squidex.Identity.Extensions;
 using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages
 {
-    public class ExternalLoginModel : PageModel
+    public sealed class ExternalLoginModel : PageModelBase<ExternalLoginModel>
     {
-        private readonly SignInManager<UserEntity> signInManager;
-        private readonly UserManager<UserEntity> userManager;
-        private readonly ILogger<ExternalLoginModel> logger;
-
-        public ExternalLoginModel(
-            SignInManager<UserEntity> signInManager,
-            UserManager<UserEntity> userManager,
-            ILogger<ExternalLoginModel> logger)
-        {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.logger = logger;
-        }
-
         [BindProperty]
-        public InputModel Input { get; set; }
+        public ExternalLoginInputModel Input { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
 
-        public string LoginProvider { get; set; }
-
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public class InputModel
+        public string LoginProvider { get; set; }
+
+        public string TermsOfServiceUrl { get; set; }
+
+        public string PrivacyPolicyUrl { get; set; }
+
+        public bool MustAcceptsTermsOfService { get; set; }
+
+        public bool MustAcceptsPrivacyPolicy { get; set; }
+
+        public async override Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context, PageHandlerExecutionDelegate next)
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            var settings = await Settings.GetSettingsAsync();
+
+            if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
+            {
+                PrivacyPolicyUrl = settings.PrivacyPolicyUrl;
+
+                MustAcceptsPrivacyPolicy = true;
+            }
+
+            if (!string.IsNullOrWhiteSpace(settings.TermsOfServiceUrl))
+            {
+                TermsOfServiceUrl = settings.TermsOfServiceUrl;
+
+                MustAcceptsTermsOfService = true;
+            }
+
+            await next();
         }
 
         public IActionResult OnGetAsync()
@@ -58,80 +65,91 @@ namespace Squidex.Identity.Pages
 
         public IActionResult OnPost(string provider)
         {
-            // Request a redirect to the external login provider.
             var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl = ReturnUrl });
 
-            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = SignInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
             return new ChallengeResult(provider, properties);
         }
 
-        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> OnGetCallbackAsync(string remoteError = null)
         {
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
+                ErrorMessage = T["ExternalLoginError", remoteError];
+
                 return RedirectToPage("./Login");
             }
 
-            var info = await signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
+            var loginInfo = await SignInManager.GetExternalLoginInfoAsync();
+
+            if (loginInfo == null)
             {
                 return RedirectToPage("./Login");
             }
 
-            // Sign in the user with this external login provider if the user already has a login.
-            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            var result = await SignInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, false);
+
             if (result.Succeeded)
             {
-                logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
-                return LocalRedirect(returnUrl);
+                return RedirectTo(ReturnUrl);
             }
-
-            if (result.IsLockedOut)
+            else if (result.IsLockedOut)
             {
                 return RedirectToPage("./Lockout");
             }
-            else
-            {
-                // If the user does not have an account, then ask the user to create an account.
-                ReturnUrl = returnUrl;
-                LoginProvider = info.LoginProvider;
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
-                {
-                    Input = new InputModel
-                    {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                    };
-                }
 
-                return Page();
+            LoginProvider = loginInfo.LoginProvider;
+
+            if (loginInfo.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+            {
+                Input = new ExternalLoginInputModel
+                {
+                    Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+                };
             }
+
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostConfirmationAsync()
         {
+            if (MustAcceptsPrivacyPolicy && !Input.AcceptPrivacyPolicy)
+            {
+                var field = nameof(Input.AcceptPrivacyPolicy);
+
+                ModelState.AddModelError($"{nameof(Input)}.{field}", T[$"{field}Error"]);
+            }
+
+            if (MustAcceptsTermsOfService && !Input.AcceptTermsOfService)
+            {
+                var field = nameof(Input.AcceptTermsOfService);
+
+                ModelState.AddModelError($"{nameof(Input)}.{field}", T[$"{field}Error"]);
+            }
+
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
-                var info = await signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                var loginInfo = await SignInManager.GetExternalLoginInfoAsync();
+
+                if (loginInfo == null)
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
 
-                var user = new UserEntity();
-                user.Data.Email = Input.Email;
-                user.Data.UserName = Input.Email;
+                var user = UserEntity.Create(Input.Email);
 
-                var result = await userManager.CreateAsync(user);
+                var result = await UserManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
-                    result = await userManager.AddLoginAsync(user, info);
+                    result = await UserManager.AddLoginAsync(user, loginInfo);
+
                     if (result.Succeeded)
                     {
-                        await signInManager.SignInAsync(user, false);
-                        logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return LocalRedirect(returnUrl);
+                        await SignInManager.SignInAsync(user, false);
+
+                        return RedirectTo(ReturnUrl);
                     }
                 }
 
@@ -141,8 +159,19 @@ namespace Squidex.Identity.Pages
                 }
             }
 
-            ReturnUrl = returnUrl;
             return Page();
         }
+    }
+
+    public sealed class ExternalLoginInputModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public bool AcceptPrivacyPolicy { get; set; }
+
+        [Required]
+        public bool AcceptTermsOfService { get; set; }
     }
 }

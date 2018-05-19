@@ -8,12 +8,12 @@
 using Newtonsoft.Json;
 using Squidex.ClientLibrary;
 
-namespace Squidex.Identity.Model
+namespace Squidex.Identity.Model.Authentication
 {
     public sealed class AuthenticationSchemeData
     {
         [JsonConverter(typeof(InvariantConverter))]
-        public AuthenticationSchemeProvider Provider { get; set; }
+        public AuthenticationSchemeType Provider { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
         public string ClientId { get; set; }

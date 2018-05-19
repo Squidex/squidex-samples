@@ -1,0 +1,111 @@
+@import '_mixins';
+
+/*
+ * LAYOUT
+ */
+.container2 {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header, content, footer {
+    display: block;
+}
+
+header {
+    & {
+        padding: 20px 0;
+    }
+
+    .logo {
+        max-width: 100%;
+    }
+}
+
+content {
+    padding: 30px 0;
+}
+
+footer {
+    & {
+        border-top: 1px solid #ced4da;
+        background: 0;
+        color: #ced4da;
+        font-size: .9rem;
+        font-weight: normal;
+        text-align: center;
+        padding: 30px 0;
+    }
+
+    & {
+        margin: 0 .375rem;
+    }
+}
+
+/*
+ * LOGIN
+ */
+
+.login-separator {
+    color: #aaa;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/*
+ * FORMS
+ */
+.input-validation-error ~ .invalid-tooltip, 
+.input-validation-error ~ .invalid-feedback {
+    display: block;
+}
+
+.form-control.input-validation-error {
+    border-color: #dc3545;
+}
+
+.form-control.input-validation-error:focus {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, .25);
+}
+
+/*
+ * SOCIAL ICONS
+ */
+@mixin social-button($color) {
+    & {
+        background: $color !important;
+        border-color: $color !important;
+    }
+
+    &:focus {
+        @include box-shadow-raw-important(0 0 0 .2rem rgba($color, .25))
+    }
+
+    &:focus,
+    &:hover,
+    &:active,
+    &.active {
+        background: darken($color, 10%) !important;
+        border-color: darken($color, 10%) !important;
+    }
+}
+
+.btn-facebook {
+    @include social-button(#3b5998);
+}
+
+.btn-google {
+    @include social-button(#d34836);
+}
+
+.btn-microsoft {
+    @include social-button(#004185);
+}
+
+.btn-twitter {
+    @include social-button(#1da1f2);
+}

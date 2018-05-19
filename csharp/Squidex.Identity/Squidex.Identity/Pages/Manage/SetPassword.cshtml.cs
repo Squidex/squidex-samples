@@ -14,10 +14,10 @@ using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public class ChangePasswordModel : PageModelBase<ChangePasswordModel>
+    public sealed class SetPasswordModel : PageModelBase<SetPasswordModel>
     {
         [BindProperty]
-        public ChangePasswordModelInputModel Input { get; set; }
+        public SetPasswordInputModel Input { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -33,9 +33,9 @@ namespace Squidex.Identity.Pages.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (!await UserManager.HasPasswordAsync(UserInfo))
+            if (await UserManager.HasPasswordAsync(UserInfo))
             {
-                return RedirectToPage("./SetPassword");
+                return RedirectToPage("./ChangePassword");
             }
 
             return Page();
@@ -43,34 +43,29 @@ namespace Squidex.Identity.Pages.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return Page();
+                var result = await UserManager.AddPasswordAsync(UserInfo, Input.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(UserInfo, false);
+
+                    StatusMessage = T["PasswordSet"];
+
+                    return RedirectToPage();
+                }
+
+                ModelState.AddModelErrors(result);
             }
 
-            var changePasswordResult = await UserManager.ChangePasswordAsync(UserInfo, Input.OldPassword, Input.NewPassword);
-
-            if (!changePasswordResult.Succeeded)
-            {
-                ModelState.AddModelErrors(changePasswordResult);
-
-                return Page();
-            }
-
-            await SignInManager.SignInAsync(UserInfo, false);
-
-            StatusMessage = T["PasswordChanged"];
-
-            return RedirectToPage();
+            return Page();
         }
     }
 
-    public sealed class ChangePasswordModelInputModel
+    public sealed class SetPasswordInputModel
     {
-        [Required]
-        public string OldPassword { get; set; }
-
-        [Required, StringLength(100, MinimumLength = 6)]
+        [Required, StringLength(100,  MinimumLength = 6)]
         public string NewPassword { get; set; }
 
         [Compare(nameof(NewPassword), ErrorMessage = "PasswordsNotSame")]

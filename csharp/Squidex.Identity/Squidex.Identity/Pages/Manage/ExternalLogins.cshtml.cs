@@ -12,40 +12,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Squidex.Identity.Extensions;
 using Squidex.Identity.Model;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public class ExternalLoginsModel : PageModel
+    public sealed class ExternalLoginsModel : PageModelBase<ExternalLoginsModel>
     {
-        private readonly UserManager<UserEntity> userManager;
-        private readonly SignInManager<UserEntity> signInManager;
+        [TempData]
+        public string StatusMessage { get; set; }
 
-        public ExternalLoginsModel(
-            UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager)
-        {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-        }
+        public bool ShowRemoveButton { get; set; }
 
         public IList<UserLoginInfo> CurrentLogins { get; set; }
 
         public IList<AuthenticationScheme> OtherLogins { get; set; }
 
-        public bool ShowRemoveButton { get; set; }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-            }
+            var user = await GetUserAsync();
 
             CurrentLogins = await userManager.GetLoginsAsync(user);
             OtherLogins = (await signInManager.GetExternalAuthenticationSchemesAsync())

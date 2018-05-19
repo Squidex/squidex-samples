@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Squidex.Identity.Pages
 {
-    public class AccessDeniedModel : PageModel
+    public sealed class AccessDeniedModel : PageModel
     {
         public void OnGet()
         {

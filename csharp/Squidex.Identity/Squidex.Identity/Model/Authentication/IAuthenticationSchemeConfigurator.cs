@@ -1,18 +1,16 @@
-// ==========================================================================
+﻿// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 
-namespace Squidex.Identity.Pages
+namespace Squidex.Identity.Model.Authentication
 {
-    public sealed class ErrorModel : PageModel
+    public interface IAuthenticationSchemeConfigurator
     {
-        public void OnGet()
-        {
-        }
+        Type HandlerType { get; }
     }
 }
