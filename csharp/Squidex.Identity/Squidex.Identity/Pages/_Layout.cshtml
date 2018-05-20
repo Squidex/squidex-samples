@@ -36,15 +36,24 @@
         <header>
             @{
                 var image = SquidexClientManager.GenerateImageUrl(settings.Logo);
+
+                var link = 
+                    User.Identity.IsAuthenticated ?
+                        Url.Content("~/") :
+                        Url.Content("~/manage");
             }
 
             @if (!string.IsNullOrWhiteSpace(image))
             {
-                <img class="logo" src="@image" alt="@settings.SiteName" />
+                <a href="@link">
+                    <img class="logo" src="@image" alt="@settings.SiteName" />
+                </a>
             }
             else
             {
-                <img class="logo" src="~/images/logo-half.png" alt="@settings.SiteName" />
+                <a href="@link">
+                    <img class="logo" src="~/images/logo-half.png" alt="@settings.SiteName" />
+                </a>
             }
         </header>
 

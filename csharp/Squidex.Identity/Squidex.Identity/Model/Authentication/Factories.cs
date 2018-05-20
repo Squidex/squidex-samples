@@ -14,11 +14,21 @@ namespace Squidex.Identity.Model.Authentication
     {
         public static TOptions OAuth<TOptions>(AuthenticationSchemeData data) where TOptions : OAuthOptions, new()
         {
-            return new TOptions
+            var result = new TOptions
             {
                 ClientId = data.ClientId,
                 ClientSecret = data.ClientSecret
             };
+
+            if (data.Scopes != null)
+            {
+                foreach (var scope in data.Scopes)
+                {
+                    result.Scope.Add(scope);
+                }
+            }
+
+            return result;
         }
 
         public static TwitterOptions Twitter(AuthenticationSchemeData data)

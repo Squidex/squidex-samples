@@ -5,7 +5,10 @@
     ViewData["Title"] = T["AccessDeniedTitle"];
 }
 
-<h1>@ViewData["Title"]</h1>
-<p>
+<h1>
+    <strong>ACCESS_DENIED</strong> @T["ErrorInfo"]
+</h1>
+
+<p class="text-muted">
     @T["AccessDeniedText"]
 </p>

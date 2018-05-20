@@ -20,5 +20,8 @@ namespace Squidex.Identity.Model.Authentication
 
         [JsonConverter(typeof(InvariantConverter))]
         public string ClientSecret { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
+        public string[] Scopes { get; set; }
     }
 }

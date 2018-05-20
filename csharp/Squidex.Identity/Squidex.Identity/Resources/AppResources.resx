@@ -123,6 +123,12 @@
   <data name="AcceptTermsOfServiceError" xml:space="preserve">
     <value>You must accept the terms of service to create an account.</value>
   </data>
+  <data name="AccessDeniedText" xml:space="preserve">
+    <value>Access is denied. Please contact the site administrator to unlock your account.</value>
+  </data>
+  <data name="AccessDeniedTitle" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
   <data name="AgreeToPrivacyPolicy" xml:space="preserve">
     <value>I agree to the &lt;a href="{0}" target="_blank"&gt;Terms of service&lt;/a&gt;.</value>
   </data>
@@ -138,6 +144,12 @@
   <data name="ChangePasswordTitle" xml:space="preserve">
     <value>Change password</value>
   </data>
+  <data name="ConfirmEmailText" xml:space="preserve">
+    <value>Thank you for confirming your email address.</value>
+  </data>
+  <data name="ConfirmEmailTitle" xml:space="preserve">
+    <value>Email confirmed</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>confirm password</value>
   </data>
@@ -145,7 +157,16 @@
     <value>Confirm password</value>
   </data>
   <data name="EmailLabel" xml:space="preserve">
-    <value>E-Mail</value>
+    <value>Email</value>
+  </data>
+  <data name="ErrorInfo" xml:space="preserve">
+    <value>That's and error.</value>
+  </data>
+  <data name="ErrorText" xml:space="preserve">
+    <value>Sorry, an error occurred. The team is already working on that.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error occurred</value>
   </data>
   <data name="ExternalCallbackText" xml:space="preserve">
     <value>You've successfully authenticated with &lt;strong&gt;{0}&lt;/strong&gt;. Please enter an email address for this site below and click the Register button to finish logging in.</value>
@@ -168,8 +189,23 @@
   <data name="ExternalSeperator" xml:space="preserve">
     <value>- Or -</value>
   </data>
+  <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Send Email</value>
+  </data>
+  <data name="ForgotPasswordConfirmationText" xml:space="preserve">
+    <value>We have sent you an email with instructions how to reset your password. Please go to your email client and follow the link in the email we sent you.</value>
+  </data>
+  <data name="ForgotPasswordConfirmationTitle" xml:space="preserve">
+    <value>Recovery email sent</value>
+  </data>
   <data name="ForgotPasswordQuestion" xml:space="preserve">
     <value>Forgot your password?</value>
+  </data>
+  <data name="ForgotPasswordText" xml:space="preserve">
+    <value>Enter your email address. We will send you instructions how to reset your password.</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Reset your password</value>
   </data>
   <data name="IndexTitle" xml:space="preserve">
     <value>Welcome</value>
