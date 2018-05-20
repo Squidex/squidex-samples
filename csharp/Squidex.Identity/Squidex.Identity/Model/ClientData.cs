@@ -19,6 +19,9 @@ namespace Squidex.Identity.Model
         public string ClientSecrets { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
+        public string ClientId { get; set; }
+
+        [JsonConverter(typeof(InvariantConverter))]
         public string ClientName { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]

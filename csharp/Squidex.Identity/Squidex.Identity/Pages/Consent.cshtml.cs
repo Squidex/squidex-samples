@@ -140,7 +140,8 @@ namespace Squidex.Identity.Pages
                 throw new ApplicationException($"No scopes matching: {request.ScopesRequested.Aggregate((x, y) => x + ", " + y)}");
             }
 
-            Input.ScopesConsented = input.ScopesConsented ?? Enumerable.Empty<string>();
+            Input = Input ?? new ConsentInputModel();
+            Input.ScopesConsented = input?.ScopesConsented ?? Enumerable.Empty<string>();
 
             AllowRememberConsent = client.AllowRememberConsent;
 

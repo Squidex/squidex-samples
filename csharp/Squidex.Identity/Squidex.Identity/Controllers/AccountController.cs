@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Threading.Tasks;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Squidex.Identity.Model;
@@ -15,14 +16,16 @@ namespace Squidex.Identity.Controllers
     public sealed class AccountController : Controller
     {
         private readonly SignInManager<UserEntity> signInManager;
+        private readonly IIdentityServerInteractionService interactions;
 
-        public AccountController(SignInManager<UserEntity> signInManager)
+        public AccountController(SignInManager<UserEntity> signInManager, IIdentityServerInteractionService interactions)
         {
             this.signInManager = signInManager;
+            this.interactions = interactions;
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("/")]
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -35,14 +38,21 @@ namespace Squidex.Identity.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("/logout")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        [Route("logout")]
+        public async Task<IActionResult> Logout(string logoutId = null)
         {
+            var context = await interactions.GetLogoutContextAsync(logoutId);
+
             await signInManager.SignOutAsync();
 
-            return Redirect("~/login");
+            if (!string.IsNullOrWhiteSpace(context?.PostLogoutRedirectUri))
+            {
+                return Redirect(context.PostLogoutRedirectUri);
+            }
+            else
+            {
+                return Redirect("~/login");
+            }
         }
     }
 }

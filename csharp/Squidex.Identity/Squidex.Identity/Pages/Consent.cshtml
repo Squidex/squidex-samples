@@ -2,10 +2,9 @@
 @inject IHtmlLocalizer<AppResources> T
 @model ConsentModel
 @{
-    ViewData["Title"] = T["ErrorTitle"];
+    ViewData["Title"] = T["ConsentTitle"];
 }
 
-<h1>@ViewData["Title"]</h1>
 
 @if (Model.ClientLogoUrl != null)
 {
@@ -16,46 +15,41 @@
 
 <h1>@Model.ClientName <small>is requesting your permission</small></h1>
 
-<form>
+<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-    <input type="hidden" asp-for="ReturnUrl" />
-
-    <div>Uncheck the permissions you do not wish to grant.</div>
+    <div class="form-group text-muted">
+        Uncheck the permissions you do not wish to grant.
+    </div>
 
     @if (Model.IdentityScopes.Any())
     {
-        <div class="panel panel-default consent-buttons">
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-user"></span>
-                Personal Information
+        <div class="card form-group">
+            <div class="card-header">
+                <i class="fas fa-user"></i> @T["ConsentPersonalInformation"]
             </div>
-            <ul class="list-group">
+
+            <ul class="list-group list-group-flush">
                 @foreach (var scope in Model.IdentityScopes)
                 {
                     <li class="list-group-item">
                         <label>
-                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_@scope.Name" value="@scope.Name" checked="@scope.Checked" disabled="@scope.Required" />
+                            <input class="consent-scopecheck" type="checkbox" name="Input.ScopesConsented" id="scopes_@scope.Name" value="@scope.Name" checked="@scope.Checked" disabled="@scope.Required" />
                             @if (scope.Required)
                             {
-                                <input type="hidden" name="ScopesConsented" value="@scope.Name" />
+                                <input type="hidden" name="Input.ScopesConsented" value="@scope.Name" />
                             }
 
                             <strong>@scope.DisplayName</strong>
-
-                            @if (scope.Emphasize)
-                            {
-                                <span class="glyphicon glyphicon-exclamation-sign"></span>
-                            }
                         </label>
 
                         @if (scope.Required)
                         {
-                            <span><em>(required)</em></span>
+                            <span><em>(@T["Required"])</em></span>
                         }
                         @if (scope.Description != null)
                         {
-                            <div class="consent-description">
+                            <div class="text-muted">
                                 <label for="scopes_@scope.Name">@scope.Description</label>
                             </div>
                         }
@@ -67,37 +61,32 @@
 
     @if (Model.ResourceScopes.Any())
     {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-tasks"></span>
-                Application Access
+        <div class="card form-group">
+            <div class="card-header">
+                <i class="fas fa-tasks"></i> @T["ConsentApplicationAccess"]
             </div>
-            <ul class="list-group">
+
+            <ul class="list-group list-group-flush">
                 @foreach (var scope in Model.ResourceScopes)
                 {
                     <li class="list-group-item">
                         <label>
-                            <input class="consent-scopecheck" type="checkbox" name="ScopesConsented" id="scopes_@scope.Name" value="@scope.Name" checked="@scope.Checked" disabled="@scope.Required" />
+                            <input class="consent-scopecheck" type="checkbox" name="Input.ScopesConsented" id="scopes_@scope.Name" value="@scope.Name" checked="@scope.Checked" disabled="@scope.Required" />
                             @if (scope.Required)
                             {
-                                <input type="hidden" name="ScopesConsented" value="@scope.Name" />
+                                <input type="hidden" name="Input.ScopesConsented" value="@scope.Name" />
                             }
 
                             <strong>@scope.DisplayName</strong>
-
-                            @if (scope.Emphasize)
-                            {
-                                <span class="glyphicon glyphicon-exclamation-sign"></span>
-                            }
                         </label>
 
                         @if (scope.Required)
                         {
-                            <span><em>(required)</em></span>
+                            <span><em>(@T["Required"])</em></span>
                         }
                         @if (scope.Description != null)
                         {
-                            <div class="consent-description">
+                            <div class="text-muted">
                                 <label for="scopes_@scope.Name">@scope.Description</label>
                             </div>
                         }
@@ -109,24 +98,30 @@
 
     @if (Model.AllowRememberConsent)
     {
-        <div class="consent-remember">
-            <label>
-                <input class="consent-scopecheck" asp-for="Input.RememberConsent" />
-                <strong>Remember My Decision</strong>
-            </label>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="Input.RememberConsent">
+                    <input asp-for="Input.RememberConsent" /> @T["RememberConsent"]
+                </label>
+            </div>
         </div>
     }
 
-    <div class="consent-buttons">
-        <button name="button" value="yes" class="btn btn-primary" autofocus>Yes, Allow</button>
-        <button name="button" value="no" class="btn">No, Do Not Allow</button>
-
-        @if (Model.ClientUrl != null)
-        {
-            <a class="pull-right btn btn-default" target="_blank" href="@Model.ClientUrl">
-                <span class="glyphicon glyphicon-info-sign"></span>
-                <strong>@Model.ClientName</strong>
-            </a>
-        }
+    <div class="form-group">
+        <button name="Input.Button" value="yes" class="btn btn-primary" autofocus>
+            @T["ConsentYes"]
+        </button>
+        <button name="Input.Button" value="no" class="btn btn-link">
+            @T["ConsentNo"]
+        </button>
     </div>
+
+    @if (Model.ClientUrl != null)
+    {
+        <div class="form-group">
+            <a target="_blank" href="@Model.ClientUrl">
+                <i class="fas fa-info-circle"></i> @Model.ClientName
+            </a>
+        </div>
+    }
 </form>

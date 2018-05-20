@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -26,7 +27,7 @@ namespace Squidex.Identity.Model
             {
                 result = await provider();
 
-                cache.Set(key, result, TimeSpan.FromMinutes(10));
+                cache.Set(key, result, Debugger.IsAttached ? TimeSpan.FromSeconds(1) : TimeSpan.FromMinutes(10));
             }
 
             return result;

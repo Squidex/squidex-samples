@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
@@ -25,7 +26,9 @@ namespace Squidex.Identity.Model
 
         public async Task<Client> FindClientByIdAsync(string clientId)
         {
-            var client = await apiClient.GetAsync(clientId);
+            var clients = await apiClient.GetAsync(filter: $"data/clientId/iv eq '{clientId}'");
+
+            var client = clients.Items.FirstOrDefault();
 
             if (client == null)
             {
@@ -34,6 +37,7 @@ namespace Squidex.Identity.Model
 
             return new Client
             {
+                AllowAccessTokensViaBrowser = true,
                 AllowedCorsOrigins = client.Data.AllowedCorsOrigins.ToListFromCommataSeparated(),
                 AllowedGrantTypes = client.Data.AllowedGrantTypes.ToListFromCommataSeparated(),
                 AllowedScopes = client.Data.AllowedScopes.ToListFromCommataSeparated(),

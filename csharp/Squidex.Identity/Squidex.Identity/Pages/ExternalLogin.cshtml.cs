@@ -63,7 +63,6 @@ namespace Squidex.Identity.Pages
         public IActionResult OnPost(string provider)
         {
             var authenticationRedirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl = ReturnUrl });
-
             var authenticationProperties = SignInManager.ConfigureExternalAuthenticationProperties(provider, authenticationRedirectUrl);
 
             return new ChallengeResult(provider, authenticationProperties);

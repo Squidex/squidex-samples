@@ -80,7 +80,7 @@ namespace Squidex.Identity.Extensions
 
         protected IActionResult RedirectTo(string returnUrl)
         {
-            if (Uri.IsWellFormedUriString(returnUrl, UriKind.Absolute))
+            if (Uri.IsWellFormedUriString(returnUrl, UriKind.RelativeOrAbsolute))
             {
                 return LocalRedirect(returnUrl);
             }

@@ -41,6 +41,8 @@ namespace Squidex.Identity
             services.AddSingleton(c =>
                 SquidexClientManager.FromOption(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
 
+            services.AddMemoryCache();
+
             services.AddLocalization(options =>
             {
                 options.ResourcesPath = "Resources";
@@ -79,9 +81,10 @@ namespace Squidex.Identity
                 .AddAppAuthRedirectUriValidator()
                 .AddAspNetIdentity<UserEntity>()
                 .AddClientConfigurationValidator<DefaultClientConfigurationValidator>()
-                .AddClientStoreCache<ClientStore>()
+                .AddClientStore<ClientStore>()
                 .AddDeveloperSigningCredential()
-                .AddResourceStoreCache<ResourceStore>();
+                .AddInMemoryCaching()
+                .AddResourceStore<ResourceStore>();
 
             services.AddMvc()
                 .AddViewLocalization(options =>
@@ -137,6 +140,7 @@ namespace Squidex.Identity
 
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseMvc();
         }
     }
