@@ -55,23 +55,27 @@
         <footer>
             <p>@settings.FooterText</p>
 
-            @if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl) || !string.IsNullOrWhiteSpace(settings.LegalUrl))
-            {
-                <p>
-                    @if (!string.IsNullOrWhiteSpace(settings.LegalUrl))
-                    {
-                        <a href="@settings.LegalUrl" target="_blank" rel="nofollow">
-                            @T["Legal"]
-                        </a>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
-                    {
-                        <a href="@settings.PrivacyPolicyUrl" target="_blank" rel="nofollow">
-                            @T["PrivacyPolicy"]
-                        </a>
-                    }
-                </p>
-            }
+            <p>
+                @if (!string.IsNullOrWhiteSpace(settings.LegalUrl))
+                {
+                    <a href="@settings.LegalUrl" target="_blank" rel="nofollow">
+                        @T["Legal"]
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(settings.PrivacyPolicyUrl))
+                {
+                    <a href="@settings.PrivacyPolicyUrl" target="_blank" rel="nofollow">
+                        @T["PrivacyPolicy"]
+                    </a>
+                }
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="~/logout">
+                        @T["Logout"]
+                    </a>
+                }
+            </p>
         </footer>
     </div>
 

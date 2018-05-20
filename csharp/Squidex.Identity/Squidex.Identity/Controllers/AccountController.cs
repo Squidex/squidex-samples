@@ -25,6 +25,13 @@ namespace Squidex.Identity.Controllers
         }
 
         [HttpGet]
+        [Route("/manage/")]
+        public IActionResult Profile()
+        {
+            return Redirect("~/manage/profile");
+        }
+
+        [HttpGet]
         [Route("/")]
         public IActionResult Index()
         {
@@ -38,7 +45,7 @@ namespace Squidex.Identity.Controllers
             }
         }
 
-        [Route("logout")]
+        [Route("/logout/")]
         public async Task<IActionResult> Logout(string logoutId = null)
         {
             var context = await interactions.GetLogoutContextAsync(logoutId);

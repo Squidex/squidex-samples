@@ -14,11 +14,11 @@ using Squidex.Identity.Services;
 
 namespace Squidex.Identity.Pages.Manage
 {
-    public sealed class IndexModel : ManagePageModelBase<IndexModel>
+    public sealed class ProfileModel : ManagePageModelBase<ProfileModel>
     {
         private readonly IEmailSender emailSender;
 
-        public IndexModel(IEmailSender emailSender)
+        public ProfileModel(IEmailSender emailSender)
         {
             this.emailSender = emailSender;
         }

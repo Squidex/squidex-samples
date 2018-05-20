@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
@@ -21,6 +22,7 @@ using Squidex.ClientLibrary;
 using Squidex.Identity.Model;
 using Squidex.Identity.Model.Authentication;
 using Squidex.Identity.Services;
+using Squidex.Identity.Stores.MongoDb;
 
 namespace Squidex.Identity
 {
@@ -46,6 +48,11 @@ namespace Squidex.Identity
             services.AddLocalization(options =>
             {
                 options.ResourcesPath = "Resources";
+            });
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
             });
 
             services.AddAuthentication()
@@ -124,6 +131,17 @@ namespace Squidex.Identity
 
             services.AddSingleton<IEmailSender,
                 EmailSender>();
+
+            var storeType = Configuration.GetValue<string>("store:type");
+
+            if (string.Equals(storeType, "MongoDB", StringComparison.OrdinalIgnoreCase))
+            {
+                services.AddMongoDB(Configuration);
+            }
+            else
+            {
+                throw new ApplicationException("You have to define the store with 'store:type'. Allowed values: MongoDB");
+            }
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
