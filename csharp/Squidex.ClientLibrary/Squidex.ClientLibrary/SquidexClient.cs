@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -36,7 +37,7 @@ namespace Squidex.ClientLibrary
             this.applicationName = applicationName;
         }
 
-        public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null)
+        public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null, QueryContext context = null)
         {
             var queries = new List<string>();
 
@@ -71,16 +72,16 @@ namespace Squidex.ClientLibrary
                 query = "?" + query;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, query);
+            var response = await RequestAsync(HttpMethod.Get, query, context: context);
 
             return await response.Content.ReadAsJsonAsync<SquidexEntities<TEntity, TData>>();
         }
 
-        public async Task<TEntity> GetAsync(string id)
+        public async Task<TEntity> GetAsync(string id, QueryContext context = null)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 ;
-            var response = await RequestAsync(HttpMethod.Get, $"{id}/");
+            var response = await RequestAsync(HttpMethod.Get, $"{id}/", context: context);
 
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
@@ -191,12 +192,30 @@ namespace Squidex.ClientLibrary
             entity.MarkAsUpdated();
         }
 
-        private async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path = "", HttpContent content = null)
+        private async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path = "", HttpContent content = null, QueryContext context = null)
         {
             var uri = new Uri(serviceUrl, $"api/content/{applicationName}/{schemaName}/{path}");
 
             var requestToken = await authenticator.GetBearerTokenAsync();
             var request = BuildRequest(method, content, uri, requestToken);
+
+            if (context != null)
+            {
+                if (context.IsFlatten)
+                {
+                    request.Headers.TryAddWithoutValidation("X-Flatten", "true");
+                }
+
+                if (context.Languages != null)
+                {
+                    var languages = string.Join(", ", context.Languages.Where(x => !string.IsNullOrWhiteSpace(x)));
+
+                    if (!string.IsNullOrWhiteSpace(languages))
+                    {
+                        request.Headers.TryAddWithoutValidation("X-Languages", languages);
+                    }
+                }
+            }
 
             var response = await SquidexHttpClient.Instance.SendAsync(request);
 
