@@ -25,7 +25,7 @@ namespace Squidex.ClientLibrary.Tests
         {
             var items = await Fixture.Client.GetAsync();
 
-            AssertItems(items, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            AssertItems(items, 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Squidex.ClientLibrary.Tests
         {
             var items = await Fixture.Client.GetAsync(skip: 5);
 
-            AssertItems(items, 6, 7, 8, 9, 10);
+            AssertItems(items, 10, new[] { 6, 7, 8, 9, 10 });
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Squidex.ClientLibrary.Tests
         {
             var items = await Fixture.Client.GetAsync(skip: 2, top: 5);
 
-            AssertItems(items, 3, 4, 5, 6, 7);
+            AssertItems(items, 10, new[] { 3, 4, 5, 6, 7 });
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace Squidex.ClientLibrary.Tests
         {
             var items = await Fixture.Client.GetAsync(skip: 2, top: 5, orderBy: "data/value/iv desc");
 
-            AssertItems(items, 8, 7, 6, 5, 4);
+            AssertItems(items, 10, new[] { 8, 7, 6, 5, 4 });
         }
 
         [Fact]
@@ -57,16 +57,16 @@ namespace Squidex.ClientLibrary.Tests
         {
             var items = await Fixture.Client.GetAsync(filter: "data/value/iv gt 3 and data/value/iv lt 7");
 
-            AssertItems(items, 3, 4, 5, 6);
+            AssertItems(items, 3, new[] { 4, 5, 6 });
         }
 
-        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, params int[] expected)
+        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int[] expected)
         {
             Assert.Equal(10, entities.Total);
             Assert.Equal(expected, entities.Items.Select(x => x.Data.Value).ToArray());
         }
 
-        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int total, params int[] expected)
+        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int total, int[] expected)
         {
             Assert.Equal(total, entities.Total);
             Assert.Equal(expected, entities.Items.Select(x => x.Data.Value).ToArray());
