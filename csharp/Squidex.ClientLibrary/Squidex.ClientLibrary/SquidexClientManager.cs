@@ -59,8 +59,17 @@ namespace Squidex.ClientLibrary
                 options.ClientSecret);
         }
 
-        public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName) where TData : class, new() where TEntity : SquidexEntityBase<TData>
+        public SquidexAssetClient GetAssetClient()
         {
+            return new SquidexAssetClient(serviceUrl, applicationName, string.Empty, authenticator);
+        }
+
+        public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName)
+            where TEntity : SquidexEntityBase<TData>
+            where TData : class, new()
+        {
+            Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
+
             return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
         }
     }
