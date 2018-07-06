@@ -12,6 +12,7 @@ namespace Squidex.ClientLibrary
     public class AssetEntities
     {
         public IList<Asset> Items { get; } = new List<Asset>();
+
         public long Total { get; set; }
     }
 }
