@@ -36,7 +36,7 @@ namespace Squidex.ClientLibrary
                 { streamContent, "file", contentName }
             };
 
-            var response = await RequestAsync(HttpMethod.Put, SquidexUriKind.AppAssets, $"{id}/content", requestContent);
+            var response = await RequestAsync(HttpMethod.Put, BuildAppAssetsUrl($"{id}/content"), requestContent);
             return await response.Content.ReadAsJsonAsync<Asset>();
         }
 
@@ -44,7 +44,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            await RequestAsync(HttpMethod.Delete, SquidexUriKind.AppAssets, id);
+            await RequestAsync(HttpMethod.Delete, BuildAppAssetsUrl(id));
         }
 
         public async Task<Asset> CreateAssetAsync(string contentName, string contentMimeType, byte[] contentBytes)
@@ -61,7 +61,7 @@ namespace Squidex.ClientLibrary
                 { streamContent, "file", contentName }
             };
 
-            var response = await RequestAsync(HttpMethod.Post, SquidexUriKind.AppAssets, content: requestContent);
+            var response = await RequestAsync(HttpMethod.Post, BuildAppAssetsUrl(), requestContent);
             return await response.Content.ReadAsJsonAsync<Asset>();
         }
 
@@ -97,7 +97,7 @@ namespace Squidex.ClientLibrary
                 queryString = "?" + queryString;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, SquidexUriKind.Assets, $"{id}/{queryString}");
+            var response = await RequestAsync(HttpMethod.Get, BuildAssetsUrl($"{id}/{queryString}"));
             return await response.Content.ReadAsStreamAsync();
         }
 
@@ -105,7 +105,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            var response = await RequestAsync(HttpMethod.Get, SquidexUriKind.AppAssets, id);
+            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(id));
             return await response.Content.ReadAsJsonAsync<Asset>();
         }
 
@@ -144,8 +144,18 @@ namespace Squidex.ClientLibrary
                 queryString = "?" + queryString;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, SquidexUriKind.AppAssets, query);
+            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(query));
             return await response.Content.ReadAsJsonAsync<AssetEntities>();
+        }
+
+        private string BuildAssetsUrl(string path = "")
+        {
+            return $"api/assets/{path}";
+        }
+
+        private string BuildAppAssetsUrl(string path = "")
+        {
+            return $"api/apps/{ApplicationName}/assets/{path}";
         }
     }
 }

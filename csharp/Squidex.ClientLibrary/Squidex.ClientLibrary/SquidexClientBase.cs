@@ -33,24 +33,9 @@ namespace Squidex.ClientLibrary
             ApplicationName = applicationName;
         }
 
-        protected string BuildSquidexUri(SquidexUriKind uriKind, string path = "")
+        protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
         {
-            switch (uriKind)
-            {
-                case SquidexUriKind.Content:
-                    return $"api/content/{ApplicationName}/{SchemaName}/{path}";
-                case SquidexUriKind.Assets:
-                    return $"api/assets/{path}";
-                case SquidexUriKind.AppAssets:
-                    return $"api/apps/{ApplicationName}/assets/{path}";
-                default:
-                    throw new NotSupportedException($"The uri kind '{uriKind}' is not supported.");
-            }
-        }
-
-        protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, SquidexUriKind uriKind, string path = "", HttpContent content = null, QueryContext context = null)
-        {
-            var uri = new Uri(ServiceUrl, BuildSquidexUri(uriKind, path));
+            var uri = new Uri(ServiceUrl, path);
 
             var requestToken = await Authenticator.GetBearerTokenAsync();
             var request = BuildRequest(method, content, uri, requestToken);

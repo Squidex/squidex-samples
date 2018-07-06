@@ -58,7 +58,7 @@ namespace Squidex.ClientLibrary
                 query = "?" + query;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, SquidexUriKind.Content, query, context: context);
+            var response = await RequestAsync(HttpMethod.Get, BuildContentUrl(query), context: context);
 
             return await response.Content.ReadAsJsonAsync<SquidexEntities<TEntity, TData>>();
         }
@@ -67,7 +67,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            var response = await RequestAsync(HttpMethod.Get, SquidexUriKind.Content, $"{id}/", context: context);
+            var response = await RequestAsync(HttpMethod.Get, BuildContentUrl($"{id}/"), context: context);
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
@@ -75,7 +75,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNull(data, nameof(data));
 
-            var response = await RequestAsync(HttpMethod.Post, SquidexUriKind.Content, $"?publish={publish}", data.ToContent());
+            var response = await RequestAsync(HttpMethod.Post, BuildContentUrl($"?publish={publish}"), data.ToContent());
 
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
@@ -85,7 +85,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(data, nameof(data));
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, SquidexUriKind.Content, $"{id}/", data.ToContent());
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/"), data.ToContent());
         }
 
         public async Task UpdateAsync(TEntity entity)
@@ -101,7 +101,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, SquidexUriKind.Content, $"{id}/publish/");
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/publish/"));
         }
 
         public async Task PublishAsync(TEntity entity)
@@ -117,7 +117,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, SquidexUriKind.Content, $"{id}/unpublish/");
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/unpublish/"));
         }
 
         public async Task UnpublishAsync(TEntity entity)
@@ -133,7 +133,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, SquidexUriKind.Content, $"{id}/archive/");
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/archive/"));
         }
 
         public async Task ArchiveAsync(TEntity entity)
@@ -149,7 +149,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, SquidexUriKind.Content, $"{id}/restore/");
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/restore/"));
         }
 
         public async Task RestoreAsync(TEntity entity)
@@ -165,7 +165,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, SquidexUriKind.Content, $"{id}/");
+            return RequestAsync(HttpMethod.Delete, BuildContentUrl($"{id}/"));
         }
 
         public async Task DeleteAsync(TEntity entity)
@@ -175,6 +175,11 @@ namespace Squidex.ClientLibrary
             await DeleteAsync(entity.Id);
 
             entity.MarkAsUpdated();
+        }
+
+        private string BuildContentUrl(string path = "")
+        {
+            return $"api/content/{ApplicationName}/{SchemaName}/{path}";
         }
     }
 }
