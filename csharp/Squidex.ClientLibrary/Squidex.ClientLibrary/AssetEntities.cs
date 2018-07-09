@@ -9,11 +9,9 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class SquidexEntities<TEntity, TData>
-        where TEntity : SquidexEntityBase<TData>
-        where TData : class, new()
+    public class AssetEntities
     {
-        public List<TEntity> Items { get; } = new List<TEntity>();
+        public IList<Asset> Items { get; } = new List<Asset>();
 
         public long Total { get; set; }
     }

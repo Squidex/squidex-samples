@@ -20,6 +20,14 @@ namespace Squidex.ClientLibrary.Tests
             {
                 var items = await Client.GetAsync();
 
+                if (items.Total > 10)
+                {
+                    foreach (var item in items.Items)
+                    {
+                        await Client.DeleteAsync(item);
+                    }
+                }
+
                 if (items.Total == 0)
                 {
                     for (var i = 10; i > 0; i--)
