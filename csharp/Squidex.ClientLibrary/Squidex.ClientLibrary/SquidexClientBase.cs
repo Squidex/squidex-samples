@@ -16,9 +16,12 @@ namespace Squidex.ClientLibrary
 {
     public abstract class SquidexClientBase
     {
-        protected string ApplicationName { get; }
         protected Uri ServiceUrl { get; }
+
+        protected string ApplicationName { get; }
+
         protected string SchemaName { get; }
+
         protected IAuthenticator Authenticator { get; }
 
         protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, IAuthenticator authenticator)
