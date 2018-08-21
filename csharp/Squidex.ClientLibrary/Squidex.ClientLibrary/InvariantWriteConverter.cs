@@ -25,10 +25,6 @@ namespace Squidex.ClientLibrary
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             return serializer.Deserialize(reader, objectType);
-
-            reader.Read();
-
-            return result;
         }
 
         public override bool CanConvert(Type objectType)
