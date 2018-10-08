@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
@@ -24,5 +25,7 @@ namespace Squidex.ClientLibrary
         public int PixelWidth { get; set; }
 
         public int PixelHeight { get; set; }
+
+        public List<string> Tags { get; set; }
     }
 }
