@@ -127,6 +127,14 @@ namespace Squidex.ClientLibrary
             return await response.Content.ReadAsJsonAsync<Asset>();
         }
 
+        public async Task<Dictionary<string, string>> GetAssetsTagsAsync()
+        {
+            var request = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl("tags"));
+            var response = await request.Content.ReadAsJsonAsync<Dictionary<string, string>>();
+
+            return response;
+        }
+
         public async Task DeleteAssetAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
