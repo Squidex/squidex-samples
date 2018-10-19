@@ -1,4 +1,5 @@
 ﻿@model HomeVM
+@inject  Squidex.ClientLibrary.SquidexClientManager Squidex
 
 <!doctype html>
 <html>
@@ -80,7 +81,7 @@
 
                 @if (Model.Basics.Image?.Length > 0)
                 {
-                    <img src="@Model.BuildImageUrl(Model.Basics.Image[0])?width=512&height=516&mode=Crop" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
+                    <img src="@Squidex.GenerateImageUrl(Model.Basics.Image)?width=512&height=516&mode=Crop" alt="@Model.Basics.FirstName @Model.Basics.LastName" class="pull-left" />
                 }
                 else
                 {
@@ -105,7 +106,7 @@
                         <a href="@project.Data.Link" target="_blank">
                             @if (project.Data.Image?.Length > 0)
                             {
-                                <img src="@Model.BuildImageUrl(project.Data.Image[0])?width=305&height=236&mode=Crop" alt="@project.Data.Name" />
+                                <img src="@Squidex.GenerateImageUrl(project.Data.Image)?width=305&height=236&mode=Crop" alt="@project.Data.Name" />
                             }
                             else
                             {
@@ -149,7 +150,7 @@
                         <div class="img-cell">
                             @if (experience.Data.Logo?.Length > 0)
                             {
-                                <img src="@Model.BuildImageUrl(experience.Data.Logo[0])?width=80&height=80&mode=Crop" alt="@experience.Data.Company" />
+                                <img src="@Squidex.GenerateImageUrl(experience.Data.Logo)?width=80&height=80&mode=Crop" alt="@experience.Data.Company" />
                             }
                             else
                             {
@@ -207,7 +208,7 @@
                         <div class="img-cell">
                             @if (education.Data.Logo?.Length > 0)
                             {
-                                <img src="@Model.BuildImageUrl(education.Data.Logo[0])?width=80&height=80&mode=Pad" alt="@education.Data.Degree" />
+                                <img src="@Squidex.GenerateImageUrl(education.Data.Logo)?width=80&height=80&mode=Pad" alt="@education.Data.Degree" />
                             }
                             else
                             {
@@ -254,7 +255,7 @@
                                 <div class="img">
                                     @if (publication.Data.Cover?.Length > 0)
                                     {
-                                        <img src="@Model.BuildImageUrl(publication.Data.Cover[0])?width=188&height=238&mode=Crop" alt="@publication.Data.Name" />
+                                        <img src="@Squidex.GenerateImageUrl(publication.Data.Cover)?width=188&height=238&mode=Crop" alt="@publication.Data.Name" />
                                     }
                                     else
                                     {
