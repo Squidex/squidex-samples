@@ -50,6 +50,11 @@ namespace Squidex.ClientLibrary
                     request.Headers.TryAddWithoutValidation("X-Flatten", "true");
                 }
 
+                if (context.IsUnpublished)
+                {
+                    request.Headers.TryAddWithoutValidation("X-Unpublished", "true");
+                }
+
                 if (context.Languages != null)
                 {
                     var languages = string.Join(", ", context.Languages.Where(x => !string.IsNullOrWhiteSpace(x)));
@@ -94,6 +99,11 @@ namespace Squidex.ClientLibrary
                 if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     throw new SquidexException("The app, schema or entity does not exist.");
+                }
+
+                if ((int)response.StatusCode == 429)
+                {
+                    throw new SquidexException("Too many requests, please upgrade your subscription.");
                 }
 
                 var message = await response.Content.ReadAsStringAsync();
