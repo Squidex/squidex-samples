@@ -140,10 +140,10 @@ namespace Squidex.ClientLibrary
             return response.StatusCode;
         }
 
-        public async Task<Dictionary<string, string>> GetAssetsTagsAsync()
+        public async Task<Dictionary<string, int>> GetAssetsTagsAsync()
         {
             var request = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl("tags"));
-            var response = await request.Content.ReadAsJsonAsync<Dictionary<string, string>>();
+            var response = await request.Content.ReadAsJsonAsync<Dictionary<string, int>>();
 
             return response;
         }

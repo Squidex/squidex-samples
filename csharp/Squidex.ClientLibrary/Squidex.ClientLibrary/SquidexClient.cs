@@ -80,12 +80,12 @@ namespace Squidex.ClientLibrary
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
-        public Task UpdateAsync(string id, TData data)
+        public Task UpdateAsync(string id, TData data, bool asDraft = false)
         {
             Guard.NotNull(data, nameof(data));
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/"), data.ToContent());
+            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/?asDraft={asDraft}"), data.ToContent());
         }
 
         public async Task UpdateAsync(TEntity entity)
