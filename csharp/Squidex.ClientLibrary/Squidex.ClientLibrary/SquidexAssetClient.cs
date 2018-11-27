@@ -8,9 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
@@ -125,6 +128,24 @@ namespace Squidex.ClientLibrary
             var response = await RequestAsync(HttpMethod.Put, BuildAppAssetsUrl($"{id}/content"), request);
 
             return await response.Content.ReadAsJsonAsync<Asset>();
+        }
+
+        public async Task<HttpStatusCode> UpdateAssetAsync(string id, UpdateAssetRequest data)
+        {
+            var jsonData = JsonConvert.SerializeObject(data);
+
+            var request = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var response = await RequestAsync(HttpMethod.Put, BuildAppAssetsUrl(id), request);
+
+            return response.StatusCode;
+        }
+
+        public async Task<Dictionary<string, int>> GetAssetsTagsAsync()
+        {
+            var request = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl("tags"));
+            var response = await request.Content.ReadAsJsonAsync<Dictionary<string, int>>();
+
+            return response;
         }
 
         public async Task DeleteAssetAsync(string id)
