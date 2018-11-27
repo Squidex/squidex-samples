@@ -25,15 +25,15 @@ namespace Squidex.ClientLibrary
 
         public QueryContext Flatten(bool flatten = true)
         {
-            return new QueryContext { Languages = Languages, IsUnpublished = IsUnpublished, IsFlatten = flatten };
+            return new QueryContext { Languages = Languages, IsFlatten = flatten };
         }
 
         public QueryContext WithLanguages(params string[] languages)
         {
-            return new QueryContext { Languages = languages, IsUnpublished = IsUnpublished, IsFlatten = IsFlatten };
+            return new QueryContext { Languages = languages, IsFlatten = IsFlatten };
         }
 
-        public QueryContext Unpublished()
+        public QueryContext IsUnpublished()
         {
             return new QueryContext { Unpublished = true };
         }
