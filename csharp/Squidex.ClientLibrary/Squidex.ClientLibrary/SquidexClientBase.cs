@@ -52,7 +52,7 @@ namespace Squidex.ClientLibrary
 
                 if (context.Unpublished)
                 {
-                    request.Headers.TryAddWithoutValidation("X-Unpublished", context.Unpublished.ToString());
+                    request.Headers.TryAddWithoutValidation("X-Unpublished", "true");
                 }
 
                 if (context.Languages != null)

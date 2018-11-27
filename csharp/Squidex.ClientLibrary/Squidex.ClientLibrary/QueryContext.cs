@@ -33,7 +33,7 @@ namespace Squidex.ClientLibrary
             return new QueryContext { Languages = languages, IsFlatten = IsFlatten };
         }
 
-        public QueryContext UnPublished()
+        public QueryContext Unpublished()
         {
             return new QueryContext { Unpublished = true };
         }
