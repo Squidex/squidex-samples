@@ -17,7 +17,7 @@ namespace Squidex.ClientLibrary
 
         public bool IsFlatten { get; private set; }
 
-        public bool Unpublished { get; set; }
+        public bool Unpublished { get; private set; }
 
         private QueryContext()
         {
