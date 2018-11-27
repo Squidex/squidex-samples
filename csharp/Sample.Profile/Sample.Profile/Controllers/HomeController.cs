@@ -5,12 +5,10 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Sample.Profile.Models;
 using Squidex.ClientLibrary;
 
@@ -19,23 +17,15 @@ namespace Sample.Profile.Controllers
     public sealed class HomeController : Controller
     {
         private readonly SquidexClientManager clientManager;
-        private readonly IOptions<SquidexOptions> options;
 
-        public HomeController(SquidexClientManager clientManager, IOptions<SquidexOptions> options)
+        public HomeController(SquidexClientManager clientManager)
         {
             this.clientManager = clientManager;
-            this.options = options;
         }
 
         public async Task<IActionResult> Index()
         {
-            var vm = new HomeVM
-            {
-                BuildImageUrl = id =>
-                {
-                    return $"{options.Value.Url}/api/assets/{id}";
-                }
-            };
+            var vm = new HomeVM();
 
             await Task.WhenAll(
                 LoadBasics(vm),
