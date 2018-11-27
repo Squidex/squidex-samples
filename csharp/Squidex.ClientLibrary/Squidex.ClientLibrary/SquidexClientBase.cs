@@ -101,6 +101,11 @@ namespace Squidex.ClientLibrary
                     throw new SquidexException("The app, schema or entity does not exist.");
                 }
 
+                if ((int)response.StatusCode == 429)
+                {
+                    throw new SquidexException("Too many requests, please upgrade your subscription.");
+                }
+
                 var message = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(message))

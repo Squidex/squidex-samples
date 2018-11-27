@@ -1,7 +1,7 @@
 #
 # Stage 1, Prebuild
 #
-FROM microsoft/aspnetcore-build:2.0.3-jessie as builder
+FROM microsoft/dotnet:2.1-sdk as builder
 
 COPY . .
 
@@ -14,7 +14,7 @@ RUN dotnet restore \
 #
 # Stage 2, Build runtime
 #
-FROM microsoft/aspnetcore:2.0.3-jessie
+FROM microsoft/dotnet:2.1.0-aspnetcore-runtime-alpine
 
 # Default AspNetCore directory
 WORKDIR /app
