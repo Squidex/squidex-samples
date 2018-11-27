@@ -17,6 +17,8 @@ namespace Squidex.ClientLibrary
 
         public string LastModifiedBy { get; set; }
 
+        public bool IsPending { get; set; }
+
         public DateTimeOffset Created { get; set; }
 
         public DateTimeOffset LastModified { get; set; }

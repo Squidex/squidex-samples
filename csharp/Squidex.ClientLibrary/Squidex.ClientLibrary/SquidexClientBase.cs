@@ -50,6 +50,11 @@ namespace Squidex.ClientLibrary
                     request.Headers.TryAddWithoutValidation("X-Flatten", "true");
                 }
 
+                if (context.Unpublished)
+                {
+                    request.Headers.TryAddWithoutValidation("X-Unpublished", context.Unpublished.ToString());
+                }
+
                 if (context.Languages != null)
                 {
                     var languages = string.Join(", ", context.Languages.Where(x => !string.IsNullOrWhiteSpace(x)));
