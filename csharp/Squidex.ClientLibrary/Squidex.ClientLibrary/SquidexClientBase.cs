@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -20,8 +19,6 @@ namespace Squidex.ClientLibrary
 
         protected string ApplicationName { get; }
 
-        protected string SchemaName { get; }
-
         protected IAuthenticator Authenticator { get; }
 
         protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, IAuthenticator authenticator)
@@ -30,10 +27,9 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(authenticator, nameof(authenticator));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
 
-            ServiceUrl = serviceUrl;
-            SchemaName = schemaName;
-            Authenticator = authenticator;
             ApplicationName = applicationName;
+            Authenticator = authenticator;
+            ServiceUrl = serviceUrl;
         }
 
         protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
@@ -43,28 +39,7 @@ namespace Squidex.ClientLibrary
             var requestToken = await Authenticator.GetBearerTokenAsync();
             var request = BuildRequest(method, content, uri, requestToken);
 
-            if (context != null)
-            {
-                if (context.IsFlatten)
-                {
-                    request.Headers.TryAddWithoutValidation("X-Flatten", "true");
-                }
-
-                if (context.IsUnpublished)
-                {
-                    request.Headers.TryAddWithoutValidation("X-Unpublished", "true");
-                }
-
-                if (context.Languages != null)
-                {
-                    var languages = string.Join(", ", context.Languages.Where(x => !string.IsNullOrWhiteSpace(x)));
-
-                    if (!string.IsNullOrWhiteSpace(languages))
-                    {
-                        request.Headers.TryAddWithoutValidation("X-Languages", languages);
-                    }
-                }
-            }
+            context?.AddToHeaders(request.Headers);
 
             var response = await SquidexHttpClient.Instance.SendAsync(request);
 

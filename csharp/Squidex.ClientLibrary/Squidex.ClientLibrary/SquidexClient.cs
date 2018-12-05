@@ -18,9 +18,14 @@ namespace Squidex.ClientLibrary
         where TEntity : SquidexEntityBase<TData>
         where TData : class, new()
     {
+        public string SchemaName { get; }
+
         public SquidexClient(Uri serviceUrl, string applicationName, string schemaName, IAuthenticator authenticator)
             : base(serviceUrl, applicationName, schemaName, authenticator)
         {
+            Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
+
+            SchemaName = schemaName;
         }
 
         public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null, QueryContext context = null)

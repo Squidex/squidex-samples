@@ -10,7 +10,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/Squidex/squidex/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
-    <Version>1.2</Version>
+    <Version>1.4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
