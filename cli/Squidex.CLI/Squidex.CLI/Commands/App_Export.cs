@@ -24,7 +24,7 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "content", Description = "Manage Contents.")]
+        [ApplicationMetadata(Name = "content", Description = "Manage content.")]
         [SubCommand]
         public class Content
         {
@@ -64,7 +64,7 @@ namespace Squidex.CLI.Commands
                         {
                             if (string.IsNullOrWhiteSpace(fileOrFolder))
                             {
-                                fileOrFolder = $"{arguments.Schema}";
+                                fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
                             }
 
                             if (!Directory.Exists(fileOrFolder))
@@ -76,7 +76,7 @@ namespace Squidex.CLI.Commands
                         {
                             if (string.IsNullOrWhiteSpace(fileOrFolder))
                             {
-                                fileOrFolder = $"{arguments.Schema}.json";
+                                fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.json";
                             }
 
                             if (File.Exists(fileOrFolder))
@@ -91,27 +91,37 @@ namespace Squidex.CLI.Commands
 
                         var consoleTop = Console.CursorTop;
 
+                        var handled = new HashSet<string>();
+
                         do
                         {
-                            var content = await client.GetAsync();
+                            var content = await client.GetAsync(skip: currentPage * 100, top: 100);
 
                             total = content.Total;
 
+                            if (content.Items.Count == 0)
+                            {
+                                break;
+                            }
+
                             foreach (var entity in content.Items)
                             {
-                                totalRead++;
-
-                                if (arguments.FilePerContent)
+                                if (handled.Add(entity.Id))
                                 {
-                                    File.WriteAllText(Path.Combine(fileOrFolder, $"{arguments.Schema}_{entity.Id}.json"), entity.JsonPrettyString());
-                                }
-                                else
-                                {
-                                    File.AppendAllText(fileOrFolder, entity.JsonPrettyString());
-                                }
+                                    totalRead++;
 
-                                Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                                Console.SetCursorPosition(0, consoleTop);
+                                    if (arguments.FilePerContent)
+                                    {
+                                        File.WriteAllText(Path.Combine(fileOrFolder, $"{arguments.Schema}_{entity.Id}.json"), entity.JsonPrettyString());
+                                    }
+                                    else
+                                    {
+                                        File.AppendAllText(fileOrFolder, entity.JsonPrettyString());
+                                    }
+
+                                    Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                                    Console.SetCursorPosition(0, consoleTop);
+                                }
                             }
 
                             currentPage++;
@@ -136,40 +146,10 @@ namespace Squidex.CLI.Commands
 
                         if (string.IsNullOrWhiteSpace(file))
                         {
-                            file = $"{arguments.Schema}.csv";
+                            file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.csv";
                         }
 
-                        var fields = new List<(string Name, string[] Path)>();
-
-                        foreach (var item in arguments.Fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            var parts = item.Split('=');
-
-                            string[] GetPath(string value)
-                            {
-                                var path = value.Split('.', StringSplitOptions.RemoveEmptyEntries);
-
-                                if (path.Length == 2 && string.Equals(path[0], "Data", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    return path.Union(Enumerable.Repeat("iv", 1)).ToArray();
-                                }
-
-                                return path;
-                            }
-
-                            if (parts.Length == 1)
-                            {
-                                fields.Add((parts[0], GetPath(parts[0])));
-                            }
-                            else if (parts.Length == 2)
-                            {
-                                fields.Add((parts[0], GetPath(parts[1])));
-                            }
-                            else
-                            {
-                                throw new SquidexException("Field definition not valid.");
-                            }
-                        }
+                        var fields = GetFields(arguments);
 
                         using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
                         {
@@ -195,34 +175,44 @@ namespace Squidex.CLI.Commands
 
                                     var consoleTop = Console.CursorTop;
 
+                                    var handled = new HashSet<string>();
+
                                     do
                                     {
-                                        var content = await client.GetAsync();
+                                        var content = await client.GetAsync(skip: currentPage * 100, top: 100);
 
                                         total = content.Total;
 
+                                        if (content.Items.Count == 0)
+                                        {
+                                            break;
+                                        }
+
                                         foreach (var entity in content.Items)
                                         {
-                                            totalRead++;
-
-                                            foreach (var field in fields)
+                                            if (handled.Add(entity.Id))
                                             {
-                                                var value = GetValue(entity, field.Path);
+                                                totalRead++;
 
-                                                if (value is string s)
+                                                foreach (var field in fields)
                                                 {
-                                                    writer.WriteField(s.Replace("\n", "\\n"), true);
+                                                    var value = GetValue(entity, field.Path);
+
+                                                    if (value is string s)
+                                                    {
+                                                        writer.WriteField(s.Replace("\n", "\\n"), true);
+                                                    }
+                                                    else
+                                                    {
+                                                        writer.WriteField(value);
+                                                    }
                                                 }
-                                                else
-                                                {
-                                                    writer.WriteField(value);
-                                                }
+
+                                                writer.NextRecord();
+
+                                                Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                                                Console.SetCursorPosition(0, consoleTop);
                                             }
-
-                                            writer.NextRecord();
-
-                                            Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                                            Console.SetCursorPosition(0, consoleTop);
                                         }
 
                                         currentPage++;
@@ -239,6 +229,43 @@ namespace Squidex.CLI.Commands
                 {
                     throw new SquidexException($"Failed to export content: {ex.Message}", ex);
                 }
+            }
+
+            private static List<(string Name, string[] Path)> GetFields(ExportArguments arguments)
+            {
+                var fields = new List<(string Name, string[] Path)>();
+
+                foreach (var item in arguments.Fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var parts = item.Split('=');
+
+                    string[] GetPath(string value)
+                    {
+                        var path = value.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+                        if (path.Length == 2 && string.Equals(path[0], "Data", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return path.Union(Enumerable.Repeat("iv", 1)).ToArray();
+                        }
+
+                        return path;
+                    }
+
+                    if (parts.Length == 1)
+                    {
+                        fields.Add((parts[0], GetPath(parts[0])));
+                    }
+                    else if (parts.Length == 2)
+                    {
+                        fields.Add((parts[0], GetPath(parts[1])));
+                    }
+                    else
+                    {
+                        throw new SquidexException("Field definition not valid.");
+                    }
+                }
+
+                return fields;
             }
 
             private object GetValue(object current, string[] path)

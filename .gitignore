@@ -3,12 +3,14 @@
 *.user
 *.vs
 *.log
+*.zip
 
 .vscode
 
 # Build results
 build/
 bin/
+out/
 obj/
 publish/
 
