@@ -7,6 +7,8 @@ foreach ($runtime in $runtimes) {
 
 	xcopy "Squidex.CLI\bin\Release\netcoreapp2.2\$runtime\publish" "out\$runtime\" /S /Y /Q
 	
+	Compress-Archive -Path "out\$runtime\*" -Force -DestinationPath "out\$runtime.zip" -CompressionLevel Optimal
+	
 	Write-Host "> Compiling for $runtime completed"
 	Write-Host ""
 }
