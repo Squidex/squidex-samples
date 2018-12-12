@@ -22,3 +22,5 @@ node_modules/
 **/wwwroot/scripts/**/*.*
 
 *.Development.json
+
+launchSettings.json
