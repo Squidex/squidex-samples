@@ -1350,7 +1350,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="name">The name of the schema to retrieve.</param>
         /// <returns>Schema found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SchemaDetailsDto>> GetSchemaAsync(string app, string name);
+        System.Threading.Tasks.Task<SchemaDetailsDto> GetSchemaAsync(string app, string name);
     
         /// <summary>Get a schema by name.</summary>
         /// <param name="app">The name of the app.</param>
@@ -1358,7 +1358,7 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Schema found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SchemaDetailsDto>> GetSchemaAsync(string app, string name, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SchemaDetailsDto> GetSchemaAsync(string app, string name, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update a schema.</summary>
         /// <param name="app">The name of the app.</param>
@@ -4018,7 +4018,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="name">The name of the schema to retrieve.</param>
         /// <returns>Schema found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SchemaDetailsDto>> GetSchemaAsync(string app, string name)
+        public System.Threading.Tasks.Task<SchemaDetailsDto> GetSchemaAsync(string app, string name)
         {
             return GetSchemaAsync(app, name, System.Threading.CancellationToken.None);
         }
@@ -4029,7 +4029,7 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Schema found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SchemaDetailsDto>> GetSchemaAsync(string app, string name, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SchemaDetailsDto> GetSchemaAsync(string app, string name, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -4071,10 +4071,10 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.Generic.ICollection<SchemaDetailsDto>); 
+                            var result_ = default(SchemaDetailsDto); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.ICollection<SchemaDetailsDto>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<SchemaDetailsDto>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -4110,7 +4110,7 @@ namespace Squidex.ClientLibrary.Management
                             throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.ICollection<SchemaDetailsDto>);
+                        return default(SchemaDetailsDto);
                     }
                     finally
                     {
@@ -13022,16 +13022,16 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "fieldType")]
-    [JsonInheritanceAttribute("ArrayFieldPropertiesDto", typeof(Array))]
-    [JsonInheritanceAttribute("AssetsFieldPropertiesDto", typeof(Assets))]
-    [JsonInheritanceAttribute("BooleanFieldPropertiesDto", typeof(Boolean))]
-    [JsonInheritanceAttribute("DateTimeFieldPropertiesDto", typeof(DateTime))]
-    [JsonInheritanceAttribute("GeolocationFieldPropertiesDto", typeof(Geolocation))]
-    [JsonInheritanceAttribute("JsonFieldPropertiesDto", typeof(Json))]
-    [JsonInheritanceAttribute("NumberFieldPropertiesDto", typeof(Number))]
-    [JsonInheritanceAttribute("ReferencesFieldPropertiesDto", typeof(References))]
-    [JsonInheritanceAttribute("StringFieldPropertiesDto", typeof(String))]
-    [JsonInheritanceAttribute("TagsFieldPropertiesDto", typeof(Tags))]
+    [JsonInheritanceAttribute("Array", typeof(ArrayFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Assets", typeof(AssetsFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Boolean", typeof(BooleanFieldPropertiesDto))]
+    [JsonInheritanceAttribute("DateTime", typeof(DateTimeFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Geolocation", typeof(GeolocationFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Json", typeof(JsonFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Number", typeof(NumberFieldPropertiesDto))]
+    [JsonInheritanceAttribute("References", typeof(ReferencesFieldPropertiesDto))]
+    [JsonInheritanceAttribute("String", typeof(StringFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Tags", typeof(TagsFieldPropertiesDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class FieldPropertiesDto 
     {
@@ -13079,7 +13079,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Array : FieldPropertiesDto
+    public partial class ArrayFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13094,15 +13094,15 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Array FromJson(string data)
+        public static ArrayFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Array>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ArrayFieldPropertiesDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Assets : FieldPropertiesDto
+    public partial class AssetsFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13157,15 +13157,15 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Assets FromJson(string data)
+        public static AssetsFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Assets>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AssetsFieldPropertiesDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Boolean : FieldPropertiesDto
+    public partial class BooleanFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13184,9 +13184,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Boolean FromJson(string data)
+        public static BooleanFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Boolean>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BooleanFieldPropertiesDto>(data);
         }
     
     }
@@ -13201,7 +13201,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class DateTime : FieldPropertiesDto
+    public partial class DateTimeFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13228,9 +13228,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static DateTime FromJson(string data)
+        public static DateTimeFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<DateTime>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DateTimeFieldPropertiesDto>(data);
         }
     
     }
@@ -13254,7 +13254,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Geolocation : FieldPropertiesDto
+    public partial class GeolocationFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13269,9 +13269,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Geolocation FromJson(string data)
+        public static GeolocationFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Geolocation>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<GeolocationFieldPropertiesDto>(data);
         }
     
     }
@@ -13284,22 +13284,22 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Json : FieldPropertiesDto
+    public partial class JsonFieldPropertiesDto : FieldPropertiesDto
     {
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Json FromJson(string data)
+        public static JsonFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Json>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<JsonFieldPropertiesDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Number : FieldPropertiesDto
+    public partial class NumberFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13334,9 +13334,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Number FromJson(string data)
+        public static NumberFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Number>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<NumberFieldPropertiesDto>(data);
         }
     
     }
@@ -13355,7 +13355,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class References : FieldPropertiesDto
+    public partial class ReferencesFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13374,15 +13374,15 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static References FromJson(string data)
+        public static ReferencesFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<References>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ReferencesFieldPropertiesDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class String : FieldPropertiesDto
+    public partial class StringFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13425,9 +13425,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static String FromJson(string data)
+        public static StringFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<String>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<StringFieldPropertiesDto>(data);
         }
     
     }
@@ -13456,7 +13456,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Tags : FieldPropertiesDto
+    public partial class TagsFieldPropertiesDto : FieldPropertiesDto
     {
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -13479,9 +13479,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static Tags FromJson(string data)
+        public static TagsFieldPropertiesDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Tags>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TagsFieldPropertiesDto>(data);
         }
     
     }
@@ -14096,8 +14096,8 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "triggerType")]
-    [JsonInheritanceAttribute("AssetChangedTriggerDto", typeof(AssetChanged))]
-    [JsonInheritanceAttribute("ContentChangedTriggerDto", typeof(ContentChanged))]
+    [JsonInheritanceAttribute("AssetChanged", typeof(AssetChangedRuleTriggerDto))]
+    [JsonInheritanceAttribute("ContentChanged", typeof(ContentChangedRuleTriggerDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class RuleTriggerDto 
     {
@@ -14114,7 +14114,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetChanged : RuleTriggerDto
+    public partial class AssetChangedRuleTriggerDto : RuleTriggerDto
     {
         /// <summary>Determines whether to handle the event when an asset is created.</summary>
         [Newtonsoft.Json.JsonProperty("sendCreate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14137,20 +14137,20 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static AssetChanged FromJson(string data)
+        public static AssetChangedRuleTriggerDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<AssetChanged>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AssetChangedRuleTriggerDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentChanged : RuleTriggerDto
+    public partial class ContentChangedRuleTriggerDto : RuleTriggerDto
     {
         /// <summary>The schema settings.</summary>
         [Newtonsoft.Json.JsonProperty("schemas", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<ContentChangedTriggerSchemaDto> Schemas { get; set; } = new System.Collections.ObjectModel.Collection<ContentChangedTriggerSchemaDto>();
+        public System.Collections.Generic.ICollection<ContentChangedRuleTriggerSchemaDto> Schemas { get; set; } = new System.Collections.ObjectModel.Collection<ContentChangedRuleTriggerSchemaDto>();
     
         /// <summary>Determines whether the trigger should handle all content changes events.</summary>
         [Newtonsoft.Json.JsonProperty("handleAll", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14161,15 +14161,15 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static ContentChanged FromJson(string data)
+        public static ContentChangedRuleTriggerDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContentChanged>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContentChangedRuleTriggerDto>(data);
         }
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentChangedTriggerSchemaDto 
+    public partial class ContentChangedRuleTriggerSchemaDto 
     {
         /// <summary>The id of the schema.</summary>
         [Newtonsoft.Json.JsonProperty("schemaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14208,9 +14208,9 @@ namespace Squidex.ClientLibrary.Management
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static ContentChangedTriggerSchemaDto FromJson(string data)
+        public static ContentChangedRuleTriggerSchemaDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContentChangedTriggerSchemaDto>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ContentChangedRuleTriggerSchemaDto>(data);
         }
     
     }
