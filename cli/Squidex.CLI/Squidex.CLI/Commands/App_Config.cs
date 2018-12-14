@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using CommandDotNet;
 using CommandDotNet.Attributes;
+using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Squidex.CLI.Configuration;
@@ -25,18 +26,34 @@ namespace Squidex.CLI.Commands
             public IConfigurationService Configuration { get; set; }
 
             [ApplicationMetadata(Name = "view", Description = "Shows the current configuration.")]
-            public void View()
+            public void View([Option] bool json)
             {
                 var config = Configuration.GetConfiguration();
 
-                Console.WriteLine(">");
-                Console.WriteLine(config.JsonPrettyString());
+                if (json)
+                {
+                    Console.WriteLine(config.JsonPrettyString());
+                }
+                else
+                {
+                    var table = new ConsoleTable("Name", "App", "ClientId", "ClientSecret", "Url");
+
+                    foreach (var (key, app) in config.Apps)
+                    {
+                        table.AddRow(key, app.Name, app.ClientId, app.ClientSecret.Truncate(10), app.ServiceUrl);
+                    }
+
+                    table.Write(Format.Default);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Current App: {0}", config.CurrentApp);
+                }
             }
 
             [ApplicationMetadata(Name = "add", Description = "Add or update an app.")]
             public void Add(AddArguments arguments)
             {
-                Configuration.Upsert(arguments.Name, new ConfiguredApp { ClientId = arguments.ClientId, ClientSecret = arguments.ClientSecret });
+                Configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
 
                 Console.WriteLine("> App added.");
             }
@@ -86,6 +103,19 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "url", Description = "The optional url to your squidex installation. Default: https://cloud.squidex.io")]
                 public string ServiceUrl { get; set; }
+
+                [Option(LongName = "label", Description = "Optional label for this app.")]
+                public string Label { get; set; }
+
+                public string ToEntryName()
+                {
+                    return !string.IsNullOrWhiteSpace(Label) ? Label : Name;
+                }
+
+                public ConfiguredApp ToModel()
+                {
+                    return new ConfiguredApp { ClientId = ClientId, ClientSecret = ClientSecret, Name = Name };
+                }
 
                 public sealed class AddArgumentsValidator : AbstractValidator<AddArguments>
                 {

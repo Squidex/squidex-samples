@@ -10,11 +10,11 @@ using Newtonsoft.Json.Serialization;
 
 namespace Squidex.CLI
 {
-    public static class JsonHelper
+    public static class Helper
     {
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings();
 
-        static JsonHelper()
+        static Helper()
         {
             SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
@@ -27,6 +27,18 @@ namespace Squidex.CLI
         public static string JsonString<T>(this T value)
         {
             return JsonConvert.SerializeObject(value, Formatting.None, SerializerSettings);
+        }
+
+        public static string Truncate(this string value, int maxLength)
+        {
+            if (value.Length <= maxLength)
+            {
+                return value;
+            }
+            else
+            {
+                return value.Substring(0, maxLength - 3) + "...";
+            }
         }
     }
 }

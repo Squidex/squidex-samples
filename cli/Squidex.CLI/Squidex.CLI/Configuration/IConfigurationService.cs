@@ -13,11 +13,11 @@ namespace Squidex.CLI.Configuration
     {
         Configuration GetConfiguration();
 
-        void Upsert(string app, ConfiguredApp appConfig);
+        void Upsert(string entry, ConfiguredApp appConfig);
 
-        void Remove(string app);
+        void Remove(string entry);
 
-        void UseApp(string app);
+        void UseApp(string entry);
 
         SquidexClientManager GetClient();
     }

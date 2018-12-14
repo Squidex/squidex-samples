@@ -36,7 +36,17 @@ namespace Squidex.CLI.Configuration
                     {
                         using (var jsonReader = new JsonTextReader(streamReader))
                         {
-                            return jsonSerializer.Deserialize<Configuration>(jsonReader);
+                            var result = jsonSerializer.Deserialize<Configuration>(jsonReader);
+
+                            foreach (var (key, config) in result.Apps)
+                            {
+                                if (string.IsNullOrWhiteSpace(config.Name))
+                                {
+                                    config.Name = key;
+                                }
+                            }
+
+                            return result;
                         }
                     }
                 }
@@ -70,45 +80,45 @@ namespace Squidex.CLI.Configuration
             }
         }
 
-        public void Upsert(string app, ConfiguredApp appConfig)
+        public void Upsert(string config, ConfiguredApp appConfig)
         {
             if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))
             {
                 appConfig.ServiceUrl = CloudUrl;
             }
 
-            configuration.Apps[app] = appConfig;
+            configuration.Apps[config] = appConfig;
 
             if (string.IsNullOrWhiteSpace(configuration.CurrentApp))
             {
-                configuration.CurrentApp = app;
+                configuration.CurrentApp = config;
             }
 
             Save();
         }
 
-        public void UseApp(string app)
+        public void UseApp(string entry)
         {
-            if (!configuration.Apps.ContainsKey(app))
+            if (!configuration.Apps.ContainsKey(entry))
             {
-                throw new SquidexException("App with the name does not exist.");
+                throw new SquidexException("App config with the name does not exist.");
             }
 
-            configuration.CurrentApp = app;
+            configuration.CurrentApp = entry;
 
             Save();
         }
 
-        public void Remove(string app)
+        public void Remove(string entry)
         {
-            if (!configuration.Apps.ContainsKey(app))
+            if (!configuration.Apps.ContainsKey(entry))
             {
-                throw new SquidexException("App with the name does not exist.");
+                throw new SquidexException("App config with the name does not exist.");
             }
 
-            configuration.Apps.Remove(app);
+            configuration.Apps.Remove(entry);
 
-            if (configuration.CurrentApp == app)
+            if (configuration.CurrentApp == entry)
             {
                 configuration.CurrentApp = configuration.Apps.FirstOrDefault().Key;
             }
