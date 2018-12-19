@@ -7,22 +7,22 @@
 .vs
 .git
 
-.vscode/
+**/.vscode/
 
 # Build results
-build/
-bin/
-obj/
-out/
-publish/
+**/build/
+**/bin/
+**/obj/
+**/out/
+**/publish/
 
 # NodeJS 
 **/node_modules/
 
 # Development Settings
-appsettings.Development.json
-appsettings.Production.json
-launchSettings.json
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/launchSettings.json
 
 # Build
 .drone.yml
