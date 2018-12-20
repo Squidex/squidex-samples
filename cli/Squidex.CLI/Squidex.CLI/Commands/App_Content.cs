@@ -47,187 +47,116 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Export(ExportArguments arguments)
             {
-                try
+                var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
+
+                var client = Configuration.GetClient().GetClient<DummyEntity, DummyData>(arguments.Schema);
+
+                if (arguments.Format == Format.JSON)
                 {
-                    var client = Configuration.GetClient().GetClient<DummyClient, DummyData>(arguments.Schema);
-
-                    if (arguments.Format == Format.JSON)
+                    if (!string.IsNullOrWhiteSpace(arguments.Fields))
                     {
-                        if (!string.IsNullOrWhiteSpace(arguments.Fields))
+                        throw new SquidexException("Fields are not used for JSON export.");
+                    }
+
+                    var fileOrFolder = arguments.Output;
+
+                    if (arguments.FilePerContent)
+                    {
+                        if (string.IsNullOrWhiteSpace(fileOrFolder))
                         {
-                            throw new SquidexException("Fields are not used for JSON export.");
+                            fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
                         }
 
-                        var fileOrFolder = arguments.Output;
-
-                        if (arguments.FilePerContent)
+                        if (!Directory.Exists(fileOrFolder))
                         {
-                            if (string.IsNullOrWhiteSpace(fileOrFolder))
-                            {
-                                fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
-                            }
-
-                            if (!Directory.Exists(fileOrFolder))
-                            {
-                                Directory.CreateDirectory(fileOrFolder);
-                            }
+                            Directory.CreateDirectory(fileOrFolder);
                         }
-                        else
-                        {
-                            if (string.IsNullOrWhiteSpace(fileOrFolder))
-                            {
-                                fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.json";
-                            }
-
-                            if (File.Exists(fileOrFolder))
-                            {
-                                File.Delete(fileOrFolder);
-                            }
-                        }
-
-                        var total = 0L;
-                        var totalRead = 0;
-                        var currentPage = 0L;
-
-                        var consoleTop = Console.CursorTop;
-
-                        var handled = new HashSet<string>();
-
-                        do
-                        {
-                            var content = await client.GetAsync(skip: currentPage * 100, top: 100);
-
-                            total = content.Total;
-
-                            if (content.Items.Count == 0)
-                            {
-                                break;
-                            }
-
-                            foreach (var entity in content.Items)
-                            {
-                                if (handled.Add(entity.Id))
-                                {
-                                    totalRead++;
-
-                                    if (arguments.FilePerContent)
-                                    {
-                                        File.WriteAllText(Path.Combine(fileOrFolder, $"{arguments.Schema}_{entity.Id}.json"), entity.JsonPrettyString());
-                                    }
-                                    else
-                                    {
-                                        File.AppendAllText(fileOrFolder, entity.JsonPrettyString());
-                                    }
-
-                                    Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                                    Console.SetCursorPosition(0, consoleTop);
-                                }
-                            }
-
-                            currentPage++;
-                        }
-                        while (totalRead < total);
-
-                        Console.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
                     }
                     else
                     {
+                        if (string.IsNullOrWhiteSpace(fileOrFolder))
+                        {
+                            fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.json";
+                        }
+
+                        if (File.Exists(fileOrFolder))
+                        {
+                            File.Delete(fileOrFolder);
+                        }
+                    }
+
+                    await ExportAsync(arguments, entity =>
+                    {
                         if (arguments.FilePerContent)
                         {
-                            throw new SquidexException("Multiple files are not supported for CSV export.");
+                            File.WriteAllText(Path.Combine(fileOrFolder, $"{arguments.Schema}_{entity.Id}.json"), entity.JsonPrettyString());
                         }
-
-                        if (string.IsNullOrWhiteSpace(arguments.Fields))
+                        else
                         {
-                            throw new SquidexException("Fields must be defined for CSV export.");
+                            File.AppendAllText(fileOrFolder, entity.JsonPrettyString());
                         }
+                    });
+                }
+                else
+                {
+                    if (arguments.FilePerContent)
+                    {
+                        throw new SquidexException("Multiple files are not supported for CSV export.");
+                    }
 
-                        var file = arguments.Output;
+                    if (string.IsNullOrWhiteSpace(arguments.Fields))
+                    {
+                        throw new SquidexException("Fields must be defined for CSV export.");
+                    }
 
-                        if (string.IsNullOrWhiteSpace(file))
+                    var file = arguments.Output;
+
+                    if (string.IsNullOrWhiteSpace(file))
+                    {
+                        file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.csv";
+                    }
+
+                    var fields = GetFields(arguments);
+
+                    using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                    {
+                        using (var streamWriter = new StreamWriter(stream))
                         {
-                            file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.csv";
-                        }
-
-                        var fields = GetFields(arguments);
-
-                        using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
-                        {
-                            using (var streamWriter = new StreamWriter(stream))
+                            var csvOptions = new CsvHelper.Configuration.Configuration
                             {
-                                var csvOptions = new CsvHelper.Configuration.Configuration
-                                {
-                                    Delimiter = ";"
-                                };
+                                Delimiter = ";"
+                            };
 
-                                using (var writer = new CsvWriter(streamWriter, csvOptions))
+                            using (var writer = new CsvWriter(streamWriter, csvOptions))
+                            {
+                                foreach (var field in fields)
+                                {
+                                    writer.WriteField(field.Name);
+                                }
+
+                                writer.NextRecord();
+
+                                await ExportAsync(arguments, entity =>
                                 {
                                     foreach (var field in fields)
                                     {
-                                        writer.WriteField(field.Name);
+                                        var value = GetValue(entity, field.Path);
+
+                                        if (value is string s)
+                                        {
+                                            writer.WriteField(s.Replace("\n", "\\n"), true);
+                                        }
+                                        else
+                                        {
+                                            writer.WriteField(value);
+                                        }
                                     }
 
                                     writer.NextRecord();
-
-                                    var total = 0L;
-                                    var totalRead = 0;
-                                    var currentPage = 0L;
-
-                                    var consoleTop = Console.CursorTop;
-
-                                    var handled = new HashSet<string>();
-
-                                    do
-                                    {
-                                        var content = await client.GetAsync(skip: currentPage * 100, top: 100);
-
-                                        total = content.Total;
-
-                                        if (content.Items.Count == 0)
-                                        {
-                                            break;
-                                        }
-
-                                        foreach (var entity in content.Items)
-                                        {
-                                            if (handled.Add(entity.Id))
-                                            {
-                                                totalRead++;
-
-                                                foreach (var field in fields)
-                                                {
-                                                    var value = GetValue(entity, field.Path);
-
-                                                    if (value is string s)
-                                                    {
-                                                        writer.WriteField(s.Replace("\n", "\\n"), true);
-                                                    }
-                                                    else
-                                                    {
-                                                        writer.WriteField(value);
-                                                    }
-                                                }
-
-                                                writer.NextRecord();
-
-                                                Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                                                Console.SetCursorPosition(0, consoleTop);
-                                            }
-                                        }
-
-                                        currentPage++;
-                                    }
-                                    while (totalRead < total);
-
-                                    Console.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
-                                }
+                                });
                             }
                         }
                     }
-                }
-                catch (IOException ex)
-                {
-                    throw new SquidexException($"Failed to export content: {ex.Message}", ex);
                 }
             }
 
@@ -266,6 +195,51 @@ namespace Squidex.CLI.Commands
                 }
 
                 return fields;
+            }
+
+            private async Task ExportAsync(ExportArguments arguments, Action<DummyEntity> handler)
+            {
+                var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
+
+                var client = Configuration.GetClient().GetClient<DummyEntity, DummyData>(arguments.Schema);
+
+                var total = 0L;
+                var totalRead = 0;
+                var currentPage = 0L;
+
+                var consoleTop = Console.CursorTop;
+
+                var handled = new HashSet<string>();
+
+                do
+                {
+                    var content = await client.GetAsync(currentPage * 100, 100, arguments.Filter, arguments.OrderBy, arguments.FullText, ctx);
+
+                    total = content.Total;
+
+                    if (content.Items.Count == 0)
+                    {
+                        break;
+                    }
+
+                    foreach (var entity in content.Items)
+                    {
+                        if (handled.Add(entity.Id))
+                        {
+                            totalRead++;
+
+                            handler(entity);
+
+                            Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                            Console.SetCursorPosition(0, consoleTop);
+                        }
+                    }
+
+                    currentPage++;
+                }
+                while (totalRead < total);
+
+                Console.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
             }
 
             private object GetValue(object current, string[] path)
@@ -346,8 +320,20 @@ namespace Squidex.CLI.Commands
                 [Argument(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
+                [Option(LongName = "filter", Description = "Optional filter.")]
+                public string Filter { get; set; }
+
+                [Option(LongName = "text", Description = "Optional full text query.")]
+                public string FullText { get; set; }
+
+                [Option(LongName = "order", Description = "Optional ordering.")]
+                public string OrderBy { get; set; }
+
                 [Option(LongName = "output", Description = "Optional file or folder name. Default: Schema name.")]
                 public string Output { get; set; }
+
+                [Option(LongName = "unpublished", ShortName = "u", Description = "Export unpublished content.")]
+                public bool Unpublished { get; set; }
 
                 [Option(LongName = "multiple", ShortName = "m", Description = "Creates one file per content.")]
                 public bool FilePerContent { get; set; }

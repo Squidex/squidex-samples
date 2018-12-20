@@ -15,7 +15,7 @@ namespace Squidex.CLI.Commands
     {
     }
 
-    public sealed class DummyClient : SquidexEntityBase<DummyData>
+    public sealed class DummyEntity : SquidexEntityBase<DummyData>
     {
     }
 }
