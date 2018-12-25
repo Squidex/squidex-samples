@@ -3,12 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>countries</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cloud.squidex.io/build/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/css/countrySelect.min.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/country-select-js/2.0.1/js/countrySelect.min.js"></script>
     <style type="text/css">
+        body{
+            background: #ffffff;
+        }
         input[name='country'] {
             width: 200%;
         }
@@ -44,7 +47,7 @@
                 resize();
             })
             $("body").on("click", ".selected-flag", resize)
-            control.countrySelect({ responsiveDropdown: true });
+            control.countrySelect();
         })(window)
     </script>
 </body>
