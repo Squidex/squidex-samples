@@ -3,9 +3,9 @@
 #
 FROM microsoft/dotnet:2.1-sdk as builder
 
-COPY . .
+WORKDIR /src
 
-WORKDIR /
+COPY . .
 
 # Publish
 RUN dotnet restore \
