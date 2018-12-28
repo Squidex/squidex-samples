@@ -21,6 +21,8 @@ namespace Squidex.ClientLibrary
 
         public DateTimeOffset LastModified { get; set; }
 
+        public bool IsPending { get; set; }
+
         public int Version { get; set; }
     }
 }

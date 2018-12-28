@@ -2,9 +2,11 @@
 
 # Squidex Samples
 
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=square)](https://gitter.im/squidex-cms/Lobby) [![Slack](https://img.shields.io/badge/chat-on_slack-E01765.svg?style=square)](https://squidex-slack.herokuapp.com/)
-
 This repository contains samples for Squidex CMS.
+
+## How to make feature requests or report bugs? 
+
+Please join our community forum: https://support.squidex.io
 
 ## C#
 

@@ -8,6 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
@@ -16,6 +19,12 @@ namespace Squidex.ClientLibrary
         private readonly string applicationName;
         private readonly Uri serviceUrl;
         private readonly IAuthenticator authenticator;
+        private readonly HttpMessageHandler messageHandler;
+
+        public string App
+        {
+            get { return applicationName; }
+        }
 
         public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret)
             : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, new CachingAuthenticator(serviceUrl, clientId, clientSecret))
@@ -36,6 +45,8 @@ namespace Squidex.ClientLibrary
             this.authenticator = authenticator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;
+
+            messageHandler = new AuthenticatingHttpClientHandler(authenticator);
         }
 
         public string GenerateImageUrl(string id)
@@ -59,9 +70,64 @@ namespace Squidex.ClientLibrary
                 options.ClientSecret);
         }
 
+        public IAppsClient CreateAppsClient()
+        {
+            return new AppsClient(CreateHttpClient());
+        }
+
+        public IBackupsClient CreateAppsContributorsClient()
+        {
+            return new BackupsClient(CreateHttpClient());
+        }
+
+        public ICommentsClient CreateCommentsClient()
+        {
+            return new CommentsClient(CreateHttpClient());
+        }
+
+        public IHistoryClient CreateHistoryClient()
+        {
+            return new HistoryClient(CreateHttpClient());
+        }
+
+        public ILanguagesClient CreateLanguagesClient()
+        {
+            return new LanguagesClient(CreateHttpClient());
+        }
+
+        public IPingClient CreatePingClient()
+        {
+            return new PingClient(CreateHttpClient());
+        }
+
+        public IPlansClient CreatePlansClient()
+        {
+            return new PlansClient(CreateHttpClient());
+        }
+
+        public IRulesClient CreateRulesClient()
+        {
+            return new RulesClient(CreateHttpClient());
+        }
+
+        public ISchemasClient CreateSchemasClient()
+        {
+            return new SchemasClient(CreateHttpClient());
+        }
+
+        public IStatisticsClient CreateStatisticsClient()
+        {
+            return new StatisticsClient(CreateHttpClient());
+        }
+
+        public IUsersClient CreateUsersClient()
+        {
+            return new UsersClient(CreateHttpClient());
+        }
+
         public SquidexAssetClient GetAssetClient()
         {
-            return new SquidexAssetClient(serviceUrl, applicationName, string.Empty, authenticator);
+            return new SquidexAssetClient(serviceUrl, applicationName, string.Empty, messageHandler);
         }
 
         public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName)
@@ -70,7 +136,14 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
-            return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
+            return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, messageHandler);
+        }
+
+        private HttpClient CreateHttpClient()
+        {
+            var url = new Uri(serviceUrl, "/api/");
+
+            return new HttpClient(messageHandler) { BaseAddress = url };
         }
     }
 }

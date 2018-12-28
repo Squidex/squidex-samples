@@ -17,6 +17,7 @@ namespace Squidex.ClientLibrary
 {
     public class Authenticator : IAuthenticator
     {
+        private readonly HttpClient httpClient = new HttpClient();
         private readonly string clientId;
         private readonly string clientSecret;
         private readonly Uri serviceUrl;
@@ -78,14 +79,15 @@ namespace Squidex.ClientLibrary
             var bodyString = $"grant_type=client_credentials&client_id={clientId}&client_secret={clientSecret}&scope=squidex-api";
             var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
 
-            var response = await SquidexHttpClient.Instance.PostAsync(url, bodyContent);
+            using (var response = await httpClient.PostAsync(url, bodyContent))
+            {
+                response.EnsureSuccessStatusCode();
 
-            response.EnsureSuccessStatusCode();
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonToken = JToken.Parse(jsonString);
 
-            var jsonString = await response.Content.ReadAsStringAsync();
-            var jsonToken = JToken.Parse(jsonString);
-
-            return jsonToken["access_token"].ToString();
+                return jsonToken["access_token"].ToString();
+            }
         }
     }
 }

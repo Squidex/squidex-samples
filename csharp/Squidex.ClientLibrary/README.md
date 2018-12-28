@@ -1,6 +1,6 @@
 # C# Client Library
 
-Version: 0.2.0
+Version: 1.5.0
 
 Also available on [nuget.org](https://www.nuget.org/packages/Squidex.ClientLibrary/).
 
