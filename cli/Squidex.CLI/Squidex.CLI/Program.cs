@@ -24,12 +24,12 @@ namespace Squidex.CLI
                 new ServiceCollection()
                     .AddSingleton<IConfigurationService, ConfigurationService>();
 
-            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-
-            var appRunner = new AppRunner<App>().UseMicrosoftDependencyInjection(serviceProvider);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
 
             try
             {
+                var appRunner = new AppRunner<App>().UseMicrosoftDependencyInjection(serviceProvider);
+
                 return appRunner.Run(args);
             }
             catch (SquidexException ex)

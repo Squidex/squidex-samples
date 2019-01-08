@@ -19,6 +19,8 @@ namespace Squidex.CLI.Configuration
 
         void UseApp(string entry);
 
-        SquidexClientManager GetClient();
+        void UseAppInSession(string entry);
+
+        (string App, SquidexClientManager Client) GetClient();
     }
 }

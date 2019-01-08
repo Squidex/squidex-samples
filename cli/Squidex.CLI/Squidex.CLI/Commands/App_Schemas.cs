@@ -33,10 +33,10 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
-                var service = Configuration.GetClient();
+                var (app, service) = Configuration.GetClient();
 
                 var schemasClient = service.CreateSchemasClient();
-                var schemas = await schemasClient.GetSchemasAsync(service.App);
+                var schemas = await schemasClient.GetSchemasAsync(app);
 
                 if (arguments.Table)
                 {
@@ -58,10 +58,10 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
-                var service = Configuration.GetClient();
+                var (app, service) = Configuration.GetClient();
 
                 var schemasClient = service.CreateSchemasClient();
-                var schema = await schemasClient.GetSchemaAsync(service.App, arguments.Name);
+                var schema = await schemasClient.GetSchemaAsync(app, arguments.Name);
 
                 Console.WriteLine(schema.JsonPrettyString());
             }
@@ -69,7 +69,7 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
-                var service = Configuration.GetClient();
+                var (app, service) = Configuration.GetClient();
 
                 var schemasClient = service.CreateSchemasClient();
 
@@ -95,14 +95,16 @@ namespace Squidex.CLI.Commands
                     throw new SquidexException($"Cannot deserialize schema: {ex.Message}");
                 }
 
-                if (string.IsNullOrWhiteSpace(sourceSchema.Name))
+                var schema = sourceSchema.Name;
+
+                if (string.IsNullOrWhiteSpace(schema))
                 {
                     throw new SquidexException("Schema name cannot be empty.");
                 }
 
                 try
                 {
-                    targetSchema = await schemasClient.GetSchemaAsync(service.App, sourceSchema.Name);
+                    targetSchema = await schemasClient.GetSchemaAsync(app, schema);
                 }
                 catch
                 {
@@ -111,34 +113,22 @@ namespace Squidex.CLI.Commands
 
                 if (targetSchema == null)
                 {
-                    var request = new CreateSchemaDto
-                    {
-                        Publish = sourceSchema.IsPublished,
-                        Properties = sourceSchema.Properties,
-                        Fields = sourceSchema.Fields.OrEmpty().Select(x => new CreateSchemaFieldDto
-                        {
-                            Name = x.Name,
-                            IsDisabled = x.IsDisabled,
-                            IsHidden = x.IsHidden,
-                            IsLocked = x.IsLocked,
-                            Nested = x.Nested.OrEmpty().Select(y => new CreateSchemaNestedFieldDto
-                            {
-                                Name = y.Name,
-                                IsDisabled = y.IsDisabled,
-                                IsHidden = y.IsHidden,
-                                Properties = y.Properties,
-                            }).ToList(),
-                            Partitioning = x.Partitioning,
-                            Properties = x.Properties,
-                        }).ToList()
-                    };
+                    var request = JsonConvert.DeserializeObject<CreateSchemaDto>(schemaText);
 
-                    await schemasClient.PostSchemaAsync(service.App, request);
+                    request.Publish = sourceSchema.IsPublished;
+                    request.Singleton = sourceSchema.IsSingleton;
+
+                    await schemasClient.PostSchemaAsync(app, request);
 
                     Console.WriteLine("> Created schema because it does not exists in the target system.");
                 }
                 else
                 {
+                    var sourceFieldNames = sourceSchema.Fields.OrEmpty().Select(x => x.Name).ToList();
+                    var targetFieldNames = targetSchema.Fields.OrEmpty().Select(x => x.Name).ToList();
+
+                    var sourceMapping = sourceSchema.Fields.OrEmpty().ToDictionary(x => x.Name, x => x.FieldId);
+
                     if (!arguments.NoFieldDeletion)
                     {
                         foreach (var targetField in targetSchema.Fields.OrEmpty())
@@ -147,23 +137,11 @@ namespace Squidex.CLI.Commands
 
                             if (sourceField == null)
                             {
-                                await schemasClient.DeleteFieldAsync(service.App, sourceSchema.Name, targetField.FieldId);
+                                await schemasClient.DeleteFieldAsync(app, schema, targetField.FieldId);
 
-                                Console.WriteLine($"> Field {targetField.Name} deleted.");
-                            }
-                            else
-                            {
-                                foreach (var targetNestedField in targetField.Nested)
-                                {
-                                    var sourceNestedField = sourceField.Nested.FirstOrDefault(x => x.Name == targetNestedField.Name);
+                                Console.WriteLine($" - Field {targetField.Name} deleted.");
 
-                                    if (sourceNestedField == null)
-                                    {
-                                        await schemasClient.DeleteNestedFieldAsync(service.App, sourceSchema.Name, targetField.FieldId, targetNestedField.FieldId);
-
-                                        Console.WriteLine($"> Field {targetField.Name}/{targetNestedField.Name} deleted.");
-                                    }
-                                }
+                                targetFieldNames.Remove(targetField.Name);
                             }
                         }
                     }
@@ -172,36 +150,144 @@ namespace Squidex.CLI.Commands
                     {
                         var targetField = targetSchema.Fields.OrEmpty().FirstOrDefault(x => x.Name == sourceField.Name);
 
-                        var id = 0L;
+                        var fieldId = 0L;
 
-                        if (targetField == null || ((targetField.Partitioning != sourceField.Partitioning || targetField.Properties.GetType() != sourceField.Properties.GetType()) && !arguments.NoFieldRecreation))
+                        if (targetField == null)
                         {
-                            var request = new AddFieldDto
+                            fieldId = await schemasClient.CreateFieldAsync(app, schema, sourceField);
+
+                            sourceMapping[sourceField.Name] = fieldId;
+
+                            Console.WriteLine($" - Field {targetField.Name} created.");
+                        }
+                        else if (targetField.Partitioning == sourceField.Partitioning && targetField.Properties.GetType() == sourceField.Properties.GetType())
+                        {
+                            if (!sourceField.Properties.JsonEquals(targetField.Properties))
                             {
-                                Name = sourceField.Name,
-                                Partitioning = sourceField.Partitioning,
-                                Properties = sourceField.Properties
-                            };
+                                var request = new UpdateFieldDto
+                                {
+                                    Properties = sourceField.Properties
+                                };
 
-                            await schemasClient.PostFieldAsync(service.App, sourceSchema.Name, request);
+                                fieldId = targetField.FieldId;
 
-                            id = targetField.FieldId;
+                                await schemasClient.PutFieldAsync(app, schema, fieldId, request);
+
+                                Console.WriteLine($" - Field {targetField.Name} updated.");
+                            }
+                        }
+                        else if (!arguments.NoFieldRecreation)
+                        {
+                            await schemasClient.DeleteFieldAsync(app, schema, targetField.FieldId);
+
+                            fieldId = await schemasClient.CreateFieldAsync(app, schema, sourceField);
+
+                            sourceMapping[sourceField.Name] = fieldId;
+
+                            Console.WriteLine($" - Field {targetField.Name} recreated.");
+                        }
+
+                        if (!sourceField.IsHidden.BoolEquals(targetField?.IsHidden))
+                        {
+                            await schemasClient.HideFieldAsync(app, schema, fieldId);
+
+                            Console.WriteLine($" - Field {targetField.Name} hidden.");
+                        }
+
+                        if (!sourceField.IsLocked.BoolEquals(targetField?.IsLocked))
+                        {
+                            await schemasClient.LockFieldAsync(app, schema, fieldId);
+
+                            Console.WriteLine($" - Field {targetField.Name} locked.");
+                        }
+
+                        if (!sourceField.IsDisabled.BoolEquals(targetField?.IsDisabled))
+                        {
+                            await schemasClient.DisableFieldAsync(app, schema, fieldId);
+
+                            Console.WriteLine($" - Field {targetField.Name} disabled.");
+                        }
+                    }
+
+                    if (!sourceSchema.Properties.JsonEqualsOrNew(targetSchema.Properties))
+                    {
+                        var request = new UpdateSchemaDto
+                        {
+                            Hints = targetSchema?.Properties?.Hints,
+                            Label = targetSchema?.Properties?.Label,
+                        };
+
+                        await schemasClient.PutSchemaAsync(app, schema, request);
+
+                        Console.WriteLine(" - Schema properties updated");
+                    }
+
+                    if (!sourceSchema.IsPublished.BoolEquals(targetSchema.IsPublished))
+                    {
+                        if (targetSchema.IsPublished == true)
+                        {
+                            await schemasClient.PublishSchemaAsync(app, schema);
+
+                            Console.WriteLine($" - Schema published");
                         }
                         else
                         {
-                            var request = new UpdateFieldDto
-                            {
-                                Properties = sourceField.Properties
-                            };
+                            await schemasClient.UnpublishSchemaAsync(app, schema);
 
-                            await schemasClient.PutFieldAsync(service.App, sourceSchema.Name, sourceField.FieldId, request);
-                        }
-
-                        if (sourceField.IsHidden != targetField?.IsHidden)
-                        {
-                            await schemasClient.HideFieldAsync(service.App, sourceField.Name, sourceField.FieldId);
+                            Console.WriteLine($" - Schema unpublished");
                         }
                     }
+
+                    if (targetFieldNames.Count > 0 && targetFieldNames.Count == sourceFieldNames.Count && !targetFieldNames.JsonEqualsOrNew(sourceFieldNames))
+                    {
+                        var request = new ReorderFieldsDto
+                        {
+                            FieldIds = sourceFieldNames.Select(x => sourceMapping[x]).ToList()
+                        };
+
+                        // await schemasClient.O(app, schema);
+
+                        Console.WriteLine($" - Schema fields reordered");
+                    }
+                }
+
+                if (!sourceSchema.Category.StringEquals(targetSchema?.Category))
+                {
+                    var request = new ChangeCategoryDto
+                    {
+                        Name = sourceSchema.Category
+                    };
+
+                    await schemasClient.PutCategoryAsync(app, schema, request);
+
+                    Console.WriteLine($" - Schema moved to category {sourceSchema.Category}");
+                }
+
+                if (!sourceSchema.PreviewUrls.JsonEquals(targetSchema?.PreviewUrls))
+                {
+                    // await schemasClient.O(app, schema);
+
+                    Console.WriteLine($" - Schema preview urls configured");
+                }
+
+                if (!sourceSchema.ScriptChange.StringEquals(targetSchema?.ScriptChange) ||
+                    !sourceSchema.ScriptCreate.StringEquals(targetSchema.ScriptCreate) ||
+                    !sourceSchema.ScriptDelete.StringEquals(targetSchema.ScriptDelete) ||
+                    !sourceSchema.ScriptQuery.StringEquals(targetSchema.ScriptQuery) ||
+                    !sourceSchema.ScriptUpdate.StringEquals(targetSchema.ScriptUpdate))
+                {
+                    var request = new ConfigureScriptsDto
+                    {
+                        ScriptChange = sourceSchema.ScriptChange,
+                        ScriptCreate = sourceSchema.ScriptCreate,
+                        ScriptDelete = sourceSchema.ScriptDelete,
+                        ScriptQuery = sourceSchema.ScriptQuery,
+                        ScriptUpdate = sourceSchema.ScriptUpdate,
+                    };
+
+                    await schemasClient.PutSchemaScriptsAsync(app, schema, request);
+
+                    Console.WriteLine(" - Schema scripts configured.");
                 }
             }
 

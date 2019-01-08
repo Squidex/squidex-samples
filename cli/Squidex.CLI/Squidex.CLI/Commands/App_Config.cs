@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using CommandDotNet;
 using CommandDotNet.Attributes;
 using ConsoleTables;
