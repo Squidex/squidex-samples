@@ -1403,12 +1403,20 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<FileResponse> PutCategoryAsync(string app, string name, ChangeCategoryDto request, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Update the preview urls.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="name">The name of the schema.</param>
+        /// <param name="request">The preview urls for the schema.</param>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request);
+        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, PreviewUrlsDto request);
     
+        /// <summary>Update the preview urls.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="name">The name of the schema.</param>
+        /// <param name="request">The preview urls for the schema.</param>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, PreviewUrlsDto request, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update the scripts of a schema.</summary>
         /// <param name="app">The name of the app.</param>
@@ -4471,15 +4479,23 @@ namespace Squidex.ClientLibrary.Management
             }
         }
     
+        /// <summary>Update the preview urls.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="name">The name of the schema.</param>
+        /// <param name="request">The preview urls for the schema.</param>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request)
+        public System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, PreviewUrlsDto request)
         {
             return PutPreviewUrlsAsync(app, name, request, System.Threading.CancellationToken.None);
         }
     
+        /// <summary>Update the preview urls.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="name">The name of the schema.</param>
+        /// <param name="request">The preview urls for the schema.</param>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, PreviewUrlsDto request, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -4527,6 +4543,18 @@ namespace Squidex.ClientLibrary.Management
                             var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
                             client_ = null; response_ = null; // response and client are disposed by FileResponse
                             return fileResponse_;
+                        }
+                        else
+                        if (status_ == "204") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("Schema has been updated.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("Schema or app not found.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
                         if (status_ == "500") 
@@ -13767,7 +13795,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The preview Urls.</summary>
         [Newtonsoft.Json.JsonProperty("previewUrls", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, string> PreviewUrls { get; set; }
+        public PreviewUrlsDto PreviewUrls { get; set; }
     
         /// <summary>The list of fields.</summary>
         [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Always)]
@@ -13809,6 +13837,30 @@ namespace Squidex.ClientLibrary.Management
         public static SchemaDetailsDto FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SchemaDetailsDto>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PreviewUrlsDto : System.Collections.Generic.Dictionary<string, string>
+    {
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
+    
+        [Newtonsoft.Json.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties; }
+            set { _additionalProperties = value; }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static PreviewUrlsDto FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<PreviewUrlsDto>(data);
         }
     
     }
