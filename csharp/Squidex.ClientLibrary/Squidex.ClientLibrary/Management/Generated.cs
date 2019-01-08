@@ -1403,6 +1403,13 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         System.Threading.Tasks.Task<FileResponse> PutCategoryAsync(string app, string name, ChangeCategoryDto request, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request);
+    
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Update the scripts of a schema.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="name">The name of the schema.</param>
@@ -4423,16 +4430,103 @@ namespace Squidex.ClientLibrary.Management
                             throw new SquidexManagementException("Schema has been updated.", (int)response_.StatusCode, responseData_, headers_, null);
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SquidexManagementException("Schema properties are not valid.", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SquidexManagementException("Schema or app not found.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(ErrorDto); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorDto>(responseData_, _settings.Value);
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SquidexManagementException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, responseData_, headers_, result_, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request)
+        {
+            return PutPreviewUrlsAsync(app, name, request, System.Threading.CancellationToken.None);
+        }
+    
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        public async System.Threading.Tasks.Task<FileResponse> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (name == null)
+                throw new System.ArgumentNullException("name");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/schemas/{name}/preview-urls");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200" || status_ == "206") 
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
                         }
                         else
                         if (status_ == "500") 
@@ -13671,6 +13765,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("scriptChange", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ScriptChange { get; set; }
     
+        /// <summary>The preview Urls.</summary>
+        [Newtonsoft.Json.JsonProperty("previewUrls", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> PreviewUrls { get; set; }
+    
         /// <summary>The list of fields.</summary>
         [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -13904,6 +14002,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("isHidden", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsHidden { get; set; }
     
+        /// <summary>Defines if the field is locked.</summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsLocked { get; set; }
+    
         /// <summary>Defines if the field is disabled.</summary>
         [Newtonsoft.Json.JsonProperty("isDisabled", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsDisabled { get; set; }
@@ -14116,21 +14218,9 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AssetChangedRuleTriggerDto : RuleTriggerDto
     {
-        /// <summary>Determines whether to handle the event when an asset is created.</summary>
-        [Newtonsoft.Json.JsonProperty("sendCreate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendCreate { get; set; }
-    
-        /// <summary>Determines whether to handle the event when an asset is updated.</summary>
-        [Newtonsoft.Json.JsonProperty("sendUpdate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendUpdate { get; set; }
-    
-        /// <summary>Determines whether to handle the event when an asset is renamed.</summary>
-        [Newtonsoft.Json.JsonProperty("sendRename", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendRename { get; set; }
-    
-        /// <summary>Determines whether to handle the event when an asset is deleted.</summary>
-        [Newtonsoft.Json.JsonProperty("sendDelete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendDelete { get; set; }
+        /// <summary>Javascript condition when to trigger.</summary>
+        [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Condition { get; set; }
     
         public string ToJson() 
         {
@@ -14175,33 +14265,9 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("schemaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid SchemaId { get; set; }
     
-        /// <summary>Determines whether to handle the event when a content is created.</summary>
-        [Newtonsoft.Json.JsonProperty("sendCreate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendCreate { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is updated.</summary>
-        [Newtonsoft.Json.JsonProperty("sendUpdate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendUpdate { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is deleted.</summary>
-        [Newtonsoft.Json.JsonProperty("sendDelete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendDelete { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is published.</summary>
-        [Newtonsoft.Json.JsonProperty("sendPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendPublish { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is unpublished.</summary>
-        [Newtonsoft.Json.JsonProperty("sendUnpublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendUnpublish { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is archived.</summary>
-        [Newtonsoft.Json.JsonProperty("sendArchived", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendArchived { get; set; }
-    
-        /// <summary>Determines whether to handle the event when a content is restored.</summary>
-        [Newtonsoft.Json.JsonProperty("sendRestore", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool SendRestore { get; set; }
+        /// <summary>Javascript condition when to trigger.</summary>
+        [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Condition { get; set; }
     
         public string ToJson() 
         {
@@ -14216,16 +14282,17 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "actionType")]
-    [JsonInheritanceAttribute("WebhookAction", typeof(Webhook))]
-    [JsonInheritanceAttribute("TweetAction", typeof(Tweet))]
-    [JsonInheritanceAttribute("SlackAction", typeof(Slack))]
-    [JsonInheritanceAttribute("PrerenderAction", typeof(Prerender))]
-    [JsonInheritanceAttribute("MediumAction", typeof(Medium))]
-    [JsonInheritanceAttribute("FastlyAction", typeof(Fastly))]
-    [JsonInheritanceAttribute("ElasticSearchAction", typeof(ElasticSearch))]
-    [JsonInheritanceAttribute("DiscourseAction", typeof(Discourse))]
-    [JsonInheritanceAttribute("AzureQueueAction", typeof(AzureQueue))]
-    [JsonInheritanceAttribute("AlgoliaAction", typeof(Algolia))]
+    [JsonInheritanceAttribute("Webhook", typeof(Webhook))]
+    [JsonInheritanceAttribute("Tweet", typeof(Tweet))]
+    [JsonInheritanceAttribute("Slack", typeof(Slack))]
+    [JsonInheritanceAttribute("Prerender", typeof(Prerender))]
+    [JsonInheritanceAttribute("Medium", typeof(Medium))]
+    [JsonInheritanceAttribute("Fastly", typeof(Fastly))]
+    [JsonInheritanceAttribute("Email", typeof(Email))]
+    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearch))]
+    [JsonInheritanceAttribute("Discourse", typeof(Discourse))]
+    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueue))]
+    [JsonInheritanceAttribute("Algolia", typeof(Algolia))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class RuleAction 
     {
@@ -15622,6 +15689,64 @@ namespace Squidex.ClientLibrary.Management
         public static Fastly FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Fastly>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.13.2.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class Email : RuleAction
+    {
+        /// <summary>The IP address or host to the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerHost { get; set; }
+    
+        /// <summary>The port to the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.Always)]
+        public int ServerPort { get; set; }
+    
+        /// <summary>Specify whether the SMPT client uses Secure Sockets Layer (SSL) to encrypt the connection.</summary>
+        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.Always)]
+        public bool ServerUseSsl { get; set; }
+    
+        /// <summary>The username for the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerUsername { get; set; }
+    
+        /// <summary>The password for the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverPassword", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerPassword { get; set; }
+    
+        /// <summary>The email sending address.</summary>
+        [Newtonsoft.Json.JsonProperty("messageFrom", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageFrom { get; set; }
+    
+        /// <summary>The email message will be sent to.</summary>
+        [Newtonsoft.Json.JsonProperty("messageTo", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageTo { get; set; }
+    
+        /// <summary>The subject line for this email message.</summary>
+        [Newtonsoft.Json.JsonProperty("messageSubject", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageSubject { get; set; }
+    
+        /// <summary>The message body.</summary>
+        [Newtonsoft.Json.JsonProperty("messageBody", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageBody { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static Email FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Email>(data);
         }
     
     }
