@@ -25,16 +25,12 @@ namespace Squidex.CLI.Commands
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
-            [ApplicationMetadata(Name = "view", Description = "Shows the current configuration.")]
-            public void View([Option] bool json)
+            [ApplicationMetadata(Name = "list", Description = "Shows the current configuration.")]
+            public void List(ListArguments arguments)
             {
                 var config = Configuration.GetConfiguration();
 
-                if (json)
-                {
-                    Console.WriteLine(config.JsonPrettyString());
-                }
-                else
+                if (arguments.Table)
                 {
                     var table = new ConsoleTable("Name", "App", "ClientId", "ClientSecret", "Url");
 
@@ -48,6 +44,10 @@ namespace Squidex.CLI.Commands
                     Console.WriteLine();
                     Console.WriteLine("Current App: {0}", config.CurrentApp);
                 }
+                else
+                {
+                    Console.WriteLine(config.JsonPrettyString());
+                }
             }
 
             [ApplicationMetadata(Name = "add", Description = "Add or update an app.")]
@@ -59,7 +59,7 @@ namespace Squidex.CLI.Commands
             }
 
             [ApplicationMetadata(Name = "remove", Description = "Remove an app.")]
-            public void Remove(AppArguments arguments)
+            public void Remove(RemoveArguments arguments)
             {
                 Configuration.Remove(arguments.Name);
 
@@ -67,29 +67,55 @@ namespace Squidex.CLI.Commands
             }
 
             [ApplicationMetadata(Name = "use", Description = "Use an app.")]
-            public void Use(AppArguments arguments)
+            public void Use(UseArguments arguments)
             {
                 Configuration.UseApp(arguments.Name);
 
                 Console.WriteLine("> App selected.");
             }
 
-            [Validator(typeof(AppArgumentsValidator))]
-            public sealed class AppArguments : IArgumentModel
+            [Validator(typeof(Validator))]
+            public sealed class ListArguments : IArgumentModel
+            {
+                [Option(Description = "Output as table")]
+                public bool Table { get; set; }
+
+                public sealed class Validator : AbstractValidator<ListArguments>
+                {
+                }
+            }
+
+            [Validator(typeof(Validator))]
+            public sealed class RemoveArguments : IArgumentModel
             {
                 [Argument(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
 
-                public sealed class AppArgumentsValidator : AbstractValidator<AppArguments>
+                public sealed class Validator : AbstractValidator<RemoveArguments>
                 {
-                    public AppArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Name).NotEmpty();
                     }
                 }
             }
 
-            [Validator(typeof(AddArgumentsValidator))]
+            [Validator(typeof(Validator))]
+            public sealed class UseArguments : IArgumentModel
+            {
+                [Argument(Name = "name", Description = "The name of the app.")]
+                public string Name { get; set; }
+
+                public sealed class Validator : AbstractValidator<UseArguments>
+                {
+                    public Validator()
+                    {
+                        RuleFor(x => x.Name).NotEmpty();
+                    }
+                }
+            }
+
+            [Validator(typeof(Validator))]
             public sealed class AddArguments : IArgumentModel
             {
                 [Argument(Name = "name", Description = "The name of the app.")]
@@ -117,9 +143,9 @@ namespace Squidex.CLI.Commands
                     return new ConfiguredApp { ClientId = ClientId, ClientSecret = ClientSecret, Name = Name };
                 }
 
-                public sealed class AddArgumentsValidator : AbstractValidator<AddArguments>
+                public sealed class Validator : AbstractValidator<AddArguments>
                 {
-                    public AddArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Name).NotEmpty();
                         RuleFor(x => x.ClientId).NotEmpty();
