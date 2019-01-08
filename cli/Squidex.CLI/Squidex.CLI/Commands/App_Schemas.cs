@@ -160,7 +160,9 @@ namespace Squidex.CLI.Commands
 
                             Console.WriteLine($" - Field {targetField.Name} created.");
                         }
-                        else if (targetField.Partitioning == sourceField.Partitioning && targetField.Properties.GetType() == sourceField.Properties.GetType())
+                        else if (
+                            targetField.Partitioning == sourceField.Partitioning &&
+                            targetField.Properties.GetType() == sourceField.Properties.GetType())
                         {
                             if (!sourceField.Properties.JsonEquals(targetField.Properties))
                             {
@@ -238,14 +240,16 @@ namespace Squidex.CLI.Commands
                         }
                     }
 
-                    if (targetFieldNames.Count > 0 && targetFieldNames.Count == sourceFieldNames.Count && !targetFieldNames.JsonEqualsOrNew(sourceFieldNames))
+                    if (targetFieldNames.Count > 0 &&
+                        targetFieldNames.Count == sourceFieldNames.Count &&
+                       !targetFieldNames.JsonEqualsOrNew(sourceFieldNames))
                     {
                         var request = new ReorderFieldsDto
                         {
                             FieldIds = sourceFieldNames.Select(x => sourceMapping[x]).ToList()
                         };
 
-                        // await schemasClient.O(app, schema);
+                        await schemasClient.PutSchemaFieldOrderingAsync(app, schema, request);
 
                         Console.WriteLine($" - Schema fields reordered");
                     }
@@ -265,7 +269,7 @@ namespace Squidex.CLI.Commands
 
                 if (!sourceSchema.PreviewUrls.JsonEquals(targetSchema?.PreviewUrls))
                 {
-                    // await schemasClient.O(app, schema);
+                    await schemasClient.PutPreviewUrlsAsync(app, schema, sourceSchema.PreviewUrls ?? new PreviewUrlsDto());
 
                     Console.WriteLine($" - Schema preview urls configured");
                 }
