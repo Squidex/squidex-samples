@@ -14,28 +14,26 @@ namespace Squidex.ClientLibrary
 {
     public abstract class SquidexClientBase
     {
-        private readonly HttpMessageHandler messageHandler;
+        protected Func<HttpClient> HttpClientFactory { get; }
 
         protected Uri ServiceUrl { get; }
 
         protected string ApplicationName { get; }
 
-        protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, HttpMessageHandler messageHandler)
+        protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, Func<HttpClient> httpClientFactory)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
-            Guard.NotNull(messageHandler, nameof(messageHandler));
+            Guard.NotNull(httpClientFactory, nameof(httpClientFactory));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
 
-            this.messageHandler = messageHandler;
-
+            HttpClientFactory = httpClientFactory;
             ApplicationName = applicationName;
-
             ServiceUrl = serviceUrl;
         }
 
         protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
         {
-            using (var httpClient = new HttpClient(messageHandler))
+            using (var httpClient = HttpClientFactory())
             {
                 var uri = new Uri(ServiceUrl, path);
 

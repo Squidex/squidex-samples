@@ -20,8 +20,8 @@ namespace Squidex.ClientLibrary
     {
         public string SchemaName { get; }
 
-        public SquidexClient(Uri serviceUrl, string applicationName, string schemaName, HttpMessageHandler messageHandler)
-            : base(serviceUrl, applicationName, schemaName, messageHandler)
+        public SquidexClient(Uri serviceUrl, string applicationName, string schemaName, Func<HttpClient> httpClientFactory)
+            : base(serviceUrl, applicationName, schemaName, httpClientFactory)
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
