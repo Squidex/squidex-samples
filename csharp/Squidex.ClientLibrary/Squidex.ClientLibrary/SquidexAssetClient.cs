@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -19,8 +18,8 @@ namespace Squidex.ClientLibrary
 {
     public sealed class SquidexAssetClient : SquidexClientBase
     {
-        public SquidexAssetClient(Uri serviceUrl, string applicationName, IAuthenticator authenticator)
-            : base(serviceUrl, applicationName, authenticator)
+        public SquidexAssetClient(string applicationName, HttpClient httpClient)
+            : base(applicationName, httpClient)
         {
         }
 
@@ -157,12 +156,12 @@ namespace Squidex.ClientLibrary
 
         private string BuildAssetsUrl(string path = "")
         {
-            return $"api/assets/{path}";
+            return $"assets/{path}";
         }
 
         private string BuildAppAssetsUrl(string path = "")
         {
-            return $"api/apps/{ApplicationName}/assets/{path}";
+            return $"apps/{ApplicationName}/assets/{path}";
         }
 
         private static MultipartFormDataContent BuildRequest(string contentName, string contentMimeType, Stream stream)

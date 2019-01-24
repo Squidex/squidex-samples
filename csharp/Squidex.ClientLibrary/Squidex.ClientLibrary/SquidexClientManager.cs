@@ -124,7 +124,7 @@ namespace Squidex.ClientLibrary
 
         public SquidexAssetClient GetAssetClient()
         {
-            return new SquidexAssetClient(serviceUrl, applicationName, authenticator);
+            return new SquidexAssetClient(applicationName, CreateHttpClient());
         }
 
         public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName)
@@ -133,14 +133,14 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
-            return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
+            return new SquidexClient<TEntity, TData>(applicationName, schemaName, CreateHttpClient());
         }
 
         private HttpClient CreateHttpClient()
         {
             var url = new Uri(serviceUrl, "/api/");
 
-            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator)) { BaseAddress = url };
+            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator), false) { BaseAddress = url };
         }
     }
 }

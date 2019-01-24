@@ -10,35 +10,29 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Squidex.ClientLibrary.Utils;
-
 namespace Squidex.ClientLibrary
 {
     public abstract class SquidexClientBase : IDisposable
     {
-        protected HttpClient HttpClient { get; }
-
-        protected Uri ServiceUrl { get; }
+        private readonly HttpClient httpClient;
 
         protected string ApplicationName { get; }
 
-        protected SquidexClientBase(Uri serviceUrl, string applicationName, IAuthenticator authenticator)
+        protected SquidexClientBase(string applicationName, HttpClient httpClient)
         {
-            Guard.NotNull(serviceUrl, nameof(serviceUrl));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
+            Guard.NotNull(httpClient, nameof(httpClient));
 
-            HttpClient = new HttpClient(new AuthenticatingHttpClientHandler(authenticator), true);
             ApplicationName = applicationName;
-            ServiceUrl = serviceUrl;
+
+            this.httpClient = httpClient;
         }
 
         protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
         {
-            var uri = new Uri(ServiceUrl, path);
-
-            using (var request = BuildRequest(method, uri, content, context))
+            using (var request = BuildRequest(method, path, content, context))
             {
-                var response = await HttpClient.SendAsync(request);
+                var response = await httpClient.SendAsync(request);
 
                 await EnsureResponseIsValidAsync(response);
 
@@ -46,9 +40,9 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        protected static HttpRequestMessage BuildRequest(HttpMethod method, Uri uri, HttpContent content, QueryContext context = null)
+        protected static HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent content, QueryContext context = null)
         {
-            var request = new HttpRequestMessage(method, uri);
+            var request = new HttpRequestMessage(method, path);
 
             if (content != null)
             {
@@ -94,7 +88,7 @@ namespace Squidex.ClientLibrary
 
         public void Dispose()
         {
-            this.HttpClient?.Dispose();
+            httpClient?.Dispose();
         }
     }
 }
