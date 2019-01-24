@@ -10,41 +10,39 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Squidex.ClientLibrary.Utils;
+
 namespace Squidex.ClientLibrary
 {
-    public abstract class SquidexClientBase
+    public abstract class SquidexClientBase : IDisposable
     {
-        protected Func<HttpClient> HttpClientFactory { get; }
+        protected HttpClient HttpClient { get; }
 
         protected Uri ServiceUrl { get; }
 
         protected string ApplicationName { get; }
 
-        protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, Func<HttpClient> httpClientFactory)
+        protected SquidexClientBase(Uri serviceUrl, string applicationName, IAuthenticator authenticator)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
-            Guard.NotNull(httpClientFactory, nameof(httpClientFactory));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
 
-            HttpClientFactory = httpClientFactory;
+            HttpClient = new HttpClient(new AuthenticatingHttpClientHandler(authenticator), true);
             ApplicationName = applicationName;
             ServiceUrl = serviceUrl;
         }
 
         protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
         {
-            using (var httpClient = HttpClientFactory())
+            var uri = new Uri(ServiceUrl, path);
+
+            using (var request = BuildRequest(method, uri, content, context))
             {
-                var uri = new Uri(ServiceUrl, path);
+                var response = await HttpClient.SendAsync(request);
 
-                using (var request = BuildRequest(method, uri, content, context))
-                {
-                    var response = await httpClient.SendAsync(request);
+                await EnsureResponseIsValidAsync(response);
 
-                    await EnsureResponseIsValidAsync(response);
-
-                    return response;
-                }
+                return response;
             }
         }
 
@@ -92,6 +90,11 @@ namespace Squidex.ClientLibrary
 
                 throw new SquidexException(message);
             }
+        }
+
+        public void Dispose()
+        {
+            this.HttpClient?.Dispose();
         }
     }
 }
