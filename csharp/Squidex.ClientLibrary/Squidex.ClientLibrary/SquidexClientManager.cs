@@ -19,7 +19,6 @@ namespace Squidex.ClientLibrary
         private readonly string applicationName;
         private readonly Uri serviceUrl;
         private readonly IAuthenticator authenticator;
-        private readonly HttpMessageHandler messageHandler;
 
         public string App
         {
@@ -45,8 +44,6 @@ namespace Squidex.ClientLibrary
             this.authenticator = authenticator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;
-
-            messageHandler = new AuthenticatingHttpClientHandler(authenticator);
         }
 
         public string GenerateImageUrl(string id)
@@ -127,7 +124,7 @@ namespace Squidex.ClientLibrary
 
         public SquidexAssetClient GetAssetClient()
         {
-            return new SquidexAssetClient(serviceUrl, applicationName, string.Empty, messageHandler);
+            return new SquidexAssetClient(serviceUrl, applicationName, authenticator);
         }
 
         public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName)
@@ -136,14 +133,14 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
-            return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, messageHandler);
+            return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
         }
 
         private HttpClient CreateHttpClient()
         {
             var url = new Uri(serviceUrl, "/api/");
 
-            return new HttpClient(messageHandler) { BaseAddress = url };
+            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator)) { BaseAddress = url };
         }
     }
 }

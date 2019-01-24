@@ -19,8 +19,8 @@ namespace Squidex.ClientLibrary
 {
     public sealed class SquidexAssetClient : SquidexClientBase
     {
-        public SquidexAssetClient(Uri serviceUrl, string applicationName, string schemaName, HttpMessageHandler messageHandler)
-            : base(serviceUrl, applicationName, schemaName, messageHandler)
+        public SquidexAssetClient(Uri serviceUrl, string applicationName, IAuthenticator authenticator)
+            : base(serviceUrl, applicationName, authenticator)
         {
         }
 
