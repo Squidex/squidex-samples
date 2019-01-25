@@ -5,9 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+using System.Collections.Generic;
+
+namespace Squidex.CLI.Configuration
 {
-    public sealed class AssetEntities : EntitiesBase<Asset>
+    public sealed class Configuration
     {
+        public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+
+        public string CurrentApp { get; set; }
     }
 }

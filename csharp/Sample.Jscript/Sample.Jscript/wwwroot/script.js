@@ -1,4 +1,4 @@
-﻿const isDevelopment = true;
+﻿const isDevelopment = false;
 
 let host = 'https://cloud.squidex.io';
 let clientId = 'client-test:client';

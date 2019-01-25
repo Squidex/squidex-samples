@@ -5,9 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+using Squidex.ClientLibrary;
+
+namespace Squidex.CLI.Configuration
 {
-    public sealed class AssetEntities : EntitiesBase<Asset>
+    public interface IConfigurationService
     {
+        Configuration GetConfiguration();
+
+        void Upsert(string entry, ConfiguredApp appConfig);
+
+        void Remove(string entry);
+
+        void UseApp(string entry);
+
+        SquidexClientManager GetClient();
     }
 }

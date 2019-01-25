@@ -5,9 +5,17 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary;
+
+namespace Squidex.CLI.Commands
 {
-    public sealed class AssetEntities : EntitiesBase<Asset>
+    public sealed class DummyData : Dictionary<string, Dictionary<string, JToken>>
+    {
+    }
+
+    public sealed class DummyEntity : SquidexEntityBase<DummyData>
     {
     }
 }

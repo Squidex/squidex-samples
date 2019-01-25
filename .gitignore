@@ -4,21 +4,22 @@
 *.vs
 *.log
 
-.vscode
+.vs
+.git
+
+.vscode/
 
 # Build results
 build/
 bin/
 obj/
+out/
 publish/
-
-# Test Output
-_test-output/
 
 # NodeJS 
 node_modules/
 
-# Scripts (should be copied from node_modules on build)
-**/wwwroot/scripts/**/*.*
-
-*.Development.json
+# Development Settings
+appsettings.Development.json
+appsettings.Production.json
+launchSettings.json

@@ -6,44 +6,31 @@
 // ==========================================================================
 
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary
 {
-    public abstract class SquidexClientBase
+    public abstract class SquidexClientBase : IDisposable
     {
-        protected Uri ServiceUrl { get; }
+        private readonly HttpClient httpClient;
 
         protected string ApplicationName { get; }
 
-        protected string SchemaName { get; }
-
-        protected IAuthenticator Authenticator { get; }
-
-        protected SquidexClientBase(Uri serviceUrl, string applicationName, string schemaName, IAuthenticator authenticator)
+        protected SquidexClientBase(string applicationName, HttpClient httpClient)
         {
-            Guard.NotNull(serviceUrl, nameof(serviceUrl));
-            Guard.NotNull(authenticator, nameof(authenticator));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
+            Guard.NotNull(httpClient, nameof(httpClient));
 
-            ServiceUrl = serviceUrl;
-            SchemaName = schemaName;
-            Authenticator = authenticator;
             ApplicationName = applicationName;
+
+            this.httpClient = httpClient;
         }
 
         protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
         {
-            var uri = new Uri(ServiceUrl, path);
-
-            var requestToken = await Authenticator.GetBearerTokenAsync();
-            var request = BuildRequest(method, content, uri, requestToken);
-
-            if (context != null)
+            using (var request = BuildRequest(method, path, content, context))
             {
                 if (context.IsFlatten)
                 {
@@ -54,48 +41,35 @@ namespace Squidex.ClientLibrary
                 {
                     request.Headers.TryAddWithoutValidation("X-Unpublished", "true");
                 }
+                var response = await httpClient.SendAsync(request);
 
-                if (context.Languages != null)
-                {
-                    var languages = string.Join(", ", context.Languages.Where(x => !string.IsNullOrWhiteSpace(x)));
+                await EnsureResponseIsValidAsync(response);
 
-                    if (!string.IsNullOrWhiteSpace(languages))
-                    {
-                        request.Headers.TryAddWithoutValidation("X-Languages", languages);
-                    }
-                }
+                return response;
             }
-
-            var response = await SquidexHttpClient.Instance.SendAsync(request);
-
-            await EnsureResponseIsValidAsync(response, requestToken);
-
-            return response;
         }
 
-        protected static HttpRequestMessage BuildRequest(HttpMethod method, HttpContent content, Uri uri, string requestToken)
+        protected static HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent content, QueryContext context = null)
         {
-            var request = new HttpRequestMessage(method, uri);
+            var request = new HttpRequestMessage(method, path);
 
             if (content != null)
             {
                 request.Content = content;
             }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requestToken);
+            if (context != null)
+            {
+                context.AddToHeaders(request.Headers);
+            }
 
             return request;
         }
 
-        protected async Task EnsureResponseIsValidAsync(HttpResponseMessage response, string token)
+        protected async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
             {
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    await Authenticator.RemoveTokenAsync(token);
-                }
-
                 if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     throw new SquidexException("The app, schema or entity does not exist.");
@@ -119,6 +93,11 @@ namespace Squidex.ClientLibrary
 
                 throw new SquidexException(message);
             }
+        }
+
+        public void Dispose()
+        {
+            httpClient?.Dispose();
         }
     }
 }

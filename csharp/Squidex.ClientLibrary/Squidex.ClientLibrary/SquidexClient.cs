@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,9 +18,14 @@ namespace Squidex.ClientLibrary
         where TEntity : SquidexEntityBase<TData>
         where TData : class, new()
     {
-        public SquidexClient(Uri serviceUrl, string applicationName, string schemaName, IAuthenticator authenticator)
-            : base(serviceUrl, applicationName, schemaName, authenticator)
+        public string SchemaName { get; }
+
+        public SquidexClient(string applicationName, string schemaName, HttpClient httpClient)
+            : base(applicationName, httpClient)
         {
+            Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
+
+            SchemaName = schemaName;
         }
 
         public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null, QueryContext context = null)
@@ -69,6 +73,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
 
             var response = await RequestAsync(HttpMethod.Get, BuildContentUrl($"{id}/"), context: context);
+
             return await response.Content.ReadAsJsonAsync<TEntity>();
         }
 
@@ -180,7 +185,7 @@ namespace Squidex.ClientLibrary
 
         private string BuildContentUrl(string path = "")
         {
-            return $"api/content/{ApplicationName}/{SchemaName}/{path}";
+            return $"content/{ApplicationName}/{SchemaName}/{path}";
         }
     }
 }

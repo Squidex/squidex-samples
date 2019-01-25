@@ -1,17 +1,13 @@
 ﻿// ==========================================================================
-//  SquidexException.cs
 //  Squidex Headless CMS
 // ==========================================================================
-//  Copyright (c) Squidex Group
-//  All rights reserved.
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net.Http;
-
-namespace Squidex.ClientLibrary
+namespace Squidex.CLI.Commands
 {
-    internal static class SquidexHttpClient
+    public partial class App
     {
-        public static readonly HttpClient Instance = new HttpClient();
     }
 }
