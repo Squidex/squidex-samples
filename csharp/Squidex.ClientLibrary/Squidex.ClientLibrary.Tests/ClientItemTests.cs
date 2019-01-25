@@ -36,6 +36,15 @@ namespace Squidex.ClientLibrary.Tests
         }
 
         [Fact]
+        public async Task Should_return_all_users()
+        {
+            var res = await Fixture.GlobalClient.GetAllUsers();
+
+            Assert.True(res != null);
+            Assert.True(res.Count != 0);
+        }
+
+        [Fact]
         public async Task Should_return_item_published_with_creation()
         {
             TestEntity item = null;

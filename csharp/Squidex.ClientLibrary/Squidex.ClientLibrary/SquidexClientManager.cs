@@ -72,5 +72,10 @@ namespace Squidex.ClientLibrary
 
             return new SquidexClient<TEntity, TData>(serviceUrl, applicationName, schemaName, authenticator);
         }
+
+        public SquidexGlobalClient GetGlobalClient()
+        {
+            return new SquidexGlobalClient(serviceUrl, applicationName, null, authenticator);
+        }
     }
 }

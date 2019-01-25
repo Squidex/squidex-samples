@@ -16,5 +16,10 @@ namespace Squidex.ClientLibrary.Tests
         {
             return ClientManager.GetClient<TestEntity, TestEntityData>("numbers");
         }
+
+        public static SquidexGlobalClient BuildGlobalClient()
+        {
+            return ClientManager.GetGlobalClient();
+        }
     }
 }

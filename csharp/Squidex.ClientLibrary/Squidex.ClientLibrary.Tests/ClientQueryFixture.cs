@@ -13,6 +13,7 @@ namespace Squidex.ClientLibrary.Tests
     public sealed class ClientQueryFixture : IDisposable
     {
         public SquidexClient<TestEntity, TestEntityData> Client { get; } = TestClient.Build();
+        public SquidexGlobalClient GlobalClient { get; } = TestClient.BuildGlobalClient();
 
         public ClientQueryFixture()
         {
