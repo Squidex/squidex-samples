@@ -10,11 +10,16 @@ namespace Squidex.ClientLibrary.Tests
     public static class TestClient
     {
         public static readonly SquidexClientManager ClientManager
-            = new SquidexClientManager("https://cloud.squidex.io", "client-test", "client-test:client", "Ify8nZ0O35OyZy6xAwxHFoYw5CcouaYyItPMpk1Df0o=");
+            = new SquidexClientManager("http://localhost:5000", "testing-app", "testing-app:server", "MUKDxdgAVx9LufFrcO5T1pMtZM137climipDCixitig=");
 
         public static SquidexClient<TestEntity, TestEntityData> Build()
         {
             return ClientManager.GetClient<TestEntity, TestEntityData>("numbers");
+        }
+
+        public static SquidexGlobalClient BuildGlobalClient()
+        {
+            return ClientManager.GetGlobalClient();
         }
     }
 }

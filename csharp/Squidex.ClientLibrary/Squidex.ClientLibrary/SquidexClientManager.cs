@@ -136,6 +136,11 @@ namespace Squidex.ClientLibrary
             return new SquidexClient<TEntity, TData>(applicationName, schemaName, CreateHttpClient());
         }
 
+        public SquidexGlobalClient GetGlobalClient()
+        {
+            return new SquidexGlobalClient(applicationName, null, CreateHttpClient());
+        }
+
         private HttpClient CreateHttpClient()
         {
             var url = new Uri(serviceUrl, "/api/");

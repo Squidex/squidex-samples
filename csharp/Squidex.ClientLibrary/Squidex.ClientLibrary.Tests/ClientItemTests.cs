@@ -124,5 +124,11 @@ namespace Squidex.ClientLibrary.Tests
                 await Fixture.Client.DeleteAsync(item.Id);
             }
         }
+
+        [Fact]
+        public async Task Should_return_application_users()
+        {
+            var res = await Fixture.GlobalClient.GetAllUsers();
+        }
     }
 }
