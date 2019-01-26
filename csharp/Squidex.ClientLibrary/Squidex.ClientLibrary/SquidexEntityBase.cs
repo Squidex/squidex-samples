@@ -12,6 +12,7 @@ namespace Squidex.ClientLibrary
     public abstract class SquidexEntityBase<T> : EntityBase where T : class, new()
     {
         public T Data { get; } = new T();
+        public T DataDraft { get; } = new T();
 
         internal void MarkAsUpdated()
         {
