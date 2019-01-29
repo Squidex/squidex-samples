@@ -15,10 +15,14 @@ namespace Squidex.CLI.Configuration
 
         void Upsert(string entry, ConfiguredApp appConfig);
 
+        void Reset();
+
         void Remove(string entry);
 
         void UseApp(string entry);
 
-        SquidexClientManager GetClient();
+        void UseAppInSession(string entry);
+
+        (string App, SquidexClientManager Client) GetClient();
     }
 }

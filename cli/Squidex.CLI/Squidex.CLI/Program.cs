@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Squidex.CLI.Commands;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI
 {
@@ -23,15 +24,20 @@ namespace Squidex.CLI
                 new ServiceCollection()
                     .AddSingleton<IConfigurationService, ConfigurationService>();
 
-            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-
-            var appRunner = new AppRunner<App>().UseMicrosoftDependencyInjection(serviceProvider);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
 
             try
             {
+                var appRunner = new AppRunner<App>().UseMicrosoftDependencyInjection(serviceProvider);
+
                 return appRunner.Run(args);
             }
             catch (SquidexException ex)
+            {
+                Console.WriteLine("ERROR: {0}", ex.Message);
+                return -1;
+            }
+            catch (SquidexManagementException ex)
             {
                 Console.WriteLine("ERROR: {0}", ex.Message);
                 return -1;

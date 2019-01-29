@@ -18,6 +18,7 @@ namespace Squidex.CLI.Configuration
         private const string CloudUrl = "https://cloud.squidex.io";
         private readonly JsonSerializer jsonSerializer = new JsonSerializer();
         private readonly Configuration configuration;
+        private string sessionApp;
 
         public ConfigurationService()
         {
@@ -80,6 +81,14 @@ namespace Squidex.CLI.Configuration
             }
         }
 
+        public void Reset()
+        {
+            configuration.Apps.Clear();
+            configuration.CurrentApp = null;
+
+            Save();
+        }
+
         public void Upsert(string config, ConfiguredApp appConfig)
         {
             if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))
@@ -126,11 +135,25 @@ namespace Squidex.CLI.Configuration
             Save();
         }
 
-        public SquidexClientManager GetClient()
+        public void UseAppInSession(string entry)
         {
-            if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out var app))
+            sessionApp = entry;
+        }
+
+        public (string App, SquidexClientManager Client) GetClient()
+        {
+            if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {
-                return new SquidexClientManager(app.ServiceUrl, configuration.CurrentApp, new Authenticator(app.ServiceUrl, app.ClientId, app.ClientSecret));
+                var authenticator = new Authenticator(app.ServiceUrl, app.ClientId, app.ClientSecret);
+
+                return (app.Name, new SquidexClientManager(app.ServiceUrl, app.Name, authenticator));
+            }
+
+            if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
+            {
+                var authenticator = new Authenticator(app.ServiceUrl, app.ClientId, app.ClientSecret);
+
+                return (app.Name, new SquidexClientManager(app.ServiceUrl, app.Name, authenticator));
             }
 
             throw new SquidexException("Cannot find valid configuration.");

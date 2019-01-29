@@ -49,7 +49,7 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var client = Configuration.GetClient().GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -201,7 +201,7 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var client = Configuration.GetClient().GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
                 var total = 0L;
                 var totalRead = 0;
