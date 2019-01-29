@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace Squidex.CLI
@@ -19,6 +20,7 @@ namespace Squidex.CLI
         static Helper()
         {
             SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            SerializerSettings.Converters.Add(new StringEnumConverter());
         }
 
         public static IEnumerable<T> OrEmpty<T>(this IEnumerable<T> source)

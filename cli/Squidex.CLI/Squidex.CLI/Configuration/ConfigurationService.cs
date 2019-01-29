@@ -81,6 +81,14 @@ namespace Squidex.CLI.Configuration
             }
         }
 
+        public void Reset()
+        {
+            configuration.Apps.Clear();
+            configuration.CurrentApp = null;
+
+            Save();
+        }
+
         public void Upsert(string config, ConfiguredApp appConfig)
         {
             if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))

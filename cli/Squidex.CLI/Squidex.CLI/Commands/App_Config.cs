@@ -65,6 +65,14 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine("> App removed.");
             }
 
+            [ApplicationMetadata(Name = "reset", Description = "Reset the config.")]
+            public void Reset()
+            {
+                Configuration.Reset();
+
+                Console.WriteLine("> Config reset.");
+            }
+
             [ApplicationMetadata(Name = "use", Description = "Use an app.")]
             public void Use(UseArguments arguments)
             {
@@ -139,7 +147,7 @@ namespace Squidex.CLI.Commands
 
                 public ConfiguredApp ToModel()
                 {
-                    return new ConfiguredApp { ClientId = ClientId, ClientSecret = ClientSecret, Name = Name };
+                    return new ConfiguredApp { ClientId = ClientId, ClientSecret = ClientSecret, Name = Name, ServiceUrl = ServiceUrl };
                 }
 
                 public sealed class Validator : AbstractValidator<AddArguments>
