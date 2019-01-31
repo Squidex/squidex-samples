@@ -13,6 +13,8 @@ namespace Squidex.ClientLibrary
     {
         public T Data { get; } = new T();
 
+        public T DataDraft { get; set; }
+
         internal void MarkAsUpdated()
         {
             LastModified = DateTimeOffset.UtcNow;
