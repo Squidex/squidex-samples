@@ -23,7 +23,7 @@ namespace Squidex.ClientLibrary
         {
         }
 
-        public async Task<AssetEntities> GetAssetsAsync(string query = null, string mimeTypes = null, string ids = null, int? skip = null, int? take = null)
+        public async Task<AssetEntities> GetAssetsAsync(string filter = null, string ids = null, int? skip = null, int? top = null)
         {
             var queries = new List<string>();
 
@@ -32,19 +32,14 @@ namespace Squidex.ClientLibrary
                 queries.Add($"$skip={skip.Value}");
             }
 
-            if (take.HasValue)
+            if (top.HasValue)
             {
-                queries.Add($"take={take.Value}");
+                queries.Add($"$top={top.Value}");
             }
 
-            if (!string.IsNullOrEmpty(query))
+            if (!string.IsNullOrEmpty(filter))
             {
-                queries.Add($"$query={query}");
-            }
-
-            if (!string.IsNullOrEmpty(mimeTypes))
-            {
-                queries.Add($"mimeTypes={mimeTypes}");
+                queries.Add($"$filter={filter}");
             }
 
             if (!string.IsNullOrEmpty(ids))
