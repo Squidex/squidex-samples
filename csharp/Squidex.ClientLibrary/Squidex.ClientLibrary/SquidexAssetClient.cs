@@ -59,7 +59,7 @@ namespace Squidex.ClientLibrary
                 queryString = "?" + queryString;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(query));
+            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(queryString));
 
             return await response.Content.ReadAsJsonAsync<AssetEntities>();
         }
