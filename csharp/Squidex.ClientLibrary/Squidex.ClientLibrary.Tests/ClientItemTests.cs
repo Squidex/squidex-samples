@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Threading.Tasks;
+using Squidex.ClientLibrary.Transfer;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
@@ -129,6 +130,30 @@ namespace Squidex.ClientLibrary.Tests
         public async Task Should_return_application_users()
         {
             var res = await Fixture.GlobalClient.GetAllUsers();
+        }
+
+        [Fact]
+        public async Task Should_create_a_new_application()
+        {
+            CreateAppRequest request = new CreateAppRequest();
+            request.Name = "testblakeapp";
+            request.Template = string.Empty;
+
+            await Fixture.GlobalClient.CreateApp(request);
+        }
+
+        [Fact]
+        public async Task Should_add_a_new_contributor()
+        {
+            await Fixture.GlobalClient.AddContributor();
+        }
+
+        [Fact]
+        public async Task Should_add_a_new_client()
+        {
+            CreateClientRequest request = new CreateClientRequest();
+            request.Id = "chechs";
+            var res = await Fixture.GlobalClient.CreateClientCredentials(request);
         }
     }
 }

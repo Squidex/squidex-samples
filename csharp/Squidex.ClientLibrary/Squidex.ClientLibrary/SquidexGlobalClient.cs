@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,38 @@ namespace Squidex.ClientLibrary
         }
 
         public async Task<List<GetAllUsersResponse>> GetAllUsers()
+
         {
             var request = await RequestAsync(HttpMethod.Get, "users");
             var response = await request.Content.ReadAsJsonAsync<List<GetAllUsersResponse>>();
 
             return response;
+        }
+
+        public async Task<CreateAppResponse> CreateApp(CreateAppRequest data)
+        {
+            var request = await RequestAsync(HttpMethod.Post, "apps", data.ToContent());
+            var response = await request.Content.ReadAsJsonAsync<CreateAppResponse>();
+
+            return response;
+        }
+
+        public async Task<CreateClientResponse> CreateClientCredentials(CreateClientRequest data)
+        {
+            var request = await RequestAsync(HttpMethod.Post, $"apps/{this.ApplicationName}/clients", data.ToContent());
+            var response = await request.Content.ReadAsJsonAsync<CreateClientResponse>();
+
+            return response;
+        }
+
+        public async Task AddContributor()
+        {
+            var user = await this.GetAllUsers();
+            var data = new AddContributorRequest();
+            data.ContributorId = user.Last().Id;
+            data.Role = "Editor";
+            var request = await RequestAsync(HttpMethod.Post, "apps/check-app/contributors", data.ToContent());
+            var response = await request.Content.ReadAsStringAsync();
         }
     }
 }
