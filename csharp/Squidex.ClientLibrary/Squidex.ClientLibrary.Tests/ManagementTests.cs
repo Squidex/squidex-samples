@@ -43,14 +43,13 @@ namespace Squidex.ClientLibrary.Tests
             await schemasClient.PostSchemaAsync(TestClient.ClientManager.App, new CreateSchemaDto
             {
                 Name = "new-schema",
-                Publish = true,
                 Properties = new SchemaPropertiesDto
                 {
                     Label = "New Schema"
                 },
-                Fields = new List<CreateSchemaFieldDto>
+                Fields = new List<UpsertSchemaFieldDto>
                 {
-                    new CreateSchemaFieldDto
+                    new UpsertSchemaFieldDto
                     {
                         Name = "String",
                         Properties = new StringFieldPropertiesDto
@@ -58,7 +57,8 @@ namespace Squidex.ClientLibrary.Tests
                             IsRequired = true
                         }
                     }
-                }
+                },
+                IsPublished = true
             });
         }
     }
