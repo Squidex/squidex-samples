@@ -72,7 +72,7 @@ namespace Squidex.ClientLibrary
             return new AppsClient(CreateHttpClient());
         }
 
-        public IBackupsClient CreateAppsContributorsClient()
+        public IBackupsClient CreateBackupsClient()
         {
             return new BackupsClient(CreateHttpClient());
         }
