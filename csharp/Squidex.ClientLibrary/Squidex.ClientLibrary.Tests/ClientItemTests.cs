@@ -124,5 +124,25 @@ namespace Squidex.ClientLibrary.Tests
                 await Fixture.Client.DeleteAsync(item.Id);
             }
         }
+
+        [Fact]
+        public async Task Should_patch_item()
+        {
+            TestEntity item = null;
+            try
+            {
+                item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 1 }, true);
+
+                await Fixture.Client.PatchAsync(item.Id, new TestEntityData { Value = 2 });
+
+                var updated = await Fixture.Client.GetAsync(item.Id);
+
+                Assert.Equal(2, updated.Data.Value);
+            }
+            finally
+            {
+                await Fixture.Client.DeleteAsync(item.Id);
+            }
+        }
     }
 }

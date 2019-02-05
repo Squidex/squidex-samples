@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Squidex.ClientLibrary.Utils;
 
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
@@ -98,6 +99,23 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(entity, nameof(entity));
 
             await UpdateAsync(entity.Id, entity.Data);
+
+            entity.MarkAsUpdated();
+        }
+
+        public Task PatchAsync<TPatch>(string id, TPatch patch)
+        {
+            Guard.NotNull(patch, nameof(patch));
+            Guard.NotNullOrEmpty(id, nameof(id));
+
+            return RequestAsync(HttpMethodEx.Patch, BuildContentUrl($"{id}/"), patch.ToContent());
+        }
+
+        public async Task PatchAsync<TPatch>(TEntity entity, TPatch patch)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            await PatchAsync(entity.Id, patch);
 
             entity.MarkAsUpdated();
         }
