@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>sq</AssemblyName>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+	<Version>1.0-beta3</Version>
   </PropertyGroup>
 
   <ItemGroup>
