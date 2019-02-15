@@ -7,6 +7,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
 using CommandDotNet.Attributes;
@@ -14,6 +15,7 @@ using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
+using Squidex.CLI.Commands.Models;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
@@ -62,7 +64,18 @@ namespace Squidex.CLI.Commands
                 var schemasClient = service.CreateSchemasClient();
                 var schema = await schemasClient.GetSchemaAsync(app, arguments.Name);
 
-                Console.WriteLine(schema.JsonPrettyString());
+                if (arguments.WithReferencedNames)
+                {
+                    var allSchemas = await schemasClient.GetSchemasAsync(app);
+
+                    var result = new SchemaWithRefs<SchemaDetailsDto>(schema).EnrichSchemaNames(allSchemas);
+
+                    Console.WriteLine(result.JsonPrettyString());
+                }
+                else
+                {
+                    Console.WriteLine(schema.JsonPrettyString());
+                }
             }
 
             [ApplicationMetadata(Name = "sync", Description = "Sync the schema.")]
@@ -89,9 +102,9 @@ namespace Squidex.CLI.Commands
                 {
                     try
                     {
-                        var sourceSchema = JsonConvert.DeserializeObject<SchemaDetailsDto>(schemaText);
+                        var sourceSchema = SchemaWithRefs<SchemaDetailsDto>.Parse(schemaText);
 
-                        schemaName = sourceSchema.Name;
+                        schemaName = sourceSchema.Schema.Name;
                     }
                     catch (JsonException ex)
                     {
@@ -115,22 +128,36 @@ namespace Squidex.CLI.Commands
 
                 if (targetSchema == null)
                 {
-                    var create = JsonConvert.DeserializeObject<CreateSchemaDto>(schemaText);
+                    var request = SchemaWithRefs<CreateSchemaDto>.Parse(schemaText);
 
-                    create.Name = schemaName;
+                    if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
+                    {
+                        var allSchemas = await schemasClient.GetSchemasAsync(app);
 
-                    await schemasClient.PostSchemaAsync(app, create);
+                        request.AdjustReferences(allSchemas);
+                    }
+
+                    request.Schema.Name = schemaName;
+
+                    await schemasClient.PostSchemaAsync(app, request.Schema);
 
                     Console.WriteLine("> Created schema because it does not exists in the target system.");
                 }
                 else
                 {
-                    var request = JsonConvert.DeserializeObject<SynchronizeSchemaDto>(schemaText);
+                    var request = SchemaWithRefs<SynchronizeSchemaDto>.Parse(schemaText);
 
-                    request.NoFieldDeletion = arguments.NoFieldDeletion;
-                    request.NoFieldRecreation = arguments.NoFieldRecreation;
+                    if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
+                    {
+                        var allSchemas = await schemasClient.GetSchemasAsync(app);
 
-                    await schemasClient.PutSchemaSyncAsync(app, schemaName, request);
+                        request.AdjustReferences(allSchemas);
+                    }
+
+                    request.Schema.NoFieldDeletion = arguments.NoFieldDeletion;
+                    request.Schema.NoFieldRecreation = arguments.NoFieldRecreation;
+
+                    await schemasClient.PutSchemaSyncAsync(app, schemaName, request.Schema);
 
                     Console.WriteLine("> Synchronized schema");
                 }
@@ -152,6 +179,9 @@ namespace Squidex.CLI.Commands
             {
                 [Argument(Name = "name", Description = "The name of the schema.")]
                 public string Name { get; set; }
+
+                [Option(LongName = "with-refs", ShortName = "r", Description = "Includes the names of the referenced schemas.")]
+                public bool WithReferencedNames { get; set; }
 
                 public sealed class GetArgumentsValidator : AbstractValidator<GetArguments>
                 {
@@ -176,6 +206,9 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "no-recreate", Description = "Do not recreate fields.")]
                 public bool NoFieldRecreation { get; set; }
+
+                [Option(LongName = "no-ref-fix", Description = "Do not fix referenced.")]
+                public bool NoRefFix { get; set; }
 
                 public sealed class SyncArgumentsValidator : AbstractValidator<SyncArguments>
                 {

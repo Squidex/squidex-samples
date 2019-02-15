@@ -11,8 +11,6 @@ using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Squidex.CLI.Commands;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI
 {
@@ -32,19 +30,9 @@ namespace Squidex.CLI
 
                 return appRunner.Run(args);
             }
-            catch (SquidexException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("ERROR: {0}", ex.Message);
-                return -1;
-            }
-            catch (SquidexManagementException ex)
-            {
-                Console.WriteLine("ERROR: {0}", ex.Message);
-                return -1;
-            }
-            catch
-            {
-                Console.WriteLine("ERROR: Unexpected exception occurred.");
                 return -1;
             }
         }
