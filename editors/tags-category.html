@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>Category</title>
@@ -9,37 +10,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.30.1/jquery.fancytree.min.js"></script>
     <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
 </head>
+
 <body>
     <div>
         <div id="Category"></div>
     </div>
     <script type="text/javascript">
-        (function () {
-            var control = $("#Category");
-            var field = new SquidexFormField();
-            var params = getQueryParameters();
-            var url = params.url || 'ls.json';
+        $(function () {
+            let field = new SquidexFormField();
+            let params = getQueryParameters();
+            let url = params.url || 'ls.json';
+            let defaultValue = [];
+
             function getQueryParameters(str) {
                 return (str || document.location.search).replace(/(^\?)/, '').split("&").map(function (n) {
-                    return n = n.split("="), this[n[0]] = n[1], this
+                    return n = n.split("="), this[n[0]] = n[1], this;
                 }.bind({}))[0];
             }
+            
+            var control = $("#Category").fancytree({
+                checkbox: true,
+                selectMode: 3,
+                source: [],
+                select: function (event, data) {
+                    if (data.targetType !== "checkbox")
+                        return;
+                    var ls = data.tree.getSelectedNodes(true).map(x => x.key);
+                    field.valueChanged(ls);
+                }
+            });
             function initSource(callback) {
                 function initNode(ls, value, folder, key) {
                     let obj = ls.find(x => x.title === value);
-                    if (obj == null) {
+                    if (!obj) {
                         obj = {
                             title: value,
                             key: `/${key}/`,
                             folder: folder
                         };
                         if (folder) {
-                            obj.children = []
+                            obj.children = [];
                         }
                         ls.push(obj);
                     } else {
                         if (folder && !obj.folder) {
-                            obj.children = []
+                            obj.children = [];
                             obj.folder = true;
                         }
                     }
@@ -48,48 +63,38 @@
                 function ajaxCallback(data) {
                     var source = [];
                     $.each(data, function (i, value) {
-                        if (!value.split) {
-                            console.log(value)
-                        }
                         let ls = (value || "").split('/').filter(x => x);
                         let children = source;
                         $.each(ls, function (n, value) {
-                            var key = ls.slice(0, n + 1).join('/')
+                            var key = ls.slice(0, n + 1).join('/');
                             children = initNode(children, value, (n + 1) < ls.length, key);
-                        })
-                    })
+                        });
+                    });
                     callback(source);
                 }
-                $.get(url, ajaxCallback)
+                $.get(url, ajaxCallback);
             }
-            function initTree(source, keys) {
-                control.fancytree({
-                    checkbox: true,
-                    selectMode: 3,
-                    source: source,
-                    select: function (event, data) {
-                        var ls = data.tree.getSelectedNodes(true).map(x => x.key);
-                        field.valueChanged(ls);
-                    },
-                    init: function (event, data) {
-                        data.tree.visit(function (node) {
-                            if (keys.includes(node.key))
-                                node.setSelected(true);
-                        });
-                    }
-                })
+            function setSelected(value) {
+                var tree = control.fancytree('getTree');
+                tree.visit(function (node) {
+                    if (value.includes(node.key))
+                        node.setSelected(true);
+                });
             }
+
             field.onDisabled(function (disabled) {
-                if (!disabled)
-                    return;
-                control.fancytree("disable");
+                control.fancytree('getTree').enable(!disabled);
             });
             field.onValueChanged(function (value) {
-                initSource(function (source) {
-                    initTree(source, value || []);
-                });
+                defaultValue = value || defaultValue;
+                setSelected(defaultValue);
             });
-        })()
+            initSource(function (source) {
+                control.fancytree('getTree').reload(source);
+                setSelected(defaultValue);
+            });
+        });
     </script>
 </body>
+
 </html>
