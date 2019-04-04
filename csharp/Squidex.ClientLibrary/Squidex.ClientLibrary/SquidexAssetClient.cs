@@ -59,7 +59,7 @@ namespace Squidex.ClientLibrary
             return await response.Content.ReadAsJsonAsync<AssetEntities>();
         }
 
-        public async Task<Stream> GetAssetContentAsync(string id, int? version = null, int? width = null, int? height = null, string mode = null)
+        public async Task<Stream> GetAssetContentAsync(string id, int? version = null, int? width = null, int? height = null, string mode = null, int? quality = null)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -83,6 +83,11 @@ namespace Squidex.ClientLibrary
             if (!string.IsNullOrEmpty(mode))
             {
                 queries.Add($"mode={mode}");
+            }
+
+            if (quality.HasValue)
+            {
+                queries.Add($"quality={quality.Value}");
             }
 
             var queryString = string.Join("&", queries);
