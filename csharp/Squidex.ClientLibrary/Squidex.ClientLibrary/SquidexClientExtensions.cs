@@ -1,12 +1,17 @@
+// ==========================================================================
+//  Squidex Headless CMS
+// ==========================================================================
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
+// ==========================================================================
+
 using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary
 {
     public static class SquidexClientExtensions
     {
-        public static async Task<SquidexEntities<TEntity, TData>> GetAllAsync<TEntity, TData>(
-            this SquidexClient<TEntity, TData> client,
-            int batchSize = 200)
+        public static async Task<SquidexEntities<TEntity, TData>> GetAllAsync<TEntity, TData>(this SquidexClient<TEntity, TData> client, int batchSize = 200)
             where TEntity : SquidexEntityBase<TData>
             where TData : class, new()
         {
