@@ -24,9 +24,9 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "content", Description = "Manage content.")]
+        [ApplicationMetadata(Name = "content", Description = "Manage contents.")]
         [SubCommand]
-        public class Content
+        public sealed class Content
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }

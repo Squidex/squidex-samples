@@ -20,7 +20,7 @@ namespace Squidex.CLI.Commands
     {
         [ApplicationMetadata(Name = "twitter", Description = "Manage twitter.")]
         [SubCommand]
-        public class Twitter
+        public sealed class Twitter
         {
             [ApplicationMetadata(Name = "auth", Description = "Starts the authentication.")]
             public async Task Auth(AuthArguments arguments)
