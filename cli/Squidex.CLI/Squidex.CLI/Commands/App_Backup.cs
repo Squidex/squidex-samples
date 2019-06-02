@@ -75,6 +75,12 @@ namespace Squidex.CLI.Commands
                     }
 
                     Console.WriteLine("Backup completed. Download completed");
+
+                    if (arguments.DeleteAfterDownload)
+                    {
+                        Console.WriteLine("Removing backup from app...");
+                        await backupsClient.DeleteBackupAsync(app, foundBackup.Id.ToString());
+                    }
                 }
                 else
                 {
@@ -87,6 +93,9 @@ namespace Squidex.CLI.Commands
             {
                 [Option(LongName = "timeout", Description = "The timeout to wait for the backup in minutes.")]
                 public int Timeout { get; set; } = 30;
+
+                [Option(LongName = "deleteAfterDownload", Description = "Defines wether the created backup shall be deleted from app after the backup task is completed")]
+                public bool DeleteAfterDownload { get; set; }
 
                 [Argument(Name = "file", Description = "The target file.")]
                 public string File { get; set; }
