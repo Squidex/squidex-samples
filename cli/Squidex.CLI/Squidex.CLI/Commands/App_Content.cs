@@ -6,30 +6,61 @@
 // ==========================================================================
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
 using CommandDotNet.Attributes;
 using CsvHelper;
 using FluentValidation;
 using FluentValidation.Attributes;
-using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
+using CsvOptions = CsvHelper.Configuration.Configuration;
+
+#pragma warning disable IDE0059 // Value assigned to symbol is never used
 
 namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "content", Description = "Manage content.")]
+        [ApplicationMetadata(Name = "content", Description = "Manage contents.")]
         [SubCommand]
-        public class Content
+        public sealed class Content
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
+
+            [ApplicationMetadata(Name = "import", Description = "Import the content to a schema.",
+                ExtendedHelpText =
+@"Use the following format to define fields from the CSV file:
+    - name (for invariant fields)
+    - name=other(for invariant fields from another field)
+    - name.de=name (for localized fields)
+")]
+            public async Task Import(ImportArguments arguments)
+            {
+                var converter = new Csv2SquidexConverter(arguments.Fields);
+
+                using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                {
+                    using (var streamReader = new StreamReader(stream))
+                    {
+                        var csvOptions = new CsvOptions
+                        {
+                            Delimiter = arguments.Delimiter
+                        };
+
+                        using (var reader = new CsvReader(streamReader, csvOptions))
+                        {
+                            var datas = converter.ReadAll(reader);
+
+                            await ImportAsync(arguments, datas);
+                        }
+                    }
+                }
+            }
 
             [ApplicationMetadata(Name = "export", Description = "Export the content for a schema.",
                 ExtendedHelpText =
@@ -41,9 +72,9 @@ namespace Squidex.CLI.Commands
     - lastModified
     - version
     - data.name (for invariant fields)
-    - Name=data.name (for invariant fields with alias)
     - data.name.de (for localized fields)
-    - Name (German)=data.name.de (for localized fields with alias)
+    - name=data.name (for invariant fields with alias)
+    - name (German)=data.name.de (for localized fields with alias)
 ")]
             public async Task Export(ExportArguments arguments)
             {
@@ -116,35 +147,33 @@ namespace Squidex.CLI.Commands
                         file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.csv";
                     }
 
-                    var fields = GetFields(arguments);
+                    var converter = new Squidex2CsvConverter(arguments.Fields);
 
                     using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
                     {
                         using (var streamWriter = new StreamWriter(stream))
                         {
-                            var csvOptions = new CsvHelper.Configuration.Configuration
+                            var csvOptions = new CsvOptions
                             {
                                 Delimiter = ";"
                             };
 
                             using (var writer = new CsvWriter(streamWriter, csvOptions))
                             {
-                                foreach (var field in fields)
+                                foreach (var fieldName in converter.FieldNames)
                                 {
-                                    writer.WriteField(field.Name);
+                                    writer.WriteField(fieldName);
                                 }
 
                                 writer.NextRecord();
 
                                 await ExportAsync(arguments, entity =>
                                 {
-                                    foreach (var field in fields)
+                                    foreach (var value in converter.GetValues(entity))
                                     {
-                                        var value = GetValue(entity, field.Path);
-
-                                        if (value is string s)
+                                        if (value is string text)
                                         {
-                                            writer.WriteField(s.Replace("\n", "\\n"), true);
+                                            writer.WriteField(text, true);
                                         }
                                         else
                                         {
@@ -160,41 +189,27 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            private static List<(string Name, string[] Path)> GetFields(ExportArguments arguments)
+            private async Task ImportAsync(ImportArguments arguments, IEnumerable<DummyData> datas)
             {
-                var fields = new List<(string Name, string[] Path)>();
+                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
-                foreach (var item in arguments.Fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+                var totalWritten = 0;
+
+                var consoleTop = Console.CursorTop;
+
+                var handled = new HashSet<string>();
+
+                foreach (var data in datas)
                 {
-                    var parts = item.Split('=');
+                    await client.CreateAsync(data, !arguments.Unpublished);
 
-                    string[] GetPath(string value)
-                    {
-                        var path = value.Split('.', StringSplitOptions.RemoveEmptyEntries);
+                    totalWritten++;
 
-                        if (path.Length == 2 && string.Equals(path[0], "Data", StringComparison.OrdinalIgnoreCase))
-                        {
-                            return path.Union(Enumerable.Repeat("iv", 1)).ToArray();
-                        }
-
-                        return path;
-                    }
-
-                    if (parts.Length == 1)
-                    {
-                        fields.Add((parts[0], GetPath(parts[0])));
-                    }
-                    else if (parts.Length == 2)
-                    {
-                        fields.Add((parts[0], GetPath(parts[1])));
-                    }
-                    else
-                    {
-                        throw new SquidexException("Field definition not valid.");
-                    }
+                    Console.WriteLine("> Imported: {0}.", totalWritten);
+                    Console.SetCursorPosition(0, consoleTop);
                 }
 
-                return fields;
+                Console.WriteLine("> Imported: {0}. Completed.", totalWritten);
             }
 
             private async Task ExportAsync(ExportArguments arguments, Action<DummyEntity> handler)
@@ -242,76 +257,40 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
             }
 
-            private object GetValue(object current, string[] path)
-            {
-                foreach (var element in path)
-                {
-                    if (current is JObject obj)
-                    {
-                        if (obj.TryGetValue(element, out var temp))
-                        {
-                            current = temp;
-                        }
-                        else
-                        {
-                            return "<INVALID>";
-                        }
-                    }
-                    else if (current is IDictionary dict)
-                    {
-                        if (dict.Contains(element))
-                        {
-                            current = dict[element];
-                        }
-                        else
-                        {
-                            return "<INVALID>";
-                        }
-                    }
-                    else if (current is JArray arr)
-                    {
-                        if (int.TryParse(element, out var idx) && idx > 0 && idx < arr.Count)
-                        {
-                            return arr[idx];
-                        }
-                        else
-                        {
-                            return "<INVALID>";
-                        }
-                    }
-                    else
-                    {
-                        var property = current.GetType().GetProperties().FirstOrDefault(x => x.CanRead && string.Equals(x.Name, element, StringComparison.OrdinalIgnoreCase));
-
-                        if (property != null)
-                        {
-                            current = property.GetValue(current);
-                        }
-                        else
-                        {
-                            return "<INVALID>";
-                        }
-                    }
-                }
-
-                if (current is JValue value)
-                {
-                    return value.Value;
-                }
-                else if (current?.GetType().IsClass == true)
-                {
-                    return current.JsonString();
-                }
-                else
-                {
-                    return current;
-                }
-            }
-
             public enum Format
             {
                 CSV,
                 JSON
+            }
+
+            [Validator(typeof(ImportArgumentsValidator))]
+            public sealed class ImportArguments : IArgumentModel
+            {
+                [Argument(Name = "schema", Description = "The name of the schema.")]
+                public string Schema { get; set; }
+
+                [Argument(Name = "file", Description = "The path to the csv file.")]
+                public string File { get; set; }
+
+                [Option(LongName = "fields", Description = "Comma separated list of fields to import.")]
+                public string Fields { get; set; }
+
+                [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
+                public bool Unpublished { get; set; }
+
+                [Option(LongName = "delimiter", Description = "The csv delimiter.")]
+                public string Delimiter { get; set; } = ";";
+
+                public sealed class ImportArgumentsValidator : AbstractValidator<ImportArguments>
+                {
+                    public ImportArgumentsValidator()
+                    {
+                        RuleFor(x => x.Delimiter).NotEmpty();
+                        RuleFor(x => x.Fields).NotEmpty();
+                        RuleFor(x => x.File).NotEmpty();
+                        RuleFor(x => x.Schema).NotEmpty();
+                    }
+                }
             }
 
             [Validator(typeof(ExportArgumentsValidator))]
@@ -332,6 +311,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "output", Description = "Optional file or folder name. Default: Schema name.")]
                 public string Output { get; set; }
 
+                [Option(LongName = "delimiter", Description = "The csv delimiter.")]
+                public string Delimiter { get; set; } = ";";
+
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Export unpublished content.")]
                 public bool Unpublished { get; set; }
 
@@ -348,6 +330,7 @@ namespace Squidex.CLI.Commands
                 {
                     public ExportArgumentsValidator()
                     {
+                        RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Schema).NotEmpty();
                     }
                 }

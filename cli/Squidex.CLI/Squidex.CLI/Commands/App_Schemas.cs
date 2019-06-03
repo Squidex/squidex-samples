@@ -26,7 +26,7 @@ namespace Squidex.CLI.Commands
     {
         [ApplicationMetadata(Name = "schemas", Description = "Manage schemas.")]
         [SubCommand]
-        public class Schemas
+        public sealed class Schemas
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
@@ -85,10 +85,9 @@ namespace Squidex.CLI.Commands
 
                 var schemasClient = service.CreateSchemasClient();
 
-                var schemaText = (string)null;
+                var schemaText = string.Empty;
                 var schemaName = arguments.Name;
 
-                var targetSchema = (SchemaDetailsDto)null;
                 try
                 {
                     schemaText = File.ReadAllText(arguments.File);
@@ -117,6 +116,7 @@ namespace Squidex.CLI.Commands
                     throw new SquidexException("Schema name cannot be empty.");
                 }
 
+                SchemaDetailsDto targetSchema;
                 try
                 {
                     targetSchema = await schemasClient.GetSchemaAsync(app, schemaName);
@@ -166,7 +166,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(Validator))]
             public sealed class ListArguments : IArgumentModel
             {
-                [Option(Description = "Output as table")]
+                [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
                 public bool Table { get; set; }
 
                 public sealed class Validator : AbstractValidator<ListArguments>
