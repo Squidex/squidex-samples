@@ -36,10 +36,39 @@ $(() => {
                 },
                 success: itemsResponse => {
                     for (let item of itemsResponse.items) {
-                        $('<li>').text(item.data.value.iv).appendTo($('#root'));
+                        $('<li>').text(`REST: ${item.data.value.iv}`).appendTo($('#root'));
                     }
                 }
-            })
+            });
+
+            let graphql = `${host}/api/content/client-test/graphql`;
+
+            const query = `
+               query {
+                queryNumbersContents {
+                  data {
+                    value {
+                      iv
+                    }
+                  }
+                }
+              }`;
+
+            $.ajax({
+                type: 'POST',
+                url: graphql,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ query }),
+                headers: {
+                    authorization: `Bearer ${authResponse.access_token}`
+                },
+                success: itemsResponse => {
+                    for (let item of itemsResponse.data.queryNumbersContents) {
+                        $('<li>').text(`GRAPHQL: ${item.data.value.iv}`).appendTo($('#root'));
+                    }
+                }
+            });
         }
     });
 });
