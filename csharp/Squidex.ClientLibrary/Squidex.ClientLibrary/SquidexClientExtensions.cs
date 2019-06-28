@@ -15,9 +15,7 @@ namespace Squidex.ClientLibrary
             where TEntity : SquidexEntityBase<TData>
             where TData : class, new()
         {
-            Guard.NotNull(client, nameof(client));
-
-            int skip = 0;
+            var skip = 0;
             var entities = new SquidexEntities<TEntity, TData>();
             do
             {
@@ -35,9 +33,7 @@ namespace Squidex.ClientLibrary
 
         public static async Task<AssetEntities> GetAllAssetsAsync(this SquidexAssetClient assetClient, int batchSize = 200)
         {
-            Guard.NotNull(assetClient, nameof(assetClient));
-
-            int skip = 0;
+            var skip = 0;
             var entities = new AssetEntities();
             do
             {

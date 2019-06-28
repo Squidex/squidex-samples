@@ -49,7 +49,7 @@ namespace Squidex.ClientLibrary
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                queries.Add($"$search={search}");
+                queries.Add($"$search=\"{search}\"");
             }
             else if (!string.IsNullOrWhiteSpace(filter))
             {
