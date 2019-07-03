@@ -7,6 +7,7 @@
 
 using System;
 using System.Net.Http;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -81,7 +82,10 @@ namespace Squidex.ClientLibrary
 
             using (var response = await httpClient.PostAsync(url, bodyContent))
             {
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new SecurityException($"Failed to retrieve access token for client '{clientId}', got HTTP {response.StatusCode}.");
+                }
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var jsonToken = JToken.Parse(jsonString);

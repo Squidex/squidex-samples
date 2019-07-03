@@ -28,7 +28,7 @@ namespace Squidex.ClientLibrary
         }
 
         public CachingAuthenticator(IMemoryCache cache, string serviceUrl, string clientId, string clientSecret)
-            : this(new MemoryCache(Options.Create(new MemoryCacheOptions())), new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret)
+            : this(cache, new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret)
         {
         }
 

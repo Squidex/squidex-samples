@@ -60,12 +60,6 @@ namespace Squidex.ClientLibrary.Tests
             AssertItems(items, 3, new[] { 4, 5, 6 });
         }
 
-        private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int[] expected)
-        {
-            Assert.Equal(10, entities.Total);
-            Assert.Equal(expected, entities.Items.Select(x => x.Data.Value).ToArray());
-        }
-
         private void AssertItems(SquidexEntities<TestEntity, TestEntityData> entities, int total, int[] expected)
         {
             Assert.Equal(total, entities.Total);
