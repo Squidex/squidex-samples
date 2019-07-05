@@ -59,7 +59,7 @@ namespace Squidex.ClientLibrary.Tests
             {
                 item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 1 });
 
-                await Fixture.Client.PublishAsync(item.Id);
+                await Fixture.Client.ChangeStatusAsync(item.Id, Status.Published);
                 await Fixture.Client.GetAsync(item.Id);
             }
             finally
@@ -76,7 +76,7 @@ namespace Squidex.ClientLibrary.Tests
             {
                 item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 1 }, true);
 
-                await Fixture.Client.RestoreAsync(item.Id);
+                await Fixture.Client.ChangeStatusAsync(item.Id, Status.Archived);
 
                 await Assert.ThrowsAsync<SquidexException>(() => Fixture.Client.GetAsync(item.Id));
             }
@@ -94,8 +94,8 @@ namespace Squidex.ClientLibrary.Tests
             {
                 item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 1 });
 
-                await Fixture.Client.PublishAsync(item.Id);
-                await Fixture.Client.UnpublishAsync(item.Id);
+                await Fixture.Client.ChangeStatusAsync(item.Id, Status.Published);
+                await Fixture.Client.ChangeStatusAsync(item.Id, Status.Draft);
 
                 await Assert.ThrowsAsync<SquidexException>(() => Fixture.Client.GetAsync(item.Id));
             }

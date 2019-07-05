@@ -31,7 +31,7 @@ namespace Squidex.ClientLibrary.Tests
         [Fact]
         public async Task Should_return_items_with_skip()
         {
-            var items = await Fixture.Client.GetAsync(skip: 5);
+            var items = await Fixture.Client.GetAsync(new ODataQuery { Skip = 5 });
 
             AssertItems(items, 10, new[] { 6, 7, 8, 9, 10 });
         }
@@ -39,7 +39,7 @@ namespace Squidex.ClientLibrary.Tests
         [Fact]
         public async Task Should_return_items_with_skip_and_top()
         {
-            var items = await Fixture.Client.GetAsync(skip: 2, top: 5);
+            var items = await Fixture.Client.GetAsync(new ODataQuery { Skip = 2, Top = 5 });
 
             AssertItems(items, 10, new[] { 3, 4, 5, 6, 7 });
         }
@@ -47,7 +47,7 @@ namespace Squidex.ClientLibrary.Tests
         [Fact]
         public async Task Should_return_items_with_ordering()
         {
-            var items = await Fixture.Client.GetAsync(skip: 2, top: 5, orderBy: "data/value/iv desc");
+            var items = await Fixture.Client.GetAsync(new ODataQuery { Skip = 2, Top = 5, OrderBy = "data/value/iv desc" });
 
             AssertItems(items, 10, new[] { 8, 7, 6, 5, 4 });
         }
@@ -55,7 +55,7 @@ namespace Squidex.ClientLibrary.Tests
         [Fact]
         public async Task Should_return_items_with_filter()
         {
-            var items = await Fixture.Client.GetAsync(filter: "data/value/iv gt 3 and data/value/iv lt 7");
+            var items = await Fixture.Client.GetAsync(new ODataQuery { Filter = "data/value/iv gt 3 and data/value/iv lt 7" });
 
             AssertItems(items, 3, new[] { 4, 5, 6 });
         }

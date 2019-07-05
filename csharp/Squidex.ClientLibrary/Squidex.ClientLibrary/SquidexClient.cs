@@ -5,8 +5,10 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Utils;
 
@@ -28,174 +30,132 @@ namespace Squidex.ClientLibrary
             SchemaName = schemaName;
         }
 
-        public async Task<SquidexEntities<TEntity, TData>> GetAsync(long? skip = null, long? top = null, string filter = null, string orderBy = null, string search = null, QueryContext context = null)
+        public Task<SquidexEntities<TEntity, TData>> GetAsync(ODataQuery query = null, QueryContext context = null, CancellationToken ct = default)
         {
-            var queries = new List<string>();
+            var q = query?.ToQuery(true) ?? string.Empty;
 
-            if (skip.HasValue)
-            {
-                queries.Add($"$skip={skip.Value}");
-            }
-
-            if (top.HasValue)
-            {
-                queries.Add($"$top={top.Value}");
-            }
-
-            if (!string.IsNullOrWhiteSpace(orderBy))
-            {
-                queries.Add($"$orderby={orderBy}");
-            }
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                queries.Add($"$search=\"{search}\"");
-            }
-            else if (!string.IsNullOrWhiteSpace(filter))
-            {
-                queries.Add($"$filter={filter}");
-            }
-
-            var query = string.Join("&", queries);
-
-            if (!string.IsNullOrWhiteSpace(query))
-            {
-                query = "?" + query;
-            }
-
-            var response = await RequestAsync(HttpMethod.Get, BuildContentUrl(query), context: context);
-
-            return await response.Content.ReadAsJsonAsync<SquidexEntities<TEntity, TData>>();
+            return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildContentUrl(q), null, context, ct);
         }
 
-        public async Task<TEntity> GetAsync(string id, QueryContext context = null)
+        public Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            var response = await RequestAsync(HttpMethod.Get, BuildContentUrl($"{id}/"), context: context);
-
-            return await response.Content.ReadAsJsonAsync<TEntity>();
+            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildContentUrl($"{id}/"), null, context, ct);
         }
 
-        public async Task<TEntity> CreateAsync(TData data, bool publish = false)
+        public Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));
 
-            var response = await RequestAsync(HttpMethod.Post, BuildContentUrl($"?publish={publish}"), data.ToContent());
-
-            return await response.Content.ReadAsJsonAsync<TEntity>();
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildContentUrl($"?publish={publish}"), data.ToContent(), ct: ct);
         }
 
-        public Task UpdateAsync(string id, TData data, bool asDraft = false)
+        public Task<TEntity> UpdateAsync(string id, TData data, bool asDraft = false, CancellationToken ct = default)
         {
-            Guard.NotNull(data, nameof(data));
             Guard.NotNullOrEmpty(id, nameof(id));
+            Guard.NotNull(data, nameof(data));
 
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/?asDraft={asDraft}"), data.ToContent());
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildContentUrl($"{id}/?asDraft={asDraft}"), data.ToContent(), ct: ct);
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await UpdateAsync(entity.Id, entity.Data);
-
-            entity.MarkAsUpdated();
+            return UpdateAsync(entity.Id, entity.Data, false, ct);
         }
 
-        public Task PatchAsync<TPatch>(string id, TPatch patch)
+        public Task<TEntity> PatchAsync<TPatch>(string id, TPatch patch, CancellationToken ct = default)
         {
+            Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(patch, nameof(patch));
-            Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethodEx.Patch, BuildContentUrl($"{id}/"), patch.ToContent());
+            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildContentUrl($"{id}/"), patch.ToContent(), ct: ct);
         }
 
-        public async Task PatchAsync<TPatch>(TEntity entity, TPatch patch)
+        public Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await PatchAsync(entity.Id, patch);
-
-            entity.MarkAsUpdated();
+            return PatchAsync(entity.Id, patch, ct);
         }
 
+        public Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default)
+        {
+            Guard.NotNull(id, nameof(id));
+            Guard.NotNull(status, nameof(status));
+
+            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildContentUrl($"{id}/status"), new { status }.ToContent(), ct: ct);
+        }
+
+        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            return ChangeStatusAsync(entity.Id, status, ct);
+        }
+
+        [Obsolete]
         public Task PublishAsync(string id)
         {
-            Guard.NotNullOrEmpty(id, nameof(id));
-
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/publish/"));
+            return ChangeStatusAsync(id, Status.Published);
         }
 
-        public async Task PublishAsync(TEntity entity)
+        [Obsolete]
+        public Task PublishAsync(TEntity entity)
         {
-            Guard.NotNull(entity, nameof(entity));
-
-            await PublishAsync(entity.Id);
-
-            entity.MarkAsUpdated();
+            return ChangeStatusAsync(entity, Status.Published);
         }
 
+        [Obsolete]
         public Task UnpublishAsync(string id)
         {
-            Guard.NotNullOrEmpty(id, nameof(id));
-
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/unpublish/"));
+            return ChangeStatusAsync(id, Status.Draft);
         }
 
-        public async Task UnpublishAsync(TEntity entity)
+        [Obsolete]
+        public Task UnpublishAsync(TEntity entity)
         {
-            Guard.NotNull(entity, nameof(entity));
-
-            await UnpublishAsync(entity.Id);
-
-            entity.MarkAsUpdated();
+            return ChangeStatusAsync(entity, Status.Draft);
         }
 
+        [Obsolete]
         public Task ArchiveAsync(string id)
         {
-            Guard.NotNullOrEmpty(id, nameof(id));
-
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/archive/"));
+            return ChangeStatusAsync(id, Status.Archived);
         }
 
-        public async Task ArchiveAsync(TEntity entity)
+        [Obsolete]
+        public Task ArchiveAsync(TEntity entity)
         {
-            Guard.NotNull(entity, nameof(entity));
-
-            await ArchiveAsync(entity.Id);
-
-            entity.MarkAsUpdated();
+            return ChangeStatusAsync(entity, Status.Archived);
         }
 
+        [Obsolete]
         public Task RestoreAsync(string id)
         {
-            Guard.NotNullOrEmpty(id, nameof(id));
-
-            return RequestAsync(HttpMethod.Put, BuildContentUrl($"{id}/restore/"));
+            return ChangeStatusAsync(id, Status.Draft);
         }
 
-        public async Task RestoreAsync(TEntity entity)
+        [Obsolete]
+        public Task RestoreAsync(TEntity entity)
         {
-            Guard.NotNull(entity, nameof(entity));
-
-            await RestoreAsync(entity.Id);
-
-            entity.MarkAsUpdated();
+            return ChangeStatusAsync(entity, Status.Draft);
         }
 
-        public Task DeleteAsync(string id)
+        public Task DeleteAsync(string id, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildContentUrl($"{id}/"));
+            return RequestAsync(HttpMethod.Delete, BuildContentUrl($"{id}/"), ct: ct);
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await DeleteAsync(entity.Id);
+            await DeleteAsync(entity.Id, ct);
 
             entity.MarkAsUpdated();
         }

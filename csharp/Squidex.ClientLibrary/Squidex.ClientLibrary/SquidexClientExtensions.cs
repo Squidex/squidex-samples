@@ -15,36 +15,38 @@ namespace Squidex.ClientLibrary
             where TEntity : SquidexEntityBase<TData>
             where TData : class, new()
         {
-            var skip = 0;
+            var query = new ODataQuery { Top = batchSize };
+
             var entities = new SquidexEntities<TEntity, TData>();
             do
             {
-                var getResult = await client.GetAsync(skip: skip, top: batchSize);
+                var getResult = await client.GetAsync(query);
 
                 entities.Total = getResult.Total;
                 entities.Items.AddRange(getResult.Items);
 
-                skip += entities.Items.Count;
+                query.Skip += entities.Items.Count;
             }
-            while (skip < entities.Total);
+            while (query.Skip < entities.Total);
 
             return entities;
         }
 
         public static async Task<AssetEntities> GetAllAssetsAsync(this SquidexAssetClient assetClient, int batchSize = 200)
         {
-            var skip = 0;
+            var query = new ODataQuery { Top = batchSize };
+
             var entities = new AssetEntities();
             do
             {
-                var getResult = await assetClient.GetAssetsAsync(skip: skip, top: batchSize);
+                var getResult = await assetClient.GetAssetsAsync(query);
 
                 entities.Total = getResult.Total;
                 entities.Items.AddRange(getResult.Items);
 
-                skip += entities.Items.Count;
+                query.Skip += entities.Items.Count;
             }
-            while (skip < entities.Total);
+            while (query.Skip < entities.Total);
 
             return entities;
         }
