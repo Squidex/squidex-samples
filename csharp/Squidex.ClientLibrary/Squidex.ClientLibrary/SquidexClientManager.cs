@@ -20,6 +20,8 @@ namespace Squidex.ClientLibrary
         private readonly Uri serviceUrl;
         private readonly IAuthenticator authenticator;
 
+        public bool ReadResponseAsString { get; set; }
+
         public string App
         {
             get { return applicationName; }
@@ -69,57 +71,57 @@ namespace Squidex.ClientLibrary
 
         public IAppsClient CreateAppsClient()
         {
-            return new AppsClient(CreateHttpClient());
+            return new AppsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IBackupsClient CreateBackupsClient()
         {
-            return new BackupsClient(CreateHttpClient());
+            return new BackupsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public ICommentsClient CreateCommentsClient()
         {
-            return new CommentsClient(CreateHttpClient());
+            return new CommentsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IHistoryClient CreateHistoryClient()
         {
-            return new HistoryClient(CreateHttpClient());
+            return new HistoryClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public ILanguagesClient CreateLanguagesClient()
         {
-            return new LanguagesClient(CreateHttpClient());
+            return new LanguagesClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IPingClient CreatePingClient()
         {
-            return new PingClient(CreateHttpClient());
+            return new PingClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IPlansClient CreatePlansClient()
         {
-            return new PlansClient(CreateHttpClient());
+            return new PlansClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IRulesClient CreateRulesClient()
         {
-            return new RulesClient(CreateHttpClient());
+            return new RulesClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public ISchemasClient CreateSchemasClient()
         {
-            return new SchemasClient(CreateHttpClient());
+            return new SchemasClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IStatisticsClient CreateStatisticsClient()
         {
-            return new StatisticsClient(CreateHttpClient());
+            return new StatisticsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public IUsersClient CreateUsersClient()
         {
-            return new UsersClient(CreateHttpClient());
+            return new UsersClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
         public SquidexAssetClient GetAssetClient()
