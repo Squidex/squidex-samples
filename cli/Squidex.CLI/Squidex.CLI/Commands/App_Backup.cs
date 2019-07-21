@@ -46,8 +46,8 @@ namespace Squidex.CLI.Commands
                 {
                     while (!tcs.Token.IsCancellationRequested)
                     {
-                        var backups = await backupsClient.GetJobsAsync(app);
-                        var backup = backups.FirstOrDefault(x => x.Started >= backupStarted);
+                        var backups = await backupsClient.GetBackupsAsync(app);
+                        var backup = backups.Items.FirstOrDefault(x => x.Started >= backupStarted);
 
                         if (backup != null && backup.Stopped.HasValue)
                         {
