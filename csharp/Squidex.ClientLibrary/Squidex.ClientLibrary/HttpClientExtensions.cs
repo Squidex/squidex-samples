@@ -5,27 +5,46 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
     public static class HttpClientExtensions
     {
-        private static readonly JsonSerializer JsonSerializer = JsonSerializer.CreateDefault();
-        private static readonly JsonSerializerSettings PascalCasing = new JsonSerializerSettings();
-        private static readonly JsonSerializerSettings CamelCasing = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings PascalCasing = CreateSerializer(new DefaultContractResolver());
+
+        private static readonly JsonSerializerSettings CamelCasing = CreateSerializer(new CamelCasePropertyNamesContractResolver());
+
+        private static JsonSerializerSettings CreateSerializer(DefaultContractResolver contractResolver)
         {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
+            var result = new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver
+            };
+
+            result.Converters.Add(new UTCIsoDateTimeConverter());
+
+            return result;
+        }
 
         public static HttpContent ToContent<T>(this T value)
+        {
+            var json = value.ToJson();
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            return content;
+        }
+
+        public static string ToJson<T>(this T value)
         {
             var serializerSettings =
                 value.GetType().GetCustomAttribute<KeepCasingAttribute>() != null ?
@@ -34,41 +53,15 @@ namespace Squidex.ClientLibrary
 
             var json = JsonConvert.SerializeObject(value, Formatting.Indented, serializerSettings);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            return content;
-        }
-
-        public static MultipartFormDataContent ToContent(this Stream stream, string name, string mimeType)
-        {
-            Guard.NotNullOrEmpty(name, nameof(name));
-            Guard.NotNullOrEmpty(mimeType, nameof(mimeType));
-            Guard.NotNull(stream, nameof(stream));
-
-            var streamContent = new StreamContent(stream);
-
-            streamContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
-
-            var requestContent = new MultipartFormDataContent
-            {
-                { streamContent, "file", name }
-            };
-
-            return requestContent;
+            return json;
         }
 
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
         {
-            using (var stream = await content.ReadAsStreamAsync())
-            {
-                using (var textReader = new StreamReader(stream))
-                {
-                    using (var streamReader = new JsonTextReader(textReader))
-                    {
-                        return JsonSerializer.Deserialize<T>(streamReader);
-                    }
-                }
-            }
+            var jsonString = await content.ReadAsStringAsync();
+            var jsonObject = JsonConvert.DeserializeObject<T>(jsonString);
+
+            return jsonObject;
         }
     }
 }

@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using CsvHelper;
 using Newtonsoft.Json;
@@ -44,6 +45,10 @@ namespace Squidex.CLI.Commands.Implementation
                             {
                                 SetValue(data, JToken.Parse($"\"{value}\""), field.Path);
                             }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"Cannot find field {field.Name} in CSV file. Please check the delimiters setting.");
                         }
                     }
 

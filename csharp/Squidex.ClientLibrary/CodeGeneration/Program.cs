@@ -14,18 +14,18 @@ namespace CodeGeneration
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            var document = SwaggerDocument.FromUrlAsync("http://localhost:5000/api/swagger/v1/swagger.json").Result;
+            var document = OpenApiDocument.FromUrlAsync("http://localhost:5000/api/swagger/v1/swagger.json").Result;
 
-            var generatorSettings = new SwaggerToCSharpClientGeneratorSettings();
+            var generatorSettings = new CSharpClientGeneratorSettings();
             generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
             generatorSettings.GenerateClientInterfaces = true;
             generatorSettings.ExceptionClass = "SquidexManagementException";
             generatorSettings.OperationNameGenerator = new TagNameGenerator();
             generatorSettings.UseBaseUrl = false;
 
-            var codeGenerator = new SwaggerToCSharpClientGenerator(document, generatorSettings);
+            var codeGenerator = new CSharpClientGenerator(document, generatorSettings);
 
             var code = codeGenerator.GenerateFile();
 
@@ -37,7 +37,7 @@ namespace CodeGeneration
 
         public sealed class TagNameGenerator : MultipleClientsFromOperationIdOperationNameGenerator
         {
-            public override string GetClientName(SwaggerDocument document, string path, SwaggerOperationMethod httpMethod, SwaggerOperation operation)
+            public override string GetClientName(OpenApiDocument document, string path, string httpMethod, OpenApiOperation operation)
             {
                 if (operation.Tags?.Count == 1)
                 {

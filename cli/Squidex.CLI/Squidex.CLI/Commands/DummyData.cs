@@ -11,6 +11,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands
 {
+    [KeepCasing]
     public sealed class DummyData : Dictionary<string, Dictionary<string, JToken>>
     {
     }

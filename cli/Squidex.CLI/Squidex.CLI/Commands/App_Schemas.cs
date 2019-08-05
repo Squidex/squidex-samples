@@ -20,6 +20,8 @@ using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
+#pragma warning disable IDE0059 // Value assigned to symbol is never used
+
 namespace Squidex.CLI.Commands
 {
     public partial class App
@@ -43,7 +45,7 @@ namespace Squidex.CLI.Commands
                 {
                     var table = new ConsoleTable("Id", "Name", "Published", "LastUpdate");
 
-                    foreach (var schema in schemas)
+                    foreach (var schema in schemas.Items)
                     {
                         table.AddRow(schema.Id, schema.Name, schema.IsPublished, schema.LastModified);
                     }
@@ -68,7 +70,7 @@ namespace Squidex.CLI.Commands
                 {
                     var allSchemas = await schemasClient.GetSchemasAsync(app);
 
-                    var result = new SchemaWithRefs<SchemaDetailsDto>(schema).EnrichSchemaNames(allSchemas);
+                    var result = new SchemaWithRefs<SchemaDetailsDto>(schema).EnrichSchemaNames(allSchemas.Items);
 
                     Console.WriteLine(result.JsonPrettyString());
                 }
@@ -134,7 +136,7 @@ namespace Squidex.CLI.Commands
                     {
                         var allSchemas = await schemasClient.GetSchemasAsync(app);
 
-                        request.AdjustReferences(allSchemas);
+                        request.AdjustReferences(allSchemas.Items);
                     }
 
                     request.Schema.Name = schemaName;
@@ -151,7 +153,7 @@ namespace Squidex.CLI.Commands
                     {
                         var allSchemas = await schemasClient.GetSchemasAsync(app);
 
-                        request.AdjustReferences(allSchemas);
+                        request.AdjustReferences(allSchemas.Items);
                     }
 
                     request.Schema.NoFieldDeletion = arguments.NoFieldDeletion;

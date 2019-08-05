@@ -26,7 +26,7 @@ namespace Squidex.ClientLibrary.Tests
         {
             var schemas = await schemasClient.GetSchemasAsync(TestClient.ClientManager.App);
 
-            Assert.NotEmpty(schemas);
+            Assert.NotEmpty(schemas.Items);
         }
 
         [Fact]
