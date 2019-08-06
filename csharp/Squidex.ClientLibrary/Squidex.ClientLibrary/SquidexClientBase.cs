@@ -12,6 +12,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+#pragma warning disable IDE0067 // Dispose objects before losing scope
+
 namespace Squidex.ClientLibrary
 {
     public abstract class SquidexClientBase : IDisposable

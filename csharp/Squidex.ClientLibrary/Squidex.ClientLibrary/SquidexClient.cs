@@ -29,6 +29,20 @@ namespace Squidex.ClientLibrary
             SchemaName = schemaName;
         }
 
+        public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(request, nameof(request));
+
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, $"content/{ApplicationName}/graphql", request.ToContent(), context, ct);
+
+            if (response.Errors?.Length > 0)
+            {
+                throw new SquidexGraphQlException(response.Errors);
+            }
+
+            return response.Data;
+        }
+
         public Task<SquidexEntities<TEntity, TData>> GetAsync(ODataQuery query = null, QueryContext context = null, CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;

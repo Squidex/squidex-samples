@@ -6607,13 +6607,13 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get general info status of the API.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get general info status of the API.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get ping status of the API.</summary>
         /// <returns>Service ping successful.</returns>
@@ -6668,16 +6668,16 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get general info status of the API.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync()
         {
-            return InfoAsync(System.Threading.CancellationToken.None);
+            return GetInfoAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get general info status of the API.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("info");
@@ -8296,26 +8296,26 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get current restore status.</summary>
         /// <returns>Status returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RestoreJobDto> GetJobAsync();
+        System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get current restore status.</summary>
         /// <returns>Status returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RestoreJobDto> GetJobAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Restore a backup.</summary>
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostRestoreAsync(RestoreRequestDto request);
+        System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Restore a backup.</summary>
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostRestoreAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -8701,16 +8701,16 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get current restore status.</summary>
         /// <returns>Status returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<RestoreJobDto> GetJobAsync()
+        public System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync()
         {
-            return GetJobAsync(System.Threading.CancellationToken.None);
+            return GetRestoreJobAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get current restore status.</summary>
         /// <returns>Status returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<RestoreJobDto> GetJobAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("apps/restore");
@@ -8777,9 +8777,9 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task PostRestoreAsync(RestoreRequestDto request)
+        public System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request)
         {
-            return PostRestoreAsync(request, System.Threading.CancellationToken.None);
+            return PostRestoreJobAsync(request, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8787,7 +8787,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task PostRestoreAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("apps/restore");
@@ -10423,7 +10423,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Pattern to be updated for the app.</param>
         /// <returns>Pattern updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> UpdatePatternAsync(string app, string id, UpdatePatternDto request);
+        System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Update an existing app pattern.</summary>
@@ -10432,7 +10432,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Pattern to be updated for the app.</param>
         /// <returns>Pattern updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> UpdatePatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Delete an existing app pattern.</summary>
         /// <param name="app">The name of the app.</param>
@@ -10496,7 +10496,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RolesDto> UpdateRoleAsync(string app, string name, UpdateRoleDto request);
+        System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string app, string name, UpdateRoleDto request);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Update an existing app role.</summary>
@@ -10505,7 +10505,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RolesDto> UpdateRoleAsync(string app, string name, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string app, string name, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Remove role from app.</summary>
         /// <param name="app">The name of the app.</param>
@@ -11872,9 +11872,9 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Pattern to be updated for the app.</param>
         /// <returns>Pattern updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<PatternsDto> UpdatePatternAsync(string app, string id, UpdatePatternDto request)
+        public System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request)
         {
-            return UpdatePatternAsync(app, id, request, System.Threading.CancellationToken.None);
+            return PutPatternAsync(app, id, request, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11884,7 +11884,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Pattern to be updated for the app.</param>
         /// <returns>Pattern updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PatternsDto> UpdatePatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -12337,9 +12337,9 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<RolesDto> UpdateRoleAsync(string app, string name, UpdateRoleDto request)
+        public System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string app, string name, UpdateRoleDto request)
         {
-            return UpdateRoleAsync(app, name, request, System.Threading.CancellationToken.None);
+            return PutRoleAsync(app, name, request, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12349,7 +12349,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<RolesDto> UpdateRoleAsync(string app, string name, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string app, string name, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");

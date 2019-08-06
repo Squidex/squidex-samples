@@ -21,7 +21,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var client = clientManager.CreateBackupsClient();
 
-            await client.PostRestoreAsync(new RestoreRequestDto
+            await client.PostRestoreJobAsync(new RestoreRequestDto
             {
                 Url = new Uri("http://localhost:5000/api/apps/aa/backups/547eb007-e702-43a0-a71a-a24faa4efa79"), Name = "app2"
             });
