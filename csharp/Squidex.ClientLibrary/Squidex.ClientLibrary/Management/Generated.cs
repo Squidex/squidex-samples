@@ -6604,6 +6604,17 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial interface IPingClient
     {
+        /// <summary>Get general info status of the API.</summary>
+        /// <returns>Infos returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get general info status of the API.</summary>
+        /// <returns>Infos returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync(System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Get ping status of the API.</summary>
         /// <returns>Service ping successful.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
@@ -6653,6 +6664,81 @@ namespace Squidex.ClientLibrary.Management
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <summary>Get general info status of the API.</summary>
+        /// <returns>Infos returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync()
+        {
+            return InfoAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get general info status of the API.</summary>
+        /// <returns>Infos returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> InfoAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("info");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, string>>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(System.Collections.Generic.IDictionary<string, string>);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
     
         /// <summary>Get ping status of the API.</summary>
         /// <returns>Service ping successful.</returns>
@@ -8931,25 +9017,27 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="ids">The optional asset ids.</param>
+        /// <param name="q">The optional json query.</param>
         /// <param name="top">Optional number of assets to take.</param>
         /// <param name="skip">Optional number of assets to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, double? top, double? skip, string orderby, string filter);
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="ids">The optional asset ids.</param>
+        /// <param name="q">The optional json query.</param>
         /// <param name="top">Optional number of assets to take.</param>
         /// <param name="skip">Optional number of assets to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
@@ -9420,28 +9508,30 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="ids">The optional asset ids.</param>
+        /// <param name="q">The optional json query.</param>
         /// <param name="top">Optional number of assets to take.</param>
         /// <param name="skip">Optional number of assets to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, double? top, double? skip, string orderby, string filter)
+        public System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter)
         {
-            return GetAssetsAsync(app, ids, top, skip, orderby, filter, System.Threading.CancellationToken.None);
+            return GetAssetsAsync(app, ids, q, top, skip, orderby, filter, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="ids">The optional asset ids.</param>
+        /// <param name="q">The optional json query.</param>
         /// <param name="top">Optional number of assets to take.</param>
         /// <param name="skip">Optional number of assets to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -9452,6 +9542,10 @@ namespace Squidex.ClientLibrary.Management
             if (ids != null) 
             {
                 urlBuilder_.Append("ids=").Append(System.Uri.EscapeDataString(ConvertToString(ids, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (q != null) 
+            {
+                urlBuilder_.Append("q=").Append(System.Uri.EscapeDataString(ConvertToString(q, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (top != null) 
             {
@@ -13295,16 +13389,6 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class UISettingsDto 
     {
-        /// <summary>The type of the map control.</summary>
-        [Newtonsoft.Json.JsonProperty("mapType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MapType { get; set; }
-    
-        /// <summary>The key for the map control.</summary>
-        [Newtonsoft.Json.JsonProperty("mapKey", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MapKey { get; set; }
-    
         /// <summary>True when the user can create apps.</summary>
         [Newtonsoft.Json.JsonProperty("canCreateApps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool CanCreateApps { get; set; }
@@ -13450,6 +13534,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("dataDraft", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public object DataDraft { get; set; }
     
+        /// <summary>The reference data for the frontend UI.</summary>
+        [Newtonsoft.Json.JsonProperty("referenceData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public NamedContentData ReferenceData { get; set; }
+    
         /// <summary>Indicates if the draft data is pending.</summary>
         [Newtonsoft.Json.JsonProperty("isPending", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsPending { get; set; }
@@ -13478,6 +13566,39 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Version { get; set; }
     
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class NamedContentData : ContentDataOfString
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public abstract partial class ContentDataOfString : System.Collections.Generic.Dictionary<string, ContentFieldData>
+    {
+        [Newtonsoft.Json.JsonProperty("validValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<KeyValuePairOfStringAndContentFieldData> ValidValues { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class KeyValuePairOfStringAndContentFieldData 
+    {
+        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Key { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContentFieldData Value { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, IJsonValue>
+    {
     
     }
     
@@ -13517,39 +13638,6 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string Color { get; set; }
     
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class NamedContentData : ContentDataOfString
-    {
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class ContentDataOfString : System.Collections.Generic.Dictionary<string, ContentFieldData>
-    {
-        [Newtonsoft.Json.JsonProperty("validValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<KeyValuePairOfStringAndContentFieldData> ValidValues { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class KeyValuePairOfStringAndContentFieldData 
-    {
-        [Newtonsoft.Json.JsonProperty("key", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Key { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ContentFieldData Value { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, IJsonValue>
-    {
     
     }
     
@@ -13828,6 +13916,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("isListField", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsListField { get; set; }
     
+        /// <summary>Determines if the field should be displayed in reference lists.</summary>
+        [Newtonsoft.Json.JsonProperty("isReferenceField", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsReferenceField { get; set; }
+    
         /// <summary>Optional url to the editor.</summary>
         [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string EditorUrl { get; set; }
@@ -14086,6 +14178,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>True, if duplicate values are allowed.</summary>
         [Newtonsoft.Json.JsonProperty("allowDuplicates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool AllowDuplicates { get; set; }
+    
+        /// <summary>True to resolve references in the content list.</summary>
+        [Newtonsoft.Json.JsonProperty("resolveReference", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ResolveReference { get; set; }
     
         /// <summary>The editor that is used to manage this field.</summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14399,7 +14495,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CreateSchemaDto : UpsertDto
+    public partial class CreateSchemaDto : UpsertSchemaDto
     {
         /// <summary>The name of the schema.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
@@ -14415,7 +14511,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class UpsertDto 
+    public abstract partial class UpsertSchemaDto 
     {
         /// <summary>The optional properties.</summary>
         [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14527,7 +14623,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SynchronizeSchemaDto : UpsertDto
+    public partial class SynchronizeSchemaDto : UpsertSchemaDto
     {
         /// <summary>True, when fields should not be deleted.</summary>
         [Newtonsoft.Json.JsonProperty("noFieldDeletion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -14781,17 +14877,6 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "actionType")]
-    [JsonInheritanceAttribute("Webhook", typeof(WebhookRuleActionDto))]
-    [JsonInheritanceAttribute("Tweet", typeof(TweetRuleActionDto))]
-    [JsonInheritanceAttribute("Slack", typeof(SlackRuleActionDto))]
-    [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
-    [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
-    [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
-    [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
-    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchRuleActionDto))]
-    [JsonInheritanceAttribute("Discourse", typeof(DiscourseRuleActionDto))]
-    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueRuleActionDto))]
-    [JsonInheritanceAttribute("Algolia", typeof(AlgoliaRuleActionDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class RuleAction 
     {
@@ -15016,6 +15101,12 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string PlanId { get; set; }
     
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ExposedValues : System.Collections.Generic.Dictionary<string, string>
+    {
     
     }
     
@@ -15283,8 +15374,7 @@ namespace Squidex.ClientLibrary.Management
         public string FileName { get; set; }
     
         /// <summary>The file hash.</summary>
-        [Newtonsoft.Json.JsonProperty("fileHash", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [Newtonsoft.Json.JsonProperty("fileHash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FileHash { get; set; }
     
         /// <summary>The slug.</summary>
@@ -15880,280 +15970,6 @@ namespace Squidex.ClientLibrary.Management
     
         [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusCode { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class WebhookRuleActionDto : RuleAction
-    {
-        /// <summary>The url to the webhook.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Uri Url { get; set; }
-    
-        /// <summary>The shared secret that is used to calculate the signature.</summary>
-        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SharedSecret { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class TweetRuleActionDto : RuleAction
-    {
-        /// <summary> The generated access token.</summary>
-        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string AccessToken { get; set; }
-    
-        /// <summary> The generated access secret.</summary>
-        [Newtonsoft.Json.JsonProperty("accessSecret", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string AccessSecret { get; set; }
-    
-        /// <summary>The text that is sent as tweet to twitter.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Text { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SlackRuleActionDto : RuleAction
-    {
-        /// <summary>The slack webhook url.</summary>
-        [Newtonsoft.Json.JsonProperty("webhookUrl", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Uri WebhookUrl { get; set; }
-    
-        /// <summary>The text that is sent as message to slack.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Text { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PrerenderRuleActionDto : RuleAction
-    {
-        /// <summary>The prerender token from your account.</summary>
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Token { get; set; }
-    
-        /// <summary>The url to recache.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Url { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class MediumRuleActionDto : RuleAction
-    {
-        /// <summary>The self issued access token.</summary>
-        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string AccessToken { get; set; }
-    
-        /// <summary>The title, used for the url.</summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Title { get; set; }
-    
-        /// <summary>The content, either html or markdown.</summary>
-        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Content { get; set; }
-    
-        /// <summary>The original home of this content, if it was originally published elsewhere.</summary>
-        [Newtonsoft.Json.JsonProperty("canonicalUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CanonicalUrl { get; set; }
-    
-        /// <summary>The optional comma separated list of tags.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Tags { get; set; }
-    
-        /// <summary>Optional publication id.</summary>
-        [Newtonsoft.Json.JsonProperty("publicationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PublicationId { get; set; }
-    
-        /// <summary>Indicates whether the content is markdown or html.</summary>
-        [Newtonsoft.Json.JsonProperty("isHtml", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsHtml { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class FastlyRuleActionDto : RuleAction
-    {
-        /// <summary>The API key to grant access to Squidex.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ApiKey { get; set; }
-    
-        /// <summary>The ID of the fastly service.</summary>
-        [Newtonsoft.Json.JsonProperty("serviceId", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ServiceId { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class EmailRuleActionDto : RuleAction
-    {
-        /// <summary>The IP address or host to the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ServerHost { get; set; }
-    
-        /// <summary>The port to the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.Always)]
-        public int ServerPort { get; set; }
-    
-        /// <summary>Specify whether the SMPT client uses Secure Sockets Layer (SSL) to encrypt the connection.</summary>
-        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.Always)]
-        public bool ServerUseSsl { get; set; }
-    
-        /// <summary>The password for the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverPassword", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ServerPassword { get; set; }
-    
-        /// <summary>The username for the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ServerUsername { get; set; }
-    
-        /// <summary>The email sending address.</summary>
-        [Newtonsoft.Json.JsonProperty("messageFrom", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MessageFrom { get; set; }
-    
-        /// <summary>The email message will be sent to.</summary>
-        [Newtonsoft.Json.JsonProperty("messageTo", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MessageTo { get; set; }
-    
-        /// <summary>The subject line for this email message.</summary>
-        [Newtonsoft.Json.JsonProperty("messageSubject", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MessageSubject { get; set; }
-    
-        /// <summary>The message body.</summary>
-        [Newtonsoft.Json.JsonProperty("messageBody", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string MessageBody { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ElasticSearchRuleActionDto : RuleAction
-    {
-        /// <summary>The url to the elastic search instance or cluster.</summary>
-        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Uri Host { get; set; }
-    
-        /// <summary>The name of the index.</summary>
-        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string IndexName { get; set; }
-    
-        /// <summary>The name of the index type.</summary>
-        [Newtonsoft.Json.JsonProperty("indexType", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string IndexType { get; set; }
-    
-        /// <summary>The optional username.</summary>
-        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Username { get; set; }
-    
-        /// <summary>The optional password.</summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class DiscourseRuleActionDto : RuleAction
-    {
-        /// <summary>The url to the discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Uri Url { get; set; }
-    
-        /// <summary>The api key to authenticate to your discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ApiKey { get; set; }
-    
-        /// <summary>The api username to authenticate to your discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("apiUsername", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ApiUsername { get; set; }
-    
-        /// <summary>The text as markdown.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Text { get; set; }
-    
-        /// <summary>The optional title when creating new topics.</summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Title { get; set; }
-    
-        /// <summary>The optional topic id.</summary>
-        [Newtonsoft.Json.JsonProperty("topic", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Topic { get; set; }
-    
-        /// <summary>The optional category id.</summary>
-        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Category { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AzureQueueRuleActionDto : RuleAction
-    {
-        /// <summary>The connection string to the storage account.</summary>
-        [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ConnectionString { get; set; }
-    
-        /// <summary>The name of the queue.</summary>
-        [Newtonsoft.Json.JsonProperty("queue", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Queue { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AlgoliaRuleActionDto : RuleAction
-    {
-        /// <summary>The application ID.</summary>
-        [Newtonsoft.Json.JsonProperty("appId", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string AppId { get; set; }
-    
-        /// <summary>The API key to grant access to Squidex.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ApiKey { get; set; }
-    
-        /// <summary>The name of the index.</summary>
-        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string IndexName { get; set; }
     
     
     }

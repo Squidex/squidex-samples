@@ -7,6 +7,8 @@
 
 using System.Text;
 
+#pragma warning disable RECS0096 // Type parameter is never used
+
 namespace Squidex.ClientLibrary.Management
 {
     public partial class ErrorDto
