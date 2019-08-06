@@ -14877,6 +14877,17 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "actionType")]
+    [JsonInheritanceAttribute("Webhook", typeof(WebhookRuleActionDto))]
+    [JsonInheritanceAttribute("Tweet", typeof(TweetRuleActionDto))]
+    [JsonInheritanceAttribute("Slack", typeof(SlackRuleActionDto))]
+    [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
+    [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
+    [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
+    [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
+    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchRuleActionDto))]
+    [JsonInheritanceAttribute("Discourse", typeof(DiscourseRuleActionDto))]
+    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueRuleActionDto))]
+    [JsonInheritanceAttribute("Algolia", typeof(AlgoliaRuleActionDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class RuleAction 
     {
@@ -15970,6 +15981,280 @@ namespace Squidex.ClientLibrary.Management
     
         [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? StatusCode { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class WebhookRuleActionDto : RuleAction
+    {
+        /// <summary>The url to the webhook.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Url { get; set; }
+    
+        /// <summary>The shared secret that is used to calculate the signature.</summary>
+        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SharedSecret { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class TweetRuleActionDto : RuleAction
+    {
+        /// <summary> The generated access token.</summary>
+        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string AccessToken { get; set; }
+    
+        /// <summary> The generated access secret.</summary>
+        [Newtonsoft.Json.JsonProperty("accessSecret", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string AccessSecret { get; set; }
+    
+        /// <summary>The text that is sent as tweet to twitter.</summary>
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Text { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class SlackRuleActionDto : RuleAction
+    {
+        /// <summary>The slack webhook url.</summary>
+        [Newtonsoft.Json.JsonProperty("webhookUrl", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri WebhookUrl { get; set; }
+    
+        /// <summary>The text that is sent as message to slack.</summary>
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Text { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PrerenderRuleActionDto : RuleAction
+    {
+        /// <summary>The prerender token from your account.</summary>
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Token { get; set; }
+    
+        /// <summary>The url to recache.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Url { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class MediumRuleActionDto : RuleAction
+    {
+        /// <summary>The self issued access token.</summary>
+        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string AccessToken { get; set; }
+    
+        /// <summary>The title, used for the url.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Title { get; set; }
+    
+        /// <summary>The content, either html or markdown.</summary>
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Content { get; set; }
+    
+        /// <summary>The original home of this content, if it was originally published elsewhere.</summary>
+        [Newtonsoft.Json.JsonProperty("canonicalUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CanonicalUrl { get; set; }
+    
+        /// <summary>The optional comma separated list of tags.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Tags { get; set; }
+    
+        /// <summary>Optional publication id.</summary>
+        [Newtonsoft.Json.JsonProperty("publicationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PublicationId { get; set; }
+    
+        /// <summary>Indicates whether the content is markdown or html.</summary>
+        [Newtonsoft.Json.JsonProperty("isHtml", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHtml { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class FastlyRuleActionDto : RuleAction
+    {
+        /// <summary>The API key to grant access to Squidex.</summary>
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ApiKey { get; set; }
+    
+        /// <summary>The ID of the fastly service.</summary>
+        [Newtonsoft.Json.JsonProperty("serviceId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServiceId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class EmailRuleActionDto : RuleAction
+    {
+        /// <summary>The IP address or host to the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerHost { get; set; }
+    
+        /// <summary>The port to the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.Always)]
+        public int ServerPort { get; set; }
+    
+        /// <summary>Specify whether the SMPT client uses Secure Sockets Layer (SSL) to encrypt the connection.</summary>
+        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.Always)]
+        public bool ServerUseSsl { get; set; }
+    
+        /// <summary>The password for the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverPassword", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerPassword { get; set; }
+    
+        /// <summary>The username for the SMTP server.</summary>
+        [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ServerUsername { get; set; }
+    
+        /// <summary>The email sending address.</summary>
+        [Newtonsoft.Json.JsonProperty("messageFrom", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageFrom { get; set; }
+    
+        /// <summary>The email message will be sent to.</summary>
+        [Newtonsoft.Json.JsonProperty("messageTo", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageTo { get; set; }
+    
+        /// <summary>The subject line for this email message.</summary>
+        [Newtonsoft.Json.JsonProperty("messageSubject", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageSubject { get; set; }
+    
+        /// <summary>The message body.</summary>
+        [Newtonsoft.Json.JsonProperty("messageBody", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MessageBody { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ElasticSearchRuleActionDto : RuleAction
+    {
+        /// <summary>The url to the elastic search instance or cluster.</summary>
+        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Host { get; set; }
+    
+        /// <summary>The name of the index.</summary>
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexName { get; set; }
+    
+        /// <summary>The name of the index type.</summary>
+        [Newtonsoft.Json.JsonProperty("indexType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexType { get; set; }
+    
+        /// <summary>The optional username.</summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+    
+        /// <summary>The optional password.</summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Password { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class DiscourseRuleActionDto : RuleAction
+    {
+        /// <summary>The url to the discourse server.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Url { get; set; }
+    
+        /// <summary>The api key to authenticate to your discourse server.</summary>
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ApiKey { get; set; }
+    
+        /// <summary>The api username to authenticate to your discourse server.</summary>
+        [Newtonsoft.Json.JsonProperty("apiUsername", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ApiUsername { get; set; }
+    
+        /// <summary>The text as markdown.</summary>
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Text { get; set; }
+    
+        /// <summary>The optional title when creating new topics.</summary>
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        /// <summary>The optional topic id.</summary>
+        [Newtonsoft.Json.JsonProperty("topic", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Topic { get; set; }
+    
+        /// <summary>The optional category id.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Category { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AzureQueueRuleActionDto : RuleAction
+    {
+        /// <summary>The connection string to the storage account.</summary>
+        [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ConnectionString { get; set; }
+    
+        /// <summary>The name of the queue.</summary>
+        [Newtonsoft.Json.JsonProperty("queue", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Queue { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.21.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AlgoliaRuleActionDto : RuleAction
+    {
+        /// <summary>The application ID.</summary>
+        [Newtonsoft.Json.JsonProperty("appId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string AppId { get; set; }
+    
+        /// <summary>The API key to grant access to Squidex.</summary>
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ApiKey { get; set; }
+    
+        /// <summary>The name of the index.</summary>
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexName { get; set; }
     
     
     }
