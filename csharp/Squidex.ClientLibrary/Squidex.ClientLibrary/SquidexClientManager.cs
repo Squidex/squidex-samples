@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
@@ -19,6 +21,7 @@ namespace Squidex.ClientLibrary
         private readonly string applicationName;
         private readonly Uri serviceUrl;
         private readonly IAuthenticator authenticator;
+        private readonly bool acceptAllCertificates;
 
         public bool ReadResponseAsString { get; set; }
 
@@ -27,17 +30,20 @@ namespace Squidex.ClientLibrary
             get { return applicationName; }
         }
 
-        public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret)
-            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, new CachingAuthenticator(serviceUrl, clientId, clientSecret))
+        public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret, bool acceptAllCertificates = false)
+            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName,
+                  new CachingAuthenticator($"TOKEN_{serviceUrl}", new MemoryCache(Options.Create(new MemoryCacheOptions())),
+                      new Authenticator(serviceUrl, clientId, clientSecret)),
+                  acceptAllCertificates)
         {
         }
 
-        public SquidexClientManager(string serviceUrl, string applicationName, IAuthenticator authenticator)
-            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, authenticator)
+        public SquidexClientManager(string serviceUrl, string applicationName, IAuthenticator authenticator, bool acceptAllCertificates = false)
+            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, authenticator, acceptAllCertificates)
         {
         }
 
-        public SquidexClientManager(Uri serviceUrl, string applicationName, IAuthenticator authenticator)
+        public SquidexClientManager(Uri serviceUrl, string applicationName, IAuthenticator authenticator, bool acceptAllCertificates = false)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
             Guard.NotNull(authenticator, nameof(authenticator));
@@ -46,6 +52,7 @@ namespace Squidex.ClientLibrary
             this.authenticator = authenticator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;
+            this.acceptAllCertificates = acceptAllCertificates;
         }
 
         public string GenerateImageUrl(string id)
@@ -138,11 +145,14 @@ namespace Squidex.ClientLibrary
             return new SquidexClient<TEntity, TData>(applicationName, schemaName, CreateHttpClient());
         }
 
-        private HttpClient CreateHttpClient()
+        public HttpClient CreateHttpClient()
         {
             var url = new Uri(serviceUrl, "/api/");
 
-            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator), false) { BaseAddress = url };
+            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator, acceptAllCertificates), false)
+            {
+                BaseAddress = url
+            };
         }
     }
 }

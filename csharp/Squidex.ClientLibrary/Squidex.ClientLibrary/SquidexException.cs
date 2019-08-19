@@ -6,9 +6,11 @@
 // ==========================================================================
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Squidex.ClientLibrary
 {
+    [Serializable]
     public class SquidexException : Exception
     {
         public SquidexException()
@@ -22,6 +24,11 @@ namespace Squidex.ClientLibrary
 
         public SquidexException(string message, Exception inner)
             : base(message, inner)
+        {
+        }
+
+        protected SquidexException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

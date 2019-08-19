@@ -5,13 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Linq;
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Squidex.ClientLibrary.Utils;
 
@@ -42,6 +42,20 @@ namespace Squidex.ClientLibrary
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             return content;
+        }
+
+        public static HttpContent ToContent(this Stream stream, string name, string mimeType)
+        {
+            var streamContent = new StreamContent(stream);
+
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue(mimeType);
+
+            var requestContent = new MultipartFormDataContent
+            {
+                { streamContent, "file", name }
+            };
+
+            return requestContent;
         }
 
         public static string ToJson<T>(this T value)

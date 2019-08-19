@@ -6,9 +6,13 @@
 // ==========================================================================
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+
+#pragma warning disable IDE0067 // Dispose objects before losing scope
 
 namespace Squidex.ClientLibrary
 {
@@ -28,15 +32,39 @@ namespace Squidex.ClientLibrary
             this.httpClient = httpClient;
         }
 
-        protected async Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null)
+        protected async Task RequestAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null, CancellationToken ct = default)
         {
             using (var request = BuildRequest(method, path, content, context))
             {
-                var response = await httpClient.SendAsync(request);
+                using (var response = await httpClient.SendAsync(request, ct))
+                {
+                    await EnsureResponseIsValidAsync(response);
+                }
+            }
+        }
+
+        protected async Task<Stream> RequestStreamAsync(HttpMethod method, string path, HttpContent content = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            using (var request = BuildRequest(method, path, content, context))
+            {
+                var response = await httpClient.SendAsync(request, ct);
 
                 await EnsureResponseIsValidAsync(response);
 
-                return response;
+                return await response.Content.ReadAsStreamAsync();
+            }
+        }
+
+        protected async Task<T> RequestJsonAsync<T>(HttpMethod method, string path, HttpContent content = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            using (var request = BuildRequest(method, path, content, context))
+            {
+                using (var response = await httpClient.SendAsync(request, ct))
+                {
+                    await EnsureResponseIsValidAsync(response);
+
+                    return await response.Content.ReadAsJsonAsync<T>();
+                }
             }
         }
 

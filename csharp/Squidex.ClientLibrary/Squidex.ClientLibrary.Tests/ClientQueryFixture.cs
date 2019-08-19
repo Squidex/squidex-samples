@@ -20,24 +20,14 @@ namespace Squidex.ClientLibrary.Tests
         {
             Task.Run(async () =>
             {
+                var apps = TestClient.ClientManager.CreateAppsClient();
+
                 try
                 {
-                    var apps = TestClient.ClientManager.CreateAppsClient();
-
-                    try
+                    await apps.PostAppAsync(new CreateAppDto
                     {
-                        await apps.PostAppAsync(new CreateAppDto
-                        {
-                            Name = TestClient.AppName
-                        });
-                    }
-                    catch (SquidexManagementException ex)
-                    {
-                        if (ex.StatusCode != 400)
-                        {
-                            throw;
-                        }
-                    }
+                        Name = TestClient.AppName
+                    });
 
                     var schemas = TestClient.ClientManager.CreateSchemasClient();
 
@@ -45,38 +35,40 @@ namespace Squidex.ClientLibrary.Tests
                     {
                         Name = TestClient.SchemaName,
                         Fields = new List<UpsertSchemaFieldDto>
+                    {
+                        new UpsertSchemaFieldDto
                         {
-                            new UpsertSchemaFieldDto
-                            {
-                                Name = TestClient.FieldName,
-                                Properties = new NumberFieldPropertiesDto()
-                            }
-                        },
+                            Name = TestClient.FieldName,
+                            Properties = new NumberFieldPropertiesDto()
+                        }
+                    },
                         IsPublished = true
                     });
-
-                    for (var i = 10; i > 0; i--)
+                }
+                catch (SquidexManagementException ex)
+                {
+                    if (ex.StatusCode != 400)
                     {
-                        await Client.CreateAsync(new TestEntityData { Value = i }, true);
+                        throw;
                     }
                 }
-                catch
+
+                var contents = await Client.GetAllAsync();
+
+                foreach (var content in contents.Items)
                 {
-                    await CleanupAsync();
+                    await Client.DeleteAsync(content);
+                }
+
+                for (var i = 10; i > 0; i--)
+                {
+                    await Client.CreateAsync(new TestEntityData { Value = i }, true);
                 }
             }).Wait();
         }
 
         public void Dispose()
         {
-            Task.Run(CleanupAsync).Wait();
-        }
-
-        private static async Task CleanupAsync()
-        {
-            var schemas = TestClient.ClientManager.CreateSchemasClient();
-
-            await schemas.DeleteSchemaAsync(TestClient.AppName, TestClient.SchemaName);
         }
     }
 }

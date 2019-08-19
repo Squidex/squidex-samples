@@ -7,12 +7,9 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
@@ -23,43 +20,14 @@ namespace Squidex.ClientLibrary
         {
         }
 
-        public async Task<AssetEntities> GetAssetsAsync(string filter = null, string ids = null, int? skip = null, int? top = null)
+        public Task<AssetEntities> GetAssetsAsync(ODataQuery query = null)
         {
-            var queries = new List<string>();
+            var queryString = query?.ToQuery(false) ?? string.Empty;
 
-            if (skip.HasValue)
-            {
-                queries.Add($"$skip={skip.Value}");
-            }
-
-            if (top.HasValue)
-            {
-                queries.Add($"$top={top.Value}");
-            }
-
-            if (!string.IsNullOrEmpty(filter))
-            {
-                queries.Add($"$filter={filter}");
-            }
-
-            if (!string.IsNullOrEmpty(ids))
-            {
-                queries.Add($"ids={ids}");
-            }
-
-            var queryString = string.Join("&", queries);
-
-            if (!string.IsNullOrWhiteSpace(queryString))
-            {
-                queryString = "?" + queryString;
-            }
-
-            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(queryString));
-
-            return await response.Content.ReadAsJsonAsync<AssetEntities>();
+            return RequestJsonAsync<AssetEntities>(HttpMethod.Get, BuildAppAssetsUrl(queryString));
         }
 
-        public async Task<Stream> GetAssetContentAsync(string id, int? version = null, int? width = null, int? height = null, string mode = null, int? quality = null)
+        public Task<Stream> GetAssetContentAsync(string id, int? version = null, int? width = null, int? height = null, string mode = null, int? quality = null)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -97,61 +65,56 @@ namespace Squidex.ClientLibrary
                 queryString = "?" + queryString;
             }
 
-            var response = await RequestAsync(HttpMethod.Get, BuildAssetsUrl($"{id}/{queryString}"));
-
-            return await response.Content.ReadAsStreamAsync();
+            return RequestStreamAsync(HttpMethod.Get, BuildAssetsUrl($"{id}/{queryString}"));
         }
 
-        public async Task<Asset> GetAssetAsync(string id)
+        public Task<Asset> GetAssetAsync(string id)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            var response = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl(id));
-
-            return await response.Content.ReadAsJsonAsync<Asset>();
+            return RequestJsonAsync<Asset>(HttpMethod.Get, BuildAppAssetsUrl(id));
         }
 
-        public async Task<Asset> CreateAssetAsync(string contentName, string contentMimeType, Stream stream)
+        public Task<Asset> CreateAssetAsync(string name, string mimeType, Stream stream, CancellationToken ct = default)
         {
-            var request = BuildRequest(contentName, contentMimeType, stream);
-            var response = await RequestAsync(HttpMethod.Post, BuildAppAssetsUrl(), request);
+            Guard.NotNull(stream, nameof(stream));
 
-            return await response.Content.ReadAsJsonAsync<Asset>();
+            return RequestJsonAsync<Asset>(HttpMethod.Post, BuildAppAssetsUrl(), stream.ToContent(name, mimeType), ct: ct);
         }
 
-        public async Task<Asset> UpdateAssetContentAsync(string id, string contentName, string contentMimeType, Stream stream)
+        public Task<Asset> UpdateAssetContentAsync(string id, string name, string mimeType, Stream stream, CancellationToken ct = default)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+            Guard.NotNull(stream, nameof(stream));
+
+            return RequestJsonAsync<Asset>(HttpMethod.Put, BuildAppAssetsUrl($"{id}/content"), stream.ToContent(name, mimeType), ct: ct);
+        }
+
+        public Task<Asset> UpdateAssetAsync(string id, UpdateAssetRequest update, CancellationToken ct = default)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+            Guard.NotNull(update, nameof(update));
+
+            return RequestJsonAsync<Asset>(HttpMethod.Put, BuildAppAssetsUrl(id), update.ToContent(), ct: ct);
+        }
+
+        public Task<Tags> GetAssetsTagsAsync(CancellationToken ct = default)
+        {
+            return RequestJsonAsync<Tags>(HttpMethod.Get, BuildAppAssetsUrl("tags"), ct: ct);
+        }
+
+        public Task DeleteAssetAsync(string id, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            var request = BuildRequest(contentName, contentMimeType, stream);
-            var response = await RequestAsync(HttpMethod.Put, BuildAppAssetsUrl($"{id}/content"), request);
-
-            return await response.Content.ReadAsJsonAsync<Asset>();
+            return RequestAsync(HttpMethod.Delete, BuildAppAssetsUrl(id), ct: ct);
         }
 
-        public async Task<HttpStatusCode> UpdateAssetAsync(string id, UpdateAssetRequest data)
+        public Task DeleteAssetAsync(Asset asset, CancellationToken ct = default)
         {
-            var jsonData = JsonConvert.SerializeObject(data);
+            Guard.NotNull(asset, nameof(asset));
 
-            var request = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await RequestAsync(HttpMethod.Put, BuildAppAssetsUrl(id), request);
-
-            return response.StatusCode;
-        }
-
-        public async Task<Dictionary<string, int>> GetAssetsTagsAsync()
-        {
-            var request = await RequestAsync(HttpMethod.Get, BuildAppAssetsUrl("tags"));
-            var response = await request.Content.ReadAsJsonAsync<Dictionary<string, int>>();
-
-            return response;
-        }
-
-        public async Task DeleteAssetAsync(string id)
-        {
-            Guard.NotNullOrEmpty(id, nameof(id));
-
-            await RequestAsync(HttpMethod.Delete, BuildAppAssetsUrl(id));
+            return DeleteAssetAsync(asset.Id, ct);
         }
 
         private string BuildAssetsUrl(string path = "")
@@ -162,24 +125,6 @@ namespace Squidex.ClientLibrary
         private string BuildAppAssetsUrl(string path = "")
         {
             return $"apps/{ApplicationName}/assets/{path}";
-        }
-
-        private static MultipartFormDataContent BuildRequest(string contentName, string contentMimeType, Stream stream)
-        {
-            Guard.NotNullOrEmpty(contentName, nameof(contentName));
-            Guard.NotNullOrEmpty(contentMimeType, nameof(contentMimeType));
-            Guard.NotNull(stream, nameof(stream));
-
-            var streamContent = new StreamContent(stream);
-
-            streamContent.Headers.ContentType = new MediaTypeHeaderValue(contentMimeType);
-
-            var requestContent = new MultipartFormDataContent
-            {
-                { streamContent, "file", contentName }
-            };
-
-            return requestContent;
         }
     }
 }

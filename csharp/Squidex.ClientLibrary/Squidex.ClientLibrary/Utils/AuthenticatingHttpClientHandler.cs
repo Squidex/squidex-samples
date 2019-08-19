@@ -17,9 +17,14 @@ namespace Squidex.ClientLibrary.Utils
     {
         private readonly IAuthenticator authenticator;
 
-        public AuthenticatingHttpClientHandler(IAuthenticator authenticator)
+        public AuthenticatingHttpClientHandler(IAuthenticator authenticator, bool acceptAllCertificates)
         {
             this.authenticator = authenticator;
+
+            if (acceptAllCertificates)
+            {
+                ServerCertificateCustomValidationCallback += (message, certificate, chain, errors) => true;
+            }
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

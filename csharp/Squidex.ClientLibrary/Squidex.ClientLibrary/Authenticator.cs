@@ -12,8 +12,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-// ReSharper disable InvertIf
-
 namespace Squidex.ClientLibrary
 {
     public class Authenticator : IAuthenticator
@@ -39,41 +37,12 @@ namespace Squidex.ClientLibrary
             this.clientSecret = clientSecret;
         }
 
-        public async Task<string> GetBearerTokenAsync()
-        {
-            var result = GetFromCache();
-
-            if (result == null)
-            {
-                result = await GetBearerTokenFromServerAsync();
-
-                SetToCache(result, DateTimeOffset.UtcNow.AddDays(50));
-            }
-
-            return result;
-        }
-
         public Task RemoveTokenAsync(string token)
         {
-            RemoveFromCache(token);
-
             return Task.CompletedTask;
         }
 
-        protected virtual void SetToCache(string result, DateTimeOffset expires)
-        {
-        }
-
-        protected virtual void RemoveFromCache(string token)
-        {
-        }
-
-        protected virtual string GetFromCache()
-        {
-            return null;
-        }
-
-        private async Task<string> GetBearerTokenFromServerAsync()
+        public async Task<string> GetBearerTokenAsync()
         {
             var url = $"{serviceUrl}identity-server/connect/token";
 
