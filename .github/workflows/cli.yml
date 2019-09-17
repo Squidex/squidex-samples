@@ -1,0 +1,92 @@
+name: Build CLI
+
+on:
+  push:
+    tags:
+      - 'cli-*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: setup zip
+      uses: montudor/action-zip@v0.1.0
+ 
+    - name: setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+
+    - name: publish dotnet
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -c Release
+
+    - name: publish win-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r win-x64 -c Release
+
+    - name: publish win-x86
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r win-x86 -c Release
+
+    - name: publish linux-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r linux-x64 -c Release
+
+    - name: publish ubuntu-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r ubuntu-x64 -c Release
+
+    - name: publish osx-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r osx-x64 -c Release
+
+    - name: create dir
+      run: |
+        mkdir cli/Squidex.CLI/Squidex.CLI/bin/Release/out
+
+    - name: archive dotnet
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/publish/
+        zip -r '../../out/dotnet.zip' *
+  
+    - name: archive win-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/win-x64/publish/
+        zip -r '../../../out/win-x64.zip' *
+  
+    - name: archive win-x86
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/win-x86/publish/
+        zip -r '../../../out/win-x86.zip' *
+  
+    - name: archive linux-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/linux-x64/publish/
+        zip -r '../../..//out/linux-x64.zip' *
+    
+    - name: archive ubuntu-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/ubuntu-x64/publish/
+        zip -r '../../../out/ubuntu-x64.zip' *
+
+    - name: archive osx-x64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/osx-x64/publish/
+        zip -r '../../../out/osx-x64.zip' *
+
+    - name: release
+      uses: fnkr/github-action-ghr@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.token }}
+        GHR_PATH: 'cli/Squidex.CLI/Squidex.CLI/bin/Release/out/'

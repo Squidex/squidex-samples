@@ -1,0 +1,29 @@
+name: Build Dotnet SDK
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v1
+ 
+    - name: setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+
+    - name: publish
+      run: |
+        cd csharp/Squidex.ClientLibrary/Squidex.ClientLibrary
+        dotnet pack -c Release
+
+    - name: pack
+      run: |
+        cd csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/bin/Release
+        dotnet nuget push *.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }} 

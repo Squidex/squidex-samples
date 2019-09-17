@@ -35,13 +35,13 @@ namespace Squidex.ClientLibrary.Tests
                     {
                         Name = TestClient.SchemaName,
                         Fields = new List<UpsertSchemaFieldDto>
-                    {
-                        new UpsertSchemaFieldDto
                         {
-                            Name = TestClient.FieldName,
-                            Properties = new NumberFieldPropertiesDto()
-                        }
-                    },
+                            new UpsertSchemaFieldDto
+                            {
+                                Name = TestClient.FieldName,
+                                Properties = new NumberFieldPropertiesDto()
+                            }
+                        },
                         IsPublished = true
                     });
                 }

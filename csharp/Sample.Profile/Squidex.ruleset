@@ -55,11 +55,15 @@
     <Rule Id="SA1615" Action="None" />
     <Rule Id="SA1623" Action="None" />
     <Rule Id="SA1633" Action="Error" />
-    <Rule Id="SA1649" Action="None" />
+    <Rule Id="SA1649" Action="Error" />
     <Rule Id="SA1634" Action="None" />
     <Rule Id="SA1635" Action="None" />
     <Rule Id="SA1652" Action="None" />
     <Rule Id="SA1404" Action="None" />
+    <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA0001" Action="None" />
+    <Rule Id="SA1602" Action="None" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0061" Action="Error" />
@@ -76,6 +80,7 @@
     <Rule Id="RECS0026" Action="Error" />
     <Rule Id="RECS0145" Action="None" />
     <Rule Id="RECS0129" Action="None" />
+    <Rule Id="RECS0070" Action="None" />
   </Rules>
   <Rules AnalyzerId="Roslyn.Core" RuleNamespace="Roslyn.Core">
     <Rule Id="AD0001" Action="None" />
@@ -83,5 +88,11 @@
   <Rules AnalyzerId="Roslyn.Core" RuleNamespace="Microsoft.CodeAnalysis.Diagnostics">
     <Rule Id="IDE0032" Action="None" />
     <Rule Id="IDE0042" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.AspNetCore.Mvc.Api.Analyzers" RuleNamespace="Microsoft.AspNetCore.Mvc.Api.Analyzers">
+    <Rule Id="API1000" Action="Error" />
+    <Rule Id="API1001" Action="Error" />
+    <Rule Id="API1002" Action="Error" />
+    <Rule Id="API1003" Action="Error" />
   </Rules>
 </RuleSet>
