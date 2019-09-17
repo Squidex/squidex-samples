@@ -228,7 +228,16 @@ namespace Squidex.CLI.Commands
 
                 do
                 {
-                    var content = await client.GetAsync(currentPage * 100, 100, arguments.Filter, arguments.OrderBy, arguments.FullText, ctx);
+                    var query = new ODataQuery
+                    {
+                        Filter = arguments.Filter,
+                        OrderBy = arguments.OrderBy,
+                        Search = arguments.FullText,
+                        Skip = currentPage * 100,
+                        Top = 100
+                    };
+
+                    var content = await client.GetAsync(query, ctx);
 
                     total = content.Total;
 

@@ -50,7 +50,7 @@ namespace Squidex.CLI.Commands.Models
             return target;
         }
 
-        public static SchemaWithRefs<T> AdjustReferences<T>(this SchemaWithRefs<T> target, ICollection<SchemaDto> allSchemas) where T : UpsertDto
+        public static SchemaWithRefs<T> AdjustReferences<T>(this SchemaWithRefs<T> target, ICollection<SchemaDto> allSchemas) where T : UpsertSchemaDto
         {
             if (target.Schema.Fields != null)
             {
