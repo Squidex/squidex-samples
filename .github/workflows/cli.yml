@@ -12,18 +12,12 @@ jobs:
 
     runs-on: ubuntu-latest
         
-    strategy:
-      matrix:
-        platform: [win-x64, win-x86, linux-x64, ubuntu-x64, osx-x64]
-        
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: dotnet publish ${{ matrix.platform }}
+    - name: dotnet publish to win-x64
       run: |
-        dotnet publish -c Release -r ${{ matrix.platform }}
-      with:
-        platform: ${{ matrix.platform }}
+        dotnet publish -c Release -r win-x64
