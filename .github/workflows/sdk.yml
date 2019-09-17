@@ -2,8 +2,8 @@ name: Build Dotnet SDK
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'dotnet-sdk-*'
 
 jobs:
   build:
