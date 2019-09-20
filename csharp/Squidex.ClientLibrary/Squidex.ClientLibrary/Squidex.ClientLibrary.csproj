@@ -4,13 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>sebastianstehle</Authors>
     <Company>Squidex UG (haftungsbeschränkt)</Company>
+    <Copyright>© Squidex UG (haftungsbeschränkt). All rights reserved.</Copyright>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
-    <Copyright>MIT</Copyright>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
-    <PackageLicense>https://github.com/Squidex/squidex/blob/master/LICENSE.txt</PackageLicense>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
-    <Version>3.8</Version>
+    <Version>3.9</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
