@@ -69,9 +69,10 @@ namespace Squidex.CLI.Commands
 
                     using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
                     {
-                        var download = await backupsClient.GetBackupContentAsync(app, foundBackup.Id.ToString());
-
-                        await download.Stream.CopyToAsync(fs);
+                        using (var download = await backupsClient.GetBackupContentAsync(app, foundBackup.Id.ToString()))
+                        {
+                            await download.Stream.CopyToAsync(fs);
+                        }
                     }
 
                     Console.WriteLine("Backup completed. Download completed");

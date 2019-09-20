@@ -60,6 +60,10 @@
     <Rule Id="SA1635" Action="None" />
     <Rule Id="SA1652" Action="None" />
     <Rule Id="SA1404" Action="None" />
+    <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA0001" Action="None" />
+    <Rule Id="SA1602" Action="None" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0061" Action="Error" />
@@ -76,6 +80,7 @@
     <Rule Id="RECS0026" Action="Error" />
     <Rule Id="RECS0145" Action="None" />
     <Rule Id="RECS0129" Action="None" />
+    <Rule Id="RECS0070" Action="None" />
   </Rules>
   <Rules AnalyzerId="Roslyn.Core" RuleNamespace="Roslyn.Core">
     <Rule Id="AD0001" Action="None" />
