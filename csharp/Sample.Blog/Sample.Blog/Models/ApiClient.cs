@@ -35,7 +35,9 @@ namespace Sample.Blog.Models
 
         public async Task<(long Total, List<BlogPost> Posts)> GetBlogPostsAsync(int page = 0, int pageSize = 3)
         {
-            var posts = await postsClient.GetAsync(page * pageSize, pageSize);
+            var query = new ODataQuery { Skip = page * pageSize, Top = pageSize };
+
+            var posts = await postsClient.GetAsync(query);
 
             return (posts.Total, posts.Items);
         }
@@ -49,7 +51,12 @@ namespace Sample.Blog.Models
 
         public async Task<Page> GetPageAsync(string slug)
         {
-            var pages = await pagesClient.GetAsync(filter: $"data/slug/iv eq '{slug}'");
+            var query = new ODataQuery
+            {
+                Filter = $"data/slug/iv eq '{slug}'"
+            };
+
+            var pages = await pagesClient.GetAsync(query);
 
             return pages.Items.FirstOrDefault();
         }
