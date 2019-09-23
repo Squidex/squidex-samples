@@ -24,7 +24,7 @@ jobs:
     - name: publish dotnet
       run: |
         cd cli/Squidex.CLI/Squidex.CLI
-        dotnet publish -c Release
+        dotnet publish -c Release /p:PublishSingleFile=false /p:PublishTrimmed=false
 
     - name: publish win-x64
       run: |
