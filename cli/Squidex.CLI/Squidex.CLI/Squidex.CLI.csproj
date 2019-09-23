@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>sq</AssemblyName>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-	  <Version>3.2</Version>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <Version>3.2</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
     <PackageReference Include="CommandDotNet" Version="2.8.1" />
@@ -18,13 +18,10 @@
     <PackageReference Include="Squidex.ClientLibrary" Version="3.9.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
   </ItemGroup>
-
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\Squidex.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
-
 </Project>
