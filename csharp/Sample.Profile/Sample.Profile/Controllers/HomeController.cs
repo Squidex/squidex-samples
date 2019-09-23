@@ -75,7 +75,9 @@ namespace Sample.Profile.Controllers
 
         private async Task LoadBasics(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Basics, BasicsData>("basics").GetAsync(top: 1);
+            var query = new ODataQuery { Top = 1 };
+
+            var records = await clientManager.GetClient<Basics, BasicsData>("basics").GetAsync(query);
 
             vm.Basics = records.Items.FirstOrDefault()?.Data ?? new BasicsData();
         }

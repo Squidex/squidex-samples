@@ -1,26 +1,32 @@
 #
 # Stage 1, Prebuild
 #
-FROM microsoft/dotnet:2.1-sdk as builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster as builder
 
-WORKDIR /src
+WORKDIR /
 
+# Copy csproj first to speed up restore
+COPY Sample.Profile.sln .
+COPY Sample.Profile/Sample.Profile.csproj Sample.Profile/
+
+RUN dotnet restore
+
+# Copy all other stuff
 COPY . .
 
 # Publish
-RUN dotnet restore \
- && dotnet publish Sample.Profile/Sample.Profile.csproj --output /out/ --configuration Release
+RUN dotnet publish Sample.Profile/Sample.Profile.csproj -c Release -o /app/publish
 
 #
 # Stage 2, Build runtime
 #
-FROM microsoft/dotnet:2.1.0-aspnetcore-runtime-alpine
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim
 
-# Default AspNetCore directory
+# Default app directory
 WORKDIR /app
 
-# Copy from nuild stage
-COPY --from=builder /out/ .
+# Copy from build stage
+COPY --from=builder /app/publish .
 
 EXPOSE 80
 
