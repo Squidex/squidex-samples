@@ -6,8 +6,11 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using CommandDotNet;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
+using FluentValidation.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using Squidex.CLI.Commands;
 using Squidex.CLI.Configuration;
@@ -21,6 +24,11 @@ namespace Squidex.CLI
             var serviceCollection =
                 new ServiceCollection()
                     .AddSingleton<IConfigurationService, ConfigurationService>();
+
+            foreach (var validator in GetAllValidatorTypes())
+            {
+                serviceCollection.AddSingleton(validator);
+            }
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -36,5 +44,13 @@ namespace Squidex.CLI
                 return -1;
             }
         }
+
+        private static IEnumerable<Type> GetAllValidatorTypes() =>
+            typeof(Program)
+                .Assembly
+                .GetTypes()
+                .SelectMany(t => t
+                    .GetCustomAttributes(typeof(ValidatorAttribute), false)
+                    .Select(a => ((ValidatorAttribute)a).ValidatorType));
     }
 }
