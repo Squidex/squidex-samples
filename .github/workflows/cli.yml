@@ -57,32 +57,32 @@ jobs:
 
     - name: archive dotnet
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/publish/
         zip -r '../../out/dotnet.zip' *
   
     - name: archive win-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/win-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/win-x64/publish/
         zip -r '../../../out/win-x64.zip' *
   
     - name: archive win-x86
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/win-x86/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/win-x86/publish/
         zip -r '../../../out/win-x86.zip' *
   
     - name: archive linux-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/linux-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/linux-x64/publish/
         zip -r '../../..//out/linux-x64.zip' *
     
     - name: archive ubuntu-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/ubuntu-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/ubuntu-x64/publish/
         zip -r '../../../out/ubuntu-x64.zip' *
 
     - name: archive osx-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp2.2/osx-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.0/osx-x64/publish/
         zip -r '../../../out/osx-x64.zip' *
 
     - name: release
