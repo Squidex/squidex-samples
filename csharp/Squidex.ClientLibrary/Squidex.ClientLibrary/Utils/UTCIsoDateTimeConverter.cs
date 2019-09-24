@@ -13,6 +13,11 @@ namespace Squidex.ClientLibrary.Utils
 {
     public sealed class UTCIsoDateTimeConverter : IsoDateTimeConverter
     {
+        public UTCIsoDateTimeConverter()
+        {
+            DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ssK";
+        }
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is DateTime dateTime && dateTime.Kind != DateTimeKind.Utc)

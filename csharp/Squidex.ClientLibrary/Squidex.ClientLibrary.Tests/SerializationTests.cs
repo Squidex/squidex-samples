@@ -78,5 +78,20 @@ namespace Squidex.ClientLibrary.Tests
 
             Assert.Contains("2012-11-10T09:08:07Z", serialized);
         }
+
+        [Fact]
+        public void Should_serialize_local_datetime_to_iso8601_utc_with_ms()
+        {
+            var utcTime = new DateTime(634292263478068039);
+
+            var source = new MyClass<DateTime>
+            {
+                Value = utcTime.ToLocalTime()
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("2010-12-29T13:32:27Z", serialized);
+        }
     }
 }
