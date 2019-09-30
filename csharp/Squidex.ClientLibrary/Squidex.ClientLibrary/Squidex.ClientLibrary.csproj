@@ -11,7 +11,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
     <PackageLicense>https://github.com/Squidex/squidex/blob/master/LICENSE.txt</PackageLicense>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
-    <Version>3.9</Version>
+    <Version>3.10</Version>
   </PropertyGroup>
 
   <ItemGroup>
