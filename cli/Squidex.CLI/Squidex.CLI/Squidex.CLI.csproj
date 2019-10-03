@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.3.0" />
-    <PackageReference Include="CommandDotNet" Version="2.8.1" />
+    <PackageReference Include="CommandDotNet" Version="2.8.2" />
     <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="1.1.0" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
     <PackageReference Include="CsvHelper" Version="12.1.2" />
