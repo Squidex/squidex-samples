@@ -82,7 +82,7 @@ namespace Squidex.ClientLibrary
 
                 if (!string.IsNullOrWhiteSpace(assetFields))
                 {
-                    headers.TryAddWithoutValidation("X-AssetFields", assetFields);
+                    headers.TryAddWithoutValidation("X-Resolve-Urls", assetFields);
                 }
             }
         }
