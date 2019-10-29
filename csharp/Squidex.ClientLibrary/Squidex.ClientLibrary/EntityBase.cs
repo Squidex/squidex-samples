@@ -6,12 +6,14 @@
 // ==========================================================================
 
 using System;
+using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
-    public abstract class EntityBase
+    public abstract class EntityBase : Resource
     {
-        public string Id { get; set; }
+        [JsonProperty("id")]
+        public Guid EntityId { get; set; }
 
         public string CreatedBy { get; set; }
 
@@ -24,5 +26,18 @@ namespace Squidex.ClientLibrary
         public bool IsPending { get; set; }
 
         public int Version { get; set; }
+
+        [JsonIgnore]
+        public string Id
+        {
+            get
+            {
+                return EntityId.ToString();
+            }
+            set
+            {
+                EntityId = Guid.Parse(value);
+            }
+        }
     }
 }

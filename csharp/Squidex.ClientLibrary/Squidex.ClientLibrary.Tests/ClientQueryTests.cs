@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,6 +22,23 @@ namespace Squidex.ClientLibrary.Tests
         public ClientQueryTests(ClientQueryFixture fixture)
         {
             Fixture = fixture;
+        }
+
+        [Fact]
+        public async Task Should_query_by_ids()
+        {
+            var items = await Fixture.Client.GetAsync(new ODataQuery { OrderBy = "data/value/iv asc" });
+
+            var itemsById = await Fixture.Client.GetAsync(new HashSet<Guid>(items.Items.Take(3).Select(x => x.EntityId)));
+
+            Assert.Equal(3, itemsById.Items.Count);
+            Assert.Equal(3, itemsById.Total);
+
+            foreach (var item in itemsById.Items)
+            {
+                Assert.Equal(TestClient.AppName, item.AppName);
+                Assert.Equal(TestClient.SchemaName, item.SchemaName);
+            }
         }
 
         [Fact]

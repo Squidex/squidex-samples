@@ -6,13 +6,13 @@
 // ==========================================================================
 
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class SquidexEntities<TEntity, TData> : Resource where TEntity : SquidexEntityBase<TData> where TData : class, new()
+    public abstract class Resource
     {
-        public List<TEntity> Items { get; } = new List<TEntity>();
-
-        public long Total { get; set; }
+        [JsonProperty("_links")]
+        public Dictionary<string, ResourceLink> Links { get; } = new Dictionary<string, ResourceLink>();
     }
 }

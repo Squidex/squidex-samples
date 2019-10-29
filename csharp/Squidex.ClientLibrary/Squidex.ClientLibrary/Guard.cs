@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -32,6 +33,28 @@ namespace Squidex.ClientLibrary
             if (string.IsNullOrWhiteSpace(target))
             {
                 throw new ArgumentException("String parameter cannot be null or empty and cannot contain only blanks.", parameterName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void NotEmpty<TType>(IReadOnlyCollection<TType> enumerable, string parameterName)
+        {
+            NotNull(enumerable, parameterName);
+
+            if (enumerable.Count == 0)
+            {
+                throw new ArgumentException("Collection does not contain an item.", parameterName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void NotEmpty(Guid target, string parameterName)
+        {
+            if (target == Guid.Empty)
+            {
+                throw new ArgumentException("Value cannot be empty.", parameterName);
             }
         }
     }

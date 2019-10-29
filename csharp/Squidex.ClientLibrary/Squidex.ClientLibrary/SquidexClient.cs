@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNull(request, nameof(request));
 
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, $"content/{ApplicationName}/graphql", request.ToContent(), context, ct);
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildAppUrl("graphql"), request.ToContent(), context, ct);
 
             if (response.Errors?.Length > 0)
             {
@@ -43,25 +44,42 @@ namespace Squidex.ClientLibrary
             return response.Data;
         }
 
+        public Task<SquidexEntities<TEntity, TData>> GetAsync(HashSet<Guid> ids, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(ids, nameof(ids));
+            Guard.NotEmpty(ids, nameof(ids));
+
+            var q = $"?ids={string.Join(",", ids)}";
+
+            return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q), null, context, ct);
+        }
+
         public Task<SquidexEntities<TEntity, TData>> GetAsync(ODataQuery query = null, QueryContext context = null, CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;
 
-            return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildContentUrl(q), null, context, ct);
+            return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl(q), null, context, ct);
+        }
+
+        public Task<TEntity> GetAsync(Guid id, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotEmpty(id, nameof(id));
+
+            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/"), null, context, ct);
         }
 
         public Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildContentUrl($"{id}/"), null, context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/"), null, context, ct);
         }
 
         public Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildContentUrl($"?publish={publish}"), data.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"?publish={publish}"), data.ToContent(), ct: ct);
         }
 
         public Task<TEntity> UpdateAsync(string id, TData data, bool asDraft = false, CancellationToken ct = default)
@@ -69,7 +87,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildContentUrl($"{id}/?asDraft={asDraft}"), data.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/?asDraft={asDraft}"), data.ToContent(), ct: ct);
         }
 
         public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
@@ -84,7 +102,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(patch, nameof(patch));
 
-            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildContentUrl($"{id}/"), patch.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildSchemaUrl($"{id}/"), patch.ToContent(), ct: ct);
         }
 
         public Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default)
@@ -99,7 +117,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(id, nameof(id));
             Guard.NotNull(status, nameof(status));
 
-            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildContentUrl($"{id}/status"), new { status }.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildSchemaUrl($"{id}/status"), new { status }.ToContent(), ct: ct);
         }
 
         public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
@@ -161,7 +179,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildContentUrl($"{id}/"), ct: ct);
+            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/"), ct: ct);
         }
 
         public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
@@ -169,13 +187,16 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(entity, nameof(entity));
 
             await DeleteAsync(entity.Id, ct);
-
-            entity.MarkAsUpdated();
         }
 
-        private string BuildContentUrl(string path = "")
+        private string BuildSchemaUrl(string path = "")
         {
             return $"content/{ApplicationName}/{SchemaName}/{path}";
+        }
+
+        private string BuildAppUrl(string path = "")
+        {
+            return $"content/{ApplicationName}/{path}";
         }
     }
 }

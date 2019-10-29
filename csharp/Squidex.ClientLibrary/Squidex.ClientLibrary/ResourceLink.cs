@@ -5,14 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
-
 namespace Squidex.ClientLibrary
 {
-    public sealed class SquidexEntities<TEntity, TData> : Resource where TEntity : SquidexEntityBase<TData> where TData : class, new()
+    public class ResourceLink
     {
-        public List<TEntity> Items { get; } = new List<TEntity>();
+        public string Href { get; set; }
 
-        public long Total { get; set; }
+        public string Method { get; set; }
+
+        public string Metadata { get; set; }
     }
 }
