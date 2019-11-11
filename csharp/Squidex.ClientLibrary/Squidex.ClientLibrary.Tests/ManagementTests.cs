@@ -15,10 +15,21 @@ namespace Squidex.ClientLibrary.Tests
     public class ManagementTests
     {
         private readonly ISchemasClient schemasClient;
+        private readonly IAppsClient appsClient;
 
         public ManagementTests()
         {
             schemasClient = TestClient.ClientManager.CreateSchemasClient();
+
+            appsClient = TestClient.ClientManager.CreateAppsClient();
+        }
+
+        [Fact]
+        public async Task Should_query_contributors()
+        {
+            var contributors = await appsClient.GetContributorsAsync(TestClient.ClientManager.App);
+
+            Assert.NotEmpty(contributors.Items);
         }
 
         [Fact]

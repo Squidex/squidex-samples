@@ -117,7 +117,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(id, nameof(id));
             Guard.NotNull(status, nameof(status));
 
-            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildSchemaUrl($"{id}/status"), new { status }.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status"), new { status }.ToContent(), ct: ct);
         }
 
         public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
