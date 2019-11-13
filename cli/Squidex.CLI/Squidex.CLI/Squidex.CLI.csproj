@@ -4,7 +4,6 @@
     <AssemblyName>sq</AssemblyName>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <PublishTrimmed>true</PublishTrimmed>
     <Version>4.0</Version>
   </PropertyGroup>
   <ItemGroup>
