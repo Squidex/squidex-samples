@@ -17,7 +17,7 @@ namespace Squidex.CLI.Commands
         {
             var version = typeof(App).Assembly.GetName().Version;
 
-            Console.WriteLine($"Squidex CLI v{version}, API Compatibility >= 3.X");
+            Console.WriteLine($"Squidex CLI v{version}, API Compatibility >= 4.X");
         }
     }
 }
