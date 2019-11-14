@@ -13945,7 +13945,7 @@ namespace Squidex.ClientLibrary.Management
         public long Total { get; set; }
     
         /// <summary>The users.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<UserDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<UserDto>();
     
@@ -13956,26 +13956,26 @@ namespace Squidex.ClientLibrary.Management
     public partial class UserDto : Resource
     {
         /// <summary>The id of the user.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Id { get; set; }
     
         /// <summary>The email of the user. Unique value.</summary>
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Email { get; set; }
     
         /// <summary>The display name (usually first name and last name) of the user.</summary>
-        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string DisplayName { get; set; }
     
         /// <summary>Determines if the user is locked.</summary>
-        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsLocked { get; set; }
     
         /// <summary>Additional permissions for the user.</summary>
-        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -13986,7 +13986,7 @@ namespace Squidex.ClientLibrary.Management
     public abstract partial class Resource 
     {
         /// <summary>The links.</summary>
-        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
     
@@ -13997,12 +13997,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class ResourceLink 
     {
         /// <summary>The link url.</summary>
-        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Href { get; set; }
     
         /// <summary>The link method.</summary>
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Method { get; set; }
     
@@ -14017,22 +14017,22 @@ namespace Squidex.ClientLibrary.Management
     public partial class CreateUserDto 
     {
         /// <summary>The email of the user. Unique value.</summary>
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Email { get; set; }
     
         /// <summary>The display name (usually first name and last name) of the user.</summary>
-        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string DisplayName { get; set; }
     
         /// <summary>The password of the user.</summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Password { get; set; }
     
         /// <summary>Additional permissions for the user.</summary>
-        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -14043,12 +14043,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpdateUserDto 
     {
         /// <summary>The email of the user. Unique value.</summary>
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Email { get; set; }
     
         /// <summary>The display name (usually first name and last name) of the user.</summary>
-        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string DisplayName { get; set; }
     
@@ -14057,7 +14057,7 @@ namespace Squidex.ClientLibrary.Management
         public string Password { get; set; }
     
         /// <summary>Additional permissions for the user.</summary>
-        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -14174,12 +14174,12 @@ namespace Squidex.ClientLibrary.Management
         public long Total { get; set; }
     
         /// <summary>The content items.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<ContentDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<ContentDto>();
     
         /// <summary>The possible statuses.</summary>
-        [Newtonsoft.Json.JsonProperty("statuses", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("statuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<StatusInfoDto> Statuses { get; set; } = new System.Collections.ObjectModel.Collection<StatusInfoDto>();
     
@@ -14194,17 +14194,17 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The user that has created the content item.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the content item.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
     
         /// <summary>The data of the content item.</summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public object Data { get; set; }
     
@@ -14308,7 +14308,7 @@ namespace Squidex.ClientLibrary.Management
         public System.DateTimeOffset DueTime { get; set; }
     
         /// <summary>The user who schedule the content.</summary>
-        [Newtonsoft.Json.JsonProperty("scheduledBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("scheduledBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ScheduledBy { get; set; }
     
@@ -14323,7 +14323,7 @@ namespace Squidex.ClientLibrary.Management
         public long FieldId { get; set; }
     
         /// <summary>The name of the field. Must be unique within the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -14341,12 +14341,12 @@ namespace Squidex.ClientLibrary.Management
         public bool IsDisabled { get; set; }
     
         /// <summary>Defines the partitioning of the field.</summary>
-        [Newtonsoft.Json.JsonProperty("partitioning", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("partitioning", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Partitioning { get; set; }
     
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -14396,9 +14396,8 @@ namespace Squidex.ClientLibrary.Management
         public string EditorUrl { get; set; }
     
         /// <summary>Tags for automation processes.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<string> Tags { get; set; } = new System.Collections.ObjectModel.Collection<string>();
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
     
     
     }
@@ -14821,7 +14820,7 @@ namespace Squidex.ClientLibrary.Management
         public long FieldId { get; set; }
     
         /// <summary>The name of the field. Must be unique within the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -14839,7 +14838,7 @@ namespace Squidex.ClientLibrary.Management
         public bool IsDisabled { get; set; }
     
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -14850,12 +14849,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class StatusInfoDto 
     {
         /// <summary>The name of the status.</summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Status { get; set; }
     
         /// <summary>The color of the status.</summary>
-        [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Color { get; set; }
     
@@ -14866,7 +14865,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ChangeStatusDto 
     {
         /// <summary>The new status.</summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Status { get; set; }
     
@@ -14922,12 +14921,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class TranslateDto 
     {
         /// <summary>The text to translate.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
         /// <summary>The target language.</summary>
-        [Newtonsoft.Json.JsonProperty("targetLanguage", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("targetLanguage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TargetLanguage { get; set; }
     
@@ -15016,27 +15015,27 @@ namespace Squidex.ClientLibrary.Management
     public partial class SchemaDetailsDto : SchemaDto
     {
         /// <summary>The scripts.</summary>
-        [Newtonsoft.Json.JsonProperty("scripts", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("scripts", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public SchemaScriptsDto Scripts { get; set; } = new SchemaScriptsDto();
     
         /// <summary>The preview Urls.</summary>
-        [Newtonsoft.Json.JsonProperty("previewUrls", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("previewUrls", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.IDictionary<string, string> PreviewUrls { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
     
         /// <summary>The name of fields that are used in content lists.</summary>
-        [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldNames FieldsInLists { get; set; } = new FieldNames();
     
         /// <summary>The name of fields that are used in content references.</summary>
-        [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldNames FieldsInReferences { get; set; } = new FieldNames();
     
         /// <summary>The list of fields.</summary>
-        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<FieldDto> Fields { get; set; } = new System.Collections.ObjectModel.Collection<FieldDto>();
     
@@ -15083,7 +15082,7 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The name of the schema. Unique within the app.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -15093,7 +15092,7 @@ namespace Squidex.ClientLibrary.Management
         public string Category { get; set; }
     
         /// <summary>The schema properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public SchemaPropertiesDto Properties { get; set; } = new SchemaPropertiesDto();
     
@@ -15106,12 +15105,12 @@ namespace Squidex.ClientLibrary.Management
         public bool IsPublished { get; set; }
     
         /// <summary>The user that has created the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
     
@@ -15144,9 +15143,8 @@ namespace Squidex.ClientLibrary.Management
         public string Hints { get; set; }
     
         /// <summary>Tags for automation processes.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<string> Tags { get; set; } = new System.Collections.ObjectModel.Collection<string>();
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
     
     
     }
@@ -15155,7 +15153,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AddFieldDto 
     {
         /// <summary>The name of the field. Must be unique within the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$")]
         public string Name { get; set; }
@@ -15165,7 +15163,7 @@ namespace Squidex.ClientLibrary.Management
         public string Partitioning { get; set; }
     
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -15190,7 +15188,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ReorderFieldsDto 
     {
         /// <summary>The field ids in the target order.</summary>
-        [Newtonsoft.Json.JsonProperty("fieldIds", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fieldIds", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<long> FieldIds { get; set; } = new System.Collections.ObjectModel.Collection<long>();
     
@@ -15201,7 +15199,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpdateFieldDto 
     {
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -15222,7 +15220,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class CreateSchemaDto : UpsertSchemaDto
     {
         /// <summary>The name of the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -15276,7 +15274,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpsertSchemaFieldDto 
     {
         /// <summary>The name of the field. Must be unique within the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$")]
         public string Name { get; set; }
@@ -15298,7 +15296,7 @@ namespace Squidex.ClientLibrary.Management
         public string Partitioning { get; set; }
     
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -15313,7 +15311,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpsertSchemaNestedFieldDto 
     {
         /// <summary>The name of the field. Must be unique within the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$")]
         public string Name { get; set; }
@@ -15331,7 +15329,7 @@ namespace Squidex.ClientLibrary.Management
         public bool IsDisabled { get; set; }
     
         /// <summary>The field properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public FieldPropertiesDto Properties { get; set; }
     
@@ -15392,12 +15390,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class RuleElementDto 
     {
         /// <summary>Describes the action or trigger type.</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Description { get; set; }
     
         /// <summary>The label for the action or trigger type.</summary>
-        [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Display { get; set; }
     
@@ -15418,7 +15416,7 @@ namespace Squidex.ClientLibrary.Management
         public string ReadMore { get; set; }
     
         /// <summary>The properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<RuleElementPropertyDto> Properties { get; set; } = new System.Collections.ObjectModel.Collection<RuleElementPropertyDto>();
     
@@ -15429,18 +15427,18 @@ namespace Squidex.ClientLibrary.Management
     public partial class RuleElementPropertyDto 
     {
         /// <summary>The html editor.</summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public RuleActionPropertyEditor Editor { get; set; }
     
         /// <summary>The name of the editor.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
         /// <summary>The label to use.</summary>
-        [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Display { get; set; }
     
@@ -15489,7 +15487,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class RulesDto : Resource
     {
         /// <summary>The rules.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<RuleDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<RuleDto>();
     
@@ -15504,12 +15502,12 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The user that has created the rule.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the rule.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
     
@@ -15534,12 +15532,12 @@ namespace Squidex.ClientLibrary.Management
         public string Name { get; set; }
     
         /// <summary>The trigger properties.</summary>
-        [Newtonsoft.Json.JsonProperty("trigger", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("trigger", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public RuleTriggerDto Trigger { get; set; }
     
         /// <summary>The action properties.</summary>
-        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RuleAction Action { get; set; }
     
         /// <summary>The number of completed executions.</summary>
@@ -15583,7 +15581,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ContentChangedRuleTriggerDto : RuleTriggerDto
     {
         /// <summary>The schema settings.</summary>
-        [Newtonsoft.Json.JsonProperty("schemas", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("schemas", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<ContentChangedRuleTriggerSchemaDto> Schemas { get; set; } = new System.Collections.ObjectModel.Collection<ContentChangedRuleTriggerSchemaDto>();
     
@@ -15671,12 +15669,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class CreateRuleDto 
     {
         /// <summary>The trigger properties.</summary>
-        [Newtonsoft.Json.JsonProperty("trigger", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("trigger", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public RuleTriggerDto Trigger { get; set; }
     
         /// <summary>The action properties.</summary>
-        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RuleAction Action { get; set; }
     
     
@@ -15704,7 +15702,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class RuleEventsDto : Resource
     {
         /// <summary>The rule events.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<RuleEventDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<RuleEventDto>();
     
@@ -15727,12 +15725,12 @@ namespace Squidex.ClientLibrary.Management
         public System.DateTimeOffset Created { get; set; }
     
         /// <summary>The description.</summary>
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Description { get; set; }
     
         /// <summary>The name of the event.</summary>
-        [Newtonsoft.Json.JsonProperty("eventName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("eventName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string EventName { get; set; }
     
@@ -15802,7 +15800,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AppPlansDto 
     {
         /// <summary>The available plans.</summary>
-        [Newtonsoft.Json.JsonProperty("plans", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("plans", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<PlanDto> Plans { get; set; } = new System.Collections.ObjectModel.Collection<PlanDto>();
     
@@ -15825,17 +15823,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class PlanDto 
     {
         /// <summary>The id of the plan.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Id { get; set; }
     
         /// <summary>The name of the plan.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
         /// <summary>The monthly costs of the plan.</summary>
-        [Newtonsoft.Json.JsonProperty("costs", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("costs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Costs { get; set; }
     
@@ -15876,7 +15874,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ChangePlanDto 
     {
         /// <summary>The new plan id.</summary>
-        [Newtonsoft.Json.JsonProperty("planId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("planId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string PlanId { get; set; }
     
@@ -15893,7 +15891,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class FeaturesDto 
     {
         /// <summary>The latest features.</summary>
-        [Newtonsoft.Json.JsonProperty("features", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("features", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<FeatureDto> Features { get; set; } = new System.Collections.ObjectModel.Collection<FeatureDto>();
     
@@ -15908,12 +15906,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class FeatureDto 
     {
         /// <summary>The name of the feature.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
         /// <summary>The description text.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -15924,12 +15922,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class HistoryEventDto 
     {
         /// <summary>The message of the event.</summary>
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Message { get; set; }
     
         /// <summary>The user who called the action.</summary>
-        [Newtonsoft.Json.JsonProperty("actor", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("actor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Actor { get; set; }
     
@@ -15978,17 +15976,17 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The time when the comment was created or updated last.</summary>
-        [Newtonsoft.Json.JsonProperty("time", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.DateTimeOffset Time { get; set; }
     
         /// <summary>The user who created or updated the comment.</summary>
-        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string User { get; set; }
     
         /// <summary>The text of the comment.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -15999,7 +15997,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class EntityCreatedDto 
     {
         /// <summary>Id of the created entity.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Id { get; set; }
     
@@ -16014,7 +16012,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpsertCommentDto 
     {
         /// <summary>The comment text.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -16025,7 +16023,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class BackupJobsDto : Resource
     {
         /// <summary>The backups.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<BackupJobDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<BackupJobDto>();
     
@@ -16084,12 +16082,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class RestoreJobDto 
     {
         /// <summary>The uri to load from.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Url { get; set; }
     
         /// <summary>The status log.</summary>
-        [Newtonsoft.Json.JsonProperty("log", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("log", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Log { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -16118,7 +16116,7 @@ namespace Squidex.ClientLibrary.Management
         public string Name { get; set; }
     
         /// <summary>The url to the restore file.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Url { get; set; }
     
@@ -16133,7 +16131,7 @@ namespace Squidex.ClientLibrary.Management
         public long Total { get; set; }
     
         /// <summary>The assets.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<AssetDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetDto>();
     
@@ -16148,7 +16146,7 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The file name.</summary>
-        [Newtonsoft.Json.JsonProperty("fileName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fileName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string FileName { get; set; }
     
@@ -16157,17 +16155,17 @@ namespace Squidex.ClientLibrary.Management
         public string FileHash { get; set; }
     
         /// <summary>The slug.</summary>
-        [Newtonsoft.Json.JsonProperty("slug", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("slug", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Slug { get; set; }
     
         /// <summary>The mime type.</summary>
-        [Newtonsoft.Json.JsonProperty("mimeType", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("mimeType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MimeType { get; set; }
     
         /// <summary>The file type.</summary>
-        [Newtonsoft.Json.JsonProperty("fileType", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fileType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string FileType { get; set; }
     
@@ -16196,12 +16194,12 @@ namespace Squidex.ClientLibrary.Management
         public int? PixelHeight { get; set; }
     
         /// <summary>The user that has created the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the asset.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
     
@@ -16256,7 +16254,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ClientsDto : Resource
     {
         /// <summary>The clients.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<ClientDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<ClientDto>();
     
@@ -16267,17 +16265,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class ClientDto : Resource
     {
         /// <summary>The client id.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Id { get; set; }
     
         /// <summary>The client secret.</summary>
-        [Newtonsoft.Json.JsonProperty("secret", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("secret", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Secret { get; set; }
     
         /// <summary>The client name.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
@@ -16292,7 +16290,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class CreateClientDto 
     {
         /// <summary>The id of the client.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Id { get; set; }
@@ -16319,7 +16317,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ContributorsDto : Resource
     {
         /// <summary>The contributors.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<ContributorDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<ContributorDto>();
     
@@ -16338,12 +16336,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class ContributorDto : Resource
     {
         /// <summary>The id of the user that contributes to the app.</summary>
-        [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ContributorId { get; set; }
     
         /// <summary>The display name.</summary>
-        [Newtonsoft.Json.JsonProperty("contributorName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("contributorName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ContributorName { get; set; }
     
@@ -16368,7 +16366,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AssignContributorDto 
     {
         /// <summary>The id or email of the user to add to the app.</summary>
-        [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ContributorId { get; set; }
     
@@ -16387,7 +16385,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AppLanguagesDto : Resource
     {
         /// <summary>The languages.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<AppLanguageDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AppLanguageDto>();
     
@@ -16398,17 +16396,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class AppLanguageDto : Resource
     {
         /// <summary>The iso code of the language.</summary>
-        [Newtonsoft.Json.JsonProperty("iso2Code", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("iso2Code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Iso2Code { get; set; }
     
         /// <summary>The english name of the language.</summary>
-        [Newtonsoft.Json.JsonProperty("englishName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("englishName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string EnglishName { get; set; }
     
         /// <summary>The fallback languages.</summary>
-        [Newtonsoft.Json.JsonProperty("fallback", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("fallback", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Fallback { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -16427,7 +16425,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AddLanguageDto 
     {
         /// <summary>The language to add.</summary>
-        [Newtonsoft.Json.JsonProperty("language", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("language", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Language { get; set; }
     
@@ -16456,7 +16454,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class PatternsDto : Resource
     {
         /// <summary>The patterns.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<PatternDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<PatternDto>();
     
@@ -16471,12 +16469,12 @@ namespace Squidex.ClientLibrary.Management
         public System.Guid Id { get; set; }
     
         /// <summary>The name of the suggestion.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
         /// <summary>The regex pattern.</summary>
-        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Pattern { get; set; }
     
@@ -16491,12 +16489,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpdatePatternDto 
     {
         /// <summary>The name of the suggestion.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
         /// <summary>The regex pattern.</summary>
-        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Pattern { get; set; }
     
@@ -16511,7 +16509,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class RolesDto : Resource
     {
         /// <summary>The roles.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<RoleDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<RoleDto>();
     
@@ -16522,7 +16520,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class RoleDto : Resource
     {
         /// <summary>The role name.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
@@ -16539,7 +16537,7 @@ namespace Squidex.ClientLibrary.Management
         public bool IsDefaultRole { get; set; }
     
         /// <summary>Associated list of permissions.</summary>
-        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -16550,7 +16548,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AddRoleDto 
     {
         /// <summary>The role name.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
@@ -16561,7 +16559,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class UpdateRoleDto 
     {
         /// <summary>Associated list of permissions.</summary>
-        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -16572,7 +16570,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AppDto : Resource
     {
         /// <summary>The name of the app.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -16628,7 +16626,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class CreateAppDto 
     {
         /// <summary>The name of the app.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
@@ -16658,12 +16656,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class WorkflowsDto : Resource
     {
         /// <summary>The workflow.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<WorkflowDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<WorkflowDto>();
     
         /// <summary>The errros that should be fixed.</summary>
-        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("errors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Errors { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
@@ -16682,7 +16680,7 @@ namespace Squidex.ClientLibrary.Management
         public string Name { get; set; }
     
         /// <summary>The workflow steps.</summary>
-        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.IDictionary<string, WorkflowStepDto> Steps { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowStepDto>();
     
@@ -16701,7 +16699,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class WorkflowStepDto 
     {
         /// <summary>The transitions.</summary>
-        [Newtonsoft.Json.JsonProperty("transitions", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("transitions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.IDictionary<string, WorkflowTransitionDto> Transitions { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowTransitionDto>();
     
@@ -16742,7 +16740,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class AddWorkflowDto 
     {
         /// <summary>The name of the workflow.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
     
@@ -16757,7 +16755,7 @@ namespace Squidex.ClientLibrary.Management
         public string Name { get; set; }
     
         /// <summary>The workflow steps.</summary>
-        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.IDictionary<string, WorkflowStepDto> Steps { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowStepDto>();
     
@@ -16775,7 +16773,7 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ErrorDto 
     {
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Message { get; set; }
     
@@ -16792,7 +16790,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class WebhookRuleActionDto : RuleAction
     {
         /// <summary>The url to the webhook.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Url { get; set; }
     
@@ -16811,17 +16809,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class TweetRuleActionDto : RuleAction
     {
         /// <summary> The generated access token.</summary>
-        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string AccessToken { get; set; }
     
         /// <summary> The generated access secret.</summary>
-        [Newtonsoft.Json.JsonProperty("accessSecret", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("accessSecret", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string AccessSecret { get; set; }
     
         /// <summary>The text that is sent as tweet to twitter.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -16832,12 +16830,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class SlackRuleActionDto : RuleAction
     {
         /// <summary>The slack webhook url.</summary>
-        [Newtonsoft.Json.JsonProperty("webhookUrl", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("webhookUrl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri WebhookUrl { get; set; }
     
         /// <summary>The text that is sent as message to slack.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -16848,12 +16846,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class PrerenderRuleActionDto : RuleAction
     {
         /// <summary>The prerender token from your account.</summary>
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Token { get; set; }
     
         /// <summary>The url to recache.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Url { get; set; }
     
@@ -16864,17 +16862,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class MediumRuleActionDto : RuleAction
     {
         /// <summary>The self issued access token.</summary>
-        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string AccessToken { get; set; }
     
         /// <summary>The title, used for the url.</summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Title { get; set; }
     
         /// <summary>The content, either html or markdown.</summary>
-        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Content { get; set; }
     
@@ -16901,12 +16899,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class FastlyRuleActionDto : RuleAction
     {
         /// <summary>The API key to grant access to Squidex.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ApiKey { get; set; }
     
         /// <summary>The ID of the fastly service.</summary>
-        [Newtonsoft.Json.JsonProperty("serviceId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serviceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ServiceId { get; set; }
     
@@ -16917,45 +16915,45 @@ namespace Squidex.ClientLibrary.Management
     public partial class EmailRuleActionDto : RuleAction
     {
         /// <summary>The IP address or host to the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ServerHost { get; set; }
     
         /// <summary>The port to the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ServerPort { get; set; }
     
         /// <summary>Specify whether the SMPT client uses Secure Sockets Layer (SSL) to encrypt the connection.</summary>
-        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool ServerUseSsl { get; set; }
     
         /// <summary>The password for the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverPassword", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serverPassword", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ServerPassword { get; set; }
     
         /// <summary>The username for the SMTP server.</summary>
-        [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ServerUsername { get; set; }
     
         /// <summary>The email sending address.</summary>
-        [Newtonsoft.Json.JsonProperty("messageFrom", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("messageFrom", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MessageFrom { get; set; }
     
         /// <summary>The email message will be sent to.</summary>
-        [Newtonsoft.Json.JsonProperty("messageTo", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("messageTo", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MessageTo { get; set; }
     
         /// <summary>The subject line for this email message.</summary>
-        [Newtonsoft.Json.JsonProperty("messageSubject", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("messageSubject", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MessageSubject { get; set; }
     
         /// <summary>The message body.</summary>
-        [Newtonsoft.Json.JsonProperty("messageBody", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("messageBody", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MessageBody { get; set; }
     
@@ -16966,17 +16964,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class ElasticSearchRuleActionDto : RuleAction
     {
         /// <summary>The url to the elastic search instance or cluster.</summary>
-        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Host { get; set; }
     
         /// <summary>The name of the index.</summary>
-        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string IndexName { get; set; }
     
         /// <summary>The name of the index type.</summary>
-        [Newtonsoft.Json.JsonProperty("indexType", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("indexType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string IndexType { get; set; }
     
@@ -16995,22 +16993,22 @@ namespace Squidex.ClientLibrary.Management
     public partial class DiscourseRuleActionDto : RuleAction
     {
         /// <summary>The url to the discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Url { get; set; }
     
         /// <summary>The api key to authenticate to your discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ApiKey { get; set; }
     
         /// <summary>The api username to authenticate to your discourse server.</summary>
-        [Newtonsoft.Json.JsonProperty("apiUsername", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("apiUsername", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ApiUsername { get; set; }
     
         /// <summary>The text as markdown.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -17033,7 +17031,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class CommentRuleActionDto : RuleAction
     {
         /// <summary>The comment text.</summary>
-        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
@@ -17048,12 +17046,12 @@ namespace Squidex.ClientLibrary.Management
     public partial class AzureQueueRuleActionDto : RuleAction
     {
         /// <summary>The connection string to the storage account.</summary>
-        [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ConnectionString { get; set; }
     
         /// <summary>The name of the queue.</summary>
-        [Newtonsoft.Json.JsonProperty("queue", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("queue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Queue { get; set; }
     
@@ -17064,17 +17062,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class AlgoliaRuleActionDto : RuleAction
     {
         /// <summary>The application ID.</summary>
-        [Newtonsoft.Json.JsonProperty("appId", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("appId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string AppId { get; set; }
     
         /// <summary>The API key to grant access to Squidex.</summary>
-        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ApiKey { get; set; }
     
         /// <summary>The name of the index.</summary>
-        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.Always)]
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string IndexName { get; set; }
     
