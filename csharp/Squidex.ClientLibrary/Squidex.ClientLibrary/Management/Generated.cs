@@ -15245,6 +15245,14 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("scripts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SchemaScriptsDto Scripts { get; set; }
     
+        /// <summary>The names of the fields that should be used in references.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public FieldNames FieldsInReferences { get; set; }
+    
+        /// <summary>The names of the fields that should be shown in lists, including meta fields.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public FieldNames FieldsInLists { get; set; }
+    
         /// <summary>Optional fields.</summary>
         [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<UpsertSchemaFieldDto> Fields { get; set; }
