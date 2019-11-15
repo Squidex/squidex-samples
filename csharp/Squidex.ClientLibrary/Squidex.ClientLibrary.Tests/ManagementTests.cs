@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 using Xunit;
@@ -22,6 +23,16 @@ namespace Squidex.ClientLibrary.Tests
             schemasClient = TestClient.ClientManager.CreateSchemasClient();
 
             appsClient = TestClient.ClientManager.CreateAppsClient();
+        }
+
+        [Fact]
+        public async Task Should_query_apps()
+        {
+            await appsClient.PostAppAsync(new CreateAppDto { Name = "temporary" });
+
+            var apps = await appsClient.GetAppsAsync();
+
+            Assert.Equal("temporary", apps.FirstOrDefault()?.Name);
         }
 
         [Fact]
