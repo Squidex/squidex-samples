@@ -25,7 +25,7 @@ namespace Squidex.ClientLibrary
                 entities.Total = getResult.Total;
                 entities.Items.AddRange(getResult.Items);
 
-                query.Skip += entities.Items.Count;
+                query.Skip = entities.Items.Count;
             }
             while (query.Skip < entities.Total);
 
@@ -34,7 +34,7 @@ namespace Squidex.ClientLibrary
 
         public static async Task<AssetEntities> GetAllAssetsAsync(this SquidexAssetClient assetClient, int batchSize = 200)
         {
-            var query = new ODataQuery { Top = batchSize };
+            var query = new ODataQuery { Top = batchSize, Skip = 0 };
 
             var entities = new AssetEntities();
             do
@@ -44,7 +44,7 @@ namespace Squidex.ClientLibrary
                 entities.Total = getResult.Total;
                 entities.Items.AddRange(getResult.Items);
 
-                query.Skip += entities.Items.Count;
+                query.Skip = entities.Items.Count;
             }
             while (query.Skip < entities.Total);
 
