@@ -51,6 +51,16 @@ jobs:
         cd cli/Squidex.CLI/Squidex.CLI
         dotnet publish -r osx-x64 -c Release /p:PublishSingleFile=true /p:PublishTrimmed=true
 
+    - name: pack dotnet tool
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet pack -p:PackDotnetTool=1 -c Release
+
+    - name: push dotnet tool to nuget.org
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release
+        dotnet nuget push *.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }}
+
     - name: create dir
       run: |
         mkdir cli/Squidex.CLI/Squidex.CLI/bin/Release/out
