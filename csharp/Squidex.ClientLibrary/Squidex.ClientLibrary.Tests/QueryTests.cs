@@ -15,11 +15,11 @@ using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
 {
-    public class ClientQueryTests : IClassFixture<ClientQueryFixture>
+    public class QueryTests : IClassFixture<QueryFixture>
     {
-        public ClientQueryFixture Fixture { get; }
+        public QueryFixture Fixture { get; }
 
-        public ClientQueryTests(ClientQueryFixture fixture)
+        public QueryTests(QueryFixture fixture)
         {
             Fixture = fixture;
         }

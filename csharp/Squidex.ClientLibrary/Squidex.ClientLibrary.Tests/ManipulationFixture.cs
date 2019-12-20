@@ -5,20 +5,25 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary.Tests
 {
-    public sealed class TestEntity : SquidexEntityBase<TestEntityData>
+    public sealed class ManipulationFixture : IDisposable
     {
-    }
+        public SquidexClient<TestEntity, TestEntityData> Client { get; } = TestClient.Build();
 
-    public sealed class TestEntityData
-    {
-        [JsonConverter(typeof(InvariantConverter))]
-        public int Value { get; set; }
+        public ManipulationFixture()
+        {
+            Task.Run(async () =>
+            {
+                await TestClient.SetupAsync();
+            }).Wait();
+        }
 
-        [JsonConverter(typeof(InvariantConverter))]
-        public string Text { get; set; }
+        public void Dispose()
+        {
+        }
     }
 }

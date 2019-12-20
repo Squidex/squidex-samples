@@ -10,13 +10,33 @@ using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
 {
-    public class ClientItemTests : IClassFixture<ClientQueryFixture>
+    public class ManipulationTests : IClassFixture<ManipulationFixture>
     {
-        public ClientQueryFixture Fixture { get; }
+        public ManipulationFixture Fixture { get; }
 
-        public ClientItemTests(ClientQueryFixture fixture)
+        public ManipulationTests(ManipulationFixture fixture)
         {
             Fixture = fixture;
+        }
+
+        [Fact]
+        public async Task Should_create_strange_text()
+        {
+            const string text = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36";
+
+            TestEntity item = null;
+            try
+            {
+                item = await Fixture.Client.CreateAsync(new TestEntityData { Text = text }, true);
+
+                var updated = await Fixture.Client.GetAsync(item.Id);
+
+                Assert.Equal(text, updated.Data.Text);
+            }
+            finally
+            {
+                await Fixture.Client.DeleteAsync(item.Id);
+            }
         }
 
         [Fact]
@@ -111,7 +131,7 @@ namespace Squidex.ClientLibrary.Tests
             TestEntity item = null;
             try
             {
-                item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 1 }, true);
+                item = await Fixture.Client.CreateAsync(new TestEntityData { Value = 2 }, true);
 
                 await Fixture.Client.UpdateAsync(item.Id, new TestEntityData { Value = 2 });
 
