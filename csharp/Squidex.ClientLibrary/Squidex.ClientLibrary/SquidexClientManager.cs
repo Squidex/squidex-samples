@@ -21,7 +21,7 @@ namespace Squidex.ClientLibrary
         private readonly string applicationName;
         private readonly Uri serviceUrl;
         private readonly IAuthenticator authenticator;
-        private readonly bool acceptAllCertificates;
+        private readonly IHttpConfigurator httpConfigurator;
 
         public bool ReadResponseAsString { get; set; }
 
@@ -30,29 +30,30 @@ namespace Squidex.ClientLibrary
             get { return applicationName; }
         }
 
-        public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret, bool acceptAllCertificates = false)
+        public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret, IHttpConfigurator httpConfigurator = null)
             : this(new Uri(serviceUrl, UriKind.Absolute), applicationName,
                   new CachingAuthenticator($"TOKEN_{serviceUrl}", new MemoryCache(Options.Create(new MemoryCacheOptions())),
                       new Authenticator(serviceUrl, clientId, clientSecret)),
-                  acceptAllCertificates)
+                  httpConfigurator)
         {
         }
 
-        public SquidexClientManager(string serviceUrl, string applicationName, IAuthenticator authenticator, bool acceptAllCertificates = false)
-            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, authenticator, acceptAllCertificates)
+        public SquidexClientManager(string serviceUrl, string applicationName, IAuthenticator authenticator, IHttpConfigurator httpConfigurator = null)
+            : this(new Uri(serviceUrl, UriKind.Absolute), applicationName, authenticator, httpConfigurator)
         {
         }
 
-        public SquidexClientManager(Uri serviceUrl, string applicationName, IAuthenticator authenticator, bool acceptAllCertificates = false)
+        public SquidexClientManager(Uri serviceUrl, string applicationName, IAuthenticator authenticator, IHttpConfigurator httpConfigurator = null)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
             Guard.NotNull(authenticator, nameof(authenticator));
             Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
 
             this.authenticator = authenticator;
+            this.httpConfigurator = httpConfigurator;
             this.applicationName = applicationName;
             this.serviceUrl = serviceUrl;
-            this.acceptAllCertificates = acceptAllCertificates;
+            this.httpConfigurator = httpConfigurator ?? NoopHttpConfigurator.Instance;
         }
 
         public string GenerateImageUrl(string id)
@@ -149,10 +150,18 @@ namespace Squidex.ClientLibrary
         {
             var url = new Uri(serviceUrl, "/api/");
 
-            return new HttpClient(new AuthenticatingHttpClientHandler(authenticator, acceptAllCertificates), false)
+            var handler = new AuthenticatingHttpClientHandler(authenticator);
+
+            httpConfigurator.Configure(handler);
+
+            var httpClient = new HttpClient(handler, false)
             {
                 BaseAddress = url
             };
+
+            httpConfigurator.Configure(httpClient);
+
+            return httpClient;
         }
     }
 }
