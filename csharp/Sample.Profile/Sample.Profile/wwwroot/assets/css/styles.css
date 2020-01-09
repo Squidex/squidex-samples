@@ -44,14 +44,12 @@ a {
 	width: 40%;
 	color: #92c1f7;
 	padding-bottom: 69px;
-	visibility: hidden;
 }
 .section-one .col-right {
 	float: right;
 	width: 50%;
 	position: relative;
 	z-index: 1;
-	visibility: hidden;
 }
 .section-one .col-right .top {	
 	position: absolute;
