@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sample.Blog.Models;
+using Westwind.AspNetCore.LiveReload;
 
 namespace Sample.Blog
 {
@@ -28,6 +29,7 @@ namespace Sample.Blog
             services.Configure<AppOptions>(Configuration.GetSection("app"));
 
             services.AddSingleton<IApiClient, ApiClient>();
+            services.AddLiveReload();
             services.AddMvc();
         }
 
@@ -35,6 +37,7 @@ namespace Sample.Blog
         {
             if (env.IsDevelopment())
             {
+                app.UseLiveReload();
                 app.UseDeveloperExceptionPage();
             }
             else
