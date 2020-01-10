@@ -4,7 +4,7 @@ You can create an app with prepulated schemas directly in Squidex.
 
 ## How to run it with a custom app?
 
-Have a look to the configuration first: [appsettings.json](Sample.Blog/appsettings.json)
+Have a look to the configuration first: [configuration](src/service/index.js)
 
 You have to change the following settings:
 
