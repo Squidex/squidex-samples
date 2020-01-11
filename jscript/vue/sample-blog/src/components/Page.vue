@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>{page.title}</h2>
+        <h2>{{page.title}}</h2>
 
         <div v-html="page.text"></div>
     </div>

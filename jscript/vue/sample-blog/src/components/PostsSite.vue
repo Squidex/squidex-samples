@@ -1,7 +1,7 @@
 <template>
     <div v-if="posts">
         <div v-for="post in posts" v-bind:key="post.id">
-            <Post v-bind:post="post" />
+            <Post v-bind:post="post" v-bind:withLink="true" />
 
             <hr />
         </div>
@@ -25,22 +25,22 @@ export default {
             posts: null
         }
     },
-    created: function() {
-        const component = this;
-
-        async function loadPosts() {
-            component.posts = null;
+    methods: {
+        loadPosts: async function() {
+            this.posts = null;
 
             try {
                 const result = await getPosts();
 
-                component.posts = result.posts;
+                this.posts = result.posts;
             } catch (ex) {
-                component.posts = [];
+                this.posts = [];
             }
-        }
 
-        loadPosts();
+        }
+    },
+    created: function() {
+        this.loadPosts();
     }
 }
 </script>

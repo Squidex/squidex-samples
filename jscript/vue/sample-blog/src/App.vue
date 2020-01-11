@@ -9,19 +9,17 @@
         </nav>
 
         <div class="container body-content">
-            <PostsSite />
+            <router-view></router-view>
         </div>
     </div>
 </template>
 
 <script>
-import PostsSite from "./components/PostsSite.vue"
 import TopNav from "./components/TopNav.vue"
 
 export default {
     name: "app",
     components: {
-        PostsSite,
         TopNav
     }
 }

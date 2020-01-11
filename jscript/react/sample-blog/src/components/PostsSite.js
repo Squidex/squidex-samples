@@ -22,7 +22,7 @@ export const PostsSite = () => {
 
     return posts.map(post => (
         <div key={post.id}>
-            <Post key={post.id} post={post} useLink={true} />
+            <Post key={post.id} post={post} withLink={true} />
 
             <hr />
         </div>

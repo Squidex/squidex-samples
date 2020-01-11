@@ -1,7 +1,7 @@
 <template>
     <ul class="navbar-nav mr-auto">
         <li v-for="page in pages" v-bind:key="page.id" class="nav-item">
-            <a activeClassName="active" class="nav-link">{{page.title}}</a>
+            <router-link :to="{ name: 'page', params: { slug: page.slug }}" class="nav-link">{{page.title}}</router-link>
         </li>
     </ul>
 </template>
@@ -33,3 +33,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .nav-link.router-link-active {
+        color: white !important;
+    }
+</style>

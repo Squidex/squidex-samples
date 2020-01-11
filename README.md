@@ -18,3 +18,4 @@ Please join our community forum: https://support.squidex.io
 
 * [Sample React Blog](jscript/react/sample-blog)
 * [Sample Angular Blog](jscript/angular/sample-blog)
+* [Sample Vue.js Blog](jscript/vue/sample-blog)
