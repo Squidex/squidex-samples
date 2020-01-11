@@ -1,4 +1,4 @@
-# React/Angular Blog Sample
+# Angular/Typescript Blog Sample
 
 You can create an app with prepulated schemas directly in Squidex.
 
