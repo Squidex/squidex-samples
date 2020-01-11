@@ -17,3 +17,4 @@ Please join our community forum: https://support.squidex.io
 ## Javascript
 
 * [Sample React Blog](jscript/react/sample-blog)
+* [Sample Angular Blog](jscript/angular/sample-blog)
