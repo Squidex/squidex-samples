@@ -1,4 +1,4 @@
-# React/Javascript Blog Sample
+# Vue.js/Javascript Blog Sample
 
 You can create an app with prepulated schemas directly in Squidex.
 
