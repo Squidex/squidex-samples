@@ -1,9 +1,8 @@
-//@ts-check
 const CONFIG = {
-    url: "https://cloud.squidex.io",
-    appName: "sample-blog",
-    clientId: "sample-blog:blog",
-    clientSecret: "ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec="
+    url: 'https://cloud.squidex.io',
+    appName: 'sample-blog',
+    clientId: 'sample-blog:blog',
+    clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
 };
 
 function getBearerToken() {
@@ -14,7 +13,7 @@ function setBearerToken(token) {
     localStorage.setItem('token', token);
 }
 
-function clearBearerToken(token) {
+function clearBearerToken() {
     localStorage.removeItem('token');
 }
 
@@ -33,7 +32,7 @@ export async function getPage(slug) {
         return null;
     }
 
-    return parsePost(items[0]);
+    return parsePage(items[0]);
 }
 
 export async function getPosts() {
@@ -49,10 +48,19 @@ export async function getPages() {
 
     const { total, items } = json;
 
-    return { total, pages: items.map(x => parsePost(x)) };
+    return { total, pages: items.map(x => parsePage(x)) };
 }
 
 function parsePost(response) {
+    return {
+        id: response.id,
+        title: response.data.title.iv,
+        text: response.data.text.iv,
+        slug: response.data.slug.iv
+    };
+}
+
+function parsePage(response) {
     return {
         id: response.id,
         title: response.data.title.iv,

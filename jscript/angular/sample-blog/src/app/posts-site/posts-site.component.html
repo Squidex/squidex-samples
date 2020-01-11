@@ -1,0 +1,11 @@
+<ng-container *ngIf="posts$ | async; let posts; else loading">
+    <ng-container *ngFor="let post of posts">
+        <app-post [post]="post" withLink="true"></app-post>
+
+        <hr />
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    <div>Loading posts...</div>
+</ng-template>

@@ -10,6 +10,8 @@ export const PageSite = () => {
     const [page, setPage] = React.useState(undefined);
 
     React.useEffect(() => {
+        setPage(undefined);
+
         async function fetchData() {
             try {
                 const result = await getPage(slug);

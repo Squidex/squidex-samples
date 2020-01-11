@@ -1,0 +1,13 @@
+
+<ng-container *ngIf="post$ | async; let post; else notFound">
+    <app-post [post]="post"></app-post>
+</ng-container>
+
+<ng-template #notFound>
+    <ng-container *ngIf="isLoading; else notLoading">
+        <div>Loading post...</div>
+    </ng-container>
+    <ng-template #notLoading>
+        <div>Post not found.</div>
+    </ng-template>
+</ng-template>

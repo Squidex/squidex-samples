@@ -1,0 +1,13 @@
+<div>
+    <ng-container *ngIf="withLink; else noLink">
+        <a [routerLink]="['/blog', post.id, post.slug]">
+            <h2>{{post.title}}</h2>
+        </a>
+    </ng-container>
+
+    <ng-template #noLink>
+        <h2>{{post.title}}</h2>
+    </ng-template>
+
+    <div [innerHTML]="post.text"></div>
+</div>

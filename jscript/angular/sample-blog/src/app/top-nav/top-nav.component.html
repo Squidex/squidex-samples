@@ -1,0 +1,7 @@
+<ng-container *ngIf="pages$ | async; let pages">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item" *ngFor="let page of pages">
+            <a [routerLink]="['/pages', page.slug]" routerLinkActive="active" class="nav-link">{{page.title}}</a>
+        </li>
+    </ul>
+</ng-container>

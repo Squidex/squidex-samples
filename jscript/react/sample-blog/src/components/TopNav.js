@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { getPages } from './../service';
 
@@ -20,7 +20,7 @@ export const TopNav = () => {
         <ul className='navbar-nav mr-auto'>
             {pages.map(page => (
                 <li key={page.id} className='nav-item'>
-                    <Link className='nav-link' to={`/pages/${page.slug}`}>{page.title}</Link>
+                    <NavLink activeClassName='active' className='nav-link' to={`/pages/${page.slug}`}>{page.title}</NavLink>
                 </li>
             ))}
         </ul>

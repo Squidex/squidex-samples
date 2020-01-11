@@ -1,0 +1,13 @@
+
+<ng-container *ngIf="page$ | async; let page; else notFound">
+    <app-page [page]="page"></app-page>
+</ng-container>
+
+<ng-template #notFound>
+    <ng-container *ngIf="isLoading; else notLoading">
+        <div>Loading page...</div>
+    </ng-container>
+    <ng-template #notLoading>
+        <div>Page not found.</div>
+    </ng-template>
+</ng-template>
