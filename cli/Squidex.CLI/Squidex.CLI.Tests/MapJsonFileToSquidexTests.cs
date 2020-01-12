@@ -24,38 +24,21 @@ namespace Squidex.CLI.Tests
 
         public MapJsonFileToSquidexTests()
         {
-            var json = new StringBuilder();
-
-            using (var stringWriter = new StringWriter(json))
+            var data = new[]
             {
-                using (var writer = new JsonTextWriter(stringWriter))
+                new
                 {
-                    writer.Formatting = Formatting.Indented;
-
-                    writer.WriteStartArray();
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("text");
-                    writer.WriteValue("Hello World");
-                    writer.WritePropertyName("boolean");
-                    writer.WriteValue(true);
-                    writer.WritePropertyName("number");
-                    writer.WriteValue(1234);
-                    writer.WritePropertyName("array");
-                    writer.WriteStartArray();
-                    writer.WriteValue("Squidex");
-                    writer.WriteValue("CLI");
-                    writer.WriteEndArray();
-                    writer.WritePropertyName("object");
-                    writer.WriteStartObject();
-                    writer.WritePropertyName("Squidex");
-                    writer.WriteValue("CLI");
-                    writer.WriteEndObject();
-                    writer.WriteEndObject();
-                    writer.WriteEndArray();
+                    text = "Hello World",
+                    boolean = true,
+                    number = 1234,
+                    array = new string[] { "Squidex", "CLI" },
+                    obj = new { Squidex = "CLI" }
                 }
-            }
+            };
 
-            jsonReader = new JsonTextReader(new StringReader(json.ToString()));
+            var json = JsonConvert.SerializeObject(data);
+
+            jsonReader = new JsonTextReader(new StringReader(json));
         }
 
         [Fact]
@@ -163,13 +146,13 @@ namespace Squidex.CLI.Tests
         [Fact]
         public void Should_read_object_to_invariant()
         {
-            var sut = new Json2SquidexConverter("object");
+            var sut = new Json2SquidexConverter("obj");
 
             var actual = sut.ReadAll(jsonReader).First();
 
             var expected = new DummyData
             {
-                ["object"] = new Dictionary<string, JToken>
+                ["obj"] = new Dictionary<string, JToken>
                 {
                     ["iv"] = new JObject(new JProperty("Squidex", "CLI"))
                 }
