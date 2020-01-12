@@ -14,6 +14,7 @@ using CommandDotNet.Attributes;
 using CsvHelper;
 using FluentValidation;
 using FluentValidation.Attributes;
+using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
@@ -34,29 +35,49 @@ namespace Squidex.CLI.Commands
 
             [ApplicationMetadata(Name = "import", Description = "Import the content to a schema.",
                 ExtendedHelpText =
-@"Use the following format to define fields from the CSV file:
+@"Use the following format to define fields from the CSV/JSON file:
     - name (for invariant fields)
     - name=other(for invariant fields from another field)
     - name.de=name (for localized fields)
 ")]
             public async Task Import(ImportArguments arguments)
             {
-                var converter = new Csv2SquidexConverter(arguments.Fields);
-
-                using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                if (Format.JSON.Equals(arguments.Format))
                 {
-                    using (var streamReader = new StreamReader(stream))
+                    var converter = new Json2SquidexConverter(arguments.Fields);
+
+                    using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
-                        var csvOptions = new CsvOptions
+                        using (var streamReader = new StreamReader(stream))
                         {
-                            Delimiter = arguments.Delimiter
-                        };
+                            using (var reader = new JsonTextReader(streamReader))
+                            {
+                                var datas = converter.ReadAll(reader);
 
-                        using (var reader = new CsvReader(streamReader, csvOptions))
+                                await ImportAsync(arguments, datas);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var converter = new Csv2SquidexConverter(arguments.Fields);
+
+                    using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var streamReader = new StreamReader(stream))
                         {
-                            var datas = converter.ReadAll(reader);
+                            var csvOptions = new CsvOptions
+                            {
+                                Delimiter = arguments.Delimiter
+                            };
 
-                            await ImportAsync(arguments, datas);
+                            using (var reader = new CsvReader(streamReader, csvOptions))
+                            {
+                                var datas = converter.ReadAll(reader);
+
+                                await ImportAsync(arguments, datas);
+                            }
                         }
                     }
                 }
@@ -278,7 +299,7 @@ namespace Squidex.CLI.Commands
                 [Argument(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Argument(Name = "file", Description = "The path to the csv file.")]
+                [Argument(Name = "file", Description = "The path to the file.")]
                 public string File { get; set; }
 
                 [Option(LongName = "fields", Description = "Comma separated list of fields to import.")]
@@ -289,6 +310,9 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
+
+                [Option(LongName = "format", Description = "Defines the input format.")]
+                public Format Format { get; set; }
 
                 public sealed class ImportArgumentsValidator : AbstractValidator<ImportArguments>
                 {
