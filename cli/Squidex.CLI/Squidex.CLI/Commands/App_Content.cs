@@ -33,6 +33,40 @@ namespace Squidex.CLI.Commands
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
+            [ApplicationMetadata(Name = "test-data", Description = "Generates test data.")]
+            public async Task TestData(TestDataArguments arguments)
+            {
+                var (app, service) = Configuration.Setup();
+
+                var taskForSchema = service.CreateSchemasClient().GetSchemaAsync(app, arguments.Schema);
+                var taskForLanguages = service.CreateAppsClient().GetLanguagesAsync(app);
+
+                await Task.WhenAll(
+                    taskForSchema,
+                    taskForLanguages);
+
+                var datas = new List<DummyData>();
+
+                if (arguments.Count > 0)
+                {
+                    var generator = new TestDataGenerator(taskForSchema.Result, taskForLanguages.Result);
+
+                    for (var i = 0; i < arguments.Count; i++)
+                    {
+                        datas.Add(generator.GenerateTestData());
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(arguments.File))
+                {
+                    File.AppendAllText(arguments.File, datas.JsonPrettyString());
+                }
+                else
+                {
+                    await ImportAsync(arguments, service, datas);
+                }
+            }
+
             [ApplicationMetadata(Name = "import", Description = "Import the content to a schema.",
                 ExtendedHelpText =
 @"Use the following format to define fields from the CSV/JSON file:
@@ -42,7 +76,9 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Import(ImportArguments arguments)
             {
-                if (Format.JSON.Equals(arguments.Format))
+                var (_, service) = Configuration.Setup();
+
+                if (arguments.Format == Format.JSON)
                 {
                     var converter = new Json2SquidexConverter(arguments.Fields);
 
@@ -54,7 +90,7 @@ namespace Squidex.CLI.Commands
                             {
                                 var datas = converter.ReadAll(reader);
 
-                                await ImportAsync(arguments, datas);
+                                await ImportAsync(arguments, service, datas);
                             }
                         }
                     }
@@ -76,7 +112,7 @@ namespace Squidex.CLI.Commands
                             {
                                 var datas = converter.ReadAll(reader);
 
-                                await ImportAsync(arguments, datas);
+                                await ImportAsync(arguments, service, datas);
                             }
                         }
                     }
@@ -101,7 +137,9 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var (_, service) = Configuration.Setup();
+
+                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -210,9 +248,9 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            private async Task ImportAsync(ImportArguments arguments, IEnumerable<DummyData> datas)
+            private async Task ImportAsync(IImortArgumentBase arguments, SquidexClientManager service, IEnumerable<DummyData> datas)
             {
-                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
                 var totalWritten = 0;
 
@@ -237,7 +275,9 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var client = Configuration.GetClient().Client.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var (_, service) = Configuration.Setup();
+
+                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
 
                 var total = 0L;
                 var totalRead = 0;
@@ -293,8 +333,15 @@ namespace Squidex.CLI.Commands
                 JSON
             }
 
+            public interface IImortArgumentBase
+            {
+                string Schema { get; }
+
+                bool Unpublished { get; }
+            }
+
             [Validator(typeof(ImportArgumentsValidator))]
-            public sealed class ImportArguments : IArgumentModel
+            public sealed class ImportArguments : IImortArgumentBase, IArgumentModel
             {
                 [Argument(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
@@ -302,11 +349,11 @@ namespace Squidex.CLI.Commands
                 [Argument(Name = "file", Description = "The path to the file.")]
                 public string File { get; set; }
 
-                [Option(LongName = "fields", Description = "Comma separated list of fields to import.")]
-                public string Fields { get; set; }
-
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
                 public bool Unpublished { get; set; }
+
+                [Option(LongName = "fields", Description = "Comma separated list of fields to import.")]
+                public string Fields { get; set; }
 
                 [Option(LongName = "delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
@@ -365,6 +412,31 @@ namespace Squidex.CLI.Commands
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Schema).NotEmpty();
+                    }
+                }
+            }
+
+            [Validator(typeof(TestDataArgumentsValidator))]
+            public sealed class TestDataArguments : IImortArgumentBase, IArgumentModel
+            {
+                [Argument(Name = "schema", Description = "The name of the schema.")]
+                public string Schema { get; set; }
+
+                [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
+                public bool Unpublished { get; set; }
+
+                [Option(LongName = "count", ShortName = "c", Description = "The number of items.")]
+                public int Count { get; set; } = 10;
+
+                [Option(LongName = "file", Description = "The optional path to the file.")]
+                public string File { get; set; }
+
+                public sealed class TestDataArgumentsValidator : AbstractValidator<TestDataArguments>
+                {
+                    public TestDataArgumentsValidator()
+                    {
+                        RuleFor(x => x.Schema).NotEmpty();
+                        RuleFor(x => x.Count).GreaterThan(0);
                     }
                 }
             }

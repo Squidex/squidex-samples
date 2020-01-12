@@ -140,7 +140,7 @@ namespace Squidex.CLI.Configuration
             sessionApp = entry;
         }
 
-        public (string App, SquidexClientManager Client) GetClient()
+        public (string App, SquidexClientManager Client) Setup()
         {
             if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {

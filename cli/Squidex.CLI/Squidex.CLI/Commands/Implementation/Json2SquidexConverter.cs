@@ -66,45 +66,6 @@ namespace Squidex.CLI.Commands.Implementation
                 data[path[0].Key] = property;
             }
 
-            object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
-            {
-                if (index >= 0)
-                {
-                    if (parent is JArray array)
-                    {
-                        while (array.Count < index + 1)
-                        {
-                            array.Add(null);
-                        }
-
-                        if (merge && array[index].Type == currentValue.Type)
-                        {
-                            return array[index];
-                        }
-
-                        array[index] = currentValue;
-
-                        return currentValue;
-                    }
-                }
-                else
-                {
-                    if (parent is IDictionary<string, JToken> obj)
-                    {
-                        if (merge && obj.TryGetValue(key, out var temp) && temp.Type == currentValue.Type)
-                        {
-                            return temp;
-                        }
-
-                        obj[key] = currentValue;
-
-                        return currentValue;
-                    }
-                }
-
-                throw new SquidexException("Invalid json mapping.");
-            }
-
             object container = property;
 
             for (var i = 1; i < path.Count; i++)
@@ -129,6 +90,45 @@ namespace Squidex.CLI.Commands.Implementation
                     }
                 }
             }
+        }
+
+        private static object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
+        {
+            if (index >= 0)
+            {
+                if (parent is JArray array)
+                {
+                    while (array.Count < index + 1)
+                    {
+                        array.Add(null);
+                    }
+
+                    if (merge && array[index].Type == currentValue.Type)
+                    {
+                        return array[index];
+                    }
+
+                    array[index] = currentValue;
+
+                    return currentValue;
+                }
+            }
+            else
+            {
+                if (parent is IDictionary<string, JToken> obj)
+                {
+                    if (merge && obj.TryGetValue(key, out var temp) && temp.Type == currentValue.Type)
+                    {
+                        return temp;
+                    }
+
+                    obj[key] = currentValue;
+
+                    return currentValue;
+                }
+            }
+
+            throw new SquidexException("Invalid json mapping.");
         }
     }
 }

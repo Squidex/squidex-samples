@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
-                var (app, service) = Configuration.GetClient();
+                var (app, service) = Configuration.Setup();
 
                 var schemasClient = service.CreateSchemasClient();
                 var schemas = await schemasClient.GetSchemasAsync(app);
@@ -61,7 +61,7 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
-                var (app, service) = Configuration.GetClient();
+                var (app, service) = Configuration.Setup();
 
                 var schemasClient = service.CreateSchemasClient();
                 var schema = await schemasClient.GetSchemaAsync(app, arguments.Name);
@@ -83,7 +83,7 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
-                var (app, service) = Configuration.GetClient();
+                var (app, service) = Configuration.Setup();
 
                 var schemasClient = service.CreateSchemasClient();
 

@@ -31,7 +31,7 @@ namespace Squidex.CLI.Commands
             [ApplicationMetadata(Name = "create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
-                var (app, service) = Configuration.GetClient();
+                var (app, service) = Configuration.Setup();
 
                 var backupStarted = DateTime.UtcNow.AddMinutes(-5);
                 var backupsClient = service.CreateBackupsClient();

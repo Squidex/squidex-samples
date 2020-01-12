@@ -23,6 +23,6 @@ namespace Squidex.CLI.Configuration
 
         void UseAppInSession(string entry);
 
-        (string App, SquidexClientManager Client) GetClient();
+        (string App, SquidexClientManager Client) Setup();
     }
 }
