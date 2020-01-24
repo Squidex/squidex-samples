@@ -54,7 +54,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q), null, context, ct);
         }
 
-        public Task<SquidexEntities<TEntity, TData>> GetAsync(ODataQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<SquidexEntities<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;
 

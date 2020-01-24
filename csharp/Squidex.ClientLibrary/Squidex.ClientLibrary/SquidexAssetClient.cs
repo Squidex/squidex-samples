@@ -22,7 +22,7 @@ namespace Squidex.ClientLibrary
         {
         }
 
-        public Task<AssetEntities> GetAssetsAsync(ODataQuery query = null)
+        public Task<AssetEntities> GetAssetsAsync(ContentQuery query = null)
         {
             var queryString = query?.ToQuery(false) ?? string.Empty;
 

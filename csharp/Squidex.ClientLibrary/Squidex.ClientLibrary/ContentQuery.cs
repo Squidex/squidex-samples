@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class ODataQuery
+    public class ContentQuery
     {
         public long? Skip { get; set; }
 
@@ -21,6 +21,8 @@ namespace Squidex.ClientLibrary
         public string OrderBy { get; set; }
 
         public string Search { get; set; }
+
+        public object JsonQuery { get; set; }
 
         public HashSet<string> Ids { get; set; }
 
@@ -41,6 +43,11 @@ namespace Squidex.ClientLibrary
             if (!string.IsNullOrWhiteSpace(OrderBy))
             {
                 queries.Add($"$orderby={OrderBy}");
+            }
+
+            if (JsonQuery != null)
+            {
+                queries.Add($"q={JsonQuery.ToJson()}");
             }
 
             if (Ids != null && Ids.Count > 0)
@@ -71,5 +78,10 @@ namespace Squidex.ClientLibrary
 
             return queryString;
         }
+    }
+
+    [Obsolete]
+    public sealed class ODataQuery : ContentQuery
+    {
     }
 }

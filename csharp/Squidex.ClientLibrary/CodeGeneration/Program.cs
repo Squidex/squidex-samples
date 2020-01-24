@@ -21,6 +21,7 @@ namespace CodeGeneration
             var generatorSettings = new CSharpClientGeneratorSettings();
             generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
             generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
+            generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
             generatorSettings.ExceptionClass = "SquidexManagementException";
             generatorSettings.OperationNameGenerator = new TagNameGenerator();
