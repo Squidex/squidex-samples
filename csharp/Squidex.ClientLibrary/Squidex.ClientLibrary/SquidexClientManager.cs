@@ -82,6 +82,11 @@ namespace Squidex.ClientLibrary
             return new AppsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
+        public IAssetsClient CreateAssetsClient()
+        {
+            return new AssetsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
+        }
+
         public IBackupsClient CreateBackupsClient()
         {
             return new BackupsClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
@@ -132,6 +137,7 @@ namespace Squidex.ClientLibrary
             return new UsersClient(CreateHttpClient()) { ReadResponseAsString = ReadResponseAsString };
         }
 
+        [Obsolete("Use CreateAssetsClient instead")]
         public SquidexAssetClient GetAssetClient()
         {
             return new SquidexAssetClient(applicationName, CreateHttpClient());

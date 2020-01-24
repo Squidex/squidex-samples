@@ -144,8 +144,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -226,8 +226,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -313,8 +313,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -402,8 +402,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -625,8 +625,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -907,8 +907,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -994,8 +994,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -1093,14 +1093,14 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Range between from date and to date is not valid or has more than 100 days.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -1186,8 +1186,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -1279,8 +1279,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Range between from date and to date is not valid or has more than 100 days.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -1291,8 +1291,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2023,8 +2023,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field properties not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field properties not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2035,14 +2035,14 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "409") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2139,14 +2139,14 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field properties not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field properties not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "409") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2157,8 +2157,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2249,8 +2249,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field contains invalid field names.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field contains invalid field names.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2261,8 +2261,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2353,8 +2353,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field ids do not cover the fields of the schema.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field ids do not cover the fields of the schema.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2365,8 +2365,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2463,8 +2463,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field ids do not cover the fields of the schema.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field ids do not cover the fields of the schema.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2475,8 +2475,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2573,8 +2573,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field properties not valid or field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field properties not valid or field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2585,8 +2585,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2678,8 +2678,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2690,8 +2690,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2794,8 +2794,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field properties not valid or field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema field properties not valid or field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2806,8 +2806,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -2905,8 +2905,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Field is locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -2917,8 +2917,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3009,12 +3009,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already locked.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3023,8 +3017,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3121,12 +3115,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already hidden.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3135,8 +3123,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3227,12 +3215,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already hidden.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3241,8 +3223,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3339,12 +3321,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already hidden.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3353,8 +3329,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3445,12 +3421,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already visible.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3459,8 +3429,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3557,12 +3527,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already visible.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3571,8 +3535,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3663,12 +3627,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already enabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3677,8 +3635,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3775,12 +3733,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already enabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3789,8 +3741,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3881,12 +3833,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already disabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3895,8 +3841,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -3993,12 +3939,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema field already disabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -4007,8 +3947,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4094,8 +4034,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4180,20 +4120,20 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema name or properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema name or properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "409") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4285,8 +4225,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4377,8 +4317,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -4389,8 +4329,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4480,8 +4420,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4570,8 +4510,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -4582,8 +4522,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4680,8 +4620,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4778,8 +4718,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4870,8 +4810,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Schema properties are not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -4882,8 +4822,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -4968,12 +4908,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema is already published.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -4982,8 +4916,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5068,12 +5002,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Schema is not published.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -5082,8 +5010,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5444,8 +5372,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5531,8 +5459,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5617,8 +5545,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Rule is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Rule is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -5629,8 +5557,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5721,8 +5649,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Rule is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Rule is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -5733,8 +5661,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5824,8 +5752,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -5908,12 +5836,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Rule already enabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -5922,8 +5844,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6008,12 +5930,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Rule already disabled.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -6022,8 +5938,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6114,8 +6030,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6218,8 +6134,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6310,8 +6226,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6399,8 +6315,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6634,8 +6550,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6720,8 +6636,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Plan not owned by user.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Plan not owned by user.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -6732,8 +6648,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -6964,8 +6880,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7037,8 +6953,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7114,8 +7030,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7329,8 +7245,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7537,8 +7453,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7768,8 +7684,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -7911,7 +7827,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<EntityCreatedDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request);
+        System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Create a new comment.</summary>
@@ -7920,7 +7836,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<EntityCreatedDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates the comment.</summary>
         /// <param name="app">The name of the app.</param>
@@ -8060,8 +7976,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8090,7 +8006,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<EntityCreatedDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request)
+        public System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request)
         {
             return PostCommentAsync(app, commentsId, request, System.Threading.CancellationToken.None);
         }
@@ -8102,7 +8018,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<EntityCreatedDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -8146,14 +8062,14 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "201") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<EntityCreatedDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CommentDto>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Comment is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Comment is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -8164,8 +8080,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8174,7 +8090,7 @@ namespace Squidex.ClientLibrary.Management
                             throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(EntityCreatedDto);
+                        return default(CommentDto);
                     }
                     finally
                     {
@@ -8260,8 +8176,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Comment text not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Comment text not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -8272,8 +8188,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8367,8 +8283,337 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        protected struct ObjectResponseResult<T>
+        {
+            public ObjectResponseResult(T responseObject, string responseText)
+            {
+                this.Object = responseObject;
+                this.Text = responseText;
+            }
+    
+            public T Object { get; }
+    
+            public string Text { get; }
+        }
+    
+        public bool ReadResponseAsString { get; set; }
+        
+        protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers)
+        {
+            if (response == null || response.Content == null)
+            {
+                return new ObjectResponseResult<T>(default(T), string.Empty);
+            }
+        
+            if (ReadResponseAsString)
+            {
+                var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    var typedBody = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseText, JsonSerializerSettings);
+                    return new ObjectResponseResult<T>(typedBody, responseText);
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
+                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var streamReader = new System.IO.StreamReader(responseStream))
+                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
+                    {
+                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);
+                        var typedBody = serializer.Deserialize<T>(jsonTextReader);
+                        return new ObjectResponseResult<T>(typedBody, string.Empty);
+                    }
+                }
+                catch (Newtonsoft.Json.JsonException exception)
+                {
+                    var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
+                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                }
+            }
+        }
+    
+        private string ConvertToString(object value, System.Globalization.CultureInfo cultureInfo)
+        {
+            if (value is System.Enum)
+            {
+                string name = System.Enum.GetName(value.GetType(), value);
+                if (name != null)
+                {
+                    var field = System.Reflection.IntrospectionExtensions.GetTypeInfo(value.GetType()).GetDeclaredField(name);
+                    if (field != null)
+                    {
+                        var attribute = System.Reflection.CustomAttributeExtensions.GetCustomAttribute(field, typeof(System.Runtime.Serialization.EnumMemberAttribute)) 
+                            as System.Runtime.Serialization.EnumMemberAttribute;
+                        if (attribute != null)
+                        {
+                            return attribute.Value != null ? attribute.Value : name;
+                        }
+                    }
+                }
+            }
+            else if (value is bool) {
+                return System.Convert.ToString(value, cultureInfo).ToLowerInvariant();
+            }
+            else if (value is byte[])
+            {
+                return System.Convert.ToBase64String((byte[]) value);
+            }
+            else if (value != null && value.GetType().IsArray)
+            {
+                var array = System.Linq.Enumerable.OfType<object>((System.Array) value);
+                return string.Join(",", System.Linq.Enumerable.Select(array, o => ConvertToString(o, cultureInfo)));
+            }
+        
+            return System.Convert.ToString(value, cultureInfo);
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.3.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial interface INotificationsClient
+    {
+        /// <summary>Get all notifications.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="version">The current version.</param>
+        /// <returns>All comments returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get all notifications.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="version">The current version.</param>
+        /// <returns>All comments returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Deletes the notification.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="commentId">The id of the comment.</param>
+        /// <returns>Comment deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Deletes the notification.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="commentId">The id of the comment.</param>
+        /// <returns>Comment deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.3.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class NotificationsClient : INotificationsClient
+    {
+        private System.Net.Http.HttpClient _httpClient;
+        private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
+    
+        public NotificationsClient(System.Net.Http.HttpClient httpClient)
+        {
+            _httpClient = httpClient; 
+            _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(() => 
+            {
+                var settings = new Newtonsoft.Json.JsonSerializerSettings();
+                UpdateJsonSerializerSettings(settings);
+                return settings;
+            });
+        }
+    
+        protected Newtonsoft.Json.JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
+    
+        partial void UpdateJsonSerializerSettings(Newtonsoft.Json.JsonSerializerSettings settings);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
+        partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
+        partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <summary>Get all notifications.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="version">The current version.</param>
+        /// <returns>All comments returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version)
+        {
+            return GetNotificationsAsync(userId, version, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get all notifications.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="version">The current version.</param>
+        /// <returns>All comments returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version, System.Threading.CancellationToken cancellationToken)
+        {
+            if (userId == null)
+                throw new System.ArgumentNullException("userId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("users/{userId}/notifications?");
+            urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
+            if (version != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("version") + "=").Append(System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<CommentsDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(CommentsDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Deletes the notification.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="commentId">The id of the comment.</param>
+        /// <returns>Comment deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId)
+        {
+            return DeleteCommentAsync(userId, commentId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Deletes the notification.</summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="commentId">The id of the comment.</param>
+        /// <returns>Comment deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (userId == null)
+                throw new System.ArgumentNullException("userId");
+    
+            if (commentId == null)
+                throw new System.ArgumentNullException("commentId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("users/{userId}/notifications/{commentId}");
+            urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Comment not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8662,8 +8907,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8753,8 +8998,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8838,8 +9083,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8924,8 +9169,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -8997,8 +9242,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9075,8 +9320,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9251,6 +9496,85 @@ namespace Squidex.ClientLibrary.Management
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version, long? cache, int? download, int? width, int? height, int? quality, string mode, System.Threading.CancellationToken cancellationToken);
     
+        /// <summary>Get asset folders.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <returns>Asset folders returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, System.Guid? parentId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get asset folders.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <returns>Asset folders returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, System.Guid? parentId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Upload a new asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="request">The asset folder object that needs to be added to the App.</param>
+        /// <returns>Asset folder created.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Upload a new asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="request">The asset folder object that needs to be added to the App.</param>
+        /// <returns>Asset folder created.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Updates the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Updates the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Delete an asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder to delete.</param>
+        /// <returns>Asset folder deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAssetFolderAsync(string app, string id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete an asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder to delete.</param>
+        /// <returns>Asset folder deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task DeleteAssetFolderAsync(string app, string id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Moves the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetItemDto request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Moves the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetItemDto request, System.Threading.CancellationToken cancellationToken);
+    
         /// <summary>Get assets tags.</summary>
         /// <param name="app">The name of the app.</param>
         /// <returns>Assets returned.</returns>
@@ -9266,56 +9590,46 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter);
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, System.Guid? parentId, string ids, string q);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, System.Guid? parentId, string ids, string q, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, double? top, double? skip, string orderby, string filter);
+        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, System.Guid? parentId, FileParameter file);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, System.Guid? parentId, FileParameter file, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get an asset by id.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetAsync(string app, string id);
+        System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string app, string id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get an asset by id.</summary>
@@ -9323,7 +9637,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The id of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Updates the asset.</summary>
         /// <param name="app">The name of the app.</param>
@@ -9360,17 +9674,36 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Replace asset content.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id);
+        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, FileParameter file);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Replace asset content.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, FileParameter file, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Moves the asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="request">The asset object that needs to updated.</param>
+        /// <returns>Asset moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string app, string id, MoveAssetItemDto request);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Moves the asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="request">The asset object that needs to updated.</param>
+        /// <returns>Asset moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string app, string id, MoveAssetItemDto request, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -9518,8 +9851,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9650,8 +9983,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9661,6 +9994,483 @@ namespace Squidex.ClientLibrary.Management
                         }
             
                         return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get asset folders.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <returns>Asset folders returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, System.Guid? parentId)
+        {
+            return GetAssetFoldersAsync(app, parentId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get asset folders.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <returns>Asset folders returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, System.Guid? parentId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/folders?");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            if (parentId != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("App not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AssetsDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Upload a new asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="request">The asset folder object that needs to be added to the App.</param>
+        /// <returns>Asset folder created.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request)
+        {
+            return PostAssetFolderAsync(app, request, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Upload a new asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="request">The asset folder object that needs to be added to the App.</param>
+        /// <returns>Asset folder created.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/folders");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "201") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("App not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AssetDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Updates the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request)
+        {
+            return PutAssetFolderAsync(app, id, request, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Updates the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/folders/{id}");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Asset folder name not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Asset or app not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AssetDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Delete an asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder to delete.</param>
+        /// <returns>Asset folder deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task DeleteAssetFolderAsync(string app, string id)
+        {
+            return DeleteAssetFolderAsync(app, id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Delete an asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder to delete.</param>
+        /// <returns>Asset folder deleted.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task DeleteAssetFolderAsync(string app, string id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/folders/{id}");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "204") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Asset or app not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Moves the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetItemDto request)
+        {
+            return PutAssetFolderParentAsync(app, id, request, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Moves the asset folder.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset folder.</param>
+        /// <param name="request">The asset folder object that needs to updated.</param>
+        /// <returns>Asset folder moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetItemDto request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/folders/{id}/parent");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Asset or app not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AssetDto);
                     }
                     finally
                     {
@@ -9737,8 +10547,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9763,31 +10573,25 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter)
+        public System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, System.Guid? parentId, string ids, string q)
         {
-            return GetAssetsAsync(app, ids, q, top, skip, orderby, filter, System.Threading.CancellationToken.None);
+            return GetAssetsAsync(app, parentId, ids, q, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string ids, string q, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, System.Guid? parentId, string ids, string q, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -9795,6 +10599,10 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("apps/{app}/assets?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            if (parentId != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (ids != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("ids") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ids, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -9802,22 +10610,6 @@ namespace Squidex.ClientLibrary.Management
             if (q != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("q") + "=").Append(System.Uri.EscapeDataString(ConvertToString(q, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (top != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$top") + "=").Append(System.Uri.EscapeDataString(ConvertToString(top, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (skip != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (orderby != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (filter != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$filter") + "=").Append(System.Uri.EscapeDataString(ConvertToString(filter, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -9861,8 +10653,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -9887,27 +10679,23 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, double? top, double? skip, string orderby, string filter)
+        public System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, System.Guid? parentId, FileParameter file)
         {
-            return PostAssetAsync(app, top, skip, orderby, filter, System.Threading.CancellationToken.None);
+            return PostAssetAsync(app, parentId, file, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, double? top, double? skip, string orderby, string filter, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, System.Guid? parentId, FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -9915,21 +10703,9 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("apps/{app}/assets?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            if (top != null) 
+            if (parentId != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$top") + "=").Append(System.Uri.EscapeDataString(ConvertToString(top, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (skip != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (orderby != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (filter != null) 
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$filter") + "=").Append(System.Uri.EscapeDataString(ConvertToString(filter, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -9938,7 +10714,18 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (file != null)
+                    {
+                        var content_file_ = new System.Net.Http.StreamContent(file.Data);
+                        if (!string.IsNullOrEmpty(file.ContentType))
+                            content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
@@ -9974,14 +10761,14 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Asset exceeds the maximum size.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Asset exceeds the maximum size.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10009,7 +10796,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The id of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<AssetsDto> GetAssetAsync(string app, string id)
+        public System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string app, string id)
         {
             return GetAssetAsync(app, id, System.Threading.CancellationToken.None);
         }
@@ -10020,7 +10807,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The id of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10061,7 +10848,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -10073,8 +10860,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10083,7 +10870,7 @@ namespace Squidex.ClientLibrary.Management
                             throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(AssetsDto);
+                        return default(AssetDto);
                     }
                     finally
                     {
@@ -10165,8 +10952,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Asset name not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Asset name not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -10177,8 +10964,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10268,8 +11055,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10293,20 +11080,22 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Replace asset content.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id)
+        public System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, FileParameter file)
         {
-            return PutAssetContentAsync(app, id, System.Threading.CancellationToken.None);
+            return PutAssetContentAsync(app, id, file, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Replace asset content.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string app, string id, FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10324,7 +11113,18 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (file != null)
+                    {
+                        var content_file_ = new System.Net.Http.StreamContent(file.Data);
+                        if (!string.IsNullOrEmpty(file.ContentType))
+                            content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
     
@@ -10360,14 +11160,112 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Asset exceeds the maximum size.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Asset exceeds the maximum size.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AssetDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Moves the asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="request">The asset object that needs to updated.</param>
+        /// <returns>Asset moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string app, string id, MoveAssetItemDto request)
+        {
+            return PutAssetParentAsync(app, id, request, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Moves the asset.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="request">The asset object that needs to updated.</param>
+        /// <returns>Asset moved.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string app, string id, MoveAssetItemDto request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/assets/{id}/parent");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Asset or app not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -10794,17 +11692,30 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetAppsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Create a new app.</summary>
-        /// <param name="request">The app object that needs to be added to squidex.</param>
+        /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Create a new app.</summary>
-        /// <param name="request">The app object that needs to be added to squidex.</param>
+        /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <summary>Get an app by name.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AppDto> GetAppAsync(string app);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get an app by name.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AppDto> GetAppAsync(string app, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Update the app.</summary>
         /// <param name="app">The name of the app to update.</param>
@@ -10836,16 +11747,18 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Get the app image.</summary>
         /// <param name="app">The name of the app to update.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UploadImageAsync(string app);
+        System.Threading.Tasks.Task UploadImageAsync(string app, FileParameter file);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get the app image.</summary>
         /// <param name="app">The name of the app to update.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UploadImageAsync(string app, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UploadImageAsync(string app, FileParameter file, System.Threading.CancellationToken cancellationToken);
     
         /// <summary>Get the app image.</summary>
         /// <param name="app">The name of the app.</param>
@@ -11022,8 +11935,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11108,8 +12021,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Client request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Client request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -11120,8 +12033,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11212,8 +12125,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Client request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Client request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -11224,8 +12137,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11317,8 +12230,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11404,8 +12317,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11490,8 +12403,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("User is already assigned to the app or not found.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("User is not found.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -11502,8 +12415,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11587,12 +12500,6 @@ namespace Squidex.ClientLibrary.Management
                             return objectResponse_.Object;
                         }
                         else
-                        if (status_ == "400") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("User is not assigned to the app.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
                         if (status_ == "404") 
                         {
                             string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -11601,8 +12508,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11688,8 +12595,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11774,8 +12681,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Language request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Language request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -11786,8 +12693,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11878,8 +12785,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Language request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Language request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -11890,8 +12797,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -11983,8 +12890,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12070,8 +12977,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12156,8 +13063,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Pattern request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Pattern request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -12168,8 +13075,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12260,8 +13167,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Pattern request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Pattern request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -12272,8 +13179,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12365,8 +13272,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12452,8 +13359,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12538,8 +13445,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Role name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Role name already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -12550,8 +13457,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12637,8 +13544,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12729,8 +13636,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Role request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Role request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -12741,8 +13648,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12828,8 +13735,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Role is in use by contributor or client or default role.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Role is in use by contributor or client or default role.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -12840,8 +13747,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12915,8 +13822,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -12940,7 +13847,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <summary>Create a new app.</summary>
-        /// <param name="request">The app object that needs to be added to squidex.</param>
+        /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request)
@@ -12950,7 +13857,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Create a new app.</summary>
-        /// <param name="request">The app object that needs to be added to squidex.</param>
+        /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         public async System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request, System.Threading.CancellationToken cancellationToken)
@@ -12995,20 +13902,107 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("App request not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "409") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("App name is already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("App name is already in use.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(AppDto);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <summary>Get an app by name.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<AppDto> GetAppAsync(string app)
+        {
+            return GetAppAsync(app, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get an app by name.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AppDto> GetAppAsync(string app, System.Threading.CancellationToken cancellationToken)
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            string responseText_ = ( response_.Content == null ) ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("App not found.", (int)response_.StatusCode, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == "500") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13099,8 +14093,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13184,8 +14178,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13208,19 +14202,21 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Get the app image.</summary>
         /// <param name="app">The name of the app to update.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UploadImageAsync(string app)
+        public System.Threading.Tasks.Task UploadImageAsync(string app, FileParameter file)
         {
-            return UploadImageAsync(app, System.Threading.CancellationToken.None);
+            return UploadImageAsync(app, file, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get the app image.</summary>
         /// <param name="app">The name of the app to update.</param>
+        /// <param name="file">The file to upload.</param>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UploadImageAsync(string app, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UploadImageAsync(string app, FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -13234,7 +14230,18 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+                    if (file != null)
+                    {
+                        var content_file_ = new System.Net.Http.StreamContent(file.Data);
+                        if (!string.IsNullOrEmpty(file.ContentType))
+                            content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13268,8 +14275,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13355,8 +14362,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13440,8 +14447,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13525,8 +14532,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13611,8 +14618,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Workflow request is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Workflow request is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -13623,8 +14630,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13715,8 +14722,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "400") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Workflow request is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Workflow request is not valid.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == "404") 
@@ -13727,8 +14734,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -13820,8 +14827,8 @@ namespace Squidex.ClientLibrary.Management
                         else
                         if (status_ == "500") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto2>(response_, headers_).ConfigureAwait(false);
+                            throw new SquidexManagementException<ErrorDto2>("Operation failed", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ != "200" && status_ != "204")
@@ -14139,10 +15146,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Error { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("position", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Position { get; set; }
     
     
@@ -14241,15 +15248,15 @@ namespace Squidex.ClientLibrary.Management
         public string StatusColor { get; set; }
     
         /// <summary>The name of the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("schemaName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("schemaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SchemaName { get; set; }
     
         /// <summary>The display name of the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("schemaDisplayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("schemaDisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SchemaDisplayName { get; set; }
     
         /// <summary>The reference fields.</summary>
-        [Newtonsoft.Json.JsonProperty("referenceFields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("referenceFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<FieldDto> ReferenceFields { get; set; }
     
         /// <summary>The version of the content.</summary>
@@ -14679,6 +15686,9 @@ namespace Squidex.ClientLibrary.Management
         [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
         Dropdown = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Tags")]
+        Tags = 2,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
@@ -14751,8 +15761,11 @@ namespace Squidex.ClientLibrary.Management
         [System.Runtime.Serialization.EnumMember(Value = @"Slug")]
         Slug = 7,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"StockPhoto")]
+        StockPhoto = 8,
+    
         [System.Runtime.Serialization.EnumMember(Value = @"TextArea")]
-        TextArea = 8,
+        TextArea = 9,
     
     }
     
@@ -14857,6 +15870,70 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Color { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ImportResultDto 
+    {
+        /// <summary>The error when the import failed.</summary>
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ErrorDto Error { get; set; }
+    
+        /// <summary>The id of the content when the import succeeds.</summary>
+        [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? ContentId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ErrorDto 
+    {
+        /// <summary>Error message.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Message { get; set; }
+    
+        /// <summary>The optional trace id.</summary>
+        [Newtonsoft.Json.JsonProperty("traceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TraceId { get; set; }
+    
+        /// <summary>Link to the error details.</summary>
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Type { get; set; }
+    
+        /// <summary>Detailed error messages.</summary>
+        [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Details { get; set; }
+    
+        /// <summary>Status code of the http response.</summary>
+        [Newtonsoft.Json.JsonProperty("statusCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StatusCode { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class ImportContentsDto 
+    {
+        /// <summary>The data to import.</summary>
+        [Newtonsoft.Json.JsonProperty("datas", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<NamedContentData> Datas { get; set; } = new System.Collections.ObjectModel.Collection<NamedContentData>();
+    
+        /// <summary>True to automatically publish the content.</summary>
+        [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Publish { get; set; }
+    
+        /// <summary>True to turn off scripting for faster inserts. Default: true.</summary>
+        [Newtonsoft.Json.JsonProperty("doNotScript", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DoNotScript { get; set; }
+    
+        /// <summary>True to turn off costly validation: Unique checks, asset checks and reference checks. Default: true.</summary>
+        [Newtonsoft.Json.JsonProperty("optimizeValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool OptimizeValidation { get; set; }
     
     
     }
@@ -15428,7 +16505,7 @@ namespace Squidex.ClientLibrary.Management
     {
         /// <summary>The html editor.</summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public RuleActionPropertyEditor Editor { get; set; }
     
@@ -15557,6 +16634,7 @@ namespace Squidex.ClientLibrary.Management
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "triggerType")]
     [JsonInheritanceAttribute("AssetChanged", typeof(AssetChangedRuleTriggerDto))]
+    [JsonInheritanceAttribute("Comment", typeof(CommentRuleTriggerDto))]
     [JsonInheritanceAttribute("ContentChanged", typeof(ContentChangedRuleTriggerDto))]
     [JsonInheritanceAttribute("Manual", typeof(ManualRuleTriggerDto))]
     [JsonInheritanceAttribute("SchemaChanged", typeof(SchemaChangedRuleTriggerDto))]
@@ -15569,6 +16647,16 @@ namespace Squidex.ClientLibrary.Management
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AssetChangedRuleTriggerDto : RuleTriggerDto
+    {
+        /// <summary>Javascript condition when to trigger.</summary>
+        [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Condition { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CommentRuleTriggerDto : RuleTriggerDto
     {
         /// <summary>Javascript condition when to trigger.</summary>
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -15642,6 +16730,7 @@ namespace Squidex.ClientLibrary.Management
     [JsonInheritanceAttribute("Tweet", typeof(TweetRuleActionDto))]
     [JsonInheritanceAttribute("Slack", typeof(SlackRuleActionDto))]
     [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
+    [JsonInheritanceAttribute("Notification", typeof(NotificationRuleActionDto))]
     [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
     [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
     [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
@@ -15990,20 +17079,9 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
     
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class EntityCreatedDto 
-    {
-        /// <summary>Id of the created entity.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Id { get; set; }
-    
-        /// <summary>The new version of the entity.</summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Version { get; set; }
+        /// <summary>The url where the comment is created.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri Url { get; set; }
     
     
     }
@@ -16015,6 +17093,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Text { get; set; }
+    
+        /// <summary>The url where the comment is created.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Uri Url { get; set; }
     
     
     }
@@ -16145,6 +17227,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid Id { get; set; }
     
+        /// <summary>The id of the parent folder. Empty for files without parent.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid ParentId { get; set; }
+    
         /// <summary>The file name.</summary>
         [Newtonsoft.Json.JsonProperty("fileName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -16153,6 +17239,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The file hash.</summary>
         [Newtonsoft.Json.JsonProperty("fileHash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FileHash { get; set; }
+    
+        /// <summary>True, when the asset is not public.</summary>
+        [Newtonsoft.Json.JsonProperty("isProtected", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsProtected { get; set; }
     
         /// <summary>The slug.</summary>
         [Newtonsoft.Json.JsonProperty("slug", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16169,9 +17259,20 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string FileType { get; set; }
     
+        /// <summary>The formatted text representation of the metadata.</summary>
+        [Newtonsoft.Json.JsonProperty("metadataText", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string MetadataText { get; set; }
+    
+        /// <summary>The asset metadata.</summary>
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, object> Metadata { get; set; } = new System.Collections.Generic.Dictionary<string, object>();
+    
         /// <summary>The asset tags.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
         /// <summary>The size of the file in bytes.</summary>
         [Newtonsoft.Json.JsonProperty("fileSize", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16181,17 +17282,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("fileVersion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long FileVersion { get; set; }
     
-        /// <summary>Determines of the created file is an image.</summary>
-        [Newtonsoft.Json.JsonProperty("isImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsImage { get; set; }
-    
-        /// <summary>The width of the image in pixels if the asset is an image.</summary>
-        [Newtonsoft.Json.JsonProperty("pixelWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PixelWidth { get; set; }
-    
-        /// <summary>The height of the image in pixels if the asset is an image.</summary>
-        [Newtonsoft.Json.JsonProperty("pixelHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PixelHeight { get; set; }
+        /// <summary>The type of the asset.</summary>
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AssetType Type { get; set; }
     
         /// <summary>The user that has created the schema.</summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16217,17 +17311,82 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The metadata.</summary>
         [Newtonsoft.Json.JsonProperty("_meta", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public AssetMetadata _meta { get; set; }
+        public AssetMeta _meta { get; set; }
+    
+        /// <summary>Determines of the created file is an image.</summary>
+        [Newtonsoft.Json.JsonProperty("isImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsImage { get; set; }
+    
+        /// <summary>The width of the image in pixels if the asset is an image.</summary>
+        [Newtonsoft.Json.JsonProperty("pixelWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PixelWidth { get; set; }
+    
+        /// <summary>The height of the image in pixels if the asset is an image.</summary>
+        [Newtonsoft.Json.JsonProperty("pixelHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PixelHeight { get; set; }
     
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetMetadata 
+    public enum AssetType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Unknown")]
+        Unknown = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Image")]
+        Image = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Audio")]
+        Audio = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Video")]
+        Video = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AssetMeta 
     {
         /// <summary>Indicates whether the asset is a duplicate.</summary>
         [Newtonsoft.Json.JsonProperty("isDuplicate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string IsDuplicate { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CreateAssetFolderDto 
+    {
+        /// <summary>The name of the folder.</summary>
+        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string FolderName { get; set; }
+    
+        /// <summary>The id of the parent folder.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid ParentId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class RenameAssetFolderDto 
+    {
+        /// <summary>The name of the folder.</summary>
+        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string FolderName { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class MoveAssetItemDto 
+    {
+        /// <summary>The parent folder id.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid ParentId { get; set; }
     
     
     }
@@ -16243,9 +17402,17 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("slug", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Slug { get; set; }
     
+        /// <summary>True, when the asset is not public.</summary>
+        [Newtonsoft.Json.JsonProperty("isProtected", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsProtected { get; set; }
+    
         /// <summary>The new asset tags.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The asset metadata.</summary>
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, object> Metadata { get; set; }
     
     
     }
@@ -16344,6 +17511,11 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("contributorName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string ContributorName { get; set; }
+    
+        /// <summary>The email address.</summary>
+        [Newtonsoft.Json.JsonProperty("contributorEmail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ContributorEmail { get; set; }
     
         /// <summary>The role of the contributor.</summary>
         [Newtonsoft.Json.JsonProperty("role", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16771,7 +17943,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ErrorDto 
+    public partial class ErrorDto2 
     {
         [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -16854,6 +18026,30 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Url { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.27.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class NotificationRuleActionDto : RuleAction
+    {
+        /// <summary>The user id or email.</summary>
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string User { get; set; }
+    
+        /// <summary>The text to send.</summary>
+        [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Text { get; set; }
+    
+        /// <summary>The optional url to attach to the notification.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Url { get; set; }
+    
+        /// <summary>An optional client name.</summary>
+        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Client { get; set; }
     
     
     }
@@ -17215,6 +18411,33 @@ namespace Squidex.ClientLibrary.Management
     
             return objectType.Name;
         }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.3.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class FileParameter
+    {
+        public FileParameter(System.IO.Stream data)
+            : this (data, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string fileName)
+            : this (data, fileName, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string fileName, string contentType)
+        {
+            Data = data;
+            FileName = fileName;
+            ContentType = contentType;
+        }
+
+        public System.IO.Stream Data { get; private set; }
+
+        public string FileName { get; private set; }
+
+        public string ContentType { get; private set; }
     }
 
     public partial class FileResponse : System.IDisposable

@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary
 {
+    [Obsolete]
     public sealed class SquidexAssetClient : SquidexClientBase
     {
         public SquidexAssetClient(string applicationName, HttpClient httpClient)
