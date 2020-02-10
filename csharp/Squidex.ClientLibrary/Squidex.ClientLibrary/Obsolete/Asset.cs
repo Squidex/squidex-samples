@@ -5,14 +5,28 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    public abstract class EntitiesBase<T>
+    [Obsolete]
+    public sealed class Asset : EntityBase
     {
-        public List<T> Items { get; } = new List<T>();
+        public string FileName { get; set; }
 
-        public long Total { get; set; }
+        public string MimeType { get; set; }
+
+        public int FileSize { get; set; }
+
+        public int FileVersion { get; set; }
+
+        public bool IsImage { get; set; }
+
+        public int PixelWidth { get; set; }
+
+        public int PixelHeight { get; set; }
+
+        public List<string> Tags { get; set; }
     }
 }

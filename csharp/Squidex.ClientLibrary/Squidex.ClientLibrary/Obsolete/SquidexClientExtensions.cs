@@ -12,11 +12,11 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary
 {
+    [Obsolete]
     public static class SquidexClientExtensions
     {
         public static async Task<SquidexEntities<TEntity, TData>> GetAllAsync<TEntity, TData>(this SquidexClient<TEntity, TData> client, int batchSize = 200)
-            where TEntity : SquidexEntityBase<TData>
-            where TData : class, new()
+            where TEntity : SquidexEntityBase<TData> where TData : class, new()
         {
             var query = new ContentQuery { Top = batchSize };
 

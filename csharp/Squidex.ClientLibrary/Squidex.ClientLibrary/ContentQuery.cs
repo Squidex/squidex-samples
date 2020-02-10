@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
@@ -78,10 +79,5 @@ namespace Squidex.ClientLibrary
 
             return queryString;
         }
-    }
-
-    [Obsolete]
-    public sealed class ODataQuery : ContentQuery
-    {
     }
 }

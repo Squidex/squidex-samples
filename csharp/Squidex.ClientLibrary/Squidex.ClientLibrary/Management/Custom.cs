@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable RECS0096 // Type parameter is never used
 
@@ -86,6 +87,15 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get assets.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="callback">The callback that is invoke for each asset.</param>
+        /// <param name="batchSize">The number of assets per request.</param>
+        /// <returns>Assets returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default);
     }
 
     public partial class AssetsClient
@@ -99,6 +109,43 @@ namespace Squidex.ClientLibrary.Management
         public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, System.Threading.CancellationToken cancellationToken = default)
         {
             return GetAssetsAsync(app,  query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get assets.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="callback">The callback that is invoke for each asset.</param>
+        /// <param name="batchSize">The number of assets per request.</param>
+        /// <returns>Assets returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default)
+        {
+            var query = new AssetQuery { Top = batchSize, Skip = 0 };
+            var added = new HashSet<Guid>();
+            do
+            {
+                var isAnyAdded = false;
+
+                var getResult = await GetAssetsAsync(app, query);
+
+                foreach (var item in getResult.Items)
+                {
+                    if (added.Add(item.Id))
+                    {
+                        await callback(item);
+
+                        isAnyAdded = true;
+                    }
+                }
+
+                if (!isAnyAdded)
+                {
+                    break;
+                }
+
+                query.Skip = added.Count;
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
     }
 }

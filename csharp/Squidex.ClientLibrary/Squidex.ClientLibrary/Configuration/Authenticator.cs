@@ -11,8 +11,9 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary.Configuration
 {
     public class Authenticator : IAuthenticator
     {

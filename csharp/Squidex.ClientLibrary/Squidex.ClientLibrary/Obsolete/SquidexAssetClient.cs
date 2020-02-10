@@ -11,14 +11,15 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
     [Obsolete]
     public sealed class SquidexAssetClient : SquidexClientBase
     {
-        public SquidexAssetClient(string applicationName, HttpClient httpClient)
-            : base(applicationName, httpClient)
+        public SquidexAssetClient(SquidexOptions options, HttpClient httpClient)
+            : base(options, httpClient)
         {
         }
 

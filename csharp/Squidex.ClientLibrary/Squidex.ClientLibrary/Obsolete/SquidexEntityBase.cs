@@ -9,6 +9,7 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
+    [Obsolete]
     public abstract class SquidexEntityBase<T> : EntityBase where T : class, new()
     {
         private const string LinkStart = "/api/content/";

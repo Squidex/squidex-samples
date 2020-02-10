@@ -16,14 +16,13 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class SquidexClient<TEntity, TData> : SquidexClientBase
-        where TEntity : SquidexEntityBase<TData>
-        where TData : class, new()
+    [Obsolete]
+    public sealed class SquidexClient<TEntity, TData> : SquidexClientBase where TEntity : SquidexEntityBase<TData> where TData : class, new()
     {
         public string SchemaName { get; }
 
-        public SquidexClient(string applicationName, string schemaName, HttpClient httpClient)
-            : base(applicationName, httpClient)
+        public SquidexClient(SquidexOptions options, string schemaName, HttpClient httpClient)
+            : base(options, httpClient)
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 

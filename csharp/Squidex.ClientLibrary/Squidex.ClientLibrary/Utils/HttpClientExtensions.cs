@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary.Utils
 {
     public static class HttpClientExtensions
     {

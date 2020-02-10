@@ -5,14 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net.Http;
+using System;
 
 namespace Squidex.ClientLibrary
 {
-    public interface IHttpConfigurator
+    [Obsolete]
+    public sealed class AssetEntities : EntitiesBase<Asset>
     {
-        void Configure(HttpClient httpClient);
-
-        void Configure(HttpClientHandler httpClientHandler);
     }
 }

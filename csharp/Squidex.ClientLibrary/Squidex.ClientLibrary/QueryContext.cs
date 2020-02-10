@@ -24,6 +24,8 @@ namespace Squidex.ClientLibrary
 
         public bool IsUnpublished { get; private set; }
 
+        public bool IsNotUsingCDN { get; private set; }
+
         private QueryContext()
         {
         }
@@ -36,6 +38,11 @@ namespace Squidex.ClientLibrary
         public QueryContext Unpublished(bool unpublished = true)
         {
             return Clone(c => c.IsUnpublished = unpublished);
+        }
+
+        public QueryContext WithoutCDN(bool value = true)
+        {
+            return Clone(c => c.IsNotUsingCDN = value);
         }
 
         public QueryContext ResolveAssetUrls(params string[] urls)

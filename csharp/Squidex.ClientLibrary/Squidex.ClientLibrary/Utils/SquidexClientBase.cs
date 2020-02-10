@@ -14,20 +14,25 @@ using System.Threading.Tasks;
 
 #pragma warning disable IDE0067 // Dispose objects before losing scope
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary.Utils
 {
     public abstract class SquidexClientBase : IDisposable
     {
         private readonly HttpClient httpClient;
 
-        protected string ApplicationName { get; }
-
-        protected SquidexClientBase(string applicationName, HttpClient httpClient)
+        protected string ApplicationName
         {
-            Guard.NotNullOrEmpty(applicationName, nameof(applicationName));
+            get { return Options.AppName; }
+        }
+
+        public SquidexOptions Options { get; }
+
+        protected SquidexClientBase(SquidexOptions options, HttpClient httpClient)
+        {
+            Guard.NotNull(options, nameof(options));
             Guard.NotNull(httpClient, nameof(httpClient));
 
-            ApplicationName = applicationName;
+            Options = options;
 
             this.httpClient = httpClient;
         }

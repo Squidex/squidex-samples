@@ -5,14 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
+using System;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class SquidexEntities<TEntity, TData> : Resource where TEntity : SquidexEntityBase<TData> where TData : class, new()
+    [Obsolete]
+    public sealed class ODataQuery : ContentQuery
     {
-        public List<TEntity> Items { get; } = new List<TEntity>();
-
-        public long Total { get; set; }
     }
 }

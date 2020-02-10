@@ -5,24 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net.Http;
+using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class NoopHttpConfigurator : IHttpConfigurator
+    public sealed class ContentsResult<TEntity, TData> : Resource where TEntity : Content<TData> where TData : class, new()
     {
-        public static readonly NoopHttpConfigurator Instance = new NoopHttpConfigurator();
+        public List<TEntity> Items { get; } = new List<TEntity>();
 
-        private NoopHttpConfigurator()
-        {
-        }
-
-        public void Configure(HttpClient httpClient)
-        {
-        }
-
-        public void Configure(HttpClientHandler httpClientHandler)
-        {
-        }
+        public long Total { get; set; }
     }
 }

@@ -7,6 +7,7 @@
 
 using System;
 using Newtonsoft.Json;
+using Squidex.ClientLibrary.Utils;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests

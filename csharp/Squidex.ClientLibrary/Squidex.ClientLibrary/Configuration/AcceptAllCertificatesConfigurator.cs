@@ -7,7 +7,7 @@
 
 using System.Net.Http;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary.Configuration
 {
     public sealed class AcceptAllCertificatesConfigurator : IHttpConfigurator
     {
