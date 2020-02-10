@@ -35,7 +35,7 @@ public sealed class BlogPostData
 2. The entity object
 
 ````
-public sealed class BlogPost : SquidexEntityBase<BlogPostData>
+public sealed class BlogPost : Content<BlogPostData>
 {
 }
 ````
@@ -46,16 +46,19 @@ public sealed class BlogPost : SquidexEntityBase<BlogPostData>
 ````
 var clientManager =
     new SquidexClientManager(
-        options.Url,            // e.g. https://cloud.squidex.io
-        options.AppName,        // The name of your app.
-        options.ClientId,       // The name of your client.
-        options.ClientSecret);  // The secret of your client.
+        new SquidexOptions
+        {
+            AppName = "...",
+            ClientId = "...",
+            ClientSecret = "...",
+            Url = "https://cloud.squidex.io"
+        });
 ````
 
 ### 3. Create a client for your schema
 
 ````
-var client = clientManager.GetClient<BlogPost, BlogPostData>("posts");
+var client = clientManager.CreateContentsClient<BlogPost, BlogPostData>("posts");
 ````
 
 ### 4. Use the client
