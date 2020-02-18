@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace Squidex.CLI.Tests
 
             using (var stringWriter = new StringWriter(csv))
             {
-                using (var writer = new CsvWriter(stringWriter))
+                using (var writer = new CsvWriter(stringWriter, CultureInfo.InvariantCulture))
                 {
                     writer.WriteField("text");
                     writer.WriteField("boolean");
@@ -49,7 +50,7 @@ namespace Squidex.CLI.Tests
                 }
             }
 
-            csvReader = new CsvReader(new StringReader(csv.ToString()));
+            csvReader = new CsvReader(new StringReader(csv.ToString()), CultureInfo.InvariantCulture);
         }
 
         [Fact]

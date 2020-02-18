@@ -15,7 +15,7 @@ namespace Squidex.CLI.Commands.Implementation
     {
         public static JsonMapping ForJson2Csv(string fields)
         {
-            fields = fields ?? string.Empty;
+            fields ??= string.Empty;
 
             var result = new JsonMapping();
 
@@ -23,7 +23,7 @@ namespace Squidex.CLI.Commands.Implementation
             {
                 var parts = item.Split('=');
 
-                JsonPath GetPath(string value)
+                static JsonPath GetPath(string value)
                 {
                     var path = JsonPath.Parse(value);
 
@@ -59,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation
 
         public static JsonMapping ForCsv2Json(string fields)
         {
-            fields = fields ?? string.Empty;
+            fields ??= string.Empty;
 
             var result = new JsonMapping();
 
@@ -67,7 +67,7 @@ namespace Squidex.CLI.Commands.Implementation
             {
                 var parts = item.Split('=');
 
-                JsonPath GetPath(string value)
+                static JsonPath GetPath(string value)
                 {
                     var path = JsonPath.Parse(value);
 

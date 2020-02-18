@@ -66,7 +66,7 @@ namespace Squidex.CLI.Commands.Implementation
                 data[path[0].Key] = property;
             }
 
-            object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
+            static object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
             {
                 if (index >= 0)
                 {

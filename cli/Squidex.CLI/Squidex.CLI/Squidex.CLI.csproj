@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <AssemblyName Condition="'$(PackDotnetTool)'!='1'">sq</AssemblyName>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <Version>4.1</Version>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>sq</ToolCommandName>
     <Authors>sebastianstehle</Authors>
     <Company>Squidex UG (haftungsbeschränkt)</Company>
-    <Description>Command Line Interface for Squidex Headless CMS</Description>
     <Copyright>MIT</Copyright>
-    <PackageTags>Squidex HeadlessCMS</PackageTags>
+    <Description>Command Line Interface for Squidex Headless CMS</Description>
+    <OutputType>Exe</OutputType>
     <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
+    <PackageTags>Squidex HeadlessCMS</PackageTags>
+    <PackAsTool>true</PackAsTool>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <ToolCommandName>sq</ToolCommandName>
+    <Version>4.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.4.0" />
     <PackageReference Include="CommandDotNet" Version="2.8.2" />
     <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="1.1.0" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
-    <PackageReference Include="CsvHelper" Version="12.3.2" />
+    <PackageReference Include="CsvHelper" Version="15.0.0" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" PrivateAssets="all" />
     <PackageReference Include="Slugify.Core" Version="2.3.0" />
-    <PackageReference Include="Squidex.ClientLibrary" Version="4.0.3" />
+    <PackageReference Include="Squidex.ClientLibrary" Version="4.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
   </ItemGroup>
   <PropertyGroup>
