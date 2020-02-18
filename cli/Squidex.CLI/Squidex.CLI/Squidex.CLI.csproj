@@ -6,7 +6,7 @@
     <Copyright>MIT</Copyright>
     <Description>Command Line Interface for Squidex Headless CMS</Description>
     <OutputType>Exe</OutputType>
-    <PackageIconUrl>https://raw.githubusercontent.com/Squidex/squidex/master/media/logo-squared.png</PackageIconUrl>
+    <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
@@ -14,7 +14,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <ToolCommandName>sq</ToolCommandName>
-    <Version>4.2</Version>
+    <Version>4.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ConsoleTables" Version="2.4.0" />
@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="logo-squared.png" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
