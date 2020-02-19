@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use the management API for assets instead.")]
     public class UpdateAssetRequest
     {
         [JsonProperty("fileName")]

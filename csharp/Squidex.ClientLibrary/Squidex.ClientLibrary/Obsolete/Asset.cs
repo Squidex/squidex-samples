@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use the management API for assets instead.")]
     public sealed class Asset : EntityBase
     {
         public string FileName { get; set; }

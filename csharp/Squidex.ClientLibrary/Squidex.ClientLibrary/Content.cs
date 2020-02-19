@@ -29,8 +29,6 @@ namespace Squidex.ClientLibrary
 
         public T Data { get; } = new T();
 
-        public T DataDraft { get; set; }
-
         public string AppName
         {
             get

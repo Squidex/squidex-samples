@@ -15,6 +15,7 @@ namespace Squidex.ClientLibrary
     [Obsolete]
     public static class SquidexClientExtensions
     {
+        [Obsolete("Use the new content client instead.")]
         public static async Task<SquidexEntities<TEntity, TData>> GetAllAsync<TEntity, TData>(this SquidexClient<TEntity, TData> client, int batchSize = 200)
             where TEntity : SquidexEntityBase<TData> where TData : class, new()
         {
@@ -35,7 +36,7 @@ namespace Squidex.ClientLibrary
             return entities;
         }
 
-        [Obsolete]
+        [Obsolete("Use the management API for assets instead.")]
         public static async Task<AssetsDto> GetAllAssetsAsync(this IAssetsClient assetClient, string app, int batchSize = 200)
         {
             var query = new AssetQuery { Top = batchSize, Skip = 0 };
@@ -57,7 +58,7 @@ namespace Squidex.ClientLibrary
             return new AssetsDto { Total = total, Items = assetItems };
         }
 
-        [Obsolete]
+        [Obsolete("Use the management API for assets instead.")]
         public static async Task<AssetEntities> GetAllAssetsAsync(this SquidexAssetClient assetClient, int batchSize = 200)
         {
             var query = new ContentQuery { Top = batchSize, Skip = 0 };

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use Squidex.ClientLibrary.ContentsResult instead.")]
     public sealed class SquidexEntities<TEntity, TData> : Resource where TEntity : SquidexEntityBase<TData> where TData : class, new()
     {
         public List<TEntity> Items { get; } = new List<TEntity>();

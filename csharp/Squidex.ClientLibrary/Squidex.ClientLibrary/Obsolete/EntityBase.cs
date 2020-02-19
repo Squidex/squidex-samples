@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use Squidex.ClientLibrary.Content instead.")]
     public abstract class EntityBase : Resource
     {
         [JsonProperty("id")]

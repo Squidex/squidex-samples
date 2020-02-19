@@ -9,13 +9,14 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use Squidex.ClientLibrary.Content instead")]
     public abstract class SquidexEntityBase<T> : EntityBase where T : class, new()
     {
         private const string LinkStart = "/api/content/";
 
         public T Data { get; } = new T();
 
+        [Obsolete("Will be removed from the API soon.")]
         public T DataDraft { get; set; }
 
         public string AppName
