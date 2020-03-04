@@ -9,7 +9,7 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use Squidex.ClientLibrary.ContentQuery instead.")]
     public sealed class ODataQuery : ContentQuery
     {
     }

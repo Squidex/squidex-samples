@@ -73,15 +73,12 @@ namespace Squidex.CLI.Commands.Implementation
                         {
                             var value = random.Next(3);
 
-                            switch (value)
+                            return value switch
                             {
-                                case 1:
-                                    return true;
-                                case 2:
-                                    return false;
-                                default:
-                                    return null;
-                            }
+                                1 => true,
+                                2 => false,
+                                _ => null,
+                            };
                         }
                     }
 

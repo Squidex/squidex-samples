@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration
 {
@@ -144,19 +145,30 @@ namespace Squidex.CLI.Configuration
         {
             if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {
-                var authenticator = new Authenticator(app.ServiceUrl, app.ClientId, app.ClientSecret);
+                var options = CreateOptions(app);
 
-                return (app.Name, new SquidexClientManager(app.ServiceUrl, app.Name, authenticator));
+                return (app.Name, new SquidexClientManager(options));
             }
 
             if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
             {
-                var authenticator = new Authenticator(app.ServiceUrl, app.ClientId, app.ClientSecret);
+                var options = CreateOptions(app);
 
-                return (app.Name, new SquidexClientManager(app.ServiceUrl, app.Name, authenticator));
+                return (app.Name, new SquidexClientManager(options));
             }
 
             throw new SquidexException("Cannot find valid configuration.");
+        }
+
+        private static SquidexOptions CreateOptions(ConfiguredApp app)
+        {
+            return new SquidexOptions
+            {
+                AppName = app.Name,
+                ClientId = app.ClientId,
+                ClientSecret = app.ClientSecret,
+                Url = app.ServiceUrl
+            };
         }
 
         public Configuration GetConfiguration()

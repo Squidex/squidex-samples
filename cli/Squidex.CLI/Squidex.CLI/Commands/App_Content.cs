@@ -7,18 +7,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
 using CommandDotNet.Attributes;
 using CsvHelper;
+using CsvHelper.Configuration;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
-using CsvOptions = CsvHelper.Configuration.Configuration;
 
 #pragma warning disable IDE0059 // Value assigned to symbol is never used
 
@@ -103,7 +104,7 @@ namespace Squidex.CLI.Commands
                     {
                         using (var streamReader = new StreamReader(stream))
                         {
-                            var csvOptions = new CsvOptions
+                            var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                             {
                                 Delimiter = arguments.Delimiter
                             };
@@ -139,7 +140,7 @@ namespace Squidex.CLI.Commands
 
                 var (_, service) = Configuration.Setup();
 
-                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -212,7 +213,7 @@ namespace Squidex.CLI.Commands
                     {
                         using (var streamWriter = new StreamWriter(stream))
                         {
-                            var csvOptions = new CsvOptions
+                            var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                             {
                                 Delimiter = ";"
                             };
@@ -250,7 +251,7 @@ namespace Squidex.CLI.Commands
 
             private async Task ImportAsync(IImortArgumentBase arguments, SquidexClientManager service, IEnumerable<DummyData> datas)
             {
-                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
 
                 var totalWritten = 0;
 
@@ -277,7 +278,7 @@ namespace Squidex.CLI.Commands
 
                 var (_, service) = Configuration.Setup();
 
-                var client = service.GetClient<DummyEntity, DummyData>(arguments.Schema);
+                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
 
                 var total = 0L;
                 var totalRead = 0;
@@ -285,11 +286,11 @@ namespace Squidex.CLI.Commands
 
                 var consoleTop = Console.CursorTop;
 
-                var handled = new HashSet<string>();
+                var handled = new HashSet<Guid>();
 
                 do
                 {
-                    var query = new ODataQuery
+                    var query = new ContentQuery
                     {
                         Filter = arguments.Filter,
                         OrderBy = arguments.OrderBy,

@@ -15,7 +15,7 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use the management API for assets instead.")]
     public sealed class SquidexAssetClient : SquidexClientBase
     {
         public SquidexAssetClient(SquidexOptions options, HttpClient httpClient)

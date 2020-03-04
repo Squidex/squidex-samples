@@ -16,7 +16,7 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use the new content client instead.")]
     public sealed class SquidexClient<TEntity, TData> : SquidexClientBase where TEntity : SquidexEntityBase<TData> where TData : class, new()
     {
         public string SchemaName { get; }
@@ -126,49 +126,49 @@ namespace Squidex.ClientLibrary
             return ChangeStatusAsync(entity.Id, status, ct);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task PublishAsync(string id)
         {
             return ChangeStatusAsync(id, Status.Published);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task PublishAsync(TEntity entity)
         {
             return ChangeStatusAsync(entity, Status.Published);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task UnpublishAsync(string id)
         {
             return ChangeStatusAsync(id, Status.Draft);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task UnpublishAsync(TEntity entity)
         {
             return ChangeStatusAsync(entity, Status.Draft);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task ArchiveAsync(string id)
         {
             return ChangeStatusAsync(id, Status.Archived);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task ArchiveAsync(TEntity entity)
         {
             return ChangeStatusAsync(entity, Status.Archived);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task RestoreAsync(string id)
         {
             return ChangeStatusAsync(id, Status.Draft);
         }
 
-        [Obsolete]
+        [Obsolete("Use ChangeStatus instead.")]
         public Task RestoreAsync(TEntity entity)
         {
             return ChangeStatusAsync(entity, Status.Draft);

@@ -12,25 +12,25 @@ namespace Squidex.ClientLibrary
 {
     public sealed partial class SquidexClientManager
     {
-        [Obsolete("Use Constructor with optiosn instead.")]
+        [Obsolete("Use Constructor with options instead.")]
         public SquidexClientManager(string serviceUrl, string applicationName, string clientId, string clientSecret, IHttpConfigurator httpConfigurator = null)
             : this(new SquidexOptions { Url = serviceUrl, ClientId = clientId, ClientSecret = clientSecret, AppName = applicationName, Configurator = httpConfigurator })
         {
         }
 
-        [Obsolete("Use Constructor with optiosn instead.")]
+        [Obsolete("Use Constructor with options instead.")]
         public SquidexClientManager(string serviceUrl, string applicationName, IAuthenticator authenticator, IHttpConfigurator httpConfigurator = null)
             : this(new SquidexOptions { Url = serviceUrl, Authenticator = authenticator, AppName = applicationName, Configurator = httpConfigurator })
         {
         }
 
-        [Obsolete("Use Constructor with optiosn instead.")]
+        [Obsolete("Use Constructor with options instead.")]
         public SquidexClientManager(Uri serviceUrl, string applicationName, IAuthenticator authenticator, IHttpConfigurator httpConfigurator = null)
             : this(new SquidexOptions { Url = serviceUrl.ToString(), Authenticator = authenticator, AppName = applicationName, Configurator = httpConfigurator })
         {
         }
 
-        [Obsolete("Use Constructor with optiosn instead.")]
+        [Obsolete("Use Constructor with options instead.")]
         public static SquidexClientManager FromOption(SquidexOptions options)
         {
             Guard.NotNull(options, nameof(options));
@@ -38,13 +38,13 @@ namespace Squidex.ClientLibrary
             return new SquidexClientManager(options);
         }
 
-        [Obsolete("Use CreateAssetsClient instead")]
+        [Obsolete("Use CreateAssetsClient instead.")]
         public SquidexAssetClient GetAssetClient()
         {
             return new SquidexAssetClient(Options, CreateHttpClient());
         }
 
-        [Obsolete("Use CreateContentsClient instead")]
+        [Obsolete("Use CreateContentsClient instead.")]
         public SquidexClient<TEntity, TData> GetClient<TEntity, TData>(string schemaName)
             where TEntity : SquidexEntityBase<TData> where TData : class, new()
         {

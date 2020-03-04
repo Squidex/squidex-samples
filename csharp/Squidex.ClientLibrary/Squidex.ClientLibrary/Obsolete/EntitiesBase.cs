@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
-    [Obsolete]
+    [Obsolete("Use Squidex.ClientLibrary.ContentsResult instead.")]
     public abstract class EntitiesBase<T>
     {
         public List<T> Items { get; } = new List<T>();
