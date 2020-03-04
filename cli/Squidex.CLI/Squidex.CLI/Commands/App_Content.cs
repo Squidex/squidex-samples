@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
-using CommandDotNet.Attributes;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
@@ -27,14 +26,14 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "content", Description = "Manage contents.")]
+        [Command(Name = "content", Description = "Manage contents.")]
         [SubCommand]
         public sealed class Content
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
-            [ApplicationMetadata(Name = "test-data", Description = "Generates test data.")]
+            [Command(Name = "test-data", Description = "Generates test data.")]
             public async Task TestData(TestDataArguments arguments)
             {
                 var (app, service) = Configuration.Setup();
@@ -68,7 +67,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [ApplicationMetadata(Name = "import", Description = "Import the content to a schema.",
+            [Command(Name = "import", Description = "Import the content to a schema.",
                 ExtendedHelpText =
 @"Use the following format to define fields from the CSV/JSON file:
     - name (for invariant fields)
@@ -120,7 +119,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [ApplicationMetadata(Name = "export", Description = "Export the content for a schema.",
+            [Command(Name = "export", Description = "Export the content for a schema.",
                 ExtendedHelpText =
 @"Use the following format to define fields for CSV:
     - id

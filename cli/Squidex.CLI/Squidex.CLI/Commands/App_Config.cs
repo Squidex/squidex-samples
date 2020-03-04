@@ -7,7 +7,6 @@
 
 using System;
 using CommandDotNet;
-using CommandDotNet.Attributes;
 using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
@@ -17,14 +16,14 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "config", Description = "Manage configurations.")]
+        [Command(Name = "config", Description = "Manage configurations.")]
         [SubCommand]
         public sealed class Config
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
-            [ApplicationMetadata(Name = "list", Description = "Shows the current configuration.")]
+            [Command(Name = "list", Description = "Shows the current configuration.")]
             public void List(ListArguments arguments)
             {
                 var config = Configuration.GetConfiguration();
@@ -49,7 +48,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [ApplicationMetadata(Name = "add", Description = "Add or update an app.")]
+            [Command(Name = "add", Description = "Add or update an app.")]
             public void Add(AddArguments arguments)
             {
                 Configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
@@ -57,7 +56,7 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine("> App added.");
             }
 
-            [ApplicationMetadata(Name = "remove", Description = "Remove an app.")]
+            [Command(Name = "remove", Description = "Remove an app.")]
             public void Remove(RemoveArguments arguments)
             {
                 Configuration.Remove(arguments.Name);
@@ -65,7 +64,7 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine("> App removed.");
             }
 
-            [ApplicationMetadata(Name = "reset", Description = "Reset the config.")]
+            [Command(Name = "reset", Description = "Reset the config.")]
             public void Reset()
             {
                 Configuration.Reset();
@@ -73,7 +72,7 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine("> Config reset.");
             }
 
-            [ApplicationMetadata(Name = "use", Description = "Use an app.")]
+            [Command(Name = "use", Description = "Use an app.")]
             public void Use(UseArguments arguments)
             {
                 Configuration.UseApp(arguments.Name);

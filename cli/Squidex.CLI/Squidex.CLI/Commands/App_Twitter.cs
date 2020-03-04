@@ -9,7 +9,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
-using CommandDotNet.Attributes;
 using CoreTweet;
 using FluentValidation;
 using FluentValidation.Attributes;
@@ -18,11 +17,11 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [ApplicationMetadata(Name = "twitter", Description = "Manage twitter.")]
+        [Command(Name = "twitter", Description = "Manage twitter.")]
         [SubCommand]
         public sealed class Twitter
         {
-            [ApplicationMetadata(Name = "auth", Description = "Starts the authentication.")]
+            [Command(Name = "auth", Description = "Starts the authentication.")]
             public async Task Auth(AuthArguments arguments)
             {
                 var session = await OAuth.AuthorizeAsync(arguments.ClientId, arguments.ClientSecret);
@@ -37,7 +36,7 @@ namespace Squidex.CLI.Commands
                 Console.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
             }
 
-            [ApplicationMetadata(Name = "token", Description = "Create an access token and secret.")]
+            [Command(Name = "token", Description = "Create an access token and secret.")]
             public async Task Token(TokenArguments arguments)
             {
                 var requestToken = ReadToken(arguments.RequestToken, ".twitterToken", nameof(arguments.RequestToken));
