@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
-using CommandDotNet.Attributes;
 using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
@@ -26,14 +25,14 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "schemas", Description = "Manage schemas.")]
+        [Command(Name = "schemas", Description = "Manage schemas.")]
         [SubCommand]
         public sealed class Schemas
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
-            [ApplicationMetadata(Name = "list", Description = "List all schemas.")]
+            [Command(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
                 var (app, service) = Configuration.Setup();
@@ -58,7 +57,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [ApplicationMetadata(Name = "get", Description = "Get a schema by name.")]
+            [Command(Name = "get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
                 var (app, service) = Configuration.Setup();
@@ -80,7 +79,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [ApplicationMetadata(Name = "sync", Description = "Sync the schema.")]
+            [Command(Name = "sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
                 var (app, service) = Configuration.Setup();

@@ -6,13 +6,13 @@
 // ==========================================================================
 
 using System;
-using CommandDotNet.Attributes;
+using CommandDotNet;
 
 namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [ApplicationMetadata(Name = "info", Description = "Shows information about the CLI.")]
+        [Command(Name = "info", Description = "Shows information about the CLI.")]
         public void Info()
         {
             var version = typeof(App).Assembly.GetName().Version;

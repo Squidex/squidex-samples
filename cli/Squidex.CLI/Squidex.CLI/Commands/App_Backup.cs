@@ -11,7 +11,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandDotNet;
-using CommandDotNet.Attributes;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Squidex.CLI.Configuration;
@@ -21,14 +20,14 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [ApplicationMetadata(Name = "backup", Description = "Manage backups.")]
+        [Command(Name = "backup", Description = "Manage backups.")]
         [SubCommand]
         public sealed class Backup
         {
             [InjectProperty]
             public IConfigurationService Configuration { get; set; }
 
-            [ApplicationMetadata(Name = "create", Description = "Create and download an backup.")]
+            [Command(Name = "create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
                 var (app, service) = Configuration.Setup();
