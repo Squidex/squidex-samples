@@ -5,9 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using NSwag;
-using NSwag.CodeGeneration.CSharp;
 using NSwag.CodeGeneration.OperationNameGenerators;
 
 namespace CodeGeneration
@@ -16,38 +14,20 @@ namespace CodeGeneration
     {
         public static void Main()
         {
-            var document = OpenApiDocument.FromUrlAsync("http://localhost:5000/api/swagger/v1/swagger.json").Result;
+            string appName = "XXX";
 
-            var generatorSettings = new CSharpClientGeneratorSettings();
-            generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
-            generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
-            generatorSettings.GenerateOptionalParameters = true;
-            generatorSettings.GenerateClientInterfaces = true;
-            generatorSettings.ExceptionClass = "SquidexManagementException";
-            generatorSettings.OperationNameGenerator = new TagNameGenerator();
-            generatorSettings.UseBaseUrl = false;
+            // You can autogenerate classes from Squidex's cloud version
+            string swaggerUrl = $"https://cloud.squidex.io/api/content/{appName}/swagger/v1/swagger.json";
+            // Or your local Squidex instance
+            // string swaggerUrl = "http://localhost:5000/api/swagger/v1/swagger.json";
 
-            var codeGenerator = new CSharpClientGenerator(document, generatorSettings);
+            // Adjust this outputhPath to a file path in the project where you want to use Squidex
+            string outputhPath = @"..\..\..\SquidexGenerated.cs";
 
-            var code = codeGenerator.GenerateFile();
-
-            code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
-            code = code.Replace(" = new RuleTriggerDto();", string.Empty);
-
-            File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
-        }
-
-        public sealed class TagNameGenerator : MultipleClientsFromOperationIdOperationNameGenerator
-        {
-            public override string GetClientName(OpenApiDocument document, string path, string httpMethod, OpenApiOperation operation)
-            {
-                if (operation.Tags?.Count == 1)
-                {
-                    return operation.Tags[0];
-                }
-
-                return base.GetClientName(document, path, httpMethod, operation);
-            }
+            CodeGenerator.Generate(
+                swaggerUrl: swaggerUrl,
+                generatedNamespace: $"{appName}.SquidexModels",
+                outputPath: outputhPath);
         }
     }
 }
