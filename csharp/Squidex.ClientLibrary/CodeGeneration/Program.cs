@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using NSwag;
-using NSwag.CodeGeneration.OperationNameGenerators;
-
 namespace CodeGeneration
 {
     public static class Program
@@ -24,10 +21,12 @@ namespace CodeGeneration
             // Adjust this outputhPath to a file path in the project where you want to use Squidex
             string outputhPath = @"..\..\..\SquidexGenerated.cs";
 
-            CodeGenerator.Generate(
-                swaggerUrl: swaggerUrl,
-                generatedNamespace: $"{appName}.SquidexModels",
-                outputPath: outputhPath);
+            CodeGenerator.Generate(new CodeGenerationOptions()
+            {
+                SwaggerUrl = swaggerUrl,
+                GeneratedNamespace = $"{appName}.SquidexModels",
+                OutputPath = outputhPath
+            });
         }
     }
 }

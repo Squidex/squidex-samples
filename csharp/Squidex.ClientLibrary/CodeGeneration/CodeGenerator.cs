@@ -14,15 +14,12 @@ namespace CodeGeneration
 {
     public class CodeGenerator
     {
-        public static void Generate(
-            string swaggerUrl,
-            string generatedNamespace,
-            string outputPath)
+        public static void Generate(CodeGenerationOptions codeGenerationOptions)
         {
-            var document = OpenApiDocument.FromUrlAsync(swaggerUrl).Result;
+            var document = OpenApiDocument.FromUrlAsync(codeGenerationOptions.SwaggerUrl).Result;
 
             var generatorSettings = new CSharpClientGeneratorSettings();
-            generatorSettings.CSharpGeneratorSettings.Namespace = generatedNamespace;
+            generatorSettings.CSharpGeneratorSettings.Namespace = codeGenerationOptions.GeneratedNamespace;
             generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
             generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
@@ -37,7 +34,7 @@ namespace CodeGeneration
             code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
             code = code.Replace(" = new RuleTriggerDto();", string.Empty);
 
-            File.WriteAllText(outputPath, code);
+            File.WriteAllText(codeGenerationOptions.OutputPath, code);
         }
     }
 
