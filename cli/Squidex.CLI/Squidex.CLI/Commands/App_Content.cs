@@ -17,6 +17,8 @@ using FluentValidation;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.ImExport;
+using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
@@ -30,13 +32,17 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Content
         {
-            [InjectProperty]
-            public IConfigurationService Configuration { get; set; }
+            private readonly IConfigurationService configuration;
+
+            public Content(IConfigurationService configuration)
+            {
+                this.configuration = configuration;
+            }
 
             [Command(Name = "test-data", Description = "Generates test data.")]
             public async Task TestData(TestDataArguments arguments)
             {
-                var (app, service) = Configuration.Setup();
+                var (app, service) = configuration.Setup();
 
                 var taskForSchema = service.CreateSchemasClient().GetSchemaAsync(app, arguments.Schema);
                 var taskForLanguages = service.CreateAppsClient().GetLanguagesAsync(app);
@@ -76,7 +82,7 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Import(ImportArguments arguments)
             {
-                var (_, service) = Configuration.Setup();
+                var (_, service) = configuration.Setup();
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -137,7 +143,7 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var (_, service) = Configuration.Setup();
+                var (_, service) = configuration.Setup();
 
                 var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
 
@@ -275,7 +281,7 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var (_, service) = Configuration.Setup();
+                var (_, service) = configuration.Setup();
 
                 var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
 
@@ -343,10 +349,10 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(ImportArgumentsValidator))]
             public sealed class ImportArguments : IImortArgumentBase, IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Argument(Name = "file", Description = "The path to the file.")]
+                [Operand(Name = "file", Description = "The path to the file.")]
                 public string File { get; set; }
 
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
@@ -376,7 +382,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(ExportArgumentsValidator))]
             public sealed class ExportArguments : IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
                 [Option(LongName = "filter", Description = "Optional filter.")]
@@ -419,7 +425,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(TestDataArgumentsValidator))]
             public sealed class TestDataArguments : IImortArgumentBase, IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]

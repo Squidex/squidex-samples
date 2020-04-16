@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class Squidex2CsvConverter
     {

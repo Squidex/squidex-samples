@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class Json2SquidexConverter
     {

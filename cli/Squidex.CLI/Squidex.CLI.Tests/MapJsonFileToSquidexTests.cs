@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
 

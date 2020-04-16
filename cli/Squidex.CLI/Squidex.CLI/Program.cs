@@ -18,11 +18,15 @@ namespace Squidex.CLI
     {
         public static int Main(string[] args)
         {
-            var serviceCollection =
+            var serviceProvider =
                 new ServiceCollection()
-                    .AddSingleton<IConfigurationService, ConfigurationService>();
-
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+                    .AddSingleton<IConfigurationService, ConfigurationService>()
+                    .AddSingleton<App.Backup>()
+                    .AddSingleton<App.Config>()
+                    .AddSingleton<App.Content>()
+                    .AddSingleton<App.Schemas>()
+                    .AddSingleton<App.Twitter>()
+                    .BuildServiceProvider();
 
             try
             {

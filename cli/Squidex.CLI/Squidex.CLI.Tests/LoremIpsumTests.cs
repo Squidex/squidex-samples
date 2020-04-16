@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.TestData;
 using Xunit;
 
 namespace Squidex.CLI.Tests

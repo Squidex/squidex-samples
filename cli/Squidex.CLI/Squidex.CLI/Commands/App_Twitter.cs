@@ -102,7 +102,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(TokenArgumentsValidator))]
             public sealed class TokenArguments : IArgumentModel
             {
-                [Argument(Name = "pin", Description = "The pin from the auth request.")]
+                [Operand(Name = "pin", Description = "The pin from the auth request.")]
                 public string PinCode { get; set; }
 
                 [Option(ShortName = "clientId")]

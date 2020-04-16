@@ -24,13 +24,17 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Backup
         {
-            [InjectProperty]
-            public IConfigurationService Configuration { get; set; }
+            private readonly IConfigurationService configuration;
+
+            public Backup(IConfigurationService configuration)
+            {
+                this.configuration = configuration;
+            }
 
             [Command(Name = "create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
-                var (app, service) = Configuration.Setup();
+                var (app, service) = configuration.Setup();
 
                 var backupStarted = DateTime.UtcNow.AddMinutes(-5);
                 var backupsClient = service.CreateBackupsClient();
@@ -91,14 +95,14 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(Validator))]
             public sealed class CreateArguments : IArgumentModel
             {
+                [Operand(Name = "file", Description = "The target file.")]
+                public string File { get; set; }
+
                 [Option(LongName = "timeout", Description = "The timeout to wait for the backup in minutes.")]
                 public int Timeout { get; set; } = 30;
 
                 [Option(LongName = "deleteAfterDownload", Description = "Defines wether the created backup shall be deleted from app after the backup task is completed")]
                 public bool DeleteAfterDownload { get; set; }
-
-                [Argument(Name = "file", Description = "The target file.")]
-                public string File { get; set; }
 
                 public sealed class Validator : AbstractValidator<CreateArguments>
                 {

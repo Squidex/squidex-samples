@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class JsonPath : List<(string Key, int Index)>
     {

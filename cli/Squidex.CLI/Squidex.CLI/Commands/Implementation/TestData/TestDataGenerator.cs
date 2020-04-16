@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 using Slugify;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation.TestData
 {
     public sealed class TestDataGenerator
     {

@@ -20,13 +20,17 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Config
         {
-            [InjectProperty]
-            public IConfigurationService Configuration { get; set; }
+            private readonly IConfigurationService configuration;
+
+            public Config(IConfigurationService configuration)
+            {
+                this.configuration = configuration;
+            }
 
             [Command(Name = "list", Description = "Shows the current configuration.")]
             public void List(ListArguments arguments)
             {
-                var config = Configuration.GetConfiguration();
+                var config = configuration.GetConfiguration();
 
                 if (arguments.Table)
                 {
@@ -51,7 +55,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "add", Description = "Add or update an app.")]
             public void Add(AddArguments arguments)
             {
-                Configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
+                configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
 
                 Console.WriteLine("> App added.");
             }
@@ -59,7 +63,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "remove", Description = "Remove an app.")]
             public void Remove(RemoveArguments arguments)
             {
-                Configuration.Remove(arguments.Name);
+                configuration.Remove(arguments.Name);
 
                 Console.WriteLine("> App removed.");
             }
@@ -67,7 +71,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "reset", Description = "Reset the config.")]
             public void Reset()
             {
-                Configuration.Reset();
+                configuration.Reset();
 
                 Console.WriteLine("> Config reset.");
             }
@@ -75,7 +79,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "use", Description = "Use an app.")]
             public void Use(UseArguments arguments)
             {
-                Configuration.UseApp(arguments.Name);
+                configuration.UseApp(arguments.Name);
 
                 Console.WriteLine("> App selected.");
             }
@@ -94,7 +98,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(Validator))]
             public sealed class RemoveArguments : IArgumentModel
             {
-                [Argument(Name = "name", Description = "The name of the app.")]
+                [Operand(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
 
                 public sealed class Validator : AbstractValidator<RemoveArguments>
@@ -109,7 +113,7 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(Validator))]
             public sealed class UseArguments : IArgumentModel
             {
-                [Argument(Name = "name", Description = "The name of the app.")]
+                [Operand(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
 
                 public sealed class Validator : AbstractValidator<UseArguments>
@@ -124,13 +128,13 @@ namespace Squidex.CLI.Commands
             [Validator(typeof(Validator))]
             public sealed class AddArguments : IArgumentModel
             {
-                [Argument(Name = "name", Description = "The name of the app.")]
+                [Operand(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
 
-                [Argument(Name = "client-id", Description = "The client id.")]
+                [Operand(Name = "client-id", Description = "The client id.")]
                 public string ClientId { get; set; }
 
-                [Argument(Name = "client-secret", Description = "The client secret.")]
+                [Operand(Name = "client-secret", Description = "The client secret.")]
                 public string ClientSecret { get; set; }
 
                 [Option(LongName = "url", ShortName = "u", Description = "The optional url to your squidex installation. Default: https://cloud.squidex.io")]
