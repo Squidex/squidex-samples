@@ -14,6 +14,8 @@ namespace Squidex.CLI.Commands.Implementation
     {
         string App { get; }
 
+        string ClientId { get; }
+
         IAppsClient Apps { get; }
 
         IBackupsClient Backups { get; }

@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation;
-using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Configuration
 {

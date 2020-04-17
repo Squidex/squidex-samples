@@ -10,6 +10,7 @@ using CommandDotNet;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Squidex.CLI.Commands;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 
 namespace Squidex.CLI
@@ -27,6 +28,7 @@ namespace Squidex.CLI
                     .AddSingleton<App.Schemas>()
                     .AddSingleton<App.Sync>()
                     .AddSingleton<App.Twitter>()
+                    .AddSingleton<ILogger, ConsoleLogger>()
                     .BuildServiceProvider();
 
             try

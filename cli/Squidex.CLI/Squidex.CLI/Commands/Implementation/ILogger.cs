@@ -15,6 +15,8 @@ namespace Squidex.CLI.Commands.Implementation
 
         void StepFailed(Exception ex);
 
+        void StepFailed(string reason);
+
         void StepSuccess();
 
         void StepSkipped(string reason);

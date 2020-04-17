@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.ClientLibrary.Management;
 using Xunit;

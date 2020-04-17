@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -24,11 +24,23 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         private static readonly JsonSerializer JsonSerializer;
         private static readonly JsonSchemaIdConverter SchemaIdConverter = new JsonSchemaIdConverter();
 
+        internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
+        {
+            protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+            {
+                JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
+
+                contract.DictionaryKeyResolver = propertyName => propertyName;
+
+                return contract;
+            }
+        }
+
         static JsonHelper()
         {
             JsonSerializerSettings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
             };
 
             JsonSerializerSettings.Converters.Add(SchemaIdConverter);
@@ -45,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             public Dictionary<string, Guid> SchemaMap { get; set; } = new Dictionary<string, Guid>();
 
-            public override Guid ReadJson(JsonReader reader, Type objectType, [AllowNull] Guid existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override Guid ReadJson(JsonReader reader, Type objectType, Guid existingValue, bool hasExistingValue, JsonSerializer serializer)
             {
                 if (reader.TokenType != JsonToken.String)
                 {
@@ -62,7 +74,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 return id;
             }
 
-            public override void WriteJson(JsonWriter writer, [AllowNull] Guid value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer, Guid value, JsonSerializer serializer)
             {
                 throw new NotSupportedException();
             }
@@ -73,22 +85,33 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             SchemaIdConverter.SchemaMap = schemas;
         }
 
-        public static T Read<T>(FileInfo file)
+        public static T Read<T>(FileInfo file, ILogger log)
         {
-            using (var stream = file.OpenRead())
+            var json = File.ReadAllText(file.FullName);
+
+            var schema = GetSchema<T>();
+
+            var errors = schema.Validate(json);
+
+            if (errors.Any())
             {
-                using (var reader = new StreamReader(stream))
+                log.WriteLine("File {0} is not valid", file.FullName);
+
+                foreach (var error in errors)
                 {
-                    using (var jsonReader = new JsonTextReader(reader))
+                    if (error.HasLineInfo)
                     {
-                        return JsonSerializer.Deserialize<T>(jsonReader);
+                        log.WriteLine("* {0}, Line: {1}, Col: {2}", error, error.LineNumber, error.LinePosition);
+                    }
+                    else
+                    {
+                        log.WriteLine("* {0}", error);
                     }
                 }
-            }
-        }
 
-        public static T Read<T>(string json)
-        {
+                throw new JsonException($"Error reading file {file.FullName}");
+            }
+
             return JsonConvert.DeserializeObject<T>(json, JsonSerializerSettings);
         }
 
@@ -111,11 +134,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public static string SchemaString<T>()
         {
+            var schema = GetSchema<T>();
+
+            return schema.ToJson();
+        }
+
+        private static JsonSchema GetSchema<T>()
+        {
             var schema = JsonSchema.FromType<T>(JsonSchemaGeneratorSettings);
 
             schema.AllowAdditionalProperties = true;
 
-            return schema.ToJson();
+            return schema;
         }
     }
 }

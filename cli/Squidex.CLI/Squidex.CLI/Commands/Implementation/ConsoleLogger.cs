@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation
 
         public void StepStart(string message)
         {
-            Console.Write((message + "...").PadRight(80));
+            Console.Write((message + "...").PadRight(40));
         }
 
         public void StepSuccess()
@@ -43,12 +43,17 @@ namespace Squidex.CLI.Commands.Implementation
 
         public void StepSkipped(string reason)
         {
-            Console.WriteLine($"skipped: {reason}");
+            Console.WriteLine($"skipped: {reason.TrimEnd('.')}.");
         }
 
         public void StepFailed(Exception ex)
         {
-            Console.WriteLine($"failed with {ex.Message}.");
+            Console.WriteLine($"failed with {ex.Message}");
+        }
+
+        public void StepFailed(string reason)
+        {
+            Console.WriteLine($"failed: {reason.TrimEnd('.')}.");
         }
 
         public void WriteLine()

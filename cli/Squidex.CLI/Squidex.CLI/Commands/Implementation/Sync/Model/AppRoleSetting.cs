@@ -9,9 +9,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
 {
-    public sealed class ContributorSetting
+    public sealed class AppRoleSetting
     {
         [Required]
-        public string Role { get; set; }
+        public string[] Permissions { get; set; }
     }
 }

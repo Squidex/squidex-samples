@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
 {
-    public sealed class ClientSetting
+    public sealed class AppClientSetting
     {
         [Required]
         public string Role { get; set; }

@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -179,7 +178,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(GetArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class GetArguments : IArgumentModel
             {
                 [Operand(Name = "name", Description = "The name of the schema.")]
@@ -188,16 +187,16 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "with-refs", ShortName = "r", Description = "Includes the names of the referenced schemas.")]
                 public bool WithReferencedNames { get; set; }
 
-                public sealed class GetArgumentsValidator : AbstractValidator<GetArguments>
+                public sealed class Validator : AbstractValidator<GetArguments>
                 {
-                    public GetArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Name).NotEmpty();
                     }
                 }
             }
 
-            [Validator(typeof(SyncArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class SyncArguments : IArgumentModel
             {
                 [Operand(Name = "file", Description = "The file with the schema json.")]
@@ -215,9 +214,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "no-ref-fix", Description = "Do not fix referenced.")]
                 public bool NoRefFix { get; set; }
 
-                public sealed class SyncArgumentsValidator : AbstractValidator<SyncArguments>
+                public sealed class Validator : AbstractValidator<SyncArguments>
                 {
-                    public SyncArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.File).NotEmpty();
                     }

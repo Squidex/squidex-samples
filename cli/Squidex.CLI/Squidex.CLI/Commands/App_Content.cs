@@ -349,7 +349,7 @@ namespace Squidex.CLI.Commands
                 bool Unpublished { get; }
             }
 
-            [Validator(typeof(ImportArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class ImportArguments : IImortArgumentBase, IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
@@ -370,9 +370,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "format", Description = "Defines the input format.")]
                 public Format Format { get; set; }
 
-                public sealed class ImportArgumentsValidator : AbstractValidator<ImportArguments>
+                public sealed class Validator : AbstractValidator<ImportArguments>
                 {
-                    public ImportArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Fields).NotEmpty();
@@ -382,7 +382,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(ExportArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class ExportArguments : IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
@@ -415,9 +415,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "format", Description = "Defines the output format.")]
                 public Format Format { get; set; }
 
-                public sealed class ExportArgumentsValidator : AbstractValidator<ExportArguments>
+                public sealed class Validator : AbstractValidator<ExportArguments>
                 {
-                    public ExportArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Schema).NotEmpty();
@@ -425,7 +425,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(TestDataArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class TestDataArguments : IImortArgumentBase, IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
@@ -440,9 +440,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "file", Description = "The optional path to the file.")]
                 public string File { get; set; }
 
-                public sealed class TestDataArgumentsValidator : AbstractValidator<TestDataArguments>
+                public sealed class Validator : AbstractValidator<TestDataArguments>
                 {
-                    public TestDataArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Schema).NotEmpty();
                         RuleFor(x => x.Count).GreaterThan(0);

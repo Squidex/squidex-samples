@@ -53,6 +53,8 @@ namespace Squidex.CLI.Configuration
             }
         }
 
+        public string ClientId => clientManager.Options.ClientId;
+
         public Session(string app, SquidexClientManager clientManager)
         {
             App = app;

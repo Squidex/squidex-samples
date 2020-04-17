@@ -26,34 +26,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             await WriteAppAsync();
             await WriteSchemaAsync();
-        }
-
-        private async Task WriteSchemaAsync()
-        {
-            await WriteJsonSchemaAsync<UpsertSchemaDto>("schema.json");
-
-            var sample = new SynchronizeSchemaDto
-            {
-                Properties = new SchemaPropertiesDto
-                {
-                    Label = "My Schema"
-                },
-                Fields = new List<UpsertSchemaFieldDto>
-                {
-                    new UpsertSchemaFieldDto
-                    {
-                        Name = "my-string",
-                        Properties = new StringFieldPropertiesDto
-                        {
-                            IsRequired = true
-                        },
-                        Partitioning = "invariant"
-                    }
-                },
-                IsPublished = true
-            };
-
-            await WriteSampleAsync("schemas/__schema.json", sample, "../__json/schema");
+            await WriteWorkflowAsync();
         }
 
         private async Task WriteAppAsync()
@@ -62,23 +35,97 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             var sample = new AppSettings
             {
-                Contributors = new Dictionary<string, ContributorSetting>
+                Roles = new Dictionary<string, AppRoleSetting>
                 {
-                    ["mail@squidex.io"] = new ContributorSetting
+                    ["custom"] = new AppRoleSetting
+                    {
+                        Permissions = new string[]
+                        {
+                            "schemas.*"
+                        }
+                    }
+                },
+                Clients = new Dictionary<string, AppClientSetting>
+                {
+                    ["test"] = new AppClientSetting
                     {
                         Role = "Owner"
                     }
                 },
-                Clients = new Dictionary<string, ClientSetting>
+                Languages = new Dictionary<string, UpdateLanguageDto>
                 {
-                    ["test"] = new ClientSetting
+                    ["en"] = new UpdateLanguageDto
                     {
-                        Role = "Owner"
+                        IsMaster = true
                     }
                 }
             };
 
             await WriteSampleAsync("__app.json", sample, "__json/app");
+        }
+
+        private async Task WriteSchemaAsync()
+        {
+            await WriteJsonSchemaAsync<SchemaSettings>("schema.json");
+
+            var sample = new SchemaSettings
+            {
+                Name = "my-schema",
+                Schema = new SynchronizeSchemaDto
+                {
+                    Properties = new SchemaPropertiesDto
+                    {
+                        Label = "My Schema"
+                    },
+                    Fields = new List<UpsertSchemaFieldDto>
+                    {
+                        new UpsertSchemaFieldDto
+                        {
+                            Name = "my-string",
+                            Properties = new StringFieldPropertiesDto
+                            {
+                                IsRequired = true
+                            },
+                            Partitioning = "invariant"
+                        }
+                    },
+                    IsPublished = true
+                }
+            };
+
+            await WriteSampleAsync("schemas/__schema.json", sample, "../__json/schema");
+        }
+
+        private async Task WriteWorkflowAsync()
+        {
+            await WriteJsonSchemaAsync<UpdateWorkflowDto>("workflow.json");
+
+            var sample = new UpdateWorkflowDto
+            {
+                Name = "my-workflow",
+                Steps = new Dictionary<string, WorkflowStepDto>
+                {
+                    ["Draft"] = new WorkflowStepDto
+                    {
+                        Color = "#ff0000",
+                        Transitions = new Dictionary<string, WorkflowTransitionDto>
+                        {
+                            ["Published"] = new WorkflowTransitionDto()
+                        }
+                    },
+                    ["Published"] = new WorkflowStepDto
+                    {
+                        Color = "#00ff00",
+                        Transitions = new Dictionary<string, WorkflowTransitionDto>
+                        {
+                            ["Draft"] = new WorkflowTransitionDto()
+                        },
+                        NoUpdate = true,
+                    }
+                }
+            };
+
+            await WriteSampleAsync("workflows/__workflow.json", sample, "../__json/workflow");
         }
 
         private async Task WriteSampleAsync<T>(string path, T sample, string schema)

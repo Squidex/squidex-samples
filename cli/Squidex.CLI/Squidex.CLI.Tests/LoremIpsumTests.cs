@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.TestData;
 using Xunit;
 

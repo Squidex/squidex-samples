@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
@@ -88,7 +87,7 @@ namespace Squidex.CLI.Commands
                 return requestToken;
             }
 
-            [Validator(typeof(AuthArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class AuthArguments : IArgumentModel
             {
                 [Option(LongName = "clientId")]
@@ -97,9 +96,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "clientSecret")]
                 public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
-                public sealed class AuthArgumentsValidator : AbstractValidator<AuthArguments>
+                public sealed class Validator : AbstractValidator<AuthArguments>
                 {
-                    public AuthArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.ClientId).NotEmpty();
                         RuleFor(x => x.ClientSecret).NotEmpty();
@@ -107,7 +106,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(TokenArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class TokenArguments : IArgumentModel
             {
                 [Operand(Name = "pin", Description = "The pin from the auth request.")]
@@ -125,9 +124,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "secret")]
                 public string RequestTokenSecret { get; set; }
 
-                public sealed class TokenArgumentsValidator : AbstractValidator<TokenArguments>
+                public sealed class Validator : AbstractValidator<TokenArguments>
                 {
-                    public TokenArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.PinCode).NotEmpty();
                     }

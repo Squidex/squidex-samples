@@ -32,7 +32,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "template", Description = "Creates the sample folders.")]
-            public async Task Template(GetArguments arguments)
+            public async Task Template(TemplateArgument arguments)
             {
                 var templateGenerator = new TemplateGenerator(arguments.Folder);
 
@@ -51,30 +51,30 @@ namespace Squidex.CLI.Commands
                 await templateGenerator.SyncAsync();
             }
 
-            [Validator(typeof(TemplateArgumentsValidator))]
-            public sealed class GetArguments : IArgumentModel
+            [Validator(typeof(Validator))]
+            public sealed class TemplateArgument : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The target folder to create the templates.")]
                 public string Folder { get; set; }
 
-                public sealed class TemplateArgumentsValidator : AbstractValidator<GetArguments>
+                public sealed class Validator : AbstractValidator<TemplateArgument>
                 {
-                    public TemplateArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Folder).NotEmpty();
                     }
                 }
             }
 
-            [Validator(typeof(TemplateArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class FullArguments : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                public sealed class TemplateArgumentsValidator : AbstractValidator<GetArguments>
+                public sealed class Validator : AbstractValidator<FullArguments>
                 {
-                    public TemplateArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Folder).NotEmpty();
                     }
