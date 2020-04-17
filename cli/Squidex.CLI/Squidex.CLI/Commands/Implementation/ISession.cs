@@ -5,25 +5,21 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Configuration
+namespace Squidex.CLI.Commands.Implementation
 {
-    public interface IConfigurationService
+    public interface ISession
     {
-        Configuration GetConfiguration();
+        string App { get; }
 
-        void Upsert(string entry, ConfiguredApp appConfig);
+        IAppsClient Apps { get; }
 
-        void Reset();
+        IBackupsClient Backups { get; }
 
-        void Remove(string entry);
+        ISchemasClient Schemas { get; }
 
-        void UseApp(string entry);
-
-        void UseAppInSession(string entry);
-
-        ISession StartSession();
+        IContentsClient<DummyEntity, DummyData> Contents(string schema);
     }
 }

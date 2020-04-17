@@ -9,8 +9,8 @@ using System;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration
 {
@@ -141,20 +141,20 @@ namespace Squidex.CLI.Configuration
             sessionApp = entry;
         }
 
-        public (string App, SquidexClientManager Client) Setup()
+        public ISession StartSession()
         {
             if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {
                 var options = CreateOptions(app);
 
-                return (app.Name, new SquidexClientManager(options));
+                return new Session(app.Name, new SquidexClientManager(options));
             }
 
             if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
             {
                 var options = CreateOptions(app);
 
-                return (app.Name, new SquidexClientManager(options));
+                return new Session(app.Name, new SquidexClientManager(options));
             }
 
             throw new SquidexException("Cannot find valid configuration.");

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using FluentValidation.Attributes;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
 
@@ -25,23 +26,25 @@ namespace Squidex.CLI.Commands
         public sealed class Backup
         {
             private readonly IConfigurationService configuration;
+            private readonly ILogger log;
 
-            public Backup(IConfigurationService configuration)
+            public Backup(IConfigurationService configuration, ILogger log)
             {
                 this.configuration = configuration;
+
+                this.log = log;
             }
 
             [Command(Name = "create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
-                var (app, service) = configuration.Setup();
+                var session = configuration.StartSession();
 
                 var backupStarted = DateTime.UtcNow.AddMinutes(-5);
-                var backupsClient = service.CreateBackupsClient();
 
-                await backupsClient.PostBackupAsync(app);
+                await session.Backups.PostBackupAsync(session.App);
 
-                Console.WriteLine("Backup started, waiting for completion...");
+                log.WriteLine("Backup started, waiting for completion...");
 
                 BackupJobDto foundBackup = null;
 
@@ -49,7 +52,7 @@ namespace Squidex.CLI.Commands
                 {
                     while (!tcs.Token.IsCancellationRequested)
                     {
-                        var backups = await backupsClient.GetBackupsAsync(app);
+                        var backups = await session.Backups.GetBackupsAsync(session.App);
                         var backup = backups.Items.FirstOrDefault(x => x.Started >= backupStarted);
 
                         if (backup != null && backup.Stopped.HasValue)
@@ -64,31 +67,32 @@ namespace Squidex.CLI.Commands
 
                 if (foundBackup == null)
                 {
-                    Console.WriteLine("Failed to receive the backup in time.");
+                    log.WriteLine("Failed to receive the backup in time.");
                 }
                 else if (foundBackup.Status == JobStatus.Completed)
                 {
-                    Console.WriteLine("Backup completed. Downloading...");
+                    log.WriteLine("Backup completed. Downloading...");
 
                     using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
                     {
-                        using (var download = await backupsClient.GetBackupContentAsync(app, foundBackup.Id.ToString()))
+                        using (var download = await session.Backups.GetBackupContentAsync(session.App, foundBackup.Id.ToString()))
                         {
                             await download.Stream.CopyToAsync(fs);
                         }
                     }
 
-                    Console.WriteLine("Backup completed. Download completed");
+                    log.WriteLine("Backup completed. Download completed");
 
                     if (arguments.DeleteAfterDownload)
                     {
-                        Console.WriteLine("Removing backup from app...");
-                        await backupsClient.DeleteBackupAsync(app, foundBackup.Id.ToString());
+                        log.WriteLine("Removing backup from app...");
+
+                        await session.Backups.DeleteBackupAsync(session.App, foundBackup.Id.ToString());
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Failed to make the backup, check the logs for details.");
+                    log.WriteLine("Failed to make the backup, check the logs for details.");
                 }
             }
 

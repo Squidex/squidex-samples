@@ -25,6 +25,7 @@ namespace Squidex.CLI
                     .AddSingleton<App.Config>()
                     .AddSingleton<App.Content>()
                     .AddSingleton<App.Schemas>()
+                    .AddSingleton<App.Sync>()
                     .AddSingleton<App.Twitter>()
                     .BuildServiceProvider();
 

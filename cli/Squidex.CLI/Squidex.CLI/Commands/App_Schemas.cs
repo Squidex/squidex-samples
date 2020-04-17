@@ -14,6 +14,7 @@ using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Models;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
@@ -30,19 +31,21 @@ namespace Squidex.CLI.Commands
         public sealed class Schemas
         {
             private readonly IConfigurationService configuration;
+            private readonly ILogger log;
 
-            public Schemas(IConfigurationService configuration)
+            public Schemas(IConfigurationService configuration, ILogger log)
             {
                 this.configuration = configuration;
+
+                this.log = log;
             }
 
             [Command(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
-                var (app, service) = configuration.Setup();
+                var session = configuration.StartSession();
 
-                var schemasClient = service.CreateSchemasClient();
-                var schemas = await schemasClient.GetSchemasAsync(app);
+                var schemas = await session.Schemas.GetSchemasAsync(session.App);
 
                 if (arguments.Table)
                 {
@@ -57,38 +60,35 @@ namespace Squidex.CLI.Commands
                 }
                 else
                 {
-                    Console.WriteLine(schemas.JsonPrettyString());
+                    log.WriteLine(schemas.JsonPrettyString());
                 }
             }
 
             [Command(Name = "get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
-                var (app, service) = configuration.Setup();
+                var session = configuration.StartSession();
 
-                var schemasClient = service.CreateSchemasClient();
-                var schema = await schemasClient.GetSchemaAsync(app, arguments.Name);
+                var schema = await session.Schemas.GetSchemaAsync(session.App, arguments.Name);
 
                 if (arguments.WithReferencedNames)
                 {
-                    var allSchemas = await schemasClient.GetSchemasAsync(app);
+                    var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
 
                     var result = new SchemaWithRefs<SchemaDetailsDto>(schema).EnrichSchemaNames(allSchemas.Items);
 
-                    Console.WriteLine(result.JsonPrettyString());
+                    log.WriteLine(result.JsonPrettyString());
                 }
                 else
                 {
-                    Console.WriteLine(schema.JsonPrettyString());
+                    log.WriteLine(schema.JsonPrettyString());
                 }
             }
 
             [Command(Name = "sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
-                var (app, service) = configuration.Setup();
-
-                var schemasClient = service.CreateSchemasClient();
+                var session = configuration.StartSession();
 
                 var schemaText = string.Empty;
                 var schemaName = arguments.Name;
@@ -124,7 +124,7 @@ namespace Squidex.CLI.Commands
                 SchemaDetailsDto targetSchema;
                 try
                 {
-                    targetSchema = await schemasClient.GetSchemaAsync(app, schemaName);
+                    targetSchema = await session.Schemas.GetSchemaAsync(session.App, schemaName);
                 }
                 catch
                 {
@@ -137,16 +137,16 @@ namespace Squidex.CLI.Commands
 
                     if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
                     {
-                        var allSchemas = await schemasClient.GetSchemasAsync(app);
+                        var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
 
                         request.AdjustReferences(allSchemas.Items);
                     }
 
                     request.Schema.Name = schemaName;
 
-                    await schemasClient.PostSchemaAsync(app, request.Schema);
+                    await session.Schemas.PostSchemaAsync(session.App, request.Schema);
 
-                    Console.WriteLine("> Created schema because it does not exists in the target system.");
+                    log.WriteLine("> Created schema because it does not exists in the target system.");
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace Squidex.CLI.Commands
 
                     if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
                     {
-                        var allSchemas = await schemasClient.GetSchemasAsync(app);
+                        var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
 
                         request.AdjustReferences(allSchemas.Items);
                     }
@@ -162,9 +162,9 @@ namespace Squidex.CLI.Commands
                     request.Schema.NoFieldDeletion = arguments.NoFieldDeletion;
                     request.Schema.NoFieldRecreation = arguments.NoFieldRecreation;
 
-                    await schemasClient.PutSchemaSyncAsync(app, schemaName, request.Schema);
+                    await session.Schemas.PutSchemaSyncAsync(session.App, schemaName, request.Schema);
 
-                    Console.WriteLine("> Synchronized schema");
+                    log.WriteLine("> Synchronized schema");
                 }
             }
 

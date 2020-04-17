@@ -10,6 +10,7 @@ using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 
 namespace Squidex.CLI.Commands
@@ -21,10 +22,13 @@ namespace Squidex.CLI.Commands
         public sealed class Config
         {
             private readonly IConfigurationService configuration;
+            private readonly ILogger log;
 
-            public Config(IConfigurationService configuration)
+            public Config(IConfigurationService configuration, ILogger log)
             {
                 this.configuration = configuration;
+
+                this.log = log;
             }
 
             [Command(Name = "list", Description = "Shows the current configuration.")]
@@ -43,12 +47,12 @@ namespace Squidex.CLI.Commands
 
                     table.Write(Format.Default);
 
-                    Console.WriteLine();
-                    Console.WriteLine("Current App: {0}", config.CurrentApp);
+                    log.WriteLine();
+                    log.WriteLine("Current App: {0}", config.CurrentApp);
                 }
                 else
                 {
-                    Console.WriteLine(config.JsonPrettyString());
+                    log.WriteLine(config.JsonPrettyString());
                 }
             }
 
@@ -57,7 +61,7 @@ namespace Squidex.CLI.Commands
             {
                 configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
 
-                Console.WriteLine("> App added.");
+                log.WriteLine("> App added.");
             }
 
             [Command(Name = "remove", Description = "Remove an app.")]
@@ -65,7 +69,7 @@ namespace Squidex.CLI.Commands
             {
                 configuration.Remove(arguments.Name);
 
-                Console.WriteLine("> App removed.");
+                log.WriteLine("> App removed.");
             }
 
             [Command(Name = "reset", Description = "Reset the config.")]
@@ -73,7 +77,7 @@ namespace Squidex.CLI.Commands
             {
                 configuration.Reset();
 
-                Console.WriteLine("> Config reset.");
+                log.WriteLine("> Config reset.");
             }
 
             [Command(Name = "use", Description = "Use an app.")]
@@ -81,7 +85,7 @@ namespace Squidex.CLI.Commands
             {
                 configuration.UseApp(arguments.Name);
 
-                Console.WriteLine("> App selected.");
+                log.WriteLine("> App selected.");
             }
 
             [Validator(typeof(Validator))]
