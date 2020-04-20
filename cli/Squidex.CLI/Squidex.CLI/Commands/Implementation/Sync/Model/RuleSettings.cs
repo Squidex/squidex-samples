@@ -5,24 +5,31 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
 {
-    public sealed class AppSettings
+    public sealed class RuleSettings
     {
-        [Required]
-        public Dictionary<string, AppClientSetting> Clients { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        public Dictionary<string, AppRoleSetting> Roles { get; set; }
+        public RuleTriggerDto Trigger { get; set; }
 
         [Required]
-        public Dictionary<string, UpdateLanguageDto> Languages { get; set; }
+        public DynamicRuleAction Action { get; set; }
 
-        [Required]
-        public Dictionary<string, string> Contributors { get; set; }
+        [JsonIgnore]
+        public RuleAction TypedAction
+        {
+            set
+            {
+                Action = new DynamicRuleAction(value.ToJObject<RuleAction>());
+            }
+        }
+
+        public bool IsEnabled { get; set; }
     }
 }

@@ -5,13 +5,22 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.ComponentModel.DataAnnotations;
+using System;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Model
+namespace Squidex.ClientLibrary
 {
-    public sealed class AppRoleSetting
+    public abstract class Entity : Resource
     {
-        [Required]
-        public string[] Permissions { get; set; }
+        public Guid Id { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string LastModifiedBy { get; set; }
+
+        public DateTimeOffset Created { get; set; }
+
+        public DateTimeOffset LastModified { get; set; }
+
+        public int Version { get; set; }
     }
 }

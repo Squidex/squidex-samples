@@ -148,6 +148,11 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        public IExtendableRulesClient CreateExtendableRulesClient()
+        {
+            return new ExtendableRulesClient(Options, CreateHttpClient());
+        }
+
         public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
         {
             return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient());

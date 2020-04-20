@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Model
+namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
     public sealed class SchemaSettingsNameOnly
     {

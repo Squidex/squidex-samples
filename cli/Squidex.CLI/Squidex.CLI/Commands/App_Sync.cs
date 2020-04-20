@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
@@ -23,30 +24,31 @@ namespace Squidex.CLI.Commands
         {
             private readonly IConfigurationService configuration;
             private readonly ILogger log;
+            private readonly IEnumerable<ISynchronizer> synchronizers;
 
-            public Sync(IConfigurationService configuration, ILogger log)
+            public Sync(IConfigurationService configuration, IEnumerable<ISynchronizer> synchronizers, ILogger log)
             {
                 this.configuration = configuration;
-
+                this.synchronizers = synchronizers;
                 this.log = log;
             }
 
             [Command(Name = "template", Description = "Creates the sample folders.")]
             public async Task Template(TemplateArgument arguments)
             {
-                var templateGenerator = new TemplateGenerator(arguments.Folder);
+                var templateGenerator = new TemplateGenerator(arguments.Folder, synchronizers);
 
                 await templateGenerator.GenerateAsync();
             }
 
-            [Command(Name = "full", Description = "Makes a full sync of a folder")]
-            public async Task Full(FullArguments arguments)
+            [Command(Name = "in", Description = "Makes a full sync of a folder")]
+            public async Task In(InArguments arguments)
             {
                 var session = configuration.StartSession();
 
                 var options = new SyncOptions();
 
-                var templateGenerator = new Synchronizer(log, arguments.Folder, session, options);
+                var templateGenerator = new Synchronizer(log, arguments.Folder, session, options, synchronizers);
 
                 await templateGenerator.SyncAsync();
             }
@@ -67,12 +69,12 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class FullArguments : IArgumentModel
+            public sealed class InArguments : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                public sealed class Validator : AbstractValidator<FullArguments>
+                public sealed class Validator : AbstractValidator<InArguments>
                 {
                     public Validator()
                     {

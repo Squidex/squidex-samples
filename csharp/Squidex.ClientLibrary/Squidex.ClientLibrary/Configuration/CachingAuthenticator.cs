@@ -9,7 +9,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.Configuration
 {
