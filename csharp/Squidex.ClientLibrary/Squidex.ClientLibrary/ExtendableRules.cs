@@ -11,6 +11,6 @@ namespace Squidex.ClientLibrary
 {
     public sealed class ExtendableRules : Resource
     {
-        public List<CreateExtendableRule> Items { get; set; }
+        public List<ExtendableRuleDto> Items { get; set; }
     }
 }

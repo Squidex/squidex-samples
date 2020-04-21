@@ -20,6 +20,7 @@ namespace Squidex.CLI.Configuration
         private IAppsClient apps;
         private IBackupsClient backups;
         private ISchemasClient schemas;
+        private IExtendableRulesClient rules;
 
         public string App { get; }
 
@@ -40,6 +41,16 @@ namespace Squidex.CLI.Configuration
                 backups ??= (backups = clientManager.CreateBackupsClient());
 
                 return backups;
+            }
+        }
+
+        public IExtendableRulesClient Rules
+        {
+            get
+            {
+                rules ??= (rules = clientManager.CreateExtendableRulesClient());
+
+                return rules;
             }
         }
 

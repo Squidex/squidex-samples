@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
@@ -19,6 +20,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public int Order => -1000;
 
+        public string Name => "Schemas";
+
         public SchemasSynchronizer(ILogger log)
         {
             this.log = log;
@@ -26,93 +29,82 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            log.WriteLine();
-            log.WriteLine("Schemas synchronizing");
+            var newSchemaNames =
+                GetSchemaFiles(directoryInfo)
+                    .Select(x => jsonHelper.Read<SchemaSettingsNameOnly>(x, log))
+                    .ToList();
+
+            if (!newSchemaNames.HasDistinctNames(x => x.Name))
+            {
+                log.WriteLine("ERROR: Can only sync schemas when all target schemas have distinct names.");
+                return;
+            }
 
             var existingSchemas = await session.Schemas.GetSchemasAsync(session.App);
 
-            var schemaNames = new Dictionary<string, Guid>();
-            var schemasToAdd = new HashSet<string>();
-            var schemasToDelete = new HashSet<string>();
-
-            var existingSchemaNames = new HashSet<string>();
-
-            foreach (var schema in existingSchemas.Items)
-            {
-                existingSchemaNames.Add(schema.Name);
-
-                schemaNames[schema.Name] = schema.Id;
-            }
-
-            foreach (var file in GetSchemaFiles())
-            {
-                var settings = jsonHelper.Read<SchemaSettingsNameOnly>(file, log);
-
-                if (!string.IsNullOrWhiteSpace(settings.Name))
-                {
-                    schemaNames[settings.Name] = Guid.Empty;
-
-                    if (!existingSchemaNames.Contains(settings.Name))
-                    {
-                        schemasToAdd.Add(settings.Name);
-                    }
-                }
-            }
+            var schemasByName = existingSchemas.Items.ToDictionary(x => x.Name);
 
             if (!options.NoDeletion)
             {
-                foreach (var existingName in existingSchemaNames)
+                foreach (var name in existingSchemas.Items.Select(x => x.Name))
                 {
-                    if (!schemaNames.ContainsKey(existingName))
+                    if (!newSchemaNames.Any(x => x.Name == name))
                     {
-                        schemasToDelete.Add(existingName);
+                        await log.DoSafeAsync($"Schema {name} deleting", async () =>
+                        {
+                            await session.Schemas.DeleteSchemaAsync(session.App, name);
+                        });
                     }
                 }
             }
 
-            foreach (var schemaToAdd in schemasToAdd)
+            foreach (var newSchema in newSchemaNames)
             {
-                await log.DoSafeAsync($"Creating schema {schemaToAdd}", async () =>
+                if (schemasByName.ContainsKey(newSchema.Name))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Schema {newSchema.Name} creating", async () =>
                 {
                     var request = new CreateSchemaDto
                     {
-                        Name = schemaToAdd
+                        Name = newSchema.Name
                     };
 
                     var created = await session.Schemas.PostSchemaAsync(session.App, request);
 
-                    schemaNames[schemaToAdd] = created.Id;
+                    schemasByName[newSchema.Name] = created;
                 });
             }
 
-            foreach (var schemaToDelete in schemasToDelete)
+            jsonHelper.SetSchemaMap(schemasByName.ToDictionary(x => x.Key, x => x.Value.Id));
+
+            var newSchemas =
+                GetSchemaFiles(directoryInfo)
+                    .Select(x => jsonHelper.Read<SchemaSettings>(x, log))
+                    .ToList();
+
+            foreach (var newSchema in newSchemas)
             {
-                await log.DoSafeAsync($"Delete schema {schemaToDelete}", async () =>
+                var version = schemasByName[newSchema.Name].Version;
+
+                await log.DoVersionedAsync($"Schema {newSchema.Name} updating", version, async () =>
                 {
-                    await session.Schemas.DeleteSchemaAsync(session.App, schemaToDelete);
+                    var result = await session.Schemas.PutSchemaSyncAsync(session.App, newSchema.Name, newSchema.Schema);
+
+                    return result.Version;
                 });
             }
+        }
 
-            foreach (var file in GetSchemaFiles())
+        private IEnumerable<FileInfo> GetSchemaFiles(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in directoryInfo.GetFiles("schemas\\*.json"))
             {
-                await log.DoSafeAsync($"Synchronizing schema file {file.Name}", async () =>
+                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
-                    var json = jsonHelper.Read<SchemaSettings>(file, log);
-
-                    await session.Schemas.PutSchemaSyncAsync(session.App, json.Name, json.Schema);
-                });
-            }
-
-            log.WriteLine("Schemas synchronized");
-
-            IEnumerable<FileInfo> GetSchemaFiles()
-            {
-                foreach (var file in directoryInfo.GetFiles("schemas\\*.json"))
-                {
-                    if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
-                    {
-                        yield return file;
-                    }
+                    yield return file;
                 }
             }
         }

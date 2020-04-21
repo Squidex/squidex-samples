@@ -7,12 +7,16 @@
 
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
 {
     public sealed class RuleSettings
     {
+        public bool IsEnabled { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [Required]
@@ -30,6 +34,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
             }
         }
 
-        public bool IsEnabled { get; set; }
+        public UpdateExtendableRuleDto ToUpdate()
+        {
+            return new UpdateExtendableRuleDto
+            {
+                Action = Action, Trigger = Trigger, Name = Name
+            };
+        }
+
+        public CreateExtendableRuleDto ToCreate()
+        {
+            return new CreateExtendableRuleDto
+            {
+                Action = Action, Trigger = Trigger
+            };
+        }
     }
 }

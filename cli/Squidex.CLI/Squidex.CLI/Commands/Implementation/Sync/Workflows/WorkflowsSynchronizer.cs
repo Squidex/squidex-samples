@@ -5,8 +5,10 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
@@ -14,9 +16,103 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 {
     public sealed class WorkflowsSynchronizer : ISynchronizer
     {
-        public Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        private readonly ILogger log;
+
+        public string Name => "Workflow";
+
+        public WorkflowsSynchronizer(ILogger log)
         {
-            return Task.CompletedTask;
+            this.log = log;
+        }
+
+        public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var newWorkflows = GetWorkflowSettingsFiles(directoryInfo, jsonHelper).ToList();
+
+            if (!newWorkflows.HasDistinctNames(x => x.Name))
+            {
+                log.WriteLine("ERROR: Can only sync workflows when all target workflows have distinct names.");
+                return;
+            }
+
+            var current = await session.Apps.GetWorkflowsAsync(session.App);
+
+            if (!current.Items.HasDistinctNames(x => x.Name))
+            {
+                log.WriteLine("ERROR: Can only sync workflows when all current workflows have distinct names.");
+                return;
+            }
+
+            var workflowsByName = current.Items.ToDictionary(x => x.Name);
+
+            if (options.NoDeletion)
+            {
+                foreach (var (name, workflow) in workflowsByName.ToList())
+                {
+                    if (!newWorkflows.Any(x => x.Name != name))
+                    {
+                        await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
+                        {
+                            await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id.ToString());
+
+                            workflowsByName.Remove(name);
+                        });
+                    }
+                }
+            }
+
+            foreach (var newWorkflow in newWorkflows)
+            {
+                if (workflowsByName.ContainsKey(newWorkflow.Name))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Workflow '{newWorkflow.Name}' creating", async () =>
+                {
+                    if (workflowsByName.ContainsKey(newWorkflow.Name))
+                    {
+                        throw new CLIException("Name already used.");
+                    }
+
+                    var request = new AddWorkflowDto
+                    {
+                        Name = newWorkflow.Name
+                    };
+
+                    var created = await session.Apps.PostWorkflowAsync(session.App, request);
+
+                    workflowsByName[newWorkflow.Name] = created.Items.FirstOrDefault(x => x.Name == newWorkflow.Name);
+                });
+            }
+
+            foreach (var newWorkflow in newWorkflows)
+            {
+                var workflow = workflowsByName.GetValueOrDefault(newWorkflow.Name);
+
+                if (workflow == null)
+                {
+                    return;
+                }
+
+                await log.DoSafeAsync($"Workflow '{newWorkflow.Name}' updating", async () =>
+                {
+                    await session.Apps.PutWorkflowAsync(session.App, workflow.Id.ToString(), newWorkflow);
+                });
+            }
+        }
+
+        private IEnumerable<UpdateWorkflowDto> GetWorkflowSettingsFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        {
+            foreach (var file in directoryInfo.GetFiles("workflows\\*.json"))
+            {
+                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
+                {
+                    var workflow = jsonHelper.Read<UpdateWorkflowDto>(file, log);
+
+                    yield return workflow;
+                }
+            }
         }
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
@@ -45,7 +141,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                         },
                         NoUpdate = true,
                     }
-                }
+                },
+                Initial = "Draft"
             };
 
             await jsonHelper.WriteSampleAsync(directoryInfo, "workflows/__workflow.json", sample, "../__json/workflow");

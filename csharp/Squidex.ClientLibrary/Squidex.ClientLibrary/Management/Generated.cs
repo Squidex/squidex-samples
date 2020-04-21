@@ -14527,7 +14527,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The statistics by date and group.</summary>
         [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>> Details { get; set; } = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();
+        public System.Collections.Generic.IDictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>> Details { get; set; } = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();
     
     
     }
@@ -16538,6 +16538,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The initial step.</summary>
         [Newtonsoft.Json.JsonProperty("initial", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string Initial { get; set; }
     
     

@@ -22,6 +22,8 @@ namespace Squidex.CLI.Commands.Implementation
 
         ISchemasClient Schemas { get; }
 
+        IExtendableRulesClient Rules { get; }
+
         IContentsClient<DummyEntity, DummyData> Contents(string schema);
     }
 }

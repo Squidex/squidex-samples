@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using FluentValidation.Attributes;
-using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Configuration;
 
@@ -23,22 +22,18 @@ namespace Squidex.CLI.Commands
         public sealed class Sync
         {
             private readonly IConfigurationService configuration;
-            private readonly ILogger log;
-            private readonly IEnumerable<ISynchronizer> synchronizers;
+            private readonly Synchronizer synchronizer;
 
-            public Sync(IConfigurationService configuration, IEnumerable<ISynchronizer> synchronizers, ILogger log)
+            public Sync(IConfigurationService configuration, Synchronizer synchronizer)
             {
                 this.configuration = configuration;
-                this.synchronizers = synchronizers;
-                this.log = log;
+                this.synchronizer = synchronizer;
             }
 
             [Command(Name = "template", Description = "Creates the sample folders.")]
             public async Task Template(TemplateArgument arguments)
             {
-                var templateGenerator = new TemplateGenerator(arguments.Folder, synchronizers);
-
-                await templateGenerator.GenerateAsync();
+                await synchronizer.GenerateTemplateAsync(arguments.Folder);
             }
 
             [Command(Name = "in", Description = "Makes a full sync of a folder")]
@@ -48,9 +43,7 @@ namespace Squidex.CLI.Commands
 
                 var options = new SyncOptions();
 
-                var templateGenerator = new Synchronizer(log, arguments.Folder, session, options, synchronizers);
-
-                await templateGenerator.SyncAsync();
+                await synchronizer.SynchronizeAsync(arguments.Folder, options, session);
             }
 
             [Validator(typeof(Validator))]

@@ -10,10 +10,14 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class CreateExtendableRule
+    public sealed class CreateExtendableRuleDto : Entity
     {
+        public string Name { get; set; }
+
         public RuleTriggerDto Trigger { get; set; }
 
         public JObject Action { get; set; }
+
+        public bool IsEnabled { get; set; }
     }
 }

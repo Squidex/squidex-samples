@@ -53,6 +53,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             };
 
             jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());
+            jsonSchemaGeneratorSettings.SchemaProcessors.Add(new GuidFixProcessor());
 
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
         }

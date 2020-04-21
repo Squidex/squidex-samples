@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation
@@ -37,6 +38,29 @@ namespace Squidex.CLI.Commands.Implementation
             return new HashSet<string>(lhs).SetEquals(rhs);
         }
 
+        public static async Task DoVersionedAsync(this ILogger log, string process, long version, Func<Task<long>> action)
+        {
+            try
+            {
+                log.StepStart(process);
+
+                var newVersion = await action();
+
+                if (version != newVersion)
+                {
+                    log.StepSuccess();
+                }
+                else
+                {
+                    log.StepSkipped("Nothing changed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, log);
+            }
+        }
+
         public static async Task DoSafeAsync(this ILogger log, string process, Func<Task> action)
         {
             try
@@ -47,34 +71,39 @@ namespace Squidex.CLI.Commands.Implementation
 
                 log.StepSuccess();
             }
-            catch (SquidexManagementException<ErrorDto> ex)
-            {
-                if (ex.StatusCode.Equals(400))
-                {
-                    log.StepSkipped(ex.Result.Message);
-                }
-                else
-                {
-                    log.StepFailed(ex.Result.Message);
-                    throw;
-                }
-            }
-            catch (SquidexManagementException ex)
-            {
-                if (ex.StatusCode.Equals(400))
-                {
-                    log.StepSkipped(ex.Message);
-                }
-                else
-                {
-                    log.StepFailed(ex);
-                    throw;
-                }
-            }
             catch (Exception ex)
             {
-                log.StepFailed(ex);
-                throw;
+                HandleException(ex, log);
+            }
+        }
+
+        private static void HandleException(Exception ex, ILogger log)
+        {
+            switch (ex)
+            {
+                case SquidexManagementException<ErrorDto> ex1:
+                    {
+                        log.StepFailed(ex1.Result.ToString());
+                        break;
+                    }
+
+                case SquidexManagementException ex2:
+                    {
+                        log.StepFailed(ex2.Message);
+                        break;
+                    }
+
+                case CLIException ex4:
+                    {
+                        log.StepSkipped(ex4.Message);
+                        break;
+                    }
+
+                case Exception ex3:
+                    {
+                        log.StepFailed(ex3);
+                        throw ex3;
+                    }
             }
         }
     }

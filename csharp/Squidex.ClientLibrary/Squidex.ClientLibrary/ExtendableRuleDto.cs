@@ -10,7 +10,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class ExtendableRule : Entity
+    public sealed class ExtendableRuleDto : Entity
     {
         public string Name { get; set; }
 

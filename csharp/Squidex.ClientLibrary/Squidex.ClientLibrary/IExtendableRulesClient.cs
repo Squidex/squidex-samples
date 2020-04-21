@@ -15,13 +15,13 @@ namespace Squidex.ClientLibrary
     {
         Task<ExtendableRules> GetRulesAsync(CancellationToken ct = default);
 
-        Task<ExtendableRule> CreateRuleAsync(CreateExtendableRule request, CancellationToken ct = default);
+        Task<ExtendableRuleDto> CreateRuleAsync(CreateExtendableRuleDto request, CancellationToken ct = default);
 
-        Task<ExtendableRule> UpdateRuleAsync(Guid id, UpdateExtendableRuleDto request, CancellationToken ct = default);
+        Task<ExtendableRuleDto> UpdateRuleAsync(Guid id, UpdateExtendableRuleDto request, CancellationToken ct = default);
 
-        Task<ExtendableRule> EnableRuleAsync(Guid id, CancellationToken ct = default);
+        Task<ExtendableRuleDto> EnableRuleAsync(Guid id, CancellationToken ct = default);
 
-        Task<ExtendableRule> DisableRuleAsync(Guid id, CancellationToken ct = default);
+        Task<ExtendableRuleDto> DisableRuleAsync(Guid id, CancellationToken ct = default);
 
         Task DeleteRuleAsync(Guid id, CancellationToken ct = default);
     }

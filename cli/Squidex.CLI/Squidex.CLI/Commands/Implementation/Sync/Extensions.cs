@@ -5,7 +5,10 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -13,6 +16,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 {
     public static class Extensions
     {
+        public static bool HasDistinctNames<T>(this ICollection<T> source, Func<T, string> selector)
+        {
+            return source.Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count() == source.Count;
+        }
+
         public static async Task WriteSampleAsync<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema)
         {
             var fileInfo = GetFile(directory, path);

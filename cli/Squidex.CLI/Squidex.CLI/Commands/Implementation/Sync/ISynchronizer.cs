@@ -14,6 +14,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
     {
         int Order => 0;
 
+        string Name { get; }
+
         Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session);
 
         Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper);

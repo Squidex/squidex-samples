@@ -17,6 +17,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
     {
         private readonly ILogger log;
 
+        public string Name => "App";
+
         public AppSynchronizer(ILogger log)
         {
             this.log = log;
@@ -24,9 +26,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
         public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            log.WriteLine();
-            log.WriteLine("App settings synchronizing");
-
             var appFile = new FileInfo(Path.Combine(directoryInfo.FullName, "app.json"));
 
             if (!appFile.Exists)
@@ -41,8 +40,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             await SynchronizeContributorsAsync(settings, session);
             await SynchronizeLanguagesAsync(settings, options, session);
             await SynchronizeRolesAsync(settings, options, session);
-
-            log.WriteLine("App settings synchronized");
         }
 
         private async Task SynchronizeContributorsAsync(AppSettings settings, ISession session)
@@ -51,12 +48,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 await log.DoSafeAsync($"Contributor '{email}' creating", async () =>
                 {
-                    var request = new AssignContributorDto
-                    {
-                        ContributorId = email,
-                        Role = value.Role,
-                        Invite = true
-                    };
+                    var request = new AssignContributorDto { ContributorId = email, Role = value.Role, Invite = true };
 
                     await session.Apps.PostContributorAsync(session.App, request);
                 });
@@ -65,165 +57,171 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
         private async Task SynchronizeClientsAsync(AppSettings settings, SyncOptions options, ISession session)
         {
-            var existingClients = await session.Apps.GetClientsAsync(session.App);
+            var current = await session.Apps.GetClientsAsync(session.App);
 
             if (!options.NoDeletion)
             {
-                foreach (var client in existingClients.Items)
+                foreach (var client in current.Items)
                 {
                     var generatedClientId = $"{session.App}:{client.Id}";
 
-                    if (!settings.Clients.ContainsKey(client.Id) && !session.ClientId.Equals(generatedClientId))
+                    if (settings.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId))
                     {
-                        await log.DoSafeAsync($"Client '{client.Id}' deleting", async () =>
-                        {
-                            await session.Apps.DeleteClientAsync(session.App, client.Id);
-                        });
+                        continue;
                     }
-                }
-            }
 
-            foreach (var (clientId, value) in settings.Clients)
-            {
-                var existing = existingClients.Items.FirstOrDefault(x => x.Id == clientId);
-
-                if (existing == null)
-                {
-                    await log.DoSafeAsync($"Client '{clientId}' creating", async () =>
+                    await log.DoSafeAsync($"Client '{client.Id}' deleting", async () =>
                     {
-                        var request = new CreateClientDto
-                        {
-                            Id = clientId
-                        };
-
-                        existingClients = await session.Apps.PostClientAsync(session.App, request);
+                        await session.Apps.DeleteClientAsync(session.App, client.Id);
                     });
                 }
             }
 
             foreach (var (clientId, value) in settings.Clients)
             {
-                var existing = existingClients.Items.FirstOrDefault(x => x.Id == clientId);
+                var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
-                if (existing != null && !value.JsonEquals(existing))
+                if (existing != null)
                 {
-                    await log.DoSafeAsync($"Client '{clientId}' updating", async () =>
-                    {
-                        var request = new UpdateClientDto
-                        {
-                            Role = value.Role
-                        };
-
-                        await session.Apps.PutClientAsync(session.App, clientId, request);
-                    });
+                    continue;
                 }
+
+                await log.DoSafeAsync($"Client '{clientId}' creating", async () =>
+                {
+                    var request = new CreateClientDto { Id = clientId };
+
+                    current = await session.Apps.PostClientAsync(session.App, request);
+                });
+            }
+
+            foreach (var (clientId, value) in settings.Clients)
+            {
+                var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
+
+                if (existing == null || value.JsonEquals(existing))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Client '{clientId}' updating", async () =>
+                {
+                    var request = new UpdateClientDto { Role = value.Role };
+
+                    await session.Apps.PutClientAsync(session.App, clientId, request);
+                });
             }
         }
 
         private async Task SynchronizeLanguagesAsync(AppSettings settings, SyncOptions options, ISession session)
         {
-            var existingLanguages = await session.Apps.GetLanguagesAsync(session.App);
+            var current = await session.Apps.GetLanguagesAsync(session.App);
 
             if (!options.NoDeletion)
             {
-                foreach (var language in existingLanguages.Items)
+                foreach (var language in current.Items)
                 {
-                    if (!settings.Languages.ContainsKey(language.Iso2Code))
+                    if (settings.Languages.ContainsKey(language.Iso2Code))
                     {
-                        await log.DoSafeAsync($"Language '{language.Iso2Code}' deleting", async () =>
-                        {
-                            await session.Apps.DeleteLanguageAsync(session.App, language.Iso2Code);
-                        });
+                        continue;
                     }
-                }
-            }
 
-            foreach (var (isoCode, value) in settings.Languages)
-            {
-                var existing = existingLanguages.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
-
-                if (existing == null)
-                {
-                    await log.DoSafeAsync($"Language '{isoCode}' creating", async () =>
+                    await log.DoSafeAsync($"Language '{language.Iso2Code}' deleting", async () =>
                     {
-                        var request = new AddLanguageDto
-                        {
-                            Language = isoCode
-                        };
-
-                        existingLanguages = await session.Apps.PostLanguageAsync(session.App, request);
+                        await session.Apps.DeleteLanguageAsync(session.App, language.Iso2Code);
                     });
                 }
             }
 
             foreach (var (isoCode, value) in settings.Languages)
             {
-                var existing = existingLanguages.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
+                var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
 
-                if (existing != null && !value.JsonEquals(existing))
+                if (existing != null)
                 {
-                    await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
-                    {
-                        var request = value;
-
-                        await session.Apps.PutLanguageAsync(session.App, isoCode, request);
-                    });
+                    continue;
                 }
+
+                await log.DoSafeAsync($"Language '{isoCode}' creating", async () =>
+                {
+                    var request = new AddLanguageDto { Language = isoCode };
+
+                    current = await session.Apps.PostLanguageAsync(session.App, request);
+                });
+            }
+
+            foreach (var (isoCode, value) in settings.Languages)
+            {
+                var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
+
+                if (existing == null || value.JsonEquals(existing))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
+                {
+                    var request = value;
+
+                    await session.Apps.PutLanguageAsync(session.App, isoCode, request);
+                });
             }
         }
 
         private async Task SynchronizeRolesAsync(AppSettings settings, SyncOptions options, ISession session)
         {
-            var existingRoles = await session.Apps.GetRolesAsync(session.App);
+            var current = await session.Apps.GetRolesAsync(session.App);
 
             if (!options.NoDeletion)
             {
-                foreach (var role in existingRoles.Items)
+                foreach (var role in current.Items)
                 {
-                    if (!settings.Roles.ContainsKey(role.Name) && !role.IsDefaultRole && role.NumClients == 0 && role.NumContributors == 0)
+                    if (settings.Roles.ContainsKey(role.Name) ||
+                        role.IsDefaultRole ||
+                        role.NumClients > 0 ||
+                        role.NumContributors > 0)
                     {
-                        await log.DoSafeAsync($"Role '{role.Name}' deleting", async () =>
-                        {
-                            await session.Apps.DeleteRoleAsync(session.App, role.Name);
-                        });
+                        continue;
                     }
-                }
-            }
 
-            foreach (var (roleName, value) in settings.Roles)
-            {
-                var existing = existingRoles.Items.FirstOrDefault(x => x.Name == roleName);
-
-                if (existing == null)
-                {
-                    await log.DoSafeAsync($"Role '{roleName}' creating", async () =>
+                    await log.DoSafeAsync($"Role '{role.Name}' deleting", async () =>
                     {
-                        var request = new AddRoleDto
-                        {
-                            Name = roleName
-                        };
-
-                        existingRoles = await session.Apps.PostRoleAsync(session.App, request);
+                        await session.Apps.DeleteRoleAsync(session.App, role.Name);
                     });
                 }
             }
 
             foreach (var (roleName, value) in settings.Roles)
             {
-                var existing = existingRoles.Items.FirstOrDefault(x => x.Name == roleName);
+                var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
 
-                if (existing != null && !value.JsonEquals(existing))
+                if (existing != null)
                 {
-                    await log.DoSafeAsync($"Role '{roleName}' updating", async () =>
-                    {
-                        var request = new UpdateRoleDto
-                        {
-                            Permissions = value.Permissions
-                        };
-
-                        await session.Apps.PutRoleAsync(session.App, roleName, request);
-                    });
+                    continue;
                 }
+
+                await log.DoSafeAsync($"Role '{roleName}' creating", async () =>
+                {
+                    var request = new AddRoleDto { Name = roleName };
+
+                    current = await session.Apps.PostRoleAsync(session.App, request);
+                });
+            }
+
+            foreach (var (roleName, value) in settings.Roles)
+            {
+                var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
+
+                if (existing == null || value.JsonEquals(existing))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Role '{roleName}' updating", async () =>
+                {
+                    var request = new UpdateRoleDto { Permissions = value.Permissions };
+
+                    await session.Apps.PutRoleAsync(session.App, roleName, request);
+                });
             }
         }
 

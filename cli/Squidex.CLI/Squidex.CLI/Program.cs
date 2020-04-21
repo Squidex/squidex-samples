@@ -38,6 +38,7 @@ namespace Squidex.CLI
                     .AddSingleton<ISynchronizer, SchemasSynchronizer>()
                     .AddSingleton<ISynchronizer, WorkflowsSynchronizer>()
                     .AddSingleton<ILogger, ConsoleLogger>()
+                    .AddSingleton<Synchronizer>()
                     .BuildServiceProvider();
 
             try
