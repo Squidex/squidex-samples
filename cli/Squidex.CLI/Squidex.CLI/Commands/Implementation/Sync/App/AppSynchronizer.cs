@@ -24,7 +24,65 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             this.log = log;
         }
 
-        public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var settings = new AppSettings
+            {
+                Contributors = new Dictionary<string, AppContributorSetting>()
+            };
+
+            await log.DoSafeAsync("Exporting clients", async () =>
+            {
+                var clients = await session.Apps.GetClientsAsync(session.App);
+
+                settings.Clients = new Dictionary<string, AppClientSetting>();
+
+                foreach (var client in clients.Items)
+                {
+                    settings.Clients[client.Name] = new AppClientSetting
+                    {
+                        Name = client.Name,
+                        Role = client.Role
+                    };
+                }
+            });
+
+            await log.DoSafeAsync("Exporting languages", async () =>
+            {
+                var languages = await session.Apps.GetLanguagesAsync(session.App);
+
+                settings.Languages = new Dictionary<string, UpdateLanguageDto>();
+
+                foreach (var language in languages.Items)
+                {
+                    settings.Languages[language.Iso2Code] = new UpdateLanguageDto
+                    {
+                        Fallback = language.Fallback,
+                        IsMaster = language.IsMaster,
+                        IsOptional = language.IsOptional
+                    };
+                }
+            });
+
+            await log.DoSafeAsync("Exporting Roles", async () =>
+            {
+                var roles = await session.Apps.GetRolesAsync(session.App);
+
+                settings.Roles = new Dictionary<string, AppRoleSetting>();
+
+                foreach (var role in roles.Items)
+                {
+                    settings.Roles[role.Name] = new AppRoleSetting
+                    {
+                        Permissions = role.Permissions.ToArray()
+                    };
+                }
+            });
+
+            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", settings, "__json/app");
+        }
+
+        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var appFile = new FileInfo(Path.Combine(directoryInfo.FullName, "app.json"));
 
@@ -264,7 +322,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             };
 
-            await jsonHelper.WriteSampleAsync(directoryInfo, "__app.json", sample, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, "__json/app");
         }
     }
 }

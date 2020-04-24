@@ -24,7 +24,39 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             this.log = log;
         }
 
-        public async Task SynchronizeAsync(string path, SyncOptions options, ISession session)
+        public async Task ExportAsync(string path, SyncOptions options, ISession session)
+        {
+            var directoryInfo = Directory.CreateDirectory(path);
+
+            WriteSummary(directoryInfo);
+
+            var jsonHelper = new JsonHelper();
+
+            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            {
+                await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
+            }
+
+            var step = 1;
+
+            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            {
+                log.WriteLine();
+                log.WriteLine("--------------------------------------------------------");
+                log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine();
+
+                await synchronizer.ExportAsync(directoryInfo, jsonHelper, options, session);
+
+                log.WriteLine();
+                log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("--------------------------------------------------------");
+
+                step++;
+            }
+        }
+
+        public async Task ImportAsync(string path, SyncOptions options, ISession session)
         {
             var directoryInfo = Directory.CreateDirectory(path);
 
@@ -38,13 +70,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
-                log.WriteLine("* STEP {0} of {1}: Synchronizing {2} started", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, synchronizers.Count(), synchronizer.Name);
                 log.WriteLine();
 
-                await synchronizer.SynchronizeAsync(directoryInfo, jsonHelper, options, session);
+                await synchronizer.ImportAsync(directoryInfo, jsonHelper, options, session);
 
                 log.WriteLine();
-                log.WriteLine("* STEP {0} of {1}: Synchronizing {2} completed", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, synchronizers.Count(), synchronizer.Name);
                 log.WriteLine("--------------------------------------------------------");
 
                 step++;

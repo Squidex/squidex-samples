@@ -21,11 +21,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return source.Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count() == source.Count;
         }
 
-        public static async Task WriteSampleAsync<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema)
+        public static async Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema)
         {
             var fileInfo = GetFile(directory, path);
 
-            var json = jsonHelper.SampleJson(sample, $"./{schema}.json");
+            var json = jsonHelper.SerializeAs<T>(sample, $"./{schema}.json");
+
+            await File.WriteAllTextAsync(fileInfo.FullName, json);
+        }
+
+        public static async Task WriteWithSchema<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema)
+        {
+            var fileInfo = GetFile(directory, path);
+
+            var json = jsonHelper.SerializeWithSchema(sample, $"./{schema}.json");
 
             await File.WriteAllTextAsync(fileInfo.FullName, json);
         }

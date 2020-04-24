@@ -25,7 +25,26 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             this.log = log;
         }
 
-        public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var current = await session.Apps.GetWorkflowsAsync(session.App);
+
+            var index = 0;
+
+            foreach (var workflow in current.Items.OrderBy(x => x.Name))
+            {
+                var workflowName = workflow.Name;
+
+                await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
+                {
+                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{index}.json", workflow, "../__json/workflow");
+                });
+
+                index++;
+            }
+        }
+
+        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var newWorkflows = GetWorkflowSettingsFiles(directoryInfo, jsonHelper).ToList();
 
@@ -145,7 +164,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 Initial = "Draft"
             };
 
-            await jsonHelper.WriteSampleAsync(directoryInfo, "workflows/__workflow.json", sample, "../__json/workflow");
+            await jsonHelper.WriteWithSchema(directoryInfo, "workflows/__workflow.json", sample, "../__json/workflow");
         }
     }
 }

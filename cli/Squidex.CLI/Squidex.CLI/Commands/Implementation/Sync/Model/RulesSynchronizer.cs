@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
@@ -26,7 +25,31 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
             this.log = log;
         }
 
-        public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var current = await session.Rules.GetRulesAsync();
+
+            var index = 0;
+
+            foreach (var rule in current.Items.OrderBy(x => x.Created))
+            {
+                var ruleName = rule.Name;
+
+                if (string.IsNullOrWhiteSpace(ruleName))
+                {
+                    ruleName = "<Unnammed>";
+                }
+
+                await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
+                {
+                    await jsonHelper.WriteWithSchemaAs<RuleSettings>(directoryInfo, $"rules/rule{index}.json", rule, "../__json/rule");
+                });
+
+                index++;
+            }
+        }
+
+        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var newRules = GetRuleSettingsFiles(directoryInfo, jsonHelper).ToList();
 
@@ -157,7 +180,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
                 IsEnabled = true
             };
 
-            await jsonHelper.WriteSampleAsync(directoryInfo, "rules/__rule.json", sample, "../__json/rule");
+            await jsonHelper.WriteWithSchema(directoryInfo, "rules/__rule.json", sample, "../__json/rule");
         }
     }
 }

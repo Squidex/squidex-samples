@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
@@ -36,14 +35,24 @@ namespace Squidex.CLI.Commands
                 await synchronizer.GenerateTemplateAsync(arguments.Folder);
             }
 
-            [Command(Name = "in", Description = "Makes a full sync of a folder")]
+            [Command(Name = "out", Description = "Exports the app to a folder")]
+            public async Task Out(OutArguments arguments)
+            {
+                var session = configuration.StartSession();
+
+                var options = new SyncOptions();
+
+                await synchronizer.ExportAsync(arguments.Folder, options, session);
+            }
+
+            [Command(Name = "in", Description = "Imports the app from a folder")]
             public async Task In(InArguments arguments)
             {
                 var session = configuration.StartSession();
 
                 var options = new SyncOptions();
 
-                await synchronizer.SynchronizeAsync(arguments.Folder, options, session);
+                await synchronizer.ImportAsync(arguments.Folder, options, session);
             }
 
             [Validator(typeof(Validator))]
@@ -63,6 +72,21 @@ namespace Squidex.CLI.Commands
 
             [Validator(typeof(Validator))]
             public sealed class InArguments : IArgumentModel
+            {
+                [Operand(Name = "folder", Description = "The target folder to synchronize.")]
+                public string Folder { get; set; }
+
+                public sealed class Validator : AbstractValidator<InArguments>
+                {
+                    public Validator()
+                    {
+                        RuleFor(x => x.Folder).NotEmpty();
+                    }
+                }
+            }
+
+            [Validator(typeof(Validator))]
+            public sealed class OutArguments : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }

@@ -81,7 +81,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             public override void WriteJson(JsonWriter writer, Guid value, JsonSerializer serializer)
             {
-                throw new NotSupportedException();
+                var schemaName = SchemaMap.FirstOrDefault(x => x.Value == value).Key;
+
+                if (string.IsNullOrWhiteSpace(schemaName))
+                {
+                    writer.WriteValue("<NOT FOUND>");
+                }
+                else
+                {
+                    writer.WriteValue(schemaName);
+                }
             }
         }
 
@@ -120,7 +129,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return JsonConvert.DeserializeObject<T>(json, jsonSerializerSettings);
         }
 
-        public string SampleJson<T>(T sample, string schemaRef)
+        public string SerializeAs<T>(object input, string schemaRef)
+        {
+            T converted = Convert<T>(input);
+
+            return SerializeWithSchema(converted, schemaRef);
+        }
+
+        public T Convert<T>(object input)
+        {
+            var originalJson = JsonConvert.SerializeObject(input, jsonSerializerSettings);
+
+            return JsonConvert.DeserializeObject<T>(originalJson, jsonSerializerSettings);
+        }
+
+        public string SerializeWithSchema<T>(T sample, string schemaRef)
         {
             var obj = new JObject
             {

@@ -11,6 +11,8 @@ namespace Squidex.CLI.Commands.Implementation
 {
     public class ConsoleLogger : ILogger
     {
+        private const int MaxActionLength = 40;
+
         private sealed class ConsoleLine : ILogLine
         {
             private readonly int consoleTop;
@@ -33,7 +35,15 @@ namespace Squidex.CLI.Commands.Implementation
 
         public void StepStart(string message)
         {
-            Console.Write((message + "...").PadRight(40));
+            if (message.Length > MaxActionLength - 3)
+            {
+                message = message.Substring(0, MaxActionLength - 3);
+            }
+
+            message += "...";
+            message = message.PadRight(MaxActionLength);
+
+            Console.Write(message);
         }
 
         public void StepSuccess()

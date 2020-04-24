@@ -27,7 +27,32 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             this.log = log;
         }
 
-        public async Task SynchronizeAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var current = await session.Schemas.GetSchemasAsync(session.App);
+
+            var schemaMap = current.Items.ToDictionary(x => x.Name, x => x.Id);
+
+            jsonHelper.SetSchemaMap(schemaMap);
+
+            foreach (var schema in current.Items.OrderBy(x => x.Name))
+            {
+                await log.DoSafeAsync($"Exporting '{schema.Name}'", async () =>
+                {
+                    var details = await session.Schemas.GetSchemaAsync(session.App, schema.Name);
+
+                    var settings = new SchemaSettings
+                    {
+                        Name = schema.Name,
+                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details)
+                    };
+
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", settings, "../__json/schema");
+                });
+            }
+        }
+
+        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var newSchemaNames =
                 GetSchemaFiles(directoryInfo)
@@ -40,13 +65,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 return;
             }
 
-            var existingSchemas = await session.Schemas.GetSchemasAsync(session.App);
+            var current = await session.Schemas.GetSchemasAsync(session.App);
 
-            var schemasByName = existingSchemas.Items.ToDictionary(x => x.Name);
+            var schemasByName = current.Items.ToDictionary(x => x.Name);
 
             if (!options.NoDeletion)
             {
-                foreach (var name in existingSchemas.Items.Select(x => x.Name))
+                foreach (var name in current.Items.Select(x => x.Name))
                 {
                     if (!newSchemaNames.Any(x => x.Name == name))
                     {
@@ -138,7 +163,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             };
 
-            await jsonHelper.WriteSampleAsync(directoryInfo, "schemas/__schema.json", sample, "../__json/schema");
+            await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, "../__json/schema");
         }
     }
 }
