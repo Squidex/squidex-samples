@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="withLink">
-            <router-link :to="{ name: 'post', params: { slug: post.slug, id: post.id }}">
+            <router-link :to="{ name: 'blog', params: { slug: post.slug, id: post.id }}">
                 <h2>{{post.title}}</h2>
             </router-link>
         </div>
