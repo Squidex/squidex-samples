@@ -25,11 +25,11 @@ export default {
         }
     },
     methods: {
-        loadPost: async function(slug) {
+        loadPost: async function(id) {
             this.post = undefined;
 
             try {
-                const result = await getPost(slug);
+                const result = await getPost(id);
 
                 this.post = result;
             } catch (ex) {
@@ -38,12 +38,12 @@ export default {
         }
     },
     created: function() {
-        this.loadPost(this.$route.params.slug)
+        this.loadPost(this.$route.params.id)
     },
     watch: {
         $route: {
             handler: function(to) {
-                this.loadPost(to.params.slug);
+                this.loadPost(to.params.id);
             }
         }
     }
