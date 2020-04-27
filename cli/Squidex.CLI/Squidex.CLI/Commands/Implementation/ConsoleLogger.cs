@@ -71,6 +71,11 @@ namespace Squidex.CLI.Commands.Implementation
             Console.WriteLine();
         }
 
+        public void WriteLine(string message)
+        {
+            Console.WriteLine(message);
+        }
+
         public void WriteLine(string message, params object[] args)
         {
             Console.WriteLine(message, args);

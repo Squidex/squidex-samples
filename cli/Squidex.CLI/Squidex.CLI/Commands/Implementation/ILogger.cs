@@ -23,6 +23,8 @@ namespace Squidex.CLI.Commands.Implementation
 
         void WriteLine();
 
+        void WriteLine(string message);
+
         void WriteLine(string message, params object[] args);
 
         ILogLine WriteSameLine();

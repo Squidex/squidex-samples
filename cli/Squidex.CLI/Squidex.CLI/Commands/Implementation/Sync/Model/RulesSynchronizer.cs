@@ -140,7 +140,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
                     {
                         await log.DoVersionedAsync($"Rule '{newRule.Name}' disabling", rule.Version, async () =>
                         {
-                            var result = await session.Rules.EnableRuleAsync(rule.Id);
+                            var result = await session.Rules.DisableRuleAsync(rule.Id);
 
                             return result.Version;
                         });
