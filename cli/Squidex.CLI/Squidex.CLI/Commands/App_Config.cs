@@ -58,11 +58,29 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "add", Description = "Add or update an app.")]
-            public void Add(AddArguments arguments)
+            public async Task Add(AddArguments arguments)
             {
                 configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
 
+                if (arguments.Create)
+                {
+                    await EnsureAppExistsAsync(arguments.Name);
+                }
+
                 log.WriteLine("> App added.");
+            }
+
+            [Command(Name = "use", Description = "Use an app.")]
+            public async Task Use(UseArguments arguments)
+            {
+                configuration.UseApp(arguments.Name);
+
+                if (arguments.Create)
+                {
+                    await EnsureAppExistsAsync(arguments.Name);
+                }
+
+                log.WriteLine("> App selected.");
             }
 
             [Command(Name = "remove", Description = "Remove an app.")]
@@ -81,27 +99,19 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Config reset.");
             }
 
-            [Command(Name = "use", Description = "Use an app.")]
-            public async Task Use(UseArguments arguments)
+            private async Task EnsureAppExistsAsync(string name)
             {
-                configuration.UseApp(arguments.Name);
+                var session = configuration.StartSession();
 
-                if (arguments.Create)
+                await log.DoSafeAsync("Creating app", async () =>
                 {
-                    var session = configuration.StartSession();
-
-                    await log.DoSafeAsync("Creating app", async () =>
+                    var request = new CreateAppDto
                     {
-                        var request = new CreateAppDto
-                        {
-                            Name = arguments.Name
-                        };
+                        Name = name
+                    };
 
-                        await session.Apps.PostAppAsync(request);
-                    });
-                }
-
-                log.WriteLine("> App selected.");
+                    await session.Apps.PostAppAsync(request);
+                });
             }
 
             [Validator(typeof(Validator))]
@@ -165,6 +175,9 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "label", ShortName = "l", Description = "Optional label for this app.")]
                 public string Label { get; set; }
+
+                [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client)")]
+                public bool Create { get; set; }
 
                 public string ToEntryName()
                 {
