@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using FluentValidation.Attributes;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Configuration;
 
@@ -22,17 +23,21 @@ namespace Squidex.CLI.Commands
         {
             private readonly IConfigurationService configuration;
             private readonly Synchronizer synchronizer;
+            private readonly ILogger log;
 
-            public Sync(IConfigurationService configuration, Synchronizer synchronizer)
+            public Sync(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
             {
                 this.configuration = configuration;
                 this.synchronizer = synchronizer;
+                this.log = log;
             }
 
             [Command(Name = "template", Description = "Creates the sample folders.")]
             public async Task Template(TemplateArgument arguments)
             {
                 await synchronizer.GenerateTemplateAsync(arguments.Folder);
+
+                log.WriteLine("> Template generated.");
             }
 
             [Command(Name = "out", Description = "Exports the app to a folder")]
@@ -43,6 +48,8 @@ namespace Squidex.CLI.Commands
                 var options = new SyncOptions();
 
                 await synchronizer.ExportAsync(arguments.Folder, options, session);
+
+                log.WriteLine("> Synchronization completed.");
             }
 
             [Command(Name = "in", Description = "Imports the app from a folder")]
@@ -53,6 +60,8 @@ namespace Squidex.CLI.Commands
                 var options = new SyncOptions();
 
                 await synchronizer.ImportAsync(arguments.Folder, options, session);
+
+                log.WriteLine("> Synchronization completed.");
             }
 
             [Validator(typeof(Validator))]

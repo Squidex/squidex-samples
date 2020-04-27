@@ -5,12 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Threading.Tasks;
 using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands
 {
@@ -80,9 +82,24 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "use", Description = "Use an app.")]
-            public void Use(UseArguments arguments)
+            public async Task Use(UseArguments arguments)
             {
                 configuration.UseApp(arguments.Name);
+
+                if (arguments.Create)
+                {
+                    var session = configuration.StartSession();
+
+                    await log.DoSafeAsync("Creating app", async () =>
+                    {
+                        var request = new CreateAppDto
+                        {
+                            Name = arguments.Name
+                        };
+
+                        await session.Apps.PostAppAsync(request);
+                    });
+                }
 
                 log.WriteLine("> App selected.");
             }
@@ -118,6 +135,9 @@ namespace Squidex.CLI.Commands
             {
                 [Operand(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
+
+                [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client)")]
+                public bool Create { get; set; }
 
                 public sealed class Validator : AbstractValidator<UseArguments>
                 {

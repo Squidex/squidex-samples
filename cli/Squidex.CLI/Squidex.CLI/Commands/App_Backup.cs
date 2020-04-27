@@ -81,18 +81,18 @@ namespace Squidex.CLI.Commands
                         }
                     }
 
-                    log.WriteLine("Backup completed. Download completed");
-
                     if (arguments.DeleteAfterDownload)
                     {
                         log.WriteLine("Removing backup from app...");
 
                         await session.Backups.DeleteBackupAsync(session.App, foundBackup.Id.ToString());
                     }
+
+                    log.WriteLine("> Backup completed and downloaded");
                 }
                 else
                 {
-                    log.WriteLine("Failed to make the backup, check the logs for details.");
+                    log.WriteLine("> Failed to make the backup, check the logs for details.");
                 }
             }
 
