@@ -100,7 +100,7 @@ namespace Squidex.CLI.Commands
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                public sealed class Validator : AbstractValidator<InArguments>
+                public sealed class Validator : AbstractValidator<OutArguments>
                 {
                     public Validator()
                     {

@@ -28,6 +28,7 @@ namespace Squidex.CLI
             var serviceProvider =
                 new ServiceCollection()
                     .AddSingleton<IConfigurationService, ConfigurationService>()
+                    .AddSingleton<App>()
                     .AddSingleton<App.Backup>()
                     .AddSingleton<App.Config>()
                     .AddSingleton<App.Content>()
