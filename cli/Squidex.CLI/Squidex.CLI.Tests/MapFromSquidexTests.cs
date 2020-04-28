@@ -24,14 +24,12 @@ namespace Squidex.CLI.Tests
         {
             content = new DummyEntity
             {
-                DataDraft = new DummyData
-                {
-                    ["name"] = new Dictionary<string, JToken>
-                    {
-                        ["iv"] = "Hello World"
-                    }
-                },
                 Created = DateTimeOffset.Now
+            };
+
+            content.Data["name"] = new Dictionary<string, JToken>
+            {
+                ["iv"] = "Hello World"
             };
 
             content.Data["text"] = new Dictionary<string, JToken>
@@ -106,16 +104,6 @@ namespace Squidex.CLI.Tests
             var values = sut.GetValues(content).ToArray();
 
             Assert.Equal(new object[] { "<INVALID>" }, values);
-        }
-
-        [Fact]
-        public void Should_extract_value_from_invariant_data_draft()
-        {
-            var sut = new Squidex2CsvConverter("dataDraft.name");
-
-            var values = sut.GetValues(content).ToArray();
-
-            Assert.Equal(new object[] { "Hello World" }, values);
         }
 
         [Fact]
