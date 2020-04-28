@@ -7,6 +7,7 @@
 
 using System;
 using CommandDotNet;
+using CommandDotNet.FluentValidation;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Squidex.CLI.Commands;
@@ -43,7 +44,10 @@ namespace Squidex.CLI
 
             try
             {
-                var appRunner = new AppRunner<App>().UseMicrosoftDependencyInjection(serviceProvider);
+                var appRunner =
+                    new AppRunner<App>()
+                        .UseMicrosoftDependencyInjection(serviceProvider)
+                        .UseFluentValidation(true);
 
                 return appRunner.Run(args);
             }
