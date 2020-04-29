@@ -65,7 +65,7 @@ namespace Squidex.CLI.Configuration
             {
                 var file = new FileInfo(".configuration");
 
-                using (var stream = file.OpenWrite())
+                using (var stream = file.Create())
                 {
                     using (var streamWriter = new StreamWriter(stream))
                     {
