@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,22 +25,29 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             this.log = log;
         }
 
+        public IEnumerable<string> GetTargets()
+        {
+            return GetSynchronizers().Select(x => x.Name);
+        }
+
         public async Task ExportAsync(string path, SyncOptions options, ISession session)
         {
             var directoryInfo = Directory.CreateDirectory(path);
 
-            WriteSummary(directoryInfo);
+            var selectedSynchronizers = GetSynchronizers(options.Targets);
+
+            WriteSummary(directoryInfo, selectedSynchronizers);
 
             var jsonHelper = new JsonHelper();
 
-            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            foreach (var synchronizer in selectedSynchronizers)
             {
                 await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
             }
 
             var step = 1;
 
-            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            foreach (var synchronizer in selectedSynchronizers)
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
@@ -58,15 +66,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public async Task ImportAsync(string path, SyncOptions options, ISession session)
         {
-            var directoryInfo = Directory.CreateDirectory(path);
+            var directoryInfo = new DirectoryInfo(path);
 
-            WriteSummary(directoryInfo);
+            var selectedSynchronizers = GetSynchronizers(options.Targets);
+
+            WriteSummary(directoryInfo, selectedSynchronizers);
 
             var jsonHelper = new JsonHelper();
 
             var step = 1;
 
-            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            foreach (var synchronizer in selectedSynchronizers)
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
@@ -83,7 +93,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        private void WriteSummary(DirectoryInfo directoryInfo)
+        private void WriteSummary(DirectoryInfo directoryInfo, List<ISynchronizer> selectedSynchronizers)
         {
             log.WriteLine("Synchronizing from {0}", directoryInfo.FullName);
             log.WriteLine();
@@ -91,7 +101,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             var step = 1;
 
-            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            foreach (var synchronizer in selectedSynchronizers)
             {
                 log.WriteLine("* STEP {0} of {1}: {2}", step, synchronizers.Count(), synchronizer.Name);
 
@@ -105,10 +115,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             var jsonHelper = new JsonHelper();
 
-            foreach (var synchronizer in synchronizers.OrderBy(x => x.Order))
+            foreach (var synchronizer in GetSynchronizers())
             {
                 await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
             }
+        }
+
+        private List<ISynchronizer> GetSynchronizers(string[] targets = null)
+        {
+            var names = new HashSet<string>(targets ?? Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase);
+
+            return synchronizers.Where(x => names.Count == 0 || names.Contains(x.Name)).OrderBy(x => x.Order).ToList();
         }
     }
 }

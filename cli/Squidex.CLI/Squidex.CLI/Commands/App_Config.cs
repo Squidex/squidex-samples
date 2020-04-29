@@ -58,27 +58,17 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "add", Description = "Add or update an app.")]
-            public async Task Add(AddArguments arguments)
+            public void Add(AddArguments arguments)
             {
                 configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
-
-                if (arguments.Create)
-                {
-                    await EnsureAppExistsAsync(arguments.Name);
-                }
 
                 log.WriteLine("> App added.");
             }
 
             [Command(Name = "use", Description = "Use an app.")]
-            public async Task Use(UseArguments arguments)
+            public void Use(UseArguments arguments)
             {
                 configuration.UseApp(arguments.Name);
-
-                if (arguments.Create)
-                {
-                    await EnsureAppExistsAsync(arguments.Name);
-                }
 
                 log.WriteLine("> App selected.");
             }
@@ -97,21 +87,6 @@ namespace Squidex.CLI.Commands
                 configuration.Reset();
 
                 log.WriteLine("> Config reset.");
-            }
-
-            private async Task EnsureAppExistsAsync(string name)
-            {
-                var session = configuration.StartSession();
-
-                await log.DoSafeAsync("Creating app", async () =>
-                {
-                    var request = new CreateAppDto
-                    {
-                        Name = name
-                    };
-
-                    await session.Apps.PostAppAsync(request);
-                });
             }
 
             [Validator(typeof(Validator))]
@@ -145,9 +120,6 @@ namespace Squidex.CLI.Commands
             {
                 [Operand(Name = "name", Description = "The name of the app.")]
                 public string Name { get; set; }
-
-                [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client)")]
-                public bool Create { get; set; }
 
                 public sealed class Validator : AbstractValidator<UseArguments>
                 {
@@ -186,7 +158,13 @@ namespace Squidex.CLI.Commands
 
                 public ConfiguredApp ToModel()
                 {
-                    return new ConfiguredApp { ClientId = ClientId, ClientSecret = ClientSecret, Name = Name, ServiceUrl = ServiceUrl };
+                    return new ConfiguredApp
+                    {
+                        Name = Name,
+                        ClientId = ClientId,
+                        ClientSecret = ClientSecret,
+                        ServiceUrl = ServiceUrl
+                    };
                 }
 
                 public sealed class Validator : AbstractValidator<AddArguments>

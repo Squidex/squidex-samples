@@ -9,6 +9,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 {
     public sealed class SyncOptions
     {
+        public string[] Targets { get; set; }
+
         public bool NoDeletion { get; set; }
     }
 }

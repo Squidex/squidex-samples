@@ -45,9 +45,7 @@ namespace Squidex.CLI.Commands
             {
                 var session = configuration.StartSession();
 
-                var options = new SyncOptions();
-
-                await synchronizer.ExportAsync(arguments.Folder, options, session);
+                await synchronizer.ExportAsync(arguments.Folder, arguments.ToOptions(), session);
 
                 log.WriteLine("> Synchronization completed.");
             }
@@ -57,11 +55,18 @@ namespace Squidex.CLI.Commands
             {
                 var session = configuration.StartSession();
 
-                var options = new SyncOptions();
-
-                await synchronizer.ImportAsync(arguments.Folder, options, session);
+                await synchronizer.ImportAsync(arguments.Folder, arguments.ToOptions(), session);
 
                 log.WriteLine("> Synchronization completed.");
+            }
+
+            [Command(Name = "targets", Description = "List all targets")]
+            public void Targets()
+            {
+                foreach (var target in synchronizer.GetTargets())
+                {
+                    log.WriteLine("- {0}", target.ToLowerInvariant());
+                }
             }
 
             [Validator(typeof(Validator))]
@@ -85,6 +90,17 @@ namespace Squidex.CLI.Commands
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
+                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
+                public string[] Targets { get; set; }
+
+                [Option(LongName = "nodelete", Description = "Use this flag to prevent deletions.")]
+                public bool NoDeletion { get; set; }
+
+                public SyncOptions ToOptions()
+                {
+                    return new SyncOptions { NoDeletion = NoDeletion, Targets = Targets };
+                }
+
                 public sealed class Validator : AbstractValidator<InArguments>
                 {
                     public Validator()
@@ -99,6 +115,14 @@ namespace Squidex.CLI.Commands
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
+
+                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
+                public string[] Targets { get; set; }
+
+                public SyncOptions ToOptions()
+                {
+                    return new SyncOptions { Targets = Targets };
+                }
 
                 public sealed class Validator : AbstractValidator<OutArguments>
                 {
