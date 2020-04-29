@@ -29,6 +29,7 @@ namespace Squidex.CLI
                 new ServiceCollection()
                     .AddSingleton<IConfigurationService, ConfigurationService>()
                     .AddSingleton<App>()
+                    .AddSingleton<App.Apps>()
                     .AddSingleton<App.Backup>()
                     .AddSingleton<App.Config>()
                     .AddSingleton<App.Content>()
