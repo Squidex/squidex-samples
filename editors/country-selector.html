@@ -34,8 +34,9 @@
             var resize = function () {
                 let func = function () {
                     let size = 250;
-                    if ($("ul.country-list").hasClass("hide"))
+                    if ($("ul.country-list").hasClass("hide")) {
                         size = height;
+                    }
                     window.parent.postMessage({ type: 'resize', height: size }, '*');
                 }
                 setTimeout(func, 0)
@@ -44,8 +45,9 @@
                 control.prop('disabled', disabled);
             });
             field.onValueChanged(function (value) {
-                if (!value)
+                if (!value) {
                     return;
+                }
                 control.countrySelect("selectCountry", value.toLocaleLowerCase());
             });
             control.on("change", function () {
