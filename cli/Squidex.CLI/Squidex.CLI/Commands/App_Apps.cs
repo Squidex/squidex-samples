@@ -33,9 +33,9 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "create", Description = "Creates a squidex app.")]
-            public async void Create(CreateArguments arguments)
+            public void Create(CreateArguments arguments)
             {
-                await EnsureAppExistsAsync(arguments.Name);
+                EnsureAppExistsAsync(arguments.Name).Wait();
 
                 log.WriteLine("App created.");
             }
