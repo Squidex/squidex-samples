@@ -7,13 +7,9 @@
 
 using System.Threading.Tasks;
 using CommandDotNet;
-using FluentValidation;
-using FluentValidation.Attributes;
-using Namotion.Reflection;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
-using static Squidex.CLI.Commands.App.Config;
 
 namespace Squidex.CLI.Commands
 {
@@ -23,41 +19,36 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Apps
         {
-            private readonly ILogger log;
             private readonly IConfigurationService configuration;
+            private readonly ILogger log;
 
-            public Apps(ILogger log, IConfigurationService configuration)
+            public Apps(IConfigurationService configuration, ILogger log)
             {
-                this.log = log;
                 this.configuration = configuration;
+
+                this.log = log;
             }
 
             [Command(Name = "create", Description = "Creates a squidex app.")]
-            public void Create(CreateArguments arguments)
-            {
-                EnsureAppExistsAsync(arguments.Name).Wait();
-
-                log.WriteLine("App created.");
-            }
-
-            private async Task EnsureAppExistsAsync(string name)
+            public async Task Create(CreateArguments arguments)
             {
                 var session = configuration.StartSession();
+
+                var name = arguments.Name;
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     name = session.App;
                 }
 
-                await log.DoSafeAsync("Creating app", async () =>
+                var request = new CreateAppDto
                 {
-                    var request = new CreateAppDto
-                    {
-                        Name = name
-                    };
+                    Name = name
+                };
 
-                    await session.Apps.PostAppAsync(request);
-                });
+                await session.Apps.PostAppAsync(request);
+
+                log.WriteLine("> App created.");
             }
 
             public sealed class CreateArguments : IArgumentModel

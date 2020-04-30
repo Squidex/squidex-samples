@@ -5,14 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
 using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands
 {
