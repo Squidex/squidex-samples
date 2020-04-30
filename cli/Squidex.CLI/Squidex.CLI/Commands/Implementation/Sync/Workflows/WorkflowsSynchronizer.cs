@@ -46,7 +46,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newWorkflows = GetWorkflowSettingsFiles(directoryInfo, jsonHelper).ToList();
+            var newWorkflows = GetWorkflowModels(directoryInfo, jsonHelper).ToList();
 
             if (!newWorkflows.HasDistinctNames(x => x.Name))
             {
@@ -121,7 +121,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             }
         }
 
-        private IEnumerable<UpdateWorkflowDto> GetWorkflowSettingsFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        private IEnumerable<UpdateWorkflowDto> GetWorkflowModels(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
             foreach (var file in directoryInfo.GetFiles("workflows\\*.json"))
             {

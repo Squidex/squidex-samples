@@ -41,13 +41,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 {
                     var details = await session.Schemas.GetSchemaAsync(session.App, schema.Name);
 
-                    var settings = new SchemaSettings
+                    var model = new SchemeModel
                     {
                         Name = schema.Name,
                         Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details)
                     };
 
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", settings, "../__json/schema");
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, "../__json/schema");
                 });
             }
         }
@@ -56,7 +56,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         {
             var newSchemaNames =
                 GetSchemaFiles(directoryInfo)
-                    .Select(x => jsonHelper.Read<SchemaSettingsNameOnly>(x, log))
+                    .Select(x => jsonHelper.Read<SchemaModelNameOnly>(x, log))
                     .ToList();
 
             if (!newSchemaNames.HasDistinctNames(x => x.Name))
@@ -107,7 +107,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
             var newSchemas =
                 GetSchemaFiles(directoryInfo)
-                    .Select(x => jsonHelper.Read<SchemaSettings>(x, log))
+                    .Select(x => jsonHelper.Read<SchemeModel>(x, log))
                     .ToList();
 
             foreach (var newSchema in newSchemas)
@@ -136,9 +136,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<SchemaSettings>(directoryInfo, "schema.json");
+            await jsonHelper.WriteJsonSchemaAsync<SchemeModel>(directoryInfo, "schema.json");
 
-            var sample = new SchemaSettings
+            var sample = new SchemeModel
             {
                 Name = "my-schema",
                 Schema = new SynchronizeSchemaDto

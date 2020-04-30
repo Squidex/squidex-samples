@@ -34,12 +34,12 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "template", Description = "Creates the sample folders.")]
-            public async Task Template(TemplateArgument arguments)
+            [Command(Name = "new", Description = "Creates a new folder with sample files how to create an app from json files.")]
+            public async Task New(NewArgument arguments)
             {
                 await synchronizer.GenerateTemplateAsync(arguments.Folder);
 
-                log.WriteLine("> Template generated.");
+                log.WriteLine("> Folder generated.");
             }
 
             [Command(Name = "out", Description = "Exports the app to a folder")]
@@ -72,12 +72,12 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class TemplateArgument : IArgumentModel
+            public sealed class NewArgument : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The target folder to create the templates.")]
                 public string Folder { get; set; }
 
-                public sealed class Validator : AbstractValidator<TemplateArgument>
+                public sealed class Validator : AbstractValidator<NewArgument>
                 {
                     public Validator()
                     {

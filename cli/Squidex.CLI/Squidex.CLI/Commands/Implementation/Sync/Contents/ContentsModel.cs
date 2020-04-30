@@ -5,15 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using Squidex.ClientLibrary.Management;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class BulkResult
+    public sealed class ContentsModel
     {
-        public Guid? ContentId { get; set; }
-
-        public ErrorDto Error { get; set; }
+        [Required]
+        public List<ContentModel> Contents { get; set; }
     }
 }

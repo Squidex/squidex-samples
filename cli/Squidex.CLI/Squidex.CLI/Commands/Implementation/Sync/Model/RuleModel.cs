@@ -12,7 +12,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Model
 {
-    public sealed class RuleSettings
+    public sealed class RuleModel
     {
         public bool IsEnabled { get; set; }
 

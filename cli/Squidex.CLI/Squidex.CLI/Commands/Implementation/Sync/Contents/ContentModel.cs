@@ -5,10 +5,18 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
+using System.ComponentModel.DataAnnotations;
+
+namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class SchemaSettingsNameOnly
+    public sealed class ContentModel
     {
-        public string Name { get; set; }
+        [Required]
+        public string Schema { get; set; }
+
+        [Required]
+        public object Data { get; set; }
+
+        public object Query { get; set; }
     }
 }

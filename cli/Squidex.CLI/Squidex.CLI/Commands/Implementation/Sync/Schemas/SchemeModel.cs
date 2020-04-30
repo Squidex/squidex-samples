@@ -5,13 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.ComponentModel.DataAnnotations;
+using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.App
+namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public sealed class AppRoleSetting
+    public sealed class SchemeModel
     {
-        [Required]
-        public string[] Permissions { get; set; }
+        public string Name { get; set; }
+
+        public SynchronizeSchemaDto Schema { get; set; }
     }
 }

@@ -26,20 +26,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var settings = new AppSettings
+            var model = new AppModel
             {
-                Contributors = new Dictionary<string, AppContributorSetting>()
+                Contributors = new Dictionary<string, AppContributorModel>()
             };
 
             await log.DoSafeAsync("Exporting clients", async () =>
             {
                 var clients = await session.Apps.GetClientsAsync(session.App);
 
-                settings.Clients = new Dictionary<string, AppClientSetting>();
+                model.Clients = new Dictionary<string, AppClientModel>();
 
                 foreach (var client in clients.Items)
                 {
-                    settings.Clients[client.Name] = new AppClientSetting
+                    model.Clients[client.Name] = new AppClientModel
                     {
                         Name = client.Name,
                         Role = client.Role
@@ -51,11 +51,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 var languages = await session.Apps.GetLanguagesAsync(session.App);
 
-                settings.Languages = new Dictionary<string, UpdateLanguageDto>();
+                model.Languages = new Dictionary<string, UpdateLanguageDto>();
 
                 foreach (var language in languages.Items)
                 {
-                    settings.Languages[language.Iso2Code] = new UpdateLanguageDto
+                    model.Languages[language.Iso2Code] = new UpdateLanguageDto
                     {
                         Fallback = language.Fallback,
                         IsMaster = language.IsMaster,
@@ -68,18 +68,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 var roles = await session.Apps.GetRolesAsync(session.App);
 
-                settings.Roles = new Dictionary<string, AppRoleSetting>();
+                model.Roles = new Dictionary<string, AppRoleModel>();
 
                 foreach (var role in roles.Items)
                 {
-                    settings.Roles[role.Name] = new AppRoleSetting
+                    model.Roles[role.Name] = new AppRoleModel
                     {
                         Permissions = role.Permissions.ToArray()
                     };
                 }
             });
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", settings, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, "__json/app");
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -92,17 +92,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 return;
             }
 
-            var settings = jsonHelper.Read<AppSettings>(appFile, log);
+            var model = jsonHelper.Read<AppModel>(appFile, log);
 
-            await SynchronizeClientsAsync(settings, options, session);
-            await SynchronizeContributorsAsync(settings, session);
-            await SynchronizeLanguagesAsync(settings, options, session);
-            await SynchronizeRolesAsync(settings, options, session);
+            await SynchronizeClientsAsync(model, options, session);
+            await SynchronizeContributorsAsync(model, session);
+            await SynchronizeLanguagesAsync(model, options, session);
+            await SynchronizeRolesAsync(model, options, session);
         }
 
-        private async Task SynchronizeContributorsAsync(AppSettings settings, ISession session)
+        private async Task SynchronizeContributorsAsync(AppModel model, ISession session)
         {
-            foreach (var (email, value) in settings.Contributors)
+            foreach (var (email, value) in model.Contributors)
             {
                 await log.DoSafeAsync($"Contributor '{email}' creating", async () =>
                 {
@@ -113,7 +113,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
-        private async Task SynchronizeClientsAsync(AppSettings settings, SyncOptions options, ISession session)
+        private async Task SynchronizeClientsAsync(AppModel model, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetClientsAsync(session.App);
 
@@ -123,7 +123,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     var generatedClientId = $"{session.App}:{client.Id}";
 
-                    if (settings.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId))
+                    if (model.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId))
                     {
                         continue;
                     }
@@ -135,7 +135,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (clientId, value) in settings.Clients)
+            foreach (var (clientId, value) in model.Clients)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
@@ -152,7 +152,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (clientId, value) in settings.Clients)
+            foreach (var (clientId, value) in model.Clients)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
@@ -170,7 +170,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
-        private async Task SynchronizeLanguagesAsync(AppSettings settings, SyncOptions options, ISession session)
+        private async Task SynchronizeLanguagesAsync(AppModel model, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetLanguagesAsync(session.App);
 
@@ -178,7 +178,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 foreach (var language in current.Items)
                 {
-                    if (settings.Languages.ContainsKey(language.Iso2Code))
+                    if (model.Languages.ContainsKey(language.Iso2Code))
                     {
                         continue;
                     }
@@ -190,7 +190,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (isoCode, value) in settings.Languages)
+            foreach (var (isoCode, value) in model.Languages)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
 
@@ -207,7 +207,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (isoCode, value) in settings.Languages)
+            foreach (var (isoCode, value) in model.Languages)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
 
@@ -225,7 +225,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
-        private async Task SynchronizeRolesAsync(AppSettings settings, SyncOptions options, ISession session)
+        private async Task SynchronizeRolesAsync(AppModel model, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetRolesAsync(session.App);
 
@@ -233,7 +233,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 foreach (var role in current.Items)
                 {
-                    if (settings.Roles.ContainsKey(role.Name) ||
+                    if (model.Roles.ContainsKey(role.Name) ||
                         role.IsDefaultRole ||
                         role.NumClients > 0 ||
                         role.NumContributors > 0)
@@ -248,7 +248,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (roleName, value) in settings.Roles)
+            foreach (var (roleName, value) in model.Roles)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
 
@@ -265,7 +265,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (roleName, value) in settings.Roles)
+            foreach (var (roleName, value) in model.Roles)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
 
@@ -285,13 +285,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AppSettings>(directoryInfo, "app.json");
+            await jsonHelper.WriteJsonSchemaAsync<AppModel>(directoryInfo, "app.json");
 
-            var sample = new AppSettings
+            var sample = new AppModel
             {
-                Roles = new Dictionary<string, AppRoleSetting>
+                Roles = new Dictionary<string, AppRoleModel>
                 {
-                    ["custom"] = new AppRoleSetting
+                    ["custom"] = new AppRoleModel
                     {
                         Permissions = new string[]
                         {
@@ -299,9 +299,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                         }
                     }
                 },
-                Clients = new Dictionary<string, AppClientSetting>
+                Clients = new Dictionary<string, AppClientModel>
                 {
-                    ["test"] = new AppClientSetting
+                    ["test"] = new AppClientModel
                     {
                         Role = "Owner"
                     }
@@ -313,9 +313,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                         IsMaster = true
                     }
                 },
-                Contributors = new Dictionary<string, AppContributorSetting>
+                Contributors = new Dictionary<string, AppContributorModel>
                 {
-                    ["sebastian@squidex.io"] = new AppContributorSetting
+                    ["sebastian@squidex.io"] = new AppContributorModel
                     {
                         Role = "Owner"
                     }

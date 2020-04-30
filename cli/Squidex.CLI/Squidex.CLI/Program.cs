@@ -14,6 +14,7 @@ using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Sync.App;
+using Squidex.CLI.Commands.Implementation.Sync.Contents;
 using Squidex.CLI.Commands.Implementation.Sync.Model;
 using Squidex.CLI.Commands.Implementation.Sync.Schemas;
 using Squidex.CLI.Commands.Implementation.Sync.Workflows;
@@ -37,6 +38,7 @@ namespace Squidex.CLI
                     .AddSingleton<App.Sync>()
                     .AddSingleton<App.Twitter>()
                     .AddSingleton<ISynchronizer, AppSynchronizer>()
+                    .AddSingleton<ISynchronizer, ContentsSynchronizer>()
                     .AddSingleton<ISynchronizer, RulesSynchronizer>()
                     .AddSingleton<ISynchronizer, SchemasSynchronizer>()
                     .AddSingleton<ISynchronizer, WorkflowsSynchronizer>()

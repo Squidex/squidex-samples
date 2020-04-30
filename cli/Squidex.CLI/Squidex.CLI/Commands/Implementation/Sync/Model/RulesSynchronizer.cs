@@ -42,7 +42,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
 
                 await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<RuleSettings>(directoryInfo, $"rules/rule{index}.json", rule, "../__json/rule");
+                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{index}.json", rule, "../__json/rule");
                 });
 
                 index++;
@@ -51,7 +51,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newRules = GetRuleSettingsFiles(directoryInfo, jsonHelper).ToList();
+            var newRules = GetRuleFiles(directoryInfo, jsonHelper).ToList();
 
             if (!newRules.HasDistinctNames(x => x.Name))
             {
@@ -149,13 +149,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
             }
         }
 
-        private IEnumerable<RuleSettings> GetRuleSettingsFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        private IEnumerable<RuleModel> GetRuleFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
             foreach (var file in directoryInfo.GetFiles("rules\\*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
-                    var rule = jsonHelper.Read<RuleSettings>(file, log);
+                    var rule = jsonHelper.Read<RuleModel>(file, log);
 
                     yield return rule;
                 }
@@ -164,9 +164,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<RuleSettings>(directoryInfo, "rule.json");
+            await jsonHelper.WriteJsonSchemaAsync<RuleModel>(directoryInfo, "rule.json");
 
-            var sample = new RuleSettings
+            var sample = new RuleModel
             {
                 Name = "My-Rule",
                 Trigger = new ContentChangedRuleTriggerDto
