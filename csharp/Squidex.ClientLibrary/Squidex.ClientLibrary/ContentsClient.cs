@@ -121,6 +121,13 @@ namespace Squidex.ClientLibrary
             return UpdateAsync(entity.Id, entity.Data, false, ct);
         }
 
+        public Task<List<BulkResult>> BulkUpdateAsync(BulkUpdate update, CancellationToken ct = default)
+        {
+            Guard.NotNull(update, nameof(update));
+
+            return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildSchemaUrl("bulk", false), update.ToContent(), ct: ct);
+        }
+
         public Task<TEntity> PatchAsync<TPatch>(Guid id, TPatch patch, CancellationToken ct = default)
         {
             Guard.NotEmpty(id, nameof(id));

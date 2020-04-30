@@ -28,7 +28,9 @@ namespace Squidex.CLI.Commands
             public Sync(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
             {
                 this.configuration = configuration;
+
                 this.synchronizer = synchronizer;
+
                 this.log = log;
             }
 
