@@ -17,6 +17,8 @@ using FluentValidation;
 using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.ImExport;
+using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
@@ -30,16 +32,23 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Content
         {
-            [InjectProperty]
-            public IConfigurationService Configuration { get; set; }
+            private readonly IConfigurationService configuration;
+            private readonly ILogger log;
+
+            public Content(IConfigurationService configuration, ILogger log)
+            {
+                this.configuration = configuration;
+
+                this.log = log;
+            }
 
             [Command(Name = "test-data", Description = "Generates test data.")]
             public async Task TestData(TestDataArguments arguments)
             {
-                var (app, service) = Configuration.Setup();
+                var session = configuration.StartSession();
 
-                var taskForSchema = service.CreateSchemasClient().GetSchemaAsync(app, arguments.Schema);
-                var taskForLanguages = service.CreateAppsClient().GetLanguagesAsync(app);
+                var taskForSchema = session.Schemas.GetSchemaAsync(session.App, arguments.Schema);
+                var taskForLanguages = session.Apps.GetLanguagesAsync(session.App);
 
                 await Task.WhenAll(
                     taskForSchema,
@@ -63,7 +72,7 @@ namespace Squidex.CLI.Commands
                 }
                 else
                 {
-                    await ImportAsync(arguments, service, datas);
+                    await ImportAsync(arguments, session, datas);
                 }
             }
 
@@ -76,7 +85,7 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Import(ImportArguments arguments)
             {
-                var (_, service) = Configuration.Setup();
+                var session = configuration.StartSession();
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -90,7 +99,7 @@ namespace Squidex.CLI.Commands
                             {
                                 var datas = converter.ReadAll(reader);
 
-                                await ImportAsync(arguments, service, datas);
+                                await ImportAsync(arguments, session, datas);
                             }
                         }
                     }
@@ -112,7 +121,7 @@ namespace Squidex.CLI.Commands
                             {
                                 var datas = converter.ReadAll(reader);
 
-                                await ImportAsync(arguments, service, datas);
+                                await ImportAsync(arguments, session, datas);
                             }
                         }
                     }
@@ -137,9 +146,9 @@ namespace Squidex.CLI.Commands
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var (_, service) = Configuration.Setup();
+                var session = configuration.StartSession();
 
-                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
+                var contents = session.Contents(arguments.Schema);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -248,83 +257,83 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            private async Task ImportAsync(IImortArgumentBase arguments, SquidexClientManager service, IEnumerable<DummyData> datas)
+            private async Task ImportAsync(IImortArgumentBase arguments, ISession session, IEnumerable<DummyData> datas)
             {
-                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
+                var contents = session.Contents(arguments.Schema);
 
                 var totalWritten = 0;
 
-                var consoleTop = Console.CursorTop;
-
                 var handled = new HashSet<string>();
 
-                foreach (var data in datas)
+                using (var logLine = log.WriteSameLine())
                 {
-                    await client.CreateAsync(data, !arguments.Unpublished);
+                    foreach (var data in datas)
+                    {
+                        await contents.CreateAsync(data, !arguments.Unpublished);
 
-                    totalWritten++;
+                        totalWritten++;
 
-                    Console.WriteLine("> Imported: {0}.", totalWritten);
-                    Console.SetCursorPosition(0, consoleTop);
+                        logLine.WriteLine("> Imported: {0}.", totalWritten);
+                    }
                 }
 
-                Console.WriteLine("> Imported: {0}. Completed.", totalWritten);
+                log.WriteLine("> Imported: {0}. Completed.", totalWritten);
             }
 
             private async Task ExportAsync(ExportArguments arguments, Action<DummyEntity> handler)
             {
                 var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
 
-                var (_, service) = Configuration.Setup();
+                var session = configuration.StartSession();
 
-                var client = service.CreateContentsClient<DummyEntity, DummyData>(arguments.Schema);
+                var contents = session.Contents(arguments.Schema);
 
                 var total = 0L;
                 var totalRead = 0;
                 var currentPage = 0L;
 
-                var consoleTop = Console.CursorTop;
-
                 var handled = new HashSet<Guid>();
 
-                do
+                using (var logLine = log.WriteSameLine())
                 {
-                    var query = new ContentQuery
+                    do
                     {
-                        Filter = arguments.Filter,
-                        OrderBy = arguments.OrderBy,
-                        Search = arguments.FullText,
-                        Skip = currentPage * 100,
-                        Top = 100
-                    };
-
-                    var content = await client.GetAsync(query, ctx);
-
-                    total = content.Total;
-
-                    if (content.Items.Count == 0)
-                    {
-                        break;
-                    }
-
-                    foreach (var entity in content.Items)
-                    {
-                        if (handled.Add(entity.Id))
+                        var query = new ContentQuery
                         {
-                            totalRead++;
+                            Filter = arguments.Filter,
+                            OrderBy = arguments.OrderBy,
+                            Search = arguments.FullText,
+                            Skip = currentPage * 100,
+                            Top = 100
+                        };
 
-                            handler(entity);
+                        var content = await contents.GetAsync(query, ctx);
 
-                            Console.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                            Console.SetCursorPosition(0, consoleTop);
+                        total = content.Total;
+
+                        if (content.Items.Count == 0)
+                        {
+                            break;
                         }
+
+                        foreach (var entity in content.Items)
+                        {
+                            if (handled.Add(entity.Id))
+                            {
+                                totalRead++;
+
+                                handler(entity);
+
+                                logLine.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                            }
+                        }
+
+                        currentPage++;
                     }
-
-                    currentPage++;
+                    while (totalRead < total);
                 }
-                while (totalRead < total);
 
-                Console.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
+                log.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
             }
 
             public enum Format
@@ -340,13 +349,13 @@ namespace Squidex.CLI.Commands
                 bool Unpublished { get; }
             }
 
-            [Validator(typeof(ImportArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class ImportArguments : IImortArgumentBase, IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Argument(Name = "file", Description = "The path to the file.")]
+                [Operand(Name = "file", Description = "The path to the file.")]
                 public string File { get; set; }
 
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
@@ -361,9 +370,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "format", Description = "Defines the input format.")]
                 public Format Format { get; set; }
 
-                public sealed class ImportArgumentsValidator : AbstractValidator<ImportArguments>
+                public sealed class Validator : AbstractValidator<ImportArguments>
                 {
-                    public ImportArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Fields).NotEmpty();
@@ -373,10 +382,10 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(ExportArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class ExportArguments : IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
                 [Option(LongName = "filter", Description = "Optional filter.")]
@@ -406,9 +415,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "format", Description = "Defines the output format.")]
                 public Format Format { get; set; }
 
-                public sealed class ExportArgumentsValidator : AbstractValidator<ExportArguments>
+                public sealed class Validator : AbstractValidator<ExportArguments>
                 {
-                    public ExportArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Schema).NotEmpty();
@@ -416,10 +425,10 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(TestDataArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class TestDataArguments : IImortArgumentBase, IArgumentModel
             {
-                [Argument(Name = "schema", Description = "The name of the schema.")]
+                [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
                 [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
@@ -431,9 +440,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "file", Description = "The optional path to the file.")]
                 public string File { get; set; }
 
-                public sealed class TestDataArgumentsValidator : AbstractValidator<TestDataArguments>
+                public sealed class Validator : AbstractValidator<TestDataArguments>
                 {
-                    public TestDataArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.Schema).NotEmpty();
                         RuleFor(x => x.Count).GreaterThan(0);

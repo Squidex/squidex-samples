@@ -13,17 +13,20 @@ namespace Squidex.ClientLibrary
     {
         private const string LinkStart = "/api/content/";
 
+        [Obsolete]
+        public bool IsPending { get; set; }
+
         public Guid Id { get; set; }
 
         public string CreatedBy { get; set; }
 
         public string LastModifiedBy { get; set; }
 
+        public string Status { get; set; }
+
         public DateTimeOffset Created { get; set; }
 
         public DateTimeOffset LastModified { get; set; }
-
-        public bool IsPending { get; set; }
 
         public int Version { get; set; }
 

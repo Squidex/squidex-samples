@@ -16,11 +16,12 @@ namespace CodeGeneration
     {
         public static void Main()
         {
-            var document = OpenApiDocument.FromUrlAsync("http://localhost:5000/api/swagger/v1/swagger.json").Result;
+            var document = OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json").Result;
 
             var generatorSettings = new CSharpClientGeneratorSettings();
             generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
             generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
+            generatorSettings.CSharpGeneratorSettings.ExcludedTypeNames = new[] { "JsonInheritanceConverter" };
             generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
             generatorSettings.ExceptionClass = "SquidexManagementException";
@@ -33,6 +34,8 @@ namespace CodeGeneration
 
             code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
             code = code.Replace(" = new RuleTriggerDto();", string.Empty);
+            code = code.Replace("new System.Collections.Generic.Dictionary<string, System.Collections.ObjectModel.Collection<CallsUsagePerDateDto>>();", "new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();");
+            code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
 
             File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
         }

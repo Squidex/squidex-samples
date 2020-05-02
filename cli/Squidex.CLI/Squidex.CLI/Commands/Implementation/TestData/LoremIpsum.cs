@@ -8,7 +8,7 @@
 using System;
 using System.Text;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation.TestData
 {
     public static class LoremIpsum
     {

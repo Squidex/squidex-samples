@@ -17,15 +17,15 @@
     <Version>4.3</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CommandDotNet" Version="3.0.0" />
-    <PackageReference Include="CommandDotNet.FluentValidation" Version="1.0.0" />
-    <PackageReference Include="ConsoleTables" Version="2.4.0" />
-    <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="2.0.0" />
+    <PackageReference Include="CommandDotNet" Version="3.6.0" />
+    <PackageReference Include="CommandDotNet.FluentValidation" Version="2.0.2" />
+    <PackageReference Include="ConsoleTables" Version="2.4.1" />
+    <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="2.0.1" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
-    <PackageReference Include="CsvHelper" Version="15.0.0" />
+    <PackageReference Include="CsvHelper" Version="15.0.5" />
+    <PackageReference Include="NJsonSchema" Version="10.1.12" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" PrivateAssets="all" />
     <PackageReference Include="Slugify.Core" Version="2.3.0" />
-    <PackageReference Include="Squidex.ClientLibrary" Version="4.2.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
   </ItemGroup>
   <PropertyGroup>
@@ -39,5 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />
   </ItemGroup>
 </Project>

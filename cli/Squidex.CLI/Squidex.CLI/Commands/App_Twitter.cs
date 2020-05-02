@@ -5,13 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
 using CoreTweet;
 using FluentValidation;
 using FluentValidation.Attributes;
+using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Commands
 {
@@ -21,6 +21,13 @@ namespace Squidex.CLI.Commands
         [SubCommand]
         public sealed class Twitter
         {
+            private readonly ILogger log;
+
+            public Twitter(ILogger log)
+            {
+                this.log = log;
+            }
+
             [Command(Name = "auth", Description = "Starts the authentication.")]
             public async Task Auth(AuthArguments arguments)
             {
@@ -29,11 +36,11 @@ namespace Squidex.CLI.Commands
                 File.WriteAllText(".twitterToken", session.RequestToken);
                 File.WriteAllText(".twitterSecret", session.RequestTokenSecret);
 
-                Console.WriteLine($"Request Token:  {session.RequestToken}");
-                Console.WriteLine($"Request Secret: {session.RequestTokenSecret}");
+                log.WriteLine($"Request Token:  {session.RequestToken}");
+                log.WriteLine($"Request Secret: {session.RequestTokenSecret}");
 
-                Console.WriteLine();
-                Console.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
+                log.WriteLine();
+                log.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
             }
 
             [Command(Name = "token", Description = "Create an access token and secret.")]
@@ -53,11 +60,11 @@ namespace Squidex.CLI.Commands
 
                 var tokens = await session.GetTokensAsync(arguments.PinCode);
 
-                Console.WriteLine($"Access Token:  {tokens.AccessToken}");
-                Console.WriteLine($"Access Secret: {tokens.AccessTokenSecret}");
+                log.WriteLine($"Access Token:  {tokens.AccessToken}");
+                log.WriteLine($"Access Secret: {tokens.AccessTokenSecret}");
             }
 
-            private static string ReadToken(string fromArgs, string file, string parameter)
+            private string ReadToken(string fromArgs, string file, string parameter)
             {
                 var requestToken = fromArgs;
 
@@ -67,31 +74,31 @@ namespace Squidex.CLI.Commands
                     {
                         requestToken = File.ReadAllText(file);
 
-                        Console.WriteLine($"Using {parameter} {requestToken} from last command.");
-                        Console.WriteLine();
+                        log.WriteLine($"Using {parameter} {requestToken} from last command.");
+                        log.WriteLine();
                     }
                 }
 
                 if (string.IsNullOrWhiteSpace(requestToken))
                 {
-                    Console.WriteLine($"{parameter} not defined or found from last command.");
+                    log.WriteLine($"{parameter} not defined or found from last command.");
                 }
 
                 return requestToken;
             }
 
-            [Validator(typeof(AuthArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class AuthArguments : IArgumentModel
             {
-                [Option(ShortName ="clientId")]
+                [Option(LongName = "clientId")]
                 public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
 
-                [Option(ShortName = "clientSecret")]
+                [Option(LongName = "clientSecret")]
                 public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
-                public sealed class AuthArgumentsValidator : AbstractValidator<AuthArguments>
+                public sealed class Validator : AbstractValidator<AuthArguments>
                 {
-                    public AuthArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.ClientId).NotEmpty();
                         RuleFor(x => x.ClientSecret).NotEmpty();
@@ -99,27 +106,27 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(TokenArgumentsValidator))]
+            [Validator(typeof(Validator))]
             public sealed class TokenArguments : IArgumentModel
             {
-                [Argument(Name = "pin", Description = "The pin from the auth request.")]
+                [Operand(Name = "pin", Description = "The pin from the auth request.")]
                 public string PinCode { get; set; }
 
-                [Option(ShortName = "clientId")]
+                [Option(LongName = "clientId")]
                 public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
 
-                [Option(ShortName = "clientSecret")]
+                [Option(LongName = "clientSecret")]
                 public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
-                [Option(ShortName = "token")]
+                [Option(LongName = "token")]
                 public string RequestToken { get; set; }
 
-                [Option(ShortName = "secret")]
+                [Option(LongName = "secret")]
                 public string RequestTokenSecret { get; set; }
 
-                public sealed class TokenArgumentsValidator : AbstractValidator<TokenArguments>
+                public sealed class Validator : AbstractValidator<TokenArguments>
                 {
-                    public TokenArgumentsValidator()
+                    public Validator()
                     {
                         RuleFor(x => x.PinCode).NotEmpty();
                     }

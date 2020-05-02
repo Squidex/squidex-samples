@@ -28,6 +28,8 @@ namespace Squidex.ClientLibrary
 
         Task DeleteAsync(TEntity entity, CancellationToken ct = default);
 
+        Task<List<BulkResult>> BulkUpdateAsync(BulkUpdate update, CancellationToken ct = default);
+
         Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
 
         Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<Guid> ids, QueryContext context = null, CancellationToken ct = default);

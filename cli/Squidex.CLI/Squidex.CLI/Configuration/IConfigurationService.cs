@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary;
+using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Configuration
 {
@@ -23,6 +23,6 @@ namespace Squidex.CLI.Configuration
 
         void UseAppInSession(string entry);
 
-        (string App, SquidexClientManager Client) Setup();
+        ISession StartSession();
     }
 }
