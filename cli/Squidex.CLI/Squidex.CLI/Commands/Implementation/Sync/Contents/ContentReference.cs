@@ -15,6 +15,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         public string Schema { get; set; }
 
         [Required]
-        public object Query { get; set; }
+        public object Filter { get; set; }
     }
 }

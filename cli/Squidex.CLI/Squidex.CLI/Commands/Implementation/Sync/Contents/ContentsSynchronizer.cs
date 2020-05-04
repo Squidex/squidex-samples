@@ -117,15 +117,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     new ContentModel
                     {
                         Schema = "my-schema",
-                        Query = new
+                        Filter = JObject.FromObject(new
                         {
-                            Filter = new
-                            {
-                                Path = "data.id.iv",
-                                Op = "eq",
-                                Value = 1
-                            }
-                        },
+                            Path = "data.id.iv",
+                            Op = "eq",
+                            Value = 1
+                        }),
                         Data = JObject.FromObject(new
                         {
                             id = new

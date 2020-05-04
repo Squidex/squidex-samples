@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
             var request = new BulkUpdate
             {
-                Jobs = Contents.Select(x => new BulkUpdateJob { Query = x.Query, Data = x.Data }).ToList()
+                Jobs = Contents.Select(x => new BulkUpdateJob { Query = new { filter = x.Filter }, Data = x.Data }).ToList()
             };
 
             var results = await client.BulkUpdateAsync(request);
@@ -95,10 +95,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             {
                 var schema = value.Schema;
 
-                var queryObject = JObject.FromObject(value.Query);
-                var queryJson = queryObject.ToString();
+                var filter = JObject.FromObject(value.Filter);
+                var filterJson = filter.ToString();
 
-                if (cache.TryGetValue((schema, queryJson), out var id))
+                if (cache.TryGetValue((schema, filterJson), out var id))
                 {
                     resolvedReferences[key] = id;
                     continue;
@@ -106,9 +106,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 var client = session.Contents(value.Schema);
 
-                queryObject["take"] = 1;
+                var query = new { filter, take = 1 };
 
-                var references = await client.GetAsync(new ContentQuery { JsonQuery = queryObject }, QueryContext.Default.Unpublished(true));
+                var references = await client.GetAsync(new ContentQuery { JsonQuery = query }, QueryContext.Default.Unpublished(true));
 
                 if (references.Total == 1)
                 {
@@ -116,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     resolvedReferences[key] = id;
 
-                    cache[(schema, queryJson)] = id;
+                    cache[(schema, filterJson)] = id;
                 }
                 else if (references.Total > 1)
                 {
