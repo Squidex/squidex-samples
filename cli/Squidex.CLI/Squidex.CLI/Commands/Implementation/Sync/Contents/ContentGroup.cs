@@ -46,7 +46,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             {
                 if (content.References?.Any() == true)
                 {
-                    await ResovleContntAsync(content, session, log, cache);
+                    await ResolveContentAsync(content, session, log, cache);
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        private async Task ResovleContntAsync(ContentModel content, ISession session, ILogger log, ReferenceCache cache)
+        private async Task ResolveContentAsync(ContentModel content, ISession session, ILogger log, ReferenceCache cache)
         {
             var resolvedReferences = new Dictionary<string, Guid>();
 
@@ -108,7 +108,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 queryObject["take"] = 1;
 
-                var references = await client.GetAsync(new ContentQuery { JsonQuery = queryObject });
+                var references = await client.GetAsync(new ContentQuery { JsonQuery = queryObject }, QueryContext.Default.Unpublished(true));
 
                 if (references.Total == 1)
                 {
