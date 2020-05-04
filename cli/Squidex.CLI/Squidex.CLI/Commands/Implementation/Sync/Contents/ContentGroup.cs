@@ -68,7 +68,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             {
                 var content = Contents[i];
 
-                log.StepStart($"Content {content.File} / {content.Ref}");
+                log.StepStart($"{content.File} / {content.Ref}");
 
                 if (result.ContentId != null)
                 {
@@ -120,14 +120,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 }
                 else if (references.Total > 1)
                 {
-                    log.WriteLine("Skipping content {0} / {1} because reference {2} is not unique.", content.File, content.Ref, key);
+                    log.WriteLine("Skipping {0} / {1} reference {2} not unique.", content.File, content.Ref, key);
 
                     Contents.Remove(content);
                     return;
                 }
                 else
                 {
-                    log.WriteLine("Skipping content {0} / {1} because reference {2} cannot be resolved.", content.File, content.Ref, key);
+                    log.WriteLine("Skipping {0} / {1} reference {2} not resolved.", content.File, content.Ref, key);
 
                     Contents.Remove(content);
                     return;

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class ReferenceCache : Dictionary<(string Schema, string Query), Guid>
+    public sealed class ReferenceCache : Dictionary<(string Schema, string Filter), Guid>
     {
     }
 }

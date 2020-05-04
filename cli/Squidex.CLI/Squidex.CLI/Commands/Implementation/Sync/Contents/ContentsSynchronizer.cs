@@ -66,12 +66,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
             foreach (var (schema, group) in contentsBySchema)
             {
-                await log.DoSafeAsync($"Schema {schema}: Resolving references", () =>
+                await log.DoSafeLineAsync($"Schema {schema}: Resolving references", () =>
                 {
                     return group.ResolveReferencesAsync(session, log, cache);
                 });
 
-                await log.DoSafeAsync($"Schema {schema}: Inserting", () =>
+                await log.DoSafeLineAsync($"Schema {schema}: Inserting", () =>
                 {
                     return group.UpsertAsync(session, log, cache);
                 });
