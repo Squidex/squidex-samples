@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
@@ -34,63 +35,73 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
+            var contentsBySchema =
+                GetContentFiles(directoryInfo)
+                    .Select(x => ReadContents(jsonHelper, x))
+                    .SelectMany(x => x.Contents).GroupBy(x => x.Schema)
+                    .Select(x => new ContentGroup(x.Key, x))
+                    .ToDictionary(x => x.SchemaName);
+
+            var edges = new HashSet<(ContentGroup From, ContentGroup To)>();
+
+            foreach (var from in contentsBySchema.Values)
+            {
+                foreach (var dependency in from.Dependencies)
+                {
+                    if (contentsBySchema.TryGetValue(dependency, out var to))
+                    {
+                        edges.Add((from, to));
+                    }
+                }
+            }
+
+            var sortOrder = TopologicalSort.Sort(new HashSet<ContentGroup>(contentsBySchema.Values), edges);
+
+            if (sortOrder == null)
+            {
+                throw new SquidexException("Dependencies between content items have a cycle, cannot calculate best sync order.");
+            }
+
+            var cache = new ReferenceCache();
+
+            foreach (var (schema, group) in contentsBySchema)
+            {
+                await log.DoSafeAsync($"Schema {schema}: Resolving references", () =>
+                {
+                    return group.ResolveReferencesAsync(session, log, cache);
+                });
+
+                await log.DoSafeAsync($"Schema {schema}: Inserting", () =>
+                {
+                    return group.UpsertAsync(session, log, cache);
+                });
+            }
+        }
+
+        private ContentsModel ReadContents(JsonHelper jsonHelper, FileInfo file)
+        {
+            var result = jsonHelper.Read<ContentsModel>(file, log);
+
+            var index = 0;
+
+            foreach (var content in result.Contents)
+            {
+                content.File = file.Name;
+                content.Ref = index.ToString();
+
+                index++;
+            }
+
+            return result;
+        }
+
+        private IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
+        {
             foreach (var file in directoryInfo.GetFiles("contents\\*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
-                    ContentsModel contents = null;
-
-                    await log.DoSafeAsync($"Reading file {file.Name}", () =>
-                    {
-                        contents = jsonHelper.Read<ContentsModel>(file, log);
-
-                        return Task.CompletedTask;
-                    });
-
-                    if (contents == null)
-                    {
-                        continue;
-                    }
-
-                    foreach (var schema in contents.Contents.GroupBy(x => x.Schema))
-                    {
-                        var client = session.Contents(schema.Key);
-
-                        List<BulkResult> results = null;
-
-                        await log.DoSafeAsync("Importing contents", async () =>
-                        {
-                            var request = new BulkUpdate
-                            {
-                                Jobs = schema.Select(x => new BulkUpdateJob { Query = x.Query, Data = x.Data }).ToList()
-                            };
-
-                            results = await client.BulkUpdateAsync(request);
-                        });
-
-                        if (results != null)
-                        {
-                            var i = 1;
-
-                            foreach (var result in results)
-                            {
-                                log.StepStart($"Content #{i}");
-
-                                if (result.ContentId != null)
-                                {
-                                    log.StepSuccess();
-                                }
-                                else if (result.Error != null)
-                                {
-                                    log.StepFailed(result.Error.ToString());
-                                }
-                                else
-                                {
-                                    log.StepSkipped("Unknown Reason");
-                                }
-                            }
-                        }
-                    }
+                    yield return file;
                 }
             }
         }
@@ -115,7 +126,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                                 Value = 1
                             }
                         },
-                        Data = new
+                        Data = JObject.FromObject(new
                         {
                             id = new
                             {
@@ -125,7 +136,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                             {
                                 iv = "Hello Squidex"
                             }
-                        }
+                        })
                     }
                 }
             };
