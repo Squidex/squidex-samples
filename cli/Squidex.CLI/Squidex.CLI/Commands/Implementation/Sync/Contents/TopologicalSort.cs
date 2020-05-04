@@ -13,29 +13,31 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public static class TopologicalSort
     {
-        public static List<T> Sort<T>(HashSet<T> nodes, HashSet<(T From, T To)> edges)
+        public static List<T> Sort<T>(HashSet<T> nodes, HashSet<(T To, T From)> edges) where T : IEquatable<T>
         {
-            var ordered = new List<T>();
+            // Empty list that will contain the sorted elements
+            var sorted = new List<T>();
 
-            var incomingEdges = new HashSet<T>(nodes.Where(n => edges.All(e => e.To.Equals(n) == false)));
+            // Set of all nodes with no incoming edges
+            var incomingEdges = new HashSet<T>(nodes.Where(n => edges.All(e => !e.From.Equals(n))));
 
             while (incomingEdges.Any())
             {
-                var n = incomingEdges.First();
+                var first = incomingEdges.First();
 
-                incomingEdges.Remove(n);
+                incomingEdges.Remove(first);
 
-                ordered.Add(n);
+                sorted.Add(first);
 
-                foreach (var e in edges.Where(e => e.From.Equals(n)).ToList())
+                foreach (var edge in edges.Where(e => e.To.Equals(first)).ToList())
                 {
-                    var m = e.To;
+                    var from = edge.From;
 
-                    edges.Remove(e);
+                    edges.Remove(edge);
 
-                    if (edges.All(me => me.To.Equals(m) == false))
+                    if (edges.All(me => !me.From.Equals(from)))
                     {
-                        incomingEdges.Add(m);
+                        incomingEdges.Add(from);
                     }
                 }
             }
@@ -46,7 +48,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
             else
             {
-                return ordered;
+                return sorted;
             }
         }
     }

@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -14,7 +15,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class ContentGroup
+    public sealed class ContentGroup : IEquatable<ContentGroup>
     {
         public string SchemaName { get; }
 
@@ -177,6 +178,26 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     }
                 }
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ContentGroup);
+        }
+
+        public bool Equals(ContentGroup other)
+        {
+            return string.Equals(other?.SchemaName, SchemaName);
+        }
+
+        public override int GetHashCode()
+        {
+            return SchemaName.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return SchemaName;
         }
     }
 }

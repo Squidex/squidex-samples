@@ -50,7 +50,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 {
                     if (contentsBySchema.TryGetValue(dependency, out var to))
                     {
-                        edges.Add((from, to));
+                        edges.Add((to, from));
                     }
                 }
             }
