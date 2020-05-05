@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation
             }
             catch (Exception ex)
             {
-                HandleException(ex, log);
+                HandleException(ex, log.StepFailed);
             }
         }
 
@@ -73,35 +73,55 @@ namespace Squidex.CLI.Commands.Implementation
             }
             catch (Exception ex)
             {
-                HandleException(ex, log);
+                HandleException(ex, log.StepFailed);
             }
         }
 
-        private static void HandleException(Exception ex, ILogger log)
+        public static async Task DoSafeLineAsync(this ILogger log, string process, Func<Task> action)
+        {
+            try
+            {
+                log.WriteLine("Start: {0}", process);
+
+                await action();
+
+                log.WriteLine("Done : {0}", process);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, error => log.WriteLine("Error: {0}; {1}", process, error));
+            }
+            finally
+            {
+                log.WriteLine();
+            }
+        }
+
+        private static void HandleException(Exception ex, Action<string> error)
         {
             switch (ex)
             {
                 case SquidexManagementException<ErrorDto> ex1:
                     {
-                        log.StepFailed(ex1.Result.ToString());
+                        error(ex1.Result.ToString());
                         break;
                     }
 
                 case SquidexManagementException ex2:
                     {
-                        log.StepFailed(ex2.Message);
+                        error(ex2.Message);
                         break;
                     }
 
                 case CLIException ex4:
                     {
-                        log.StepSkipped(ex4.Message);
+                        error(ex4.Message);
                         break;
                     }
 
                 case Exception ex3:
                     {
-                        log.StepFailed(ex3);
+                        error(ex3.ToString());
                         throw ex3;
                     }
             }
