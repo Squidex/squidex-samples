@@ -97,7 +97,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
         private IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
         {
-            foreach (var file in directoryInfo.GetFiles("contents\\*.json"))
+            foreach (var file in directoryInfo.GetFiles("contents/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {

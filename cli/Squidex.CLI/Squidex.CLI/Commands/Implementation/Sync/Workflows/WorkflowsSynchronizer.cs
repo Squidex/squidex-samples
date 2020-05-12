@@ -123,7 +123,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
         private IEnumerable<UpdateWorkflowDto> GetWorkflowModels(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            foreach (var file in directoryInfo.GetFiles("workflows\\*.json"))
+            foreach (var file in directoryInfo.GetFiles("workflows/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {

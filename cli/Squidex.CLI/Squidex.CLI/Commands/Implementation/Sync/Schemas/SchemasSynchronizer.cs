@@ -125,7 +125,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         private IEnumerable<FileInfo> GetSchemaFiles(DirectoryInfo directoryInfo)
         {
-            foreach (var file in directoryInfo.GetFiles("schemas\\*.json"))
+            foreach (var file in directoryInfo.GetFiles("schemas/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {

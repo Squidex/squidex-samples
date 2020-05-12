@@ -151,7 +151,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
 
         private IEnumerable<RuleModel> GetRuleFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            foreach (var file in directoryInfo.GetFiles("rules\\*.json"))
+            foreach (var file in directoryInfo.GetFiles("rules/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
