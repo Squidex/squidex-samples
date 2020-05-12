@@ -14,7 +14,7 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed partial class SquidexClientManager
+    public sealed partial class SquidexClientManager : ISquidexClientManager
     {
         public string App
         {
