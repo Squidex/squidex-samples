@@ -25,7 +25,14 @@ namespace Squidex.ClientLibrary.Management
 
             if (Details?.Count > 0)
             {
-                sb.Append(": ");
+                if (!Message.EndsWith(".", StringComparison.OrdinalIgnoreCase) &&
+                    !Message.EndsWith(":", StringComparison.OrdinalIgnoreCase) &&
+                    !Message.EndsWith(",", StringComparison.OrdinalIgnoreCase))
+                {
+                    sb.Append(":");
+                }
+
+                sb.Append(" ");
                 sb.Append(string.Join(", ", Details));
             }
 
