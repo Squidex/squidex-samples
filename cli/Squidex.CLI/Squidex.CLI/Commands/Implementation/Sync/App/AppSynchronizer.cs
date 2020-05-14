@@ -95,9 +95,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             var model = jsonHelper.Read<AppModel>(appFile, log);
 
             await SynchronizeClientsAsync(model, options, session);
+            await SynchronizeRolesAsync(model, options, session);
             await SynchronizeContributorsAsync(model, session);
             await SynchronizeLanguagesAsync(model, options, session);
-            await SynchronizeRolesAsync(model, options, session);
         }
 
         private async Task SynchronizeContributorsAsync(AppModel model, ISession session)
