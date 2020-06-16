@@ -111,7 +111,21 @@ namespace Squidex.ClientLibrary
             Guard.NotEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/?asDraft={asDraft}", false), data.ToContent(), ct: ct);
+            if (asDraft)
+            {
+                QueryContext ctx = QueryContext.Default.Unpublished(true);
+                TEntity content = this.GetAsync(id, ctx).Result;
+                if (content.Status == Status.Published)
+                {
+                    content = RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}/draft", false), data.ToContent(), ct: ct).Result;
+                    if (content.Status != Status.Draft)
+                    {
+                        throw new SquidexException($"Failed to create draft for content id: {id}");
+                    }
+                }
+            }
+
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}", false), data.ToContent(), ct: ct);
         }
 
         public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
