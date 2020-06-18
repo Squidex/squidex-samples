@@ -24,6 +24,8 @@ namespace Squidex.ClientLibrary
 
         Task<TEntity> CreateDraftAsync(Guid id, CancellationToken ct = default);
 
+        Task<TEntity> DeleteDraftAsync(Guid id, CancellationToken ct = default);
+
         Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default);
 
         Task DeleteAsync(Guid id, CancellationToken ct = default);

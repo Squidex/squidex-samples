@@ -113,17 +113,24 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}/draft", false), ct: ct);
         }
 
-        public Task<TEntity> UpdateAsync(Guid id, TData data, bool asDraft = false, CancellationToken ct = default)
+        public Task<TEntity> DeleteDraftAsync(Guid id, CancellationToken ct = default)
+        {
+            Guard.NotEmpty(id, nameof(id));
+
+            return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildSchemaUrl($"{id}/draft", false), ct: ct);
+        }
+
+        public async Task<TEntity> UpdateAsync(Guid id, TData data, bool asDraft = false, CancellationToken ct = default)
         {
             Guard.NotEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
             if (asDraft)
             {
-                TEntity content = CreateDraftAsync(id, ct).Result;
+                await CreateDraftAsync(id, ct);
             }
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}", false), data.ToContent(), ct: ct);
+            return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}", false), data.ToContent(), ct: ct);
         }
 
         public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
