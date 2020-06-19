@@ -13,16 +13,18 @@ namespace Squidex.ClientLibrary
     {
         private const string LinkStart = "/api/content/";
 
+        private string status = string.Empty;
+
         [Obsolete]
         public bool IsPending { get; set; }
 
         public Guid Id { get; set; }
 
+        public string NewStatus { get; set; }
+
         public string CreatedBy { get; set; }
 
         public string LastModifiedBy { get; set; }
-
-        public string Status { get; set; }
 
         public DateTimeOffset Created { get; set; }
 
@@ -45,6 +47,18 @@ namespace Squidex.ClientLibrary
             get
             {
                 return GetDetails().Schema;
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(NewStatus) ? NewStatus : status;
+            }
+            set
+            {
+                status = value;
             }
         }
 
