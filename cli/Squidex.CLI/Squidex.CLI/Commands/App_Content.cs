@@ -192,7 +192,7 @@ namespace Squidex.CLI.Commands
                         }
                         else
                         {
-                            File.AppendAllText(fileOrFolder, entity.JsonPrettyString());
+                            File.AppendAllText(fileOrFolder, entity.JsonPrettyString() + Environment.NewLine);
                         }
                     });
                 }
