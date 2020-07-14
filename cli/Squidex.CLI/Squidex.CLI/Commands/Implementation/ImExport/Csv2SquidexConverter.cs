@@ -61,7 +61,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {
-                property = new Dictionary<string, JToken>();
+                property = new JObject();
 
                 data[path[0].Key] = property;
             }

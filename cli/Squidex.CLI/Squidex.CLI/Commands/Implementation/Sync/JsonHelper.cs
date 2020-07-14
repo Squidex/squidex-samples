@@ -44,6 +44,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             };
 
             jsonSerializerSettings.Converters.Add(schemaIdConverter);
+            jsonSerializerSettings.Formatting = Formatting.Indented;
 
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
             {
@@ -129,42 +130,50 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return JsonConvert.DeserializeObject<T>(json, jsonSerializerSettings);
         }
 
-        public string SerializeAs<T>(object input, string schemaRef)
+        public void WriteSchema<T>(Stream stream)
         {
-            T converted = Convert<T>(input);
-
-            return SerializeWithSchema(converted, schemaRef);
-        }
-
-        public T Convert<T>(object input)
-        {
-            var originalJson = JsonConvert.SerializeObject(input, jsonSerializerSettings);
-
-            return JsonConvert.DeserializeObject<T>(originalJson, jsonSerializerSettings);
-        }
-
-        public string SerializeWithSchema<T>(T sample, string schemaRef)
-        {
-            var obj = new JObject
+            using (var textWriter = new StreamWriter(stream))
             {
-                ["$schema"] = schemaRef
-            };
+                using (var jsonWriter = new JsonTextWriter(textWriter))
+                {
+                    var obj = GetSchema<T>();
 
-            foreach (var (key, value) in JObject.FromObject(sample, jsonSerializer))
-            {
-                obj[key] = value;
+                    jsonSerializer.Serialize(jsonWriter, obj);
+                }
             }
-
-            var json = obj.ToString(Formatting.Indented);
-
-            return json;
         }
 
-        public string SchemaString<T>()
+        public void WriteAs<T>(object value, Stream stream, string schemaRef = null) where T : class
         {
-            var schema = GetSchema<T>();
+            Write(Convert<T>(value), stream, schemaRef);
+        }
 
-            return schema.ToJson();
+        public void Write<T>(T value, Stream stream, string schemaRef = null) where T : class
+        {
+            using (var textWriter = new StreamWriter(stream))
+            {
+                using (var jsonWriter = new JsonTextWriter(textWriter))
+                {
+                    if (schemaRef != null)
+                    {
+                        var withSchema = new JObject
+                        {
+                            ["$schema"] = schemaRef
+                        };
+
+                        foreach (var (key, v) in JObject.FromObject(value, jsonSerializer))
+                        {
+                            withSchema[key] = v;
+                        }
+
+                        jsonSerializer.Serialize(jsonWriter, withSchema);
+                    }
+                    else
+                    {
+                        jsonSerializer.Serialize(jsonWriter, value);
+                    }
+                }
+            }
         }
 
         private JsonSchema GetSchema<T>()
@@ -174,6 +183,28 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             schema.AllowAdditionalProperties = true;
 
             return schema;
+        }
+
+        public T Convert<T>(object value)
+        {
+            if (value.GetType() == typeof(T))
+            {
+                return (T)value;
+            }
+
+            var memoryStream = new MemoryStream();
+
+            using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
+            {
+                jsonSerializer.Serialize(writer, value);
+            }
+
+            memoryStream.Position = 0;
+
+            using (var reader = new StreamReader(memoryStream))
+            {
+                return (T)jsonSerializer.Deserialize(reader, typeof(T));
+            }
         }
     }
 }

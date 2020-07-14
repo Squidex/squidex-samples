@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
             foreach (var field in schema.Fields)
             {
-                var fieldData = new Dictionary<string, JToken>();
+                var fieldData = new JObject();
 
                 if (field.Partitioning == "invariant")
                 {

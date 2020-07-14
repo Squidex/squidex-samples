@@ -19,7 +19,6 @@ using Squidex.CLI.Commands.Implementation.Sync.Model;
 using Squidex.CLI.Commands.Implementation.Sync.Schemas;
 using Squidex.CLI.Commands.Implementation.Sync.Workflows;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI
 {

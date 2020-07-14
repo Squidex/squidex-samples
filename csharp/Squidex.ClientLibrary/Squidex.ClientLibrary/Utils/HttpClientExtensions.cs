@@ -26,7 +26,7 @@ namespace Squidex.ClientLibrary.Utils
         {
             var result = new JsonSerializerSettings
             {
-                ContractResolver = contractResolver,
+                ContractResolver = contractResolver
             };
 
             result.Converters.Add(new UTCIsoDateTimeConverter());

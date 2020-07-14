@@ -9,13 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
 using FluentValidation.Attributes;
-using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.CLI.Commands.Implementation.TestData;
@@ -28,6 +28,8 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
+        private const string JsonSeparator = "-----------------";
+
         [Command(Name = "content", Description = "Manage contents.")]
         [SubCommand]
         public sealed class Content
@@ -68,11 +70,14 @@ namespace Squidex.CLI.Commands
 
                 if (!string.IsNullOrWhiteSpace(arguments.File))
                 {
-                    File.AppendAllText(arguments.File, datas.JsonPrettyString());
+                    using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
+                    {
+                        await stream.WriteJsonAsync(datas);
+                    }
                 }
                 else
                 {
-                    await ImportAsync(arguments, session, datas);
+                    await session.ImportAsync(arguments, log, datas);
                 }
             }
 
@@ -93,14 +98,17 @@ namespace Squidex.CLI.Commands
 
                     using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
-                        using (var streamReader = new StreamReader(stream))
+                        if (arguments.JsonArray)
                         {
-                            using (var reader = new JsonTextReader(streamReader))
-                            {
-                                var datas = converter.ReadAll(reader);
+                            var datas = converter.ReadAsArray(stream);
 
-                                await ImportAsync(arguments, session, datas);
-                            }
+                            await session.ImportAsync(arguments, log, datas);
+                        }
+                        else
+                        {
+                            var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
+
+                            await session.ImportAsync(arguments, log, datas);
                         }
                     }
                 }
@@ -110,20 +118,9 @@ namespace Squidex.CLI.Commands
 
                     using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
-                        using (var streamReader = new StreamReader(stream))
-                        {
-                            var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
-                            {
-                                Delimiter = arguments.Delimiter
-                            };
+                        var datas = converter.Read(stream, arguments.Delimiter);
 
-                            using (var reader = new CsvReader(streamReader, csvOptions))
-                            {
-                                var datas = converter.ReadAll(reader);
-
-                                await ImportAsync(arguments, session, datas);
-                            }
-                        }
+                        await session.ImportAsync(arguments, log, datas);
                     }
                 }
             }
@@ -152,11 +149,6 @@ namespace Squidex.CLI.Commands
 
                 if (arguments.Format == Format.JSON)
                 {
-                    if (!string.IsNullOrWhiteSpace(arguments.Fields))
-                    {
-                        throw new SquidexException("Fields are not used for JSON export.");
-                    }
-
                     var fileOrFolder = arguments.Output;
 
                     if (arguments.FilePerContent)
@@ -184,28 +176,72 @@ namespace Squidex.CLI.Commands
                         }
                     }
 
-                    await ExportAsync(arguments, entity =>
+                    if (arguments.FilePerContent)
                     {
-                        if (arguments.FilePerContent)
+                        await session.ExportAsync(arguments, log, async entity =>
                         {
-                            File.WriteAllText(Path.Combine(fileOrFolder, $"{arguments.Schema}_{entity.Id}.json"), entity.JsonPrettyString());
+                            var fileName = $"{arguments.Schema}_{entity.Id}.json";
+                            var filePath = Path.Combine(fileOrFolder, fileName);
+
+                            if (arguments.FullEntities)
+                            {
+                                await Helper.WriteJsonToFileAsync(entity, filePath);
+                            }
+                            else
+                            {
+                                await Helper.WriteJsonToFileAsync(entity.Data, filePath);
+                            }
+                        });
+                    }
+                    else if (arguments.JsonArray)
+                    {
+                        var allRecords = new List<DummyEntity>();
+
+                        await session.ExportAsync(arguments, log, entity =>
+                        {
+                            allRecords.Add(entity);
+
+                            return Task.CompletedTask;
+                        });
+
+                        if (arguments.FullEntities)
+                        {
+                            await Helper.WriteJsonToFileAsync(allRecords, fileOrFolder);
                         }
                         else
                         {
-                            File.AppendAllText(fileOrFolder, entity.JsonPrettyString() + Environment.NewLine);
+                            await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), fileOrFolder);
                         }
-                    });
+                    }
+                    else
+                    {
+                        using (var stream = new FileStream(fileOrFolder, FileMode.Create, FileAccess.Write))
+                        {
+                            using (var writer = new StreamWriter(stream))
+                            {
+                                await session.ExportAsync(arguments, log, async entity =>
+                                {
+                                    if (arguments.FullEntities)
+                                    {
+                                        await writer.WriteJsonAsync(entity);
+                                    }
+                                    else
+                                    {
+                                        await writer.WriteJsonAsync(entity.Data);
+                                    }
+
+                                    await writer.WriteLineAsync();
+                                    await writer.WriteLineAsync(JsonSeparator);
+                                });
+                            }
+                        }
+                    }
                 }
                 else
                 {
                     if (arguments.FilePerContent)
                     {
                         throw new SquidexException("Multiple files are not supported for CSV export.");
-                    }
-
-                    if (string.IsNullOrWhiteSpace(arguments.Fields))
-                    {
-                        throw new SquidexException("Fields must be defined for CSV export.");
                     }
 
                     var file = arguments.Output;
@@ -235,7 +271,7 @@ namespace Squidex.CLI.Commands
 
                                 writer.NextRecord();
 
-                                await ExportAsync(arguments, entity =>
+                                await session.ExportAsync(arguments, log, async entity =>
                                 {
                                     foreach (var value in converter.GetValues(entity))
                                     {
@@ -249,91 +285,12 @@ namespace Squidex.CLI.Commands
                                         }
                                     }
 
-                                    writer.NextRecord();
+                                    await writer.NextRecordAsync();
                                 });
                             }
                         }
                     }
                 }
-            }
-
-            private async Task ImportAsync(IImortArgumentBase arguments, ISession session, IEnumerable<DummyData> datas)
-            {
-                var contents = session.Contents(arguments.Schema);
-
-                var totalWritten = 0;
-
-                var handled = new HashSet<string>();
-
-                using (var logLine = log.WriteSameLine())
-                {
-                    foreach (var data in datas)
-                    {
-                        await contents.CreateAsync(data, !arguments.Unpublished);
-
-                        totalWritten++;
-
-                        logLine.WriteLine("> Imported: {0}.", totalWritten);
-                    }
-                }
-
-                log.WriteLine("> Imported: {0}. Completed.", totalWritten);
-            }
-
-            private async Task ExportAsync(ExportArguments arguments, Action<DummyEntity> handler)
-            {
-                var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
-
-                var session = configuration.StartSession();
-
-                var contents = session.Contents(arguments.Schema);
-
-                var total = 0L;
-                var totalRead = 0;
-                var currentPage = 0L;
-
-                var handled = new HashSet<Guid>();
-
-                using (var logLine = log.WriteSameLine())
-                {
-                    do
-                    {
-                        var query = new ContentQuery
-                        {
-                            Filter = arguments.Filter,
-                            OrderBy = arguments.OrderBy,
-                            Search = arguments.FullText,
-                            Skip = currentPage * 100,
-                            Top = 100
-                        };
-
-                        var content = await contents.GetAsync(query, ctx);
-
-                        total = content.Total;
-
-                        if (content.Items.Count == 0)
-                        {
-                            break;
-                        }
-
-                        foreach (var entity in content.Items)
-                        {
-                            if (handled.Add(entity.Id))
-                            {
-                                totalRead++;
-
-                                handler(entity);
-
-                                logLine.WriteLine("> Exported: {0} of {1}.", totalRead, total);
-                            }
-                        }
-
-                        currentPage++;
-                    }
-                    while (totalRead < total);
-                }
-
-                log.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
             }
 
             public enum Format
@@ -342,15 +299,8 @@ namespace Squidex.CLI.Commands
                 JSON
             }
 
-            public interface IImortArgumentBase
-            {
-                string Schema { get; }
-
-                bool Unpublished { get; }
-            }
-
             [Validator(typeof(Validator))]
-            public sealed class ImportArguments : IImortArgumentBase, IArgumentModel
+            public sealed class ImportArguments : IImportSettings, IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
@@ -367,6 +317,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
 
+                [Option(LongName = "array", Description = "Read the JSON as a single json array.")]
+                public bool JsonArray { get; set; }
+
                 [Option(LongName = "format", Description = "Defines the input format.")]
                 public Format Format { get; set; }
 
@@ -374,16 +327,20 @@ namespace Squidex.CLI.Commands
                 {
                     public Validator()
                     {
-                        RuleFor(x => x.Delimiter).NotEmpty();
-                        RuleFor(x => x.Fields).NotEmpty();
                         RuleFor(x => x.File).NotEmpty();
                         RuleFor(x => x.Schema).NotEmpty();
+
+                        When(x => x.Format == Format.CSV, () =>
+                        {
+                            RuleFor(x => x.Delimiter).NotEmpty();
+                            RuleFor(x => x.Fields).NotEmpty();
+                        });
                     }
                 }
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ExportArguments : IArgumentModel
+            public sealed class ExportArguments : IExportSettings, IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
@@ -412,6 +369,12 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "fields", Description = "Comma separated list of fields. CSV only.")]
                 public string Fields { get; set; }
 
+                [Option(LongName = "array", Description = "Write the JSON as a single json array.")]
+                public bool JsonArray { get; set; }
+
+                [Option(LongName = "full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
+                public bool FullEntities { get; set; }
+
                 [Option(LongName = "format", Description = "Defines the output format.")]
                 public Format Format { get; set; }
 
@@ -419,14 +382,19 @@ namespace Squidex.CLI.Commands
                 {
                     public Validator()
                     {
-                        RuleFor(x => x.Delimiter).NotEmpty();
+                        When(x => x.Format == Format.CSV, () =>
+                        {
+                            RuleFor(x => x.Delimiter).NotEmpty();
+                            RuleFor(x => x.Fields).NotEmpty();
+                        });
+
                         RuleFor(x => x.Schema).NotEmpty();
                     }
                 }
             }
 
             [Validator(typeof(Validator))]
-            public sealed class TestDataArguments : IImortArgumentBase, IArgumentModel
+            public sealed class TestDataArguments : IImportSettings, IArgumentModel
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }

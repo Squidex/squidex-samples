@@ -7,6 +7,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -30,7 +31,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
         {
             set
             {
-                Action = new DynamicRuleAction(value.ToJObject<RuleAction>());
+                Action = new DynamicRuleAction(JObject.FromObject(value));
             }
         }
 

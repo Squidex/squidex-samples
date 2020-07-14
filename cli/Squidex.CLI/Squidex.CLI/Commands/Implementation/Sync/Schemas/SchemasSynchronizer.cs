@@ -43,9 +43,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                     var model = new SchemeModel
                     {
-                        Name = schema.Name,
-                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details)
+                        Name = schema.Name
                     };
+
+                    model.Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details);
 
                     await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, "../__json/schema");
                 });

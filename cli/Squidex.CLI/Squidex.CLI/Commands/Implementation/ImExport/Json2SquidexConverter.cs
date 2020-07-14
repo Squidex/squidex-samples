@@ -14,12 +14,15 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class Json2SquidexConverter
     {
-        private readonly JsonMapping mapping = new JsonMapping();
+        private readonly JsonMapping mapping;
         private readonly JsonSerializer jsonSerializer = new JsonSerializer();
 
-        public Json2SquidexConverter(string fields)
+        public Json2SquidexConverter(string fields = null)
         {
-            mapping = JsonMapping.ForCsv2Json(fields);
+            if (fields != null)
+            {
+                mapping = JsonMapping.ForCsv2Json(fields);
+            }
         }
 
         public IEnumerable<DummyData> ReadAll(JsonTextReader jsonReader)
@@ -33,35 +36,62 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                         break;
                     }
 
-                    var item = jsonSerializer.Deserialize<Dictionary<string, JToken>>(jsonReader);
-
-                    var data = new DummyData();
-
-                    foreach (var field in mapping)
-                    {
-                        if (item.TryGetValue(field.Name, out var value))
-                        {
-                            try
-                            {
-                                SetValue(data, value, field.Path);
-                            }
-                            catch (JsonReaderException)
-                            {
-                                SetValue(data, JToken.Parse($"\"{value}\""), field.Path);
-                            }
-                        }
-                    }
+                    DummyData data = ReadOne(jsonReader);
 
                     yield return data;
                 }
             }
         }
 
+        public DummyData ReadOne(JsonTextReader jsonReader)
+        {
+            var item = jsonSerializer.Deserialize<Dictionary<string, JToken>>(jsonReader);
+
+            var data = new DummyData();
+
+            if (mapping != null)
+            {
+                foreach (var (name, path) in mapping)
+                {
+                    if (item.TryGetValue(name, out var value))
+                    {
+                        try
+                        {
+                            SetValue(data, value, path);
+                        }
+                        catch (JsonReaderException)
+                        {
+                            SetValue(data, JToken.Parse($"\"{value}\""), path);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var (key, value) in item)
+                {
+                    if (value is JObject obj)
+                    {
+                        data[key] = obj;
+                    }
+                    else
+                    {
+                        data[key] = new JObject
+                        {
+                            ["iv"] = value
+                        };
+                    }
+                }
+            }
+
+            return data;
+        }
+
         private void SetValue(DummyData data, JToken value, JsonPath path)
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {
-                property = new Dictionary<string, JToken>();
+                property = new JObject();
 
                 data[path[0].Key] = property;
             }

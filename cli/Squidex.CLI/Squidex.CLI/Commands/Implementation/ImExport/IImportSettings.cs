@@ -5,18 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Squidex.ClientLibrary;
-
-namespace Squidex.CLI.Commands
+namespace Squidex.CLI.Commands.Implementation.ImExport
 {
-    [KeepCasing]
-    public sealed class DummyData : Dictionary<string, JObject>
+    public interface IImportSettings
     {
-    }
+        string Schema { get; }
 
-    public sealed class DummyEntity : Content<DummyData>
-    {
+        bool Unpublished { get; }
     }
 }

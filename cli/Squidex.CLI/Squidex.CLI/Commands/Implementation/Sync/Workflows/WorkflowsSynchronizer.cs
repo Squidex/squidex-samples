@@ -158,7 +158,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                         {
                             ["Draft"] = new WorkflowTransitionDto()
                         },
-                        NoUpdate = true,
+                        NoUpdate = true
                     }
                 },
                 Initial = "Draft"

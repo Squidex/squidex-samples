@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands;
@@ -27,32 +26,32 @@ namespace Squidex.CLI.Tests
                 Created = DateTimeOffset.Now
             };
 
-            content.Data["name"] = new Dictionary<string, JToken>
+            content.Data["name"] = new JObject
             {
                 ["iv"] = "Hello World"
             };
 
-            content.Data["text"] = new Dictionary<string, JToken>
+            content.Data["text"] = new JObject
             {
                 ["iv"] = "Hello World"
             };
 
-            content.Data["localizedText"] = new Dictionary<string, JToken>
+            content.Data["localizedText"] = new JObject
             {
                 ["en"] = "Hello World"
             };
 
-            content.Data["multilineText"] = new Dictionary<string, JToken>
+            content.Data["multilineText"] = new JObject
             {
                 ["iv"] = "Hello\nWorld"
             };
 
-            content.Data["user"] = new Dictionary<string, JToken>
+            content.Data["user"] = new JObject
             {
                 ["iv"] = new JObject(new JProperty("name", "Squidex"))
             };
 
-            content.Data["products"] = new Dictionary<string, JToken>
+            content.Data["products"] = new JObject
             {
                 ["iv"] = new JArray("Squidex", "CLI")
             };

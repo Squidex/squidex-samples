@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -21,31 +20,40 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return source.Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count() == source.Count;
         }
 
-        public static async Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema)
+        public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema) where T : class
         {
             var fileInfo = GetFile(directory, path);
 
-            var json = jsonHelper.SerializeAs<T>(sample, $"./{schema}.json");
+            using (var stream = fileInfo.Open(FileMode.Create))
+            {
+                jsonHelper.WriteAs<T>(sample, stream, $"./{schema}.json");
+            }
 
-            await File.WriteAllTextAsync(fileInfo.FullName, json);
+            return Task.CompletedTask;
         }
 
-        public static async Task WriteWithSchema<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema)
+        public static Task WriteWithSchema<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema) where T : class
         {
             var fileInfo = GetFile(directory, path);
 
-            var json = jsonHelper.SerializeWithSchema(sample, $"./{schema}.json");
+            using (var stream = fileInfo.Open(FileMode.Create))
+            {
+                jsonHelper.Write(sample, stream, $"./{schema}.json");
+            }
 
-            await File.WriteAllTextAsync(fileInfo.FullName, json);
+            return Task.CompletedTask;
         }
 
-        public static async Task WriteJsonSchemaAsync<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path)
+        public static Task WriteJsonSchemaAsync<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path)
         {
             var fileInfo = GetFile(directory, Path.Combine("__json", path));
 
-            var json = jsonHelper.SchemaString<T>();
+            using (var stream = fileInfo.Open(FileMode.Create))
+            {
+                jsonHelper.WriteSchema<T>(stream);
+            }
 
-            await File.WriteAllTextAsync(fileInfo.FullName, json);
+            return Task.CompletedTask;
         }
 
         private static FileInfo GetFile(DirectoryInfo directory, string path)
@@ -58,11 +66,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
 
             return fileInfo;
-        }
-
-        public static JObject ToJObject<T>(this object value) where T : class
-        {
-            return JObject.FromObject(value as T);
         }
     }
 }

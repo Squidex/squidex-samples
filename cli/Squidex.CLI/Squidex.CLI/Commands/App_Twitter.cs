@@ -33,8 +33,8 @@ namespace Squidex.CLI.Commands
             {
                 var session = await OAuth.AuthorizeAsync(arguments.ClientId, arguments.ClientSecret);
 
-                File.WriteAllText(".twitterToken", session.RequestToken);
-                File.WriteAllText(".twitterSecret", session.RequestTokenSecret);
+                await File.WriteAllTextAsync(".twitterToken", session.RequestToken);
+                await File.WriteAllTextAsync(".twitterSecret", session.RequestTokenSecret);
 
                 log.WriteLine($"Request Token:  {session.RequestToken}");
                 log.WriteLine($"Request Secret: {session.RequestTokenSecret}");
