@@ -158,6 +158,11 @@ namespace Squidex.ClientLibrary
             return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient());
         }
 
+        public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
+        {
+            return new ContentsClient<DynamicContent, DynamicData>(Options, schemaName, CreateHttpClient());
+        }
+
         public HttpClient CreateHttpClient()
         {
             var url = new Uri(new Uri(Options.Url, UriKind.Absolute), "/api/");

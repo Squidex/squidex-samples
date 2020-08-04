@@ -47,6 +47,8 @@ namespace Squidex.ClientLibrary
 
         IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new();
 
+        IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName);
+
         HttpClient CreateHttpClient();
     }
 }
