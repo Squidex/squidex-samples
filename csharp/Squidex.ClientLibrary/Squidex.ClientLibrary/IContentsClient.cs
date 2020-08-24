@@ -42,6 +42,8 @@ namespace Squidex.ClientLibrary
 
         Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
 
+        Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
+
         Task<TEntity> PatchAsync<TPatch>(Guid id, TPatch patch, CancellationToken ct = default);
 
         Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default);

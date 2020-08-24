@@ -8,8 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Utils;
 
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
@@ -61,11 +63,27 @@ namespace Squidex.ClientLibrary
             while (!ct.IsCancellationRequested);
         }
 
+        public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(request, nameof(request));
+
+            var query = BuildQuery(request);
+
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Get, BuildAppUrl("graphql", false, context) + query, null, context, ct);
+
+            if (response.Errors?.Length > 0)
+            {
+                throw new SquidexGraphQlException(response.Errors);
+            }
+
+            return response.Data;
+        }
+
         public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
 
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildAppUrl("graphql"), request.ToContent(), context, ct);
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildAppUrl("graphql", false, context), request.ToContent(), context, ct);
 
             if (response.Errors?.Length > 0)
             {
@@ -82,7 +100,7 @@ namespace Squidex.ClientLibrary
 
             var q = $"?ids={string.Join(",", ids)}";
 
-            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q), null, context, ct);
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q, true, context), null, context, ct);
         }
 
         public Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
@@ -193,7 +211,7 @@ namespace Squidex.ClientLibrary
 
         private string BuildSchemaUrl(string path, bool query, QueryContext context = null)
         {
-            if (query && !string.IsNullOrWhiteSpace(Options.ContentCDN) && context?.IsNotUsingCDN != true)
+            if (ShouldUseCDN(query, context))
             {
                 return $"{Options.ContentCDN}/{ApplicationName}/{SchemaName}/{path}";
             }
@@ -203,9 +221,46 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        private string BuildAppUrl(string path = "")
+        private string BuildAppUrl(string path, bool query, QueryContext context = null)
         {
-            return $"content/{ApplicationName}/{path}";
+            if (ShouldUseCDN(query, context))
+            {
+                return $"{Options.ContentCDN}/{ApplicationName}/{path}";
+            }
+            else
+            {
+                return $"content/{ApplicationName}/{path}";
+            }
+        }
+
+        private static string BuildQuery(object request)
+        {
+            var parameters = JObject.FromObject(request);
+
+            var queryBuilder = new StringBuilder();
+
+            foreach (var kvp in parameters)
+            {
+                if (queryBuilder.Length > 0)
+                {
+                    queryBuilder.Append("&");
+                }
+                else
+                {
+                    queryBuilder.Append("?");
+                }
+
+                queryBuilder.Append(kvp.Key);
+                queryBuilder.Append("=");
+                queryBuilder.Append(Uri.EscapeUriString(kvp.Value.ToString()));
+            }
+
+            return queryBuilder.ToString();
+        }
+
+        private bool ShouldUseCDN(bool query, QueryContext context)
+        {
+            return query && !string.IsNullOrWhiteSpace(Options.ContentCDN) && context?.IsNotUsingCDN != true;
         }
     }
 }
