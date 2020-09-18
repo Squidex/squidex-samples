@@ -11,7 +11,7 @@ namespace Squidex.ClientLibrary
 {
     public abstract class Entity : Resource
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string CreatedBy { get; set; }
 

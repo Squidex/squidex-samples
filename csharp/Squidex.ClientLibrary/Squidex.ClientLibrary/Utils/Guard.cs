@@ -38,23 +38,13 @@ namespace Squidex.ClientLibrary
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotEmpty<TType>(IReadOnlyCollection<TType> enumerable, string parameterName)
+        public static void NotNullOrEmpty<TType>(IReadOnlyCollection<TType> enumerable, string parameterName)
         {
             NotNull(enumerable, parameterName);
 
             if (enumerable.Count == 0)
             {
                 throw new ArgumentException("Collection does not contain an item.", parameterName);
-            }
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotEmpty(Guid target, string parameterName)
-        {
-            if (target == Guid.Empty)
-            {
-                throw new ArgumentException("Value cannot be empty.", parameterName);
             }
         }
     }

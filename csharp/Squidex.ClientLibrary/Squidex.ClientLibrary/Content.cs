@@ -18,7 +18,7 @@ namespace Squidex.ClientLibrary
         [Obsolete]
         public bool IsPending { get; set; }
 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string NewStatus { get; set; }
 

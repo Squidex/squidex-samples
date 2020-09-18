@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-
 namespace Squidex.ClientLibrary
 {
     public class BulkUpdateJob
@@ -15,7 +13,7 @@ namespace Squidex.ClientLibrary
 
         public object Query { get; set; }
 
-        public Guid? Id { get; set; }
+        public string Id { get; set; }
 
         public string Status { get; set; }
 
