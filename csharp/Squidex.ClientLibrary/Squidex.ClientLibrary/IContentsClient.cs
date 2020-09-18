@@ -32,7 +32,9 @@ namespace Squidex.ClientLibrary
 
         Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default);
 
-        Task<TEntity> UpdateAsync(string id, TData data, bool asDraft = false, CancellationToken ct = default);
+        Task<TEntity> UpsertAsync(string id, TData data, bool publish = false, CancellationToken ct = default);
+
+        Task<TEntity> UpdateAsync(string id, TData data, CancellationToken ct = default);
 
         Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default);
 
