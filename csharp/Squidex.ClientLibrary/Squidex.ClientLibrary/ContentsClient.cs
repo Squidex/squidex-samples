@@ -34,33 +34,24 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNull(callback, nameof(callback));
 
-            var query = new ContentQuery { Top = batchSize };
+            var query = new ContentQuery { Skip = 0, Top = batchSize, OrderBy = "id" };
 
-            var added = new HashSet<string>();
-            do
+            while (!ct.IsCancellationRequested)
             {
-                var isAnyAdded = false;
-
                 var getResult = await GetAsync(query);
 
-                foreach (var item in getResult.Items)
-                {
-                    if (added.Add(item.Id))
-                    {
-                        await callback(item);
-
-                        isAnyAdded = true;
-                    }
-                }
-
-                if (!isAnyAdded)
+                if (getResult.Items.Count == 0)
                 {
                     break;
                 }
 
-                query.Skip = added.Count;
+                foreach (var item in getResult.Items)
+                {
+                    await callback(item);
+                }
+
+                query.Skip += getResult.Items.Count;
             }
-            while (!ct.IsCancellationRequested);
         }
 
         public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
