@@ -513,7 +513,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The translation request.</param>
         /// <returns>Text translated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<TranslationDto> GetLanguagesAsync(string app, TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(string app, TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
@@ -549,7 +549,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The translation request.</param>
         /// <returns>Text translated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<TranslationDto> GetLanguagesAsync(string app, TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(string app, TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -1295,7 +1295,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="query">The search query.</param>
         /// <returns>Search results returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSchemasAsync(string app, string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSearchResultsAsync(string app, string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
@@ -1331,7 +1331,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="query">The search query.</param>
         /// <returns>Search results returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSchemasAsync(string app, string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSearchResultsAsync(string app, string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -9549,9 +9549,10 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="keepformat">True to not use JPEG encoding when quality is set and the image is not a JPEG. Default: false.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get the asset content.</summary>
@@ -9568,10 +9569,11 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="keepformat">True to not use JPEG encoding when quality is set and the image is not a JPEG. Default: false.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         [System.Obsolete]
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get asset folders.</summary>
@@ -9640,9 +9642,11 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="id">The optional custom asset id.</param>
+        /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
@@ -9739,9 +9743,10 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="keepformat">True to not use JPEG encoding when quality is set and the image is not a JPEG. Default: false.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -9804,6 +9809,10 @@ namespace Squidex.ClientLibrary.Management
             if (force != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("force") + "=").Append(System.Uri.EscapeDataString(ConvertToString(force, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (format != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -9893,10 +9902,11 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="keepformat">True to not use JPEG encoding when quality is set and the image is not a JPEG. Default: false.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         [System.Obsolete]
-        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -9951,6 +9961,10 @@ namespace Squidex.ClientLibrary.Management
             if (force != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("force") + "=").Append(System.Uri.EscapeDataString(ConvertToString(force, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (format != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("format") + "=").Append(System.Uri.EscapeDataString(ConvertToString(format, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -10720,9 +10734,11 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Upload a new asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="id">The optional custom asset id.</param>
+        /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10733,6 +10749,14 @@ namespace Squidex.ClientLibrary.Management
             if (parentId != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (id != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (duplicate != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -17650,6 +17674,26 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.26.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum ImageFormat
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Auto")]
+        Auto = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"PNG")]
+        PNG = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"JPEG")]
+        JPEG = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"TGA")]
+        TGA = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"GIF")]
+        GIF = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.26.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AssetsDto : Resource
     {
         /// <summary>The total number of assets.</summary>
@@ -18184,6 +18228,11 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
     
+        /// <summary>Associated list of UI properties.</summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, object> Properties { get; set; } = new System.Collections.Generic.Dictionary<string, object>();
+    
     
     }
     
@@ -18205,6 +18254,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
+    
+        /// <summary>Associated list of UI properties.</summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, object> Properties { get; set; }
     
     
     }
@@ -18248,6 +18301,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Indicates if the user can access the api.</summary>
         [Newtonsoft.Json.JsonProperty("canAccessApi", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Usage role properties")]
         public bool CanAccessApi { get; set; }
     
         /// <summary>Indicates if the user can access at least one content.</summary>
@@ -18261,6 +18315,11 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Gets the next plan name.</summary>
         [Newtonsoft.Json.JsonProperty("planUpgrade", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PlanUpgrade { get; set; }
+    
+        /// <summary>The properties from the role.</summary>
+        [Newtonsoft.Json.JsonProperty("roleProperties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, object> RoleProperties { get; set; } = new System.Collections.Generic.Dictionary<string, object>();
     
     
     }
