@@ -98,5 +98,5 @@ jobs:
     - name: release
       uses: fnkr/github-action-ghr@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.token }}
+        GITHUB_TOKEN: ${{ secrets.project }}
         GHR_PATH: 'cli/Squidex.CLI/Squidex.CLI/bin/Release/out/'

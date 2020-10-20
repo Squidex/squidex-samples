@@ -24,7 +24,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             var totalRead = 0;
             var currentPage = 0L;
 
-            var handled = new HashSet<Guid>();
+            var handled = new HashSet<string>();
 
             using (var logLine = log.WriteSameLine())
             {

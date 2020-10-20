@@ -16,40 +16,48 @@ namespace Squidex.ClientLibrary
     {
         string SchemaName { get; }
 
-        Task<TEntity> ChangeStatusAsync(Guid id, string status, CancellationToken ct = default);
+        Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default);
+
+        Task<TEntity> CreateAsync(TData data, string id, bool publish = false, CancellationToken ct = default);
+
+        Task<TEntity> CreateDraftAsync(string id, CancellationToken ct = default);
+
+        Task<TEntity> CreateDraftAsync(TEntity entity, CancellationToken ct = default);
+
+        Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default);
 
         Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default);
 
-        Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default);
+        Task<TEntity> PatchAsync<TPatch>(string id, TPatch patch, CancellationToken ct = default);
 
-        Task<TEntity> CreateDraftAsync(Guid id, CancellationToken ct = default);
+        Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default);
 
-        Task<TEntity> DeleteDraftAsync(Guid id, CancellationToken ct = default);
+        Task<TEntity> UpsertAsync(string id, TData data, bool publish = false, CancellationToken ct = default);
 
-        Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default);
+        Task<TEntity> UpdateAsync(string id, TData data, CancellationToken ct = default);
 
-        Task DeleteAsync(Guid id, CancellationToken ct = default);
+        Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default);
+
+        Task DeleteAsync(string id, CancellationToken ct = default);
 
         Task DeleteAsync(TEntity entity, CancellationToken ct = default);
 
+        Task<TEntity> DeleteDraftAsync(string id, CancellationToken ct = default);
+
+        Task<TEntity> DeleteDraftAsync(TEntity entity, CancellationToken ct = default);
+
         Task<List<BulkResult>> BulkUpdateAsync(BulkUpdate update, CancellationToken ct = default);
+
+        Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default);
+
+        Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default);
 
         Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
 
-        Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<Guid> ids, QueryContext context = null, CancellationToken ct = default);
-
-        Task<TEntity> GetAsync(Guid id, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext context = null, CancellationToken ct = default);
 
         Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
 
         Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
-
-        Task<TEntity> PatchAsync<TPatch>(Guid id, TPatch patch, CancellationToken ct = default);
-
-        Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default);
-
-        Task<TEntity> UpdateAsync(Guid id, TData data, bool asDraft = false, CancellationToken ct = default);
-
-        Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default);
     }
 }

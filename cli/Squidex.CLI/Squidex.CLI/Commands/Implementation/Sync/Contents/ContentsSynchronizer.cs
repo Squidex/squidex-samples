@@ -68,12 +68,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             {
                 await log.DoSafeLineAsync($"Schema {schema}: Resolving references", () =>
                 {
+                    group.ClearLanguages(options);
+
                     return group.ResolveReferencesAsync(session, log, cache);
                 });
 
                 await log.DoSafeLineAsync($"Schema {schema}: Inserting", () =>
                 {
-                    return group.UpsertAsync(session, log, cache);
+                    return group.UpsertAsync(session, log);
                 });
             }
         }
@@ -123,17 +125,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                             Op = "eq",
                             Value = 1
                         }),
-                        Data = JObject.FromObject(new
+                        Data = new Dictionary<string, Dictionary<string, JToken>>
                         {
-                            id = new
+                            ["id"] = new Dictionary<string, JToken>
                             {
-                                iv = 1
+                                ["iv"] = 1
                             },
-                            text = new
+                            ["text"] = new Dictionary<string, JToken>
                             {
-                                iv = "Hello Squidex"
+                                ["iv"] = "Hello Squidex"
                             }
-                        })
+                        }
                     }
                 }
             };

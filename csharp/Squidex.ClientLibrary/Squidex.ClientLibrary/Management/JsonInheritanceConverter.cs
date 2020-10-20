@@ -98,8 +98,7 @@ namespace Squidex.ClientLibrary.Management
 
             var subtype = GetObjectSubtype(objectType, discriminator);
 
-            var objectContract = serializer.ContractResolver.ResolveContract(subtype) as JsonObjectContract;
-            if (objectContract == null || objectContract.Properties.All(p => p.PropertyName != DiscriminatorName))
+            if (!(serializer.ContractResolver.ResolveContract(subtype) is JsonObjectContract objectContract) || objectContract.Properties.All(p => p.PropertyName != DiscriminatorName))
             {
                 jObject.Remove(DiscriminatorName);
             }

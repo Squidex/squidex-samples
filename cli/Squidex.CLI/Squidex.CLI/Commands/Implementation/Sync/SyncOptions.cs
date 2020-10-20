@@ -11,6 +11,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
     {
         public string[] Targets { get; set; }
 
+        public string[] Languages { get; set; }
+
         public bool NoDeletion { get; set; }
     }
 }

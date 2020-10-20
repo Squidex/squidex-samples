@@ -43,10 +43,10 @@ namespace Squidex.ClientLibrary
             return response.Data;
         }
 
-        public Task<SquidexEntities<TEntity, TData>> GetAsync(HashSet<Guid> ids, QueryContext context = null, CancellationToken ct = default)
+        public Task<SquidexEntities<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(ids, nameof(ids));
-            Guard.NotEmpty(ids, nameof(ids));
+            Guard.NotNullOrEmpty(ids, nameof(ids));
 
             var q = $"?ids={string.Join(",", ids)}";
 
@@ -58,13 +58,6 @@ namespace Squidex.ClientLibrary
             var q = query?.ToQuery(true) ?? string.Empty;
 
             return RequestJsonAsync<SquidexEntities<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl(q), null, context, ct);
-        }
-
-        public Task<TEntity> GetAsync(Guid id, QueryContext context = null, CancellationToken ct = default)
-        {
-            Guard.NotEmpty(id, nameof(id));
-
-            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/"), null, context, ct);
         }
 
         public Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default)

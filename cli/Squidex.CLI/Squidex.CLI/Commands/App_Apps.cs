@@ -7,6 +7,9 @@
 
 using System.Threading.Tasks;
 using CommandDotNet;
+using ConsoleTables;
+using FluentValidation;
+using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
@@ -27,6 +30,30 @@ namespace Squidex.CLI.Commands
                 this.configuration = configuration;
 
                 this.log = log;
+            }
+
+            [Command(Name = "list", Description = "List all schemas.")]
+            public async Task List(ListArguments arguments)
+            {
+                var session = configuration.StartSession();
+
+                var apps = await session.Apps.GetAppsAsync();
+
+                if (arguments.Table)
+                {
+                    var table = new ConsoleTable("Id", "Name", "LastUpdate");
+
+                    foreach (var app in apps)
+                    {
+                        table.AddRow(app.Id, app.Name, app.LastModified);
+                    }
+
+                    table.Write(Format.Default);
+                }
+                else
+                {
+                    log.WriteLine(apps.JsonPrettyString());
+                }
             }
 
             [Command(Name = "create", Description = "Creates a squidex app.")]
@@ -51,10 +78,26 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> App created.");
             }
 
+            [Validator(typeof(Validator))]
+            public sealed class ListArguments : IArgumentModel
+            {
+                [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
+                public bool Table { get; set; }
+
+                public sealed class Validator : AbstractValidator<ListArguments>
+                {
+                }
+            }
+
+            [Validator(typeof(Validator))]
             public sealed class CreateArguments : IArgumentModel
             {
                 [Operand(Name = "name", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
                 public string Name { get; set; }
+
+                public sealed class Validator : AbstractValidator<ListArguments>
+                {
+                }
             }
         }
     }

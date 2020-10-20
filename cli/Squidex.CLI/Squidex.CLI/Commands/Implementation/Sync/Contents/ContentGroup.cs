@@ -40,6 +40,40 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
+        public void ClearLanguages(SyncOptions options)
+        {
+            if (options.Languages?.Length > 0)
+            {
+                var allowedLanguages = options.Languages.ToHashSet();
+
+                var toClear = new List<string>();
+
+                foreach (var content in Contents)
+                {
+                    foreach (var field in content.Data.Values)
+                    {
+                        foreach (var language in field.Keys)
+                        {
+                            if (language != "iv" && !allowedLanguages.Contains(language))
+                            {
+                                toClear.Add(language);
+                            }
+                        }
+
+                        if (toClear.Count > 0)
+                        {
+                            foreach (var language in toClear)
+                            {
+                                field.Remove(language);
+                            }
+
+                            toClear.Clear();
+                        }
+                    }
+                }
+            }
+        }
+
         public async Task ResolveReferencesAsync(ISession session, ILogger log, ReferenceCache cache)
         {
             foreach (var content in Contents.ToList())
@@ -51,7 +85,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        public async Task UpsertAsync(ISession session, ILogger log, ReferenceCache cache)
+        public async Task UpsertAsync(ISession session, ILogger log)
         {
             var client = session.Contents(SchemaName);
 
@@ -89,7 +123,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
         private async Task ResolveContentAsync(ContentModel content, ISession session, ILogger log, ReferenceCache cache)
         {
-            var resolvedReferences = new Dictionary<string, Guid>();
+            var resolvedReferences = new Dictionary<string, string>();
 
             foreach (var (key, value) in content.References.ToList())
             {
@@ -134,10 +168,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 }
             }
 
-            UpdateData(content.Data, resolvedReferences);
+            foreach (var field in content.Data.Values)
+            {
+                foreach (var value in field.Values)
+                {
+                    UpdateData(value, resolvedReferences);
+                }
+            }
         }
 
-        private void UpdateData(JToken data, Dictionary<string, Guid> resolvedReferences)
+        private void UpdateData(JToken data, Dictionary<string, string> resolvedReferences)
         {
             if (data is JArray array)
             {

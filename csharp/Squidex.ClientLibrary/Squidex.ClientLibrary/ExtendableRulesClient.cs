@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,31 +31,31 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Post, BuildUrl(), request.ToContent(), ct: ct);
         }
 
-        public Task<ExtendableRuleDto> UpdateRuleAsync(Guid id, UpdateExtendableRuleDto request, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> UpdateRuleAsync(string id, UpdateExtendableRuleDto request, CancellationToken ct = default)
         {
-            Guard.NotEmpty(id, nameof(id));
+            Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(request, nameof(request));
 
             return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(), ct: ct);
         }
 
-        public Task<ExtendableRuleDto> EnableRuleAsync(Guid id, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> EnableRuleAsync(string id, CancellationToken ct = default)
         {
-            Guard.NotEmpty(id, nameof(id));
+            Guard.NotNullOrEmpty(id, nameof(id));
 
             return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/enable"), ct: ct);
         }
 
-        public Task<ExtendableRuleDto> DisableRuleAsync(Guid id, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> DisableRuleAsync(string id, CancellationToken ct = default)
         {
-            Guard.NotEmpty(id, nameof(id));
+            Guard.NotNullOrEmpty(id, nameof(id));
 
             return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/disable"), ct: ct);
         }
 
-        public Task DeleteRuleAsync(Guid id, CancellationToken ct = default)
+        public Task DeleteRuleAsync(string id, CancellationToken ct = default)
         {
-            Guard.NotEmpty(id, nameof(id));
+            Guard.NotNullOrEmpty(id, nameof(id));
 
             return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}/"), ct: ct);
         }

@@ -50,7 +50,7 @@ namespace Squidex.ClientLibrary.Management
 
     public class AssetQuery
     {
-        public List<Guid> Ids { get; set; }
+        public List<string> Ids { get; set; }
 
         public object Query { get; set; }
 
@@ -62,7 +62,7 @@ namespace Squidex.ClientLibrary.Management
 
         public string Filter { get; set; }
 
-        public Guid? ParentId { get; set; }
+        public string ParentId { get; set; }
 
         public string ToQueryJson()
         {
@@ -128,7 +128,7 @@ namespace Squidex.ClientLibrary.Management
         public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default)
         {
             var query = new AssetQuery { Top = batchSize, Skip = 0 };
-            var added = new HashSet<Guid>();
+            var added = new HashSet<string>();
             do
             {
                 var isAnyAdded = false;
