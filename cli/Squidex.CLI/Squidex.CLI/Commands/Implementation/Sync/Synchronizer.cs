@@ -123,9 +123,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         private List<ISynchronizer> GetSynchronizers(string[] targets = null)
         {
-            var names = new HashSet<string>(targets ?? Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase);
+            var selected = synchronizers;
 
-            return synchronizers.Where(x => names.Count == 0 || names.Contains(x.Name)).OrderBy(x => x.Order).ToList();
+            if (targets?.Length > 0)
+            {
+                selected = selected.Where(x => targets.Contains(x.Name, StringComparer.OrdinalIgnoreCase));
+            }
+
+            return selected.OrderBy(x => x.Order).ToList();
         }
     }
 }

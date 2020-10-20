@@ -59,11 +59,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
         }
 
-        internal sealed class JsonSchemaIdConverter : JsonConverter<Guid>
+        internal sealed class JsonSchemaIdConverter : JsonConverter<string>
         {
-            public Dictionary<string, Guid> SchemaMap { get; set; } = new Dictionary<string, Guid>();
+            public Dictionary<string, string> SchemaMap { get; set; } = new Dictionary<string, string>();
 
-            public override Guid ReadJson(JsonReader reader, Type objectType, Guid existingValue, bool hasExistingValue, JsonSerializer serializer)
+            public override string ReadJson(JsonReader reader, Type objectType, string existingValue, bool hasExistingValue, JsonSerializer serializer)
             {
                 if (reader.TokenType != JsonToken.String)
                 {
@@ -80,7 +80,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 return id;
             }
 
-            public override void WriteJson(JsonWriter writer, Guid value, JsonSerializer serializer)
+            public override void WriteJson(JsonWriter writer, string value, JsonSerializer serializer)
             {
                 var schemaName = SchemaMap.FirstOrDefault(x => x.Value == value).Key;
 
@@ -95,7 +95,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        public void SetSchemaMap(Dictionary<string, Guid> schemas)
+        public void SetSchemaMap(Dictionary<string, string> schemas)
         {
             schemaIdConverter.SchemaMap = schemas;
         }

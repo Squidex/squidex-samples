@@ -15,16 +15,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public sealed class ContentModel
     {
-        [Required]
-        public string Schema { get; set; }
-
-        [Required]
-        public JObject Data { get; set; }
-
-        public JObject Filter { get; set; }
-
-        public Dictionary<string, ContentReference> References { get; set; }
-
         [JsonSchemaIgnore]
         [JsonIgnore]
         public string File { get; set; }
@@ -32,5 +22,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         [JsonSchemaIgnore]
         [JsonIgnore]
         public string Ref { get; set; }
+
+        [Required]
+        public string Schema { get; set; }
+
+        [Required]
+        public Dictionary<string, Dictionary<string, JToken>> Data { get; set; }
+
+        public Dictionary<string, ContentReference> References { get; set; }
+
+        public JObject Filter { get; set; }
     }
 }

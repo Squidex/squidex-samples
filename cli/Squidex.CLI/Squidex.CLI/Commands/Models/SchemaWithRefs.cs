@@ -17,7 +17,7 @@ namespace Squidex.CLI.Commands.Models
     {
         public T Schema { get; set; }
 
-        public Dictionary<Guid, string> ReferencedSchemas { get; set; }
+        public Dictionary<string, string> ReferencedSchemas { get; set; }
 
         public SchemaWithRefs()
         {
@@ -27,7 +27,7 @@ namespace Squidex.CLI.Commands.Models
         {
             Schema = schema;
 
-            ReferencedSchemas = new Dictionary<Guid, string>();
+            ReferencedSchemas = new Dictionary<string, string>();
         }
 
         public static SchemaWithRefs<T> Parse(string json)
