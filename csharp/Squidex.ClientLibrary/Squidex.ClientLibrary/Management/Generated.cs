@@ -9677,9 +9677,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Delete an asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset to delete.</param>
+        /// <param name="checkReferrers">True to check referrers of this asset.</param>
         /// <returns>Asset deleted.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Replace asset content.</summary>
@@ -11154,9 +11155,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Delete an asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset to delete.</param>
+        /// <param name="checkReferrers">True to check referrers of this asset.</param>
         /// <returns>Asset deleted.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11165,9 +11167,14 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}");
+            urlBuilder_.Append("apps/{app}/assets/{id}?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            if (checkReferrers != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("checkReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -11600,6 +11607,13 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>User assigned to app.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> PostContributorAsync(string app, AssignContributorDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Remove yourself.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>User removed from app.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Remove contributor.</summary>
@@ -12380,6 +12394,93 @@ namespace Squidex.ClientLibrary.Management
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Remove yourself.</summary>
+        /// <param name="app">The name of the app.</param>
+        /// <returns>User removed from app.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/contributors/me");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Contributor or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15464,6 +15565,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsRequired { get; set; }
     
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
         /// <summary>Optional url to the editor.</summary>
         [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string EditorUrl { get; set; }
@@ -16614,6 +16719,14 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
         public string Hints { get; set; }
     
+        /// <summary>The url to a the sidebar plugin for content lists.</summary>
+        [Newtonsoft.Json.JsonProperty("contentsSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentsSidebarUrl { get; set; }
+    
+        /// <summary>The url to a the sidebar plugin for content items.</summary>
+        [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentSidebarUrl { get; set; }
+    
         /// <summary>Tags for automation processes.</summary>
         [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Tags { get; set; }
@@ -16821,6 +16934,14 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
         public string Hints { get; set; }
     
+        /// <summary>The url to a the sidebar plugin for content lists.</summary>
+        [Newtonsoft.Json.JsonProperty("contentsSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentsSidebarUrl { get; set; }
+    
+        /// <summary>The url to a the sidebar plugin for content items.</summary>
+        [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentSidebarUrl { get; set; }
+    
         /// <summary>Tags for automation processes.</summary>
         [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Tags { get; set; }
@@ -16924,6 +17045,10 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string Display { get; set; }
     
+        /// <summary>The options, if the editor is a dropdown.</summary>
+        [Newtonsoft.Json.JsonProperty("options", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Options { get; set; }
+    
         /// <summary>The optional description.</summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
@@ -16945,23 +17070,26 @@ namespace Squidex.ClientLibrary.Management
         [System.Runtime.Serialization.EnumMember(Value = @"Checkbox")]
         Checkbox = 0,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
+        Dropdown = 1,
+    
         [System.Runtime.Serialization.EnumMember(Value = @"Email")]
-        Email = 1,
+        Email = 2,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Number")]
-        Number = 2,
+        Number = 3,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Password")]
-        Password = 3,
+        Password = 4,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Text")]
-        Text = 4,
+        Text = 5,
     
         [System.Runtime.Serialization.EnumMember(Value = @"TextArea")]
-        TextArea = 5,
+        TextArea = 6,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Url")]
-        Url = 6,
+        Url = 7,
     
     }
     
@@ -17145,6 +17273,7 @@ namespace Squidex.ClientLibrary.Management
     [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
     [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchRuleActionDto))]
     [JsonInheritanceAttribute("Discourse", typeof(DiscourseRuleActionDto))]
+    [JsonInheritanceAttribute("CreateContent", typeof(CreateContentRuleActionDto))]
     [JsonInheritanceAttribute("Comment", typeof(CommentRuleActionDto))]
     [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueRuleActionDto))]
     [JsonInheritanceAttribute("Algolia", typeof(AlgoliaRuleActionDto))]
@@ -18481,14 +18610,42 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public System.Uri Url { get; set; }
     
-        /// <summary>The shared secret that is used to calculate the signature.</summary>
-        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SharedSecret { get; set; }
+        /// <summary>The type of the request.</summary>
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public WebhookMethod Method { get; set; }
     
         /// <summary>Leave it empty to use the full event as body.</summary>
         [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Payload { get; set; }
     
+        /// <summary>The mime type of the payload.</summary>
+        [Newtonsoft.Json.JsonProperty("payloadType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PayloadType { get; set; }
+    
+        /// <summary>The message headers in the format '[Key]=[Value]', one entry per line.</summary>
+        [Newtonsoft.Json.JsonProperty("headers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Headers { get; set; }
+    
+        /// <summary>The shared secret that is used to calculate the payload signature.</summary>
+        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SharedSecret { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.26.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum WebhookMethod
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"POST")]
+        POST = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"PUT")]
+        PUT = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"GET")]
+        GET = 2,
     
     }
     
@@ -18737,6 +18894,30 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The optional category id.</summary>
         [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? Category { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.26.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CreateContentRuleActionDto : RuleAction
+    {
+        /// <summary>The content data.</summary>
+        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Data { get; set; }
+    
+        /// <summary>The name of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("schema", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Schema { get; set; }
+    
+        /// <summary>An optional client name.</summary>
+        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Client { get; set; }
+    
+        /// <summary>Publish the content.</summary>
+        [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Publish { get; set; }
     
     
     }
