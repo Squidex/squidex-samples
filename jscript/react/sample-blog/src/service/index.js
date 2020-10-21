@@ -77,14 +77,16 @@ export async function fetchBearerToken() {
         return token;
     }
 
-    const body = new FormData();
-    body.set('grant_type', 'client_credentials');
-    body.set('client_id', CONFIG.clientId);
-    body.set('client_secret', CONFIG.clientSecret);
-    body.set('scope', 'squidex-api');
+    const body = `grant_type=client_credentials&scope=squidex-api&client_id=${CONFIG.clientId}&client_secret=${CONFIG.clientSecret}`;
 
     // Get the bearer token. Ensure that we use a client id with readonly permissions.
-    const response = await fetch(buildUrl('identity-server/connect/token'), { method: 'POST', body });
+    const response = await fetch(buildUrl('identity-server/connect/token'), { 
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body 
+    });
 
     if (!response.ok) {
         throw new Error(`Failed to retrieve token, got ${response.statusText}`);

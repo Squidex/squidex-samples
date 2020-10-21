@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -48,14 +48,14 @@ export class AuthInterceptor implements HttpInterceptor {
             return of(cachedToken);
         }
 
-        const body = new FormData();
-        body.set('grant_type', 'client_credentials');
-        body.set('client_id', this.config.clientId);
-        body.set('client_secret', this.config.clientSecret);
-        body.set('scope', 'squidex-api');
+        // tslint:disable-next-line: max-line-length
+        const body = `grant_type=client_credentials&scope=squidex-api&client_id=${this.config.clientId}&client_secret=${this.config.clientSecret}`;
 
         const tokenRequest = new HttpRequest('POST', this.config.buildUrl('identity-server/connect/token'), body, {
-            responseType: 'json'
+            responseType: 'json',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
         });
 
         return next.handle(tokenRequest).pipe(
