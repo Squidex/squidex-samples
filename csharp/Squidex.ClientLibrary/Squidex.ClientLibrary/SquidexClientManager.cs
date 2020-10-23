@@ -167,14 +167,18 @@ namespace Squidex.ClientLibrary
         {
             var url = new Uri(new Uri(Options.Url, UriKind.Absolute), "/api/");
 
-            HttpClientHandler handler;
-
-            handler = new AuthenticatingHttpClientHandler(Options.Authenticator);
-            handler = Options.ClientFactory.CreateHttpClientHandler(handler);
+            var handler = new HttpClientHandler();
 
             Options.Configurator.Configure(handler);
 
-            var httpClient = Options.ClientFactory.CreateHttpClient();
+            HttpMessageHandler messageHandler = new AuthenticatingHttpMessageHandler(Options.Authenticator)
+            {
+                InnerHandler = handler
+            };
+
+            messageHandler = Options.ClientFactory.CreateHttpMessageHandler(messageHandler);
+
+            var httpClient = Options.ClientFactory.CreateHttpClient(messageHandler);
 
             if (httpClient == null)
             {

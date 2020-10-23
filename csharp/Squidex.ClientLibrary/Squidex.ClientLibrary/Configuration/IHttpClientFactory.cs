@@ -11,8 +11,8 @@ namespace Squidex.ClientLibrary.Configuration
 {
     public interface IHttpClientFactory
     {
-        HttpClient CreateHttpClient();
+        HttpClient CreateHttpClient(HttpMessageHandler messageHandler);
 
-        HttpClientHandler CreateHttpClientHandler(HttpClientHandler inner);
+        HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner);
     }
 }

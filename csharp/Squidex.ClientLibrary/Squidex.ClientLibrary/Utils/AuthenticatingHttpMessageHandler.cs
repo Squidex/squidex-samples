@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    public sealed class AuthenticatingHttpClientHandler : HttpClientHandler
+    public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
     {
         private readonly IAuthenticator authenticator;
 
-        public AuthenticatingHttpClientHandler(IAuthenticator authenticator)
+        public AuthenticatingHttpMessageHandler(IAuthenticator authenticator)
         {
             this.authenticator = authenticator;
         }

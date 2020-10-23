@@ -25,12 +25,12 @@ namespace Squidex.ClientLibrary.Configuration
         {
         }
 
-        public HttpClient CreateHttpClient()
+        public HttpClient CreateHttpClient(HttpMessageHandler messageHandler)
         {
             return null;
         }
 
-        public HttpClientHandler CreateHttpClientHandler(HttpClientHandler inner)
+        public HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner)
         {
             return inner;
         }
