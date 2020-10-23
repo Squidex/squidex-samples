@@ -9,7 +9,7 @@ using System.Net.Http;
 
 namespace Squidex.ClientLibrary.Configuration
 {
-    public sealed class NoopHttpConfigurator : IHttpConfigurator
+    public sealed class NoopHttpConfigurator : IHttpConfigurator, IHttpClientFactory
     {
         public static readonly NoopHttpConfigurator Instance = new NoopHttpConfigurator();
 
@@ -23,6 +23,16 @@ namespace Squidex.ClientLibrary.Configuration
 
         public void Configure(HttpClientHandler httpClientHandler)
         {
+        }
+
+        public HttpClient CreateHttpClient()
+        {
+            return null;
+        }
+
+        public HttpClientHandler CreateHttpClientHandler(HttpClientHandler inner)
+        {
+            return inner;
         }
     }
 }

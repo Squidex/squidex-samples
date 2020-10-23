@@ -23,6 +23,7 @@ namespace Squidex.ClientLibrary
         private bool readResponseAsString;
         private IAuthenticator authenticator;
         private IHttpConfigurator configurator;
+        private IHttpClientFactory clientFactory;
         private bool isFrozen;
 
         public string Url { get => url; set => url = value; }
@@ -140,6 +141,20 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        public IHttpClientFactory ClientFactory
+        {
+            get
+            {
+                return clientFactory;
+            }
+            set
+            {
+                ThrowIfFrozen();
+
+                clientFactory = value;
+            }
+        }
+
         private void ThrowIfFrozen()
         {
             if (isFrozen)
@@ -204,6 +219,11 @@ namespace Squidex.ClientLibrary
             if (configurator == null)
             {
                 configurator = NoopHttpConfigurator.Instance;
+            }
+
+            if (clientFactory == null)
+            {
+                clientFactory = NoopHttpConfigurator.Instance;
             }
 
             isFrozen = true;
