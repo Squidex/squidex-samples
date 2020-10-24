@@ -167,6 +167,24 @@ namespace Squidex.ClientLibrary
         {
             var url = new Uri(new Uri(Options.Url, UriKind.Absolute), "/api/");
 
+            var messageHandler = CreateHttpMessageHandler();
+
+            var httpClient = Options.ClientFactory.CreateHttpClient(messageHandler);
+
+            if (httpClient == null)
+            {
+                httpClient = new HttpClient(messageHandler, false);
+            }
+
+            httpClient.BaseAddress = url;
+
+            Options.Configurator.Configure(httpClient);
+
+            return httpClient;
+        }
+
+        private HttpMessageHandler CreateHttpMessageHandler()
+        {
             var handler = new HttpClientHandler();
 
             Options.Configurator.Configure(handler);
@@ -176,21 +194,7 @@ namespace Squidex.ClientLibrary
                 InnerHandler = handler
             };
 
-            messageHandler = Options.ClientFactory.CreateHttpMessageHandler(messageHandler);
-
-            var httpClient = Options.ClientFactory.CreateHttpClient(messageHandler);
-
-            if (httpClient == null)
-            {
-                httpClient = new HttpClient(handler, false)
-                {
-                    BaseAddress = url
-                };
-            }
-
-            Options.Configurator.Configure(httpClient);
-
-            return httpClient;
+            return Options.ClientFactory.CreateHttpMessageHandler(messageHandler) ?? messageHandler;
         }
     }
 }
