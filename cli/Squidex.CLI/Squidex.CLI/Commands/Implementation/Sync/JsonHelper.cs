@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -22,7 +21,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         private readonly JsonSchemaGeneratorSettings jsonSchemaGeneratorSettings;
         private readonly JsonSerializerSettings jsonSerializerSettings;
         private readonly JsonSerializer jsonSerializer;
-        private readonly JsonSchemaIdConverter schemaIdConverter = new JsonSchemaIdConverter();
 
         internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
         {
@@ -43,7 +41,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
             };
 
-            jsonSerializerSettings.Converters.Add(schemaIdConverter);
             jsonSerializerSettings.Formatting = Formatting.Indented;
 
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
@@ -57,47 +54,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             jsonSchemaGeneratorSettings.SchemaProcessors.Add(new GuidFixProcessor());
 
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
-        }
-
-        internal sealed class JsonSchemaIdConverter : JsonConverter<string>
-        {
-            public Dictionary<string, string> SchemaMap { get; set; } = new Dictionary<string, string>();
-
-            public override string ReadJson(JsonReader reader, Type objectType, string existingValue, bool hasExistingValue, JsonSerializer serializer)
-            {
-                if (reader.TokenType != JsonToken.String)
-                {
-                    throw new JsonException("Expected string.");
-                }
-
-                var value = (string)reader.Value;
-
-                if (!SchemaMap.TryGetValue(value, out var id))
-                {
-                    throw new JsonException($"Schema {value} not found.");
-                }
-
-                return id;
-            }
-
-            public override void WriteJson(JsonWriter writer, string value, JsonSerializer serializer)
-            {
-                var schemaName = SchemaMap.FirstOrDefault(x => x.Value == value).Key;
-
-                if (string.IsNullOrWhiteSpace(schemaName))
-                {
-                    writer.WriteValue("<NOT FOUND>");
-                }
-                else
-                {
-                    writer.WriteValue(schemaName);
-                }
-            }
-        }
-
-        public void SetSchemaMap(Dictionary<string, string> schemas)
-        {
-            schemaIdConverter.SchemaMap = schemas;
         }
 
         public T Read<T>(FileInfo file, ILogger log)

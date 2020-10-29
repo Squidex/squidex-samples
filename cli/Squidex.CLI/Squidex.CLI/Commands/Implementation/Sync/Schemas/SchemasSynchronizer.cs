@@ -31,9 +31,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         {
             var current = await session.Schemas.GetSchemasAsync(session.App);
 
-            var schemaMap = current.Items.ToDictionary(x => x.Name, x => x.Id);
-
-            jsonHelper.SetSchemaMap(schemaMap);
+            var schemaMap = current.Items.ToDictionary(x => x.Id, x => x.Name);
 
             foreach (var schema in current.Items.OrderBy(x => x.Name))
             {
@@ -47,6 +45,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     };
 
                     model.Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details);
+
+                    MapReferences(model.Schema, schemaMap);
 
                     await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, "../__json/schema");
                 });
@@ -104,7 +104,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 });
             }
 
-            jsonHelper.SetSchemaMap(schemasByName.ToDictionary(x => x.Key, x => x.Value.Id));
+            var schemaMap = schemasByName.ToDictionary(x => x.Key, x => x.Value.Id);
 
             var newSchemas =
                 GetSchemaFiles(directoryInfo)
@@ -113,6 +113,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
             foreach (var newSchema in newSchemas)
             {
+                MapReferences(newSchema.Schema, schemaMap);
+
                 var version = schemasByName[newSchema.Name].Version;
 
                 await log.DoVersionedAsync($"Schema {newSchema.Name} updating", version, async () =>
@@ -165,6 +167,51 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             };
 
             await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, "../__json/schema");
+        }
+
+        private void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)
+        {
+            if (schema.Fields != null)
+            {
+                foreach (var field in schema.Fields)
+                {
+                    MapReferences(field, map);
+                }
+            }
+        }
+
+        private void MapReferences(UpsertSchemaFieldDto field, Dictionary<string, string> map)
+        {
+            MapReferences(field.Properties, map);
+
+            if (field.Nested != null)
+            {
+                foreach (var nested in field.Nested)
+                {
+                    MapReferences(nested.Properties, map);
+                }
+            }
+        }
+
+        private static void MapReferences(FieldPropertiesDto properties, Dictionary<string, string> map)
+        {
+            if (properties is ReferencesFieldPropertiesDto references)
+            {
+                if (references.SchemaIds != null && references.SchemaIds.Any())
+                {
+                    var names = new List<string>();
+
+                    foreach (var id in references.SchemaIds)
+                    {
+                        if (map.TryGetValue(id, out var target))
+                        {
+                            names.Add(target);
+                        }
+                    }
+
+                    references.SchemaIds = names;
+                }
+            }
         }
     }
 }
