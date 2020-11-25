@@ -14,7 +14,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <ToolCommandName>sq</ToolCommandName>
-    <Version>6.1</Version>
+    <Version>6.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommandDotNet" Version="4.1.3" />

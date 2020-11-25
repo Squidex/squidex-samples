@@ -117,6 +117,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                 var version = schemasByName[newSchema.Name].Version;
 
+                if (options.NoDeletion)
+                {
+                    newSchema.Schema.NoFieldDeletion = true;
+                    newSchema.Schema.NoFieldRecreation = true;
+                }
+
                 await log.DoVersionedAsync($"Schema {newSchema.Name} updating", version, async () =>
                 {
                     var result = await session.Schemas.PutSchemaSyncAsync(session.App, newSchema.Name, newSchema.Schema);
