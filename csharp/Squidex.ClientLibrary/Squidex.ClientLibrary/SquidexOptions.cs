@@ -240,7 +240,7 @@ namespace Squidex.ClientLibrary
 
             if (httpClientTimeOut == TimeSpan.Zero)
             {
-                httpClientTimeOut = TimeSpan.FromMinutes(2);
+                httpClientTimeOut = TimeSpan.FromSeconds(100);
             }
 
             isFrozen = true;
