@@ -24,6 +24,7 @@ namespace Squidex.ClientLibrary
         private IAuthenticator authenticator;
         private IHttpConfigurator configurator;
         private IHttpClientFactory clientFactory;
+        private TimeSpan httpClientTimeOut;
         private bool isFrozen;
 
         public string Url { get => url; set => url = value; }
@@ -155,6 +156,17 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        public TimeSpan HttpClientTimeOut
+        {
+            get => httpClientTimeOut;
+            set
+            {
+                ThrowIfFrozen();
+
+                httpClientTimeOut = value;
+            }
+        }
+
         private void ThrowIfFrozen()
         {
             if (isFrozen)
@@ -224,6 +236,11 @@ namespace Squidex.ClientLibrary
             if (clientFactory == null)
             {
                 clientFactory = NoopHttpConfigurator.Instance;
+            }
+
+            if (httpClientTimeOut == TimeSpan.Zero)
+            {
+                httpClientTimeOut = TimeSpan.FromMinutes(2);
             }
 
             isFrozen = true;
