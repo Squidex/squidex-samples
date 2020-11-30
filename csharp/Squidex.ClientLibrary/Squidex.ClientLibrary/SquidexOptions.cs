@@ -26,7 +26,20 @@ namespace Squidex.ClientLibrary
         private IHttpClientFactory clientFactory;
         private bool isFrozen;
 
-        public string Url { get => url; set => url = value; }
+        public string Url
+        {
+            get
+            {
+                return url;
+            }
+
+            set
+            {
+                ThrowIfFrozen();
+
+                url = value;
+            }
+        }
 
         public string AppName
         {
