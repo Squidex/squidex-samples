@@ -178,6 +178,8 @@ namespace Squidex.ClientLibrary
 
             httpClient.BaseAddress = url;
 
+            httpClient.Timeout = Options.HttpClientTimeout;
+
             Options.Configurator.Configure(httpClient);
 
             return httpClient;
