@@ -178,7 +178,7 @@ namespace Squidex.ClientLibrary
 
             httpClient.BaseAddress = url;
 
-            httpClient.Timeout = Options.HttpClientTimeOut;
+            httpClient.Timeout = Options.HttpClientTimeout;
 
             Options.Configurator.Configure(httpClient);
 
