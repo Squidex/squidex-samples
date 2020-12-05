@@ -41,7 +41,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                     var model = new SchemeModel
                     {
-                        Name = schema.Name
+                        Name = schema.Name,
+                        IsSingleton = details.IsSingleton
                     };
 
                     model.Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details);
@@ -57,7 +58,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         {
             var newSchemaNames =
                 GetSchemaFiles(directoryInfo)
-                    .Select(x => jsonHelper.Read<SchemaModelNameOnly>(x, log))
+                    .Select(x => jsonHelper.Read<SchemaCreateModel>(x, log))
                     .ToList();
 
             if (!newSchemaNames.HasDistinctNames(x => x.Name))
@@ -95,7 +96,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 {
                     var request = new CreateSchemaDto
                     {
-                        Name = newSchema.Name
+                        Name = newSchema.Name,
+                        IsSingleton = newSchema.IsSingleton
                     };
 
                     var created = await session.Schemas.PostSchemaAsync(session.App, request);

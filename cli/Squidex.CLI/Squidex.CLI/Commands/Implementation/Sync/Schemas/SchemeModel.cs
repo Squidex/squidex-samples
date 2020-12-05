@@ -13,6 +13,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
     {
         public string Name { get; set; }
 
+        public bool IsSingleton { get; set; }
+
         public SynchronizeSchemaDto Schema { get; set; }
     }
 }
