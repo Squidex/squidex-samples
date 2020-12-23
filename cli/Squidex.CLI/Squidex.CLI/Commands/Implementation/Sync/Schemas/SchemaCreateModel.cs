@@ -7,8 +7,10 @@
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public sealed class SchemaModelNameOnly
+    public sealed class SchemaCreateModel
     {
         public string Name { get; set; }
+
+        public bool IsSingleton { get; set; }
     }
 }
