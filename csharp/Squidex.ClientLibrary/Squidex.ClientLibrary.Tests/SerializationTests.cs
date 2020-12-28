@@ -94,5 +94,18 @@ namespace Squidex.ClientLibrary.Tests
 
             Assert.Contains("2010-12-29T13:32:27Z", serialized);
         }
+
+        [Fact]
+        public void Should_serialize_false()
+        {
+            var source = new BulkUpdate
+            {
+                DoNotScript = false
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"doNotScript\": false", serialized);
+        }
     }
 }
