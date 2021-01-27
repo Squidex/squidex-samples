@@ -26,6 +26,8 @@ namespace Squidex.ClientLibrary
 
         public bool IsNotUsingCDN { get; private set; }
 
+        public bool IsIgnoreFallback { get; private set; }
+
         private QueryContext()
         {
         }
@@ -57,6 +59,11 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(languages, nameof(languages));
 
             return Clone(c => c.Languages = languages);
+        }
+
+        public QueryContext IgnoreFallback(bool value = true)
+        {
+            return Clone(c => c.IsIgnoreFallback = value);
         }
 
         public void AddToHeaders(HttpRequestHeaders headers)
@@ -91,6 +98,11 @@ namespace Squidex.ClientLibrary
                 {
                     headers.TryAddWithoutValidation("X-Resolve-Urls", assetFields);
                 }
+            }
+
+            if (IsIgnoreFallback)
+            {
+                headers.TryAddWithoutValidation("X-NoResolveLanguages", "1");
             }
         }
 
