@@ -11,13 +11,21 @@ using Newtonsoft.Json.Converters;
 
 namespace Squidex.ClientLibrary.Utils
 {
+    /// <summary>
+    /// A Json converter to serialize <see cref="DateTime"/> and <see cref="DateTimeOffset"/>
+    /// values to ISO-8601 compliant strings (yyy-MM-dd'T'HH:mm:ss).
+    /// </summary>
     public sealed class UTCIsoDateTimeConverter : IsoDateTimeConverter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UTCIsoDateTimeConverter"/> class.
+        /// </summary>
         public UTCIsoDateTimeConverter()
         {
             DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ssK";
         }
 
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is DateTime dateTime && dateTime.Kind != DateTimeKind.Utc)
@@ -34,6 +42,7 @@ namespace Squidex.ClientLibrary.Utils
             }
         }
 
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(DateTime) || objectType == typeof(DateTimeOffset);

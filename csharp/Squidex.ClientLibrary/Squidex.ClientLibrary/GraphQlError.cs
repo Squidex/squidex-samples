@@ -9,9 +9,18 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Represents a GraphQL error.
+    /// </summary>
     [Serializable]
     public sealed class GraphQlError
     {
+        /// <summary>
+        /// Gets or sets the GraphQL error message.
+        /// </summary>
+        /// <value>
+        /// The GraphQL error message.
+        /// </value>
         public string Message { get; set; }
     }
 }

@@ -9,6 +9,9 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Represents an job of a bulk operation.
+    /// </summary>
     public class BulkUpdateJob
     {
         /// <summary>

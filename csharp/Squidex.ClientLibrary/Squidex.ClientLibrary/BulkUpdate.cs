@@ -9,6 +9,9 @@ using System.Collections.Generic;
 
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Represents a bulk update.
+    /// </summary>
     public sealed class BulkUpdate
     {
         /// <summary>

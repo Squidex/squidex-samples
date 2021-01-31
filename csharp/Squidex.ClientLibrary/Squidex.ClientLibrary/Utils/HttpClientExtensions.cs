@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 namespace Squidex.ClientLibrary.Utils
 {
     public static class HttpClientExtensions

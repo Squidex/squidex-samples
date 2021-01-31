@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
+    internal sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
     {
         private readonly IAuthenticator authenticator;
 
@@ -22,6 +22,7 @@ namespace Squidex.ClientLibrary.Utils
             this.authenticator = authenticator;
         }
 
+        /// <inheritdoc/>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var token = await authenticator.GetBearerTokenAsync();

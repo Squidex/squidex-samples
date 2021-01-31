@@ -14,6 +14,10 @@ using Newtonsoft.Json.Serialization;
 
 namespace Squidex.ClientLibrary.Management
 {
+    /// <summary>
+    /// A json converter that can handle inheritance.
+    /// </summary>
+    /// <seealso cref="JsonConverter" />
     public class JsonInheritanceConverter : JsonConverter
     {
         [ThreadStatic]
@@ -22,18 +26,33 @@ namespace Squidex.ClientLibrary.Management
         [ThreadStatic]
         private static bool isWriting;
 
+        /// <summary>
+        /// Gets the name of the discriminator property.
+        /// </summary>
+        /// <value>
+        /// The name of the discriminator property.
+        /// </value>
         public string DiscriminatorName { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonInheritanceConverter"/> class.
+        /// </summary>
         public JsonInheritanceConverter()
         {
             DiscriminatorName = "discriminator";
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonInheritanceConverter"/> class with the name.
+        /// of the discriminator property.
+        /// </summary>
+        /// <param name="discriminator">The name of the discriminator property.</param>
         public JsonInheritanceConverter(string discriminator)
         {
             DiscriminatorName = discriminator;
         }
 
+        /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             try
@@ -52,6 +71,7 @@ namespace Squidex.ClientLibrary.Management
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanWrite
         {
             get
@@ -66,6 +86,7 @@ namespace Squidex.ClientLibrary.Management
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanRead
         {
             get
@@ -80,11 +101,13 @@ namespace Squidex.ClientLibrary.Management
             }
         }
 
+        /// <inheritdoc/>
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
+        /// <inheritdoc/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = serializer.Deserialize<JObject>(reader);
@@ -114,6 +137,13 @@ namespace Squidex.ClientLibrary.Management
             }
         }
 
+        /// <summary>
+        /// Gets the discriminator value for the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// The discriminator value for the specified type.
+        /// </returns>
         public string GetDiscriminatorValue(Type type)
         {
             return GetSubtypeDiscriminator(type);

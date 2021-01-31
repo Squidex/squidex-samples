@@ -9,31 +9,51 @@ using System;
 
 namespace Squidex.ClientLibrary
 {
-    public abstract class Content<T> : Resource where T : class, new()
+    /// <summary>
+    /// Represents a content item.
+    /// </summary>
+    /// <typeparam name="T">The type for the data structure.</typeparam>
+    /// <seealso cref="Entity" />
+    public abstract class Content<T> : Entity where T : class, new()
     {
         private const string LinkStart = "/api/content/";
 
         private string status = string.Empty;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this content item is pending.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this content item is pending; otherwise, <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// This property is not supported anymore. A content item is pending when the <see cref="NewStatus"/> property is not null.
+        /// </remarks>
         [Obsolete]
         public bool IsPending { get; set; }
 
-        public string Id { get; set; }
-
+        /// <summary>
+        /// The new status when this content item has an unpublished, new version.
+        /// </summary>
+        /// <value>
+        /// The new status.
+        /// </value>
         public string NewStatus { get; set; }
 
-        public string CreatedBy { get; set; }
-
-        public string LastModifiedBy { get; set; }
-
-        public DateTimeOffset Created { get; set; }
-
-        public DateTimeOffset LastModified { get; set; }
-
-        public int Version { get; set; }
-
+        /// <summary>
+        /// Gets the data of the content item.
+        /// </summary>
+        /// <value>
+        /// The data of the content item. Cannot be replaced.
+        /// </value>
         public T Data { get; } = new T();
 
+        /// <summary>
+        /// Gets the name of the app where this content belongs to.
+        /// </summary>
+        /// <value>
+        /// The name of the app where this content belongs to.
+        /// </value>
         public string AppName
         {
             get
@@ -42,6 +62,12 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the name of the schema where this content belongs to.
+        /// </summary>
+        /// <value>
+        /// The name of the app schema this content belongs to.
+        /// </value>
         public string SchemaName
         {
             get
@@ -50,6 +76,12 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets the status of the content item.
+        /// </summary>
+        /// <value>
+        /// The status of the content item.
+        /// </value>
         public string Status
         {
             get

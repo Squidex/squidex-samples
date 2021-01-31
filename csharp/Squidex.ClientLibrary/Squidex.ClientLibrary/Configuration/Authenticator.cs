@@ -14,6 +14,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Squidex.ClientLibrary.Configuration
 {
+    /// <summary>
+    /// THe default implementation of the <see cref="IAuthenticator"/> interface that makes POST
+    /// requests to retrieve the JWT bearer token from the connect endpoint.
+    /// </summary>
+    /// <seealso cref="IAuthenticator" />
     public class Authenticator : IAuthenticator
     {
         private readonly HttpClient httpClient = new HttpClient();
@@ -21,11 +26,34 @@ namespace Squidex.ClientLibrary.Configuration
         private readonly string clientSecret;
         private readonly Uri serviceUrl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authenticator"/> class with the service URL, client identifier and secret.
+        /// </summary>
+        /// <param name="serviceUrl">The service URL. Cannot be null or empty.</param>
+        /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
+        /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="serviceUrl"/> is empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
         public Authenticator(string serviceUrl, string clientId, string clientSecret)
             : this(new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authenticator"/> class with the service URL, client identifier and secret.
+        /// </summary>
+        /// <param name="serviceUrl">The service URL. Cannot be null.</param>
+        /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
+        /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
         public Authenticator(Uri serviceUrl, string clientId, string clientSecret)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
@@ -37,11 +65,13 @@ namespace Squidex.ClientLibrary.Configuration
             this.clientSecret = clientSecret;
         }
 
+        /// <inheritdoc/>
         public Task RemoveTokenAsync(string token)
         {
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
             var url = $"{serviceUrl}identity-server/connect/token";

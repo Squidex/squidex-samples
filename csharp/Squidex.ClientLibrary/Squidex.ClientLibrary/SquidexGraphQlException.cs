@@ -11,6 +11,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 namespace Squidex.ClientLibrary
 {
     [Serializable]
@@ -36,6 +38,7 @@ namespace Squidex.ClientLibrary
             Errors = (List<GraphQlError>)info.GetValue("Errors", typeof(List<GraphQlError>));
         }
 
+        /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Errors", Errors.ToList());

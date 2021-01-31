@@ -12,11 +12,15 @@ using System.Threading.Tasks;
 using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable RECS0096 // Type parameter is never used
+#pragma warning disable SA1629 // Documentation text should end with a period
 
 namespace Squidex.ClientLibrary.Management
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class ErrorDto
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
+        /// <inheritdoc/>
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -40,31 +44,97 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class SquidexManagementException<TResult>
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
+        /// <inheritdoc/>
         public override string ToString()
         {
             return string.Format("{0}\n{1}", Result, base.ToString());
         }
     }
 
+    /// <summary>
+    /// Represents an asset query.
+    /// </summary>
     public class AssetQuery
     {
+        /// <summary>
+        /// Gets or sets the IDs of the assets to retrieve.
+        /// </summary>
+        /// <value>
+        /// The IDs of the assets to retrieve.
+        /// </value>
+        /// <remarks>
+        /// If this option is provided all other properties are ignored.
+        /// </remarks>
         public List<string> Ids { get; set; }
 
+        /// <summary>
+        /// Gets or sets the JSON query.
+        /// </summary>
+        /// <value>
+        /// The JSON query.
+        /// </value>
+        /// <remarks>
+        /// Do not use this property in combination with OData properties.
+        /// </remarks>
         public object Query { get; set; }
 
+        /// <summary>
+        /// Gets or sets the OData argument to define the number of assets to retrieve (<code>$top</code>).
+        /// </summary>
+        /// <value>
+        /// The the number of assets to retrieve.
+        /// </value>
+        /// <remarks>
+        /// Use this property to implement pagination but not in combination with <see cref="Query"/> property.
+        /// </remarks>
         public int? Top { get; set; }
 
+        /// <summary>
+        /// Gets or sets the OData argument to define number of assets to skip (<code>$skip</code>).
+        /// </summary>
+        /// <value>
+        /// The the number of assets to skip.
+        /// </value>
+        /// <remarks>
+        /// Use this property to implement pagination but not in combination with <see cref="Query"/> property.
+        /// </remarks>
         public int? Skip { get; set; }
 
+        /// <summary>
+        /// Gets or sets the OData order argument (<code>$orderby</code>).
+        /// </summary>
+        /// <value>
+        /// The OData order argument.
+        /// </value>
+        /// <remarks>
+        /// Do not use this property in combination with <see cref="Query"/> property.
+        /// </remarks>
         public string OrderBy { get; set; }
 
+        /// <summary>
+        /// Gets or sets the OData filter argument (<code>$filter</code>).
+        /// </summary>
+        /// <value>
+        /// The OData filter argument.
+        /// </value>
+        /// <remarks>
+        /// Do not use this property in combination with <see cref="Query"/> property.
+        /// </remarks>
         public string Filter { get; set; }
 
+        /// <summary>
+        /// Gets or sets the optional folder ID.
+        /// </summary>
+        /// <value>
+        /// The parent optional folder ID.
+        /// </value>
         public string ParentId { get; set; }
 
-        public string ToQueryJson()
+        internal string ToQueryJson()
         {
             if (Query == null)
             {
@@ -74,7 +144,7 @@ namespace Squidex.ClientLibrary.Management
             return Query.ToJson();
         }
 
-        public string ToIdString()
+        internal string ToIdString()
         {
             if (Ids == null)
             {
@@ -85,7 +155,9 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial interface IAssetsClient
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
@@ -105,7 +177,9 @@ namespace Squidex.ClientLibrary.Management
         Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default);
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class AssetsClient
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>

@@ -29,6 +29,9 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\Squidex.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\squidex-tools\samples\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary\Squidex.ClientLibrary.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>

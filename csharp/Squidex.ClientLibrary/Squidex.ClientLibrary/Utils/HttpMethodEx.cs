@@ -9,7 +9,7 @@ using System.Net.Http;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    public static class HttpMethodEx
+    internal static class HttpMethodEx
     {
         public static readonly HttpMethod Patch = new HttpMethod("PATCH");
     }

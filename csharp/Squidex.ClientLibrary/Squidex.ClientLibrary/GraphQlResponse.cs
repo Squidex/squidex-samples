@@ -7,7 +7,7 @@
 
 namespace Squidex.ClientLibrary
 {
-    public sealed class GraphQlResponse<TData>
+    internal sealed class GraphQlResponse<TData>
     {
         public TData Data { get; set; }
 

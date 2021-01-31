@@ -24,3 +24,4 @@ appsettings.Development.json
 appsettings.Production.json
 launchSettings.json
 .idea/
+/csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/Squidex.ClientLibrary.xml

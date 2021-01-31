@@ -18,10 +18,29 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Default implementation of the <see cref="IContentsClient{TEntity, TData}"/> interface.
+    /// </summary>
+    /// <typeparam name="TEntity">The type for the content entity.</typeparam>
+    /// <typeparam name="TData">The type that represents the data structure.</typeparam>
+    /// <seealso cref="SquidexClientBase" />
+    /// <seealso cref="IContentsClient{TEntity, TData}" />
     public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContentsClient<TEntity, TData> where TEntity : Content<TData> where TData : class, new()
     {
+        /// <inheritdoc/>
         public string SchemaName { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentsClient{TEntity, TData}"/> class
+        /// with the name of the schema, the options from the <see cref="SquidexClientManager"/> and the HTTP client.
+        /// </summary>
+        /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
+        /// <param name="schemaName">Name of the schema. Cannot be null or empty.</param>
+        /// <param name="httpClient">The HTTP client. Cannot be null.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
         public ContentsClient(SquidexOptions options, string schemaName, HttpClient httpClient)
             : base(options, httpClient)
         {
@@ -30,6 +49,7 @@ namespace Squidex.ClientLibrary
             SchemaName = schemaName;
         }
 
+        /// <inheritdoc/>
         public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default)
         {
             Guard.NotNull(callback, nameof(callback));
@@ -63,6 +83,7 @@ namespace Squidex.ClientLibrary
             while (!ct.IsCancellationRequested);
         }
 
+        /// <inheritdoc/>
         public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
@@ -79,6 +100,7 @@ namespace Squidex.ClientLibrary
             return response.Data;
         }
 
+        /// <inheritdoc/>
         public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
@@ -93,6 +115,7 @@ namespace Squidex.ClientLibrary
             return response.Data;
         }
 
+        /// <inheritdoc/>
         public Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(ids, nameof(ids));
@@ -103,6 +126,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q, true, context), null, context, ct);
         }
 
+        /// <inheritdoc/>
         public Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;
@@ -110,6 +134,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl(q, true, context), null, context, ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -117,6 +142,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/", true, context), null, context, ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));
@@ -124,6 +150,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"?publish={publish}", false), data.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> CreateAsync(TData data, string id, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));
@@ -131,6 +158,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"?publish={publish}&id={id ?? string.Empty}", false), data.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> CreateDraftAsync(string id, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -138,6 +166,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}/draft", false), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> CreateDraftAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -145,6 +174,7 @@ namespace Squidex.ClientLibrary
             return CreateDraftAsync(entity.Id, ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> DeleteDraftAsync(string id, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -152,6 +182,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildSchemaUrl($"{id}/draft", false), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> DeleteDraftAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -159,6 +190,7 @@ namespace Squidex.ClientLibrary
             return DeleteDraftAsync(entity.Id, ct);
         }
 
+        /// <inheritdoc/>
         public async Task<TEntity> UpsertAsync(string id, TData data, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -167,6 +199,7 @@ namespace Squidex.ClientLibrary
             return await RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}?publish={publish}", false), data.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> UpsertAsync(TEntity entity, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -174,6 +207,7 @@ namespace Squidex.ClientLibrary
             return UpsertAsync(entity.Id, entity.Data, publish, ct);
         }
 
+        /// <inheritdoc/>
         public async Task<TEntity> UpdateAsync(string id, TData data, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -182,6 +216,7 @@ namespace Squidex.ClientLibrary
             return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}", false), data.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -189,6 +224,7 @@ namespace Squidex.ClientLibrary
             return UpdateAsync(entity.Id, entity.Data, ct);
         }
 
+        /// <inheritdoc/>
         public Task<List<BulkResult>> BulkUpdateAsync(BulkUpdate update, CancellationToken ct = default)
         {
             Guard.NotNull(update, nameof(update));
@@ -196,6 +232,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildSchemaUrl("bulk", false), update.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> PatchAsync<TPatch>(string id, TPatch patch, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -204,6 +241,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildSchemaUrl($"{id}/", false), patch.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -211,6 +249,7 @@ namespace Squidex.ClientLibrary
             return PatchAsync(entity.Id, patch, ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default)
         {
             Guard.NotNull(id, nameof(id));
@@ -219,6 +258,7 @@ namespace Squidex.ClientLibrary
             return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status", false), new { status }.ToContent(), ct: ct);
         }
 
+        /// <inheritdoc/>
         public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
@@ -226,6 +266,7 @@ namespace Squidex.ClientLibrary
             return ChangeStatusAsync(entity.Id, status, ct);
         }
 
+        /// <inheritdoc/>
         public Task DeleteAsync(string id, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
@@ -233,6 +274,7 @@ namespace Squidex.ClientLibrary
             return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/", false), ct: ct);
         }
 
+        /// <inheritdoc/>
         public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));

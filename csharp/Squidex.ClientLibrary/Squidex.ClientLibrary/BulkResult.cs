@@ -9,6 +9,9 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Represents the result of one <see cref="BulkUpdateJob"/>.
+    /// </summary>
     public sealed class BulkResult
     {
         /// <summary>

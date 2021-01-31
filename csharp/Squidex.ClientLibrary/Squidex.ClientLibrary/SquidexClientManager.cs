@@ -14,15 +14,26 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
 {
-    public sealed partial class SquidexClientManager : ISquidexClientManager
+    /// <summary>
+    /// Default implementation of the <see cref="ISquidexClientManager"/> interface.
+    /// </summary>
+    /// <seealso cref="ISquidexClientManager" />
+    public sealed class SquidexClientManager : ISquidexClientManager
     {
+        /// <inheritdoc/>
         public string App
         {
             get { return Options.AppName; }
         }
 
+        /// <inheritdoc/>
         public SquidexOptions Options { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SquidexClientManager"/> class with the options.
+        /// </summary>
+        /// <param name="options">The options. Cannot be null.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
         public SquidexClientManager(SquidexOptions options)
         {
             Guard.NotNull(options, nameof(options));
@@ -32,6 +43,7 @@ namespace Squidex.ClientLibrary
             Options = options;
         }
 
+        /// <inheritdoc/>
         public string GenerateImageUrl(string id)
         {
             if (id == null)
@@ -47,11 +59,13 @@ namespace Squidex.ClientLibrary
             return $"{Options.Url}/api/assets/{id}";
         }
 
+        /// <inheritdoc/>
         public string GenerateImageUrl(IEnumerable<string> id)
         {
             return GenerateImageUrl(id?.FirstOrDefault());
         }
 
+        /// <inheritdoc/>
         public IAppsClient CreateAppsClient()
         {
             return new AppsClient(CreateHttpClient())
@@ -60,6 +74,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IAssetsClient CreateAssetsClient()
         {
             return new AssetsClient(CreateHttpClient())
@@ -68,6 +83,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IBackupsClient CreateBackupsClient()
         {
             return new BackupsClient(CreateHttpClient())
@@ -76,6 +92,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public ICommentsClient CreateCommentsClient()
         {
             return new CommentsClient(CreateHttpClient())
@@ -84,6 +101,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IHistoryClient CreateHistoryClient()
         {
             return new HistoryClient(CreateHttpClient())
@@ -92,6 +110,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public ILanguagesClient CreateLanguagesClient()
         {
             return new LanguagesClient(CreateHttpClient())
@@ -100,6 +119,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IPingClient CreatePingClient()
         {
             return new PingClient(CreateHttpClient())
@@ -108,6 +128,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IPlansClient CreatePlansClient()
         {
             return new PlansClient(CreateHttpClient())
@@ -116,6 +137,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IRulesClient CreateRulesClient()
         {
             return new RulesClient(CreateHttpClient())
@@ -124,6 +146,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public ISchemasClient CreateSchemasClient()
         {
             return new SchemasClient(CreateHttpClient())
@@ -132,6 +155,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IStatisticsClient CreateStatisticsClient()
         {
             return new StatisticsClient(CreateHttpClient())
@@ -140,6 +164,7 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IUsersClient CreateUsersClient()
         {
             return new UsersClient(CreateHttpClient())
@@ -148,21 +173,25 @@ namespace Squidex.ClientLibrary
             };
         }
 
+        /// <inheritdoc/>
         public IExtendableRulesClient CreateExtendableRulesClient()
         {
             return new ExtendableRulesClient(Options, CreateHttpClient());
         }
 
+        /// <inheritdoc/>
         public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
         {
             return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient());
         }
 
+        /// <inheritdoc/>
         public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
         {
             return new ContentsClient<DynamicContent, DynamicData>(Options, schemaName, CreateHttpClient());
         }
 
+        /// <inheritdoc/>
         public HttpClient CreateHttpClient()
         {
             var url = new Uri(new Uri(Options.Url, UriKind.Absolute), "/api/");
