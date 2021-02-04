@@ -15,27 +15,23 @@ namespace Sample.Blog.Models
 {
     public class ApiClient : IApiClient
     {
-        private readonly SquidexClient<BlogPost, BlogPostData> postsClient;
-        private readonly SquidexClient<Page, PageData> pagesClient;
+        private readonly IContentsClient<BlogPost, BlogPostData> postsClient;
+        private readonly IContentsClient<Page, PageData> pagesClient;
 
-        public ApiClient(IOptions<AppOptions> appOptions)
+        public ApiClient(IOptions<SquidexOptions> appOptions)
         {
             var options = appOptions.Value;
 
             var clientManager =
-                new SquidexClientManager(
-                    options.Url,
-                    options.AppName,
-                    options.ClientId,
-                    options.ClientSecret);
+                new SquidexClientManager(options);
 
-            pagesClient = clientManager.GetClient<Page, PageData>("pages");
-            postsClient = clientManager.GetClient<BlogPost, BlogPostData>("posts");
+            pagesClient = clientManager.CreateContentsClient<Page, PageData>("pages");
+            postsClient = clientManager.CreateContentsClient<BlogPost, BlogPostData>("posts");
         }
 
         public async Task<(long Total, List<BlogPost> Posts)> GetBlogPostsAsync(int page = 0, int pageSize = 3)
         {
-            var query = new ODataQuery { Skip = page * pageSize, Top = pageSize };
+            var query = new ContentQuery { Skip = page * pageSize, Top = pageSize };
 
             var posts = await postsClient.GetAsync(query);
 
@@ -51,7 +47,7 @@ namespace Sample.Blog.Models
 
         public async Task<Page> GetPageAsync(string slug)
         {
-            var query = new ODataQuery
+            var query = new ContentQuery
             {
                 Filter = $"data/slug/iv eq '{slug}'"
             };
