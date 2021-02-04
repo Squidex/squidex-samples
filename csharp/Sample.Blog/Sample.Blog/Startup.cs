@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sample.Blog.Models;
+using Squidex.ClientLibrary;
 using Westwind.AspNetCore.LiveReload;
 
 namespace Sample.Blog
@@ -26,7 +27,7 @@ namespace Sample.Blog
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppOptions>(Configuration.GetSection("app"));
+            services.Configure<SquidexOptions>(Configuration.GetSection("app"));
 
             services.AddSingleton<IApiClient, ApiClient>();
             services.AddLiveReload();

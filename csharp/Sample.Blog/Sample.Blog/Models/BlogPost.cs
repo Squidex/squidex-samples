@@ -9,7 +9,7 @@ using Squidex.ClientLibrary;
 
 namespace Sample.Blog.Models
 {
-    public sealed class BlogPost : SquidexEntityBase<BlogPostData>
+    public sealed class BlogPost : Content<BlogPostData>
     {
     }
 }
