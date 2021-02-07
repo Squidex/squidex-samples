@@ -10,11 +10,25 @@ using System.ComponentModel;
 
 namespace Squidex.ClientLibrary
 {
+  /// <summary>
+  /// Default status strings.
+  /// </summary>
   [TypeConverter(typeof(StatusTypeConverter))]
   public readonly struct Status : IEquatable<Status>, IComparable<Status>
   {
+    /// <summary>
+    /// Content is Archived (soft-delete).
+    /// </summary>
     public static readonly Status Archived = new Status("Archived");
+    
+    /// <summary>
+    /// Content is not ready and not available in the API by default.
+    /// </summary>
     public static readonly Status Draft = new Status("Draft");
+    
+    /// <summary>
+    /// Content is ready and published.
+    /// </summary>
     public static readonly Status Published = new Status("Published");
 
     private readonly string name;
