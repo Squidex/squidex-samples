@@ -83,6 +83,16 @@ namespace Squidex.ClientLibrary
             while (!ct.IsCancellationRequested);
         }
 
+        /// <inheritdoc />
+        public async Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(requests, nameof(requests));
+
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>[]>(HttpMethod.Post, BuildAppUrl("graphql/batch", false, context), requests.ToContent(), context, ct);
+
+            return response;
+        }
+
         /// <inheritdoc/>
         public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
         {

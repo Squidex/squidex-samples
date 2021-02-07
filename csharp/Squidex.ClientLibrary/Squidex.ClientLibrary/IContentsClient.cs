@@ -309,6 +309,20 @@ namespace Squidex.ClientLibrary
         Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
 
         /// <summary>
+        /// Executes multiple GrapQL queries as HTTP POST method.
+        /// </summary>
+        /// <typeparam name="TResponse">The type of the response.</typeparam>
+        /// <param name="requests">The GraphQL requests. Cannot be null.</param>
+        /// <param name="context">The context object to add additonal headers to the request and
+        /// change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The result of the query.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="requests"/> is null.</exception>
+        Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext context = null, CancellationToken ct = default);
+
+        /// <summary>
         /// Executes a GrapQL query as HTTP GET method.
         /// </summary>
         /// <typeparam name="TResponse">The type of the response.</typeparam>

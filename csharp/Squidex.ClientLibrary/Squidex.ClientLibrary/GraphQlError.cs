@@ -22,5 +22,31 @@ namespace Squidex.ClientLibrary
         /// The GraphQL error message.
         /// </value>
         public string Message { get; set; }
+
+        /// <summary>
+        /// The path to the failed resolver.
+        /// </summary>
+        public string[] Path { get; set; }
+
+        /// <summary>
+        /// The error locations.
+        /// </summary>
+        public GraphQLErrorLocation[] Locations { get; set; }
+    }
+
+    /// <summary>
+    /// The error location within the query.
+    /// </summary>
+    public sealed class GraphQLErrorLocation
+    {
+        /// <summary>
+        /// The column in the query.
+        /// </summary>
+        public int Column { get; set; }
+
+        /// <summary>
+        /// The row in the query.
+        /// </summary>
+        public int Row { get; set; }
     }
 }
