@@ -5,26 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Newtonsoft.Json;
+using Squidex.ClientLibrary.Utils;
+
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public abstract class EnrichedUserEventBase : EnrichedEvent
-  {
-    public string Actor { get; set; }
-
-    public string ActorId
+    /// <summary>
+    /// Avstract class for events triggered by an Actor.
+    /// </summary>
+    public abstract class EnrichedUserEventBase : EnrichedEvent
     {
-      get
-      {
-        return Actor == null ? null : Actor.Contains(":") ? Actor.Split(':')[1] : null;
-      }
+        /// <summary>
+        /// Actor who has triggered the event.
+        /// </summary>
+        [JsonConverter(typeof(ActorConverter))]
+        public Actor Actor { get; set; }
     }
-
-    public string ActorType
-    {
-      get
-      {
-        return Actor == null ? null : Actor.Contains(":") ? Actor.Split(':')[0] : null;
-      }
-    }
-  }
 }

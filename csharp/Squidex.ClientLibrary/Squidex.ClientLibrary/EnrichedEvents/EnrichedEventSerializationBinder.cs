@@ -12,26 +12,35 @@ using Newtonsoft.Json.Serialization;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedEventSerializationBinder : ISerializationBinder
-  {
-    public IList<Type> EnrichedEventTypes { get; set; } = new List<Type> {
-      typeof(EnrichedCommentEvent),
-      typeof(EnrichedContentEvent),
-      typeof(EnrichedManualEvent),
-      typeof(EnrichedAssetEvent),
-      typeof(EnrichedSchemaEvent),
-      typeof(EnrichedUsageExceededEvent)
-    };
-
-    public Type BindToType(string assemblyName, string typeName)
+    /// <summary>
+    /// Binder to deserialize the EnrichedEventEnvelope with the right payload using the $type on the json tree.
+    /// </summary>
+    public sealed class EnrichedEventSerializationBinder : ISerializationBinder
     {
-      return EnrichedEventTypes.SingleOrDefault(t => t.Name == typeName);
-    }
+        /// <summary>
+        /// List of available event classes.
+        /// </summary>
+        public IList<Type> EnrichedEventTypes { get; set; } = new List<Type>
+        {
+          typeof(EnrichedCommentEvent),
+          typeof(EnrichedContentEvent),
+          typeof(EnrichedManualEvent),
+          typeof(EnrichedAssetEvent),
+          typeof(EnrichedSchemaEvent),
+          typeof(EnrichedUsageExceededEvent)
+        };
 
-    public void BindToName(Type serializedType, out string assemblyName, out string typeName)
-    {
-      assemblyName = null;
-      typeName = serializedType.Name;
+        /// <inheritdoc/>
+        public Type BindToType(string assemblyName, string typeName)
+        {
+            return EnrichedEventTypes.SingleOrDefault(t => t.Name == typeName);
+        }
+
+        /// <inheritdoc/>
+        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        {
+            assemblyName = null;
+            typeName = serializedType.Name;
+        }
     }
-  }
 }

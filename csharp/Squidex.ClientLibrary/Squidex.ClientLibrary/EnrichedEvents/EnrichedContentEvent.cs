@@ -7,100 +7,112 @@
 
 using System;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedContentEvent<T> : EnrichedContentEvent
-  {
-    public new T Data { get; set; }
-
-    public new T DataOld { get; set; }
-  }
-
-  public class EnrichedContentEvent : EnrichedSchemaEventBase, IEnrichedEntityEvent
-  {
-    public EnrichedContentEventType Type { get; set; }
-
-    public string Id { get; set; }
-
-    public DateTimeOffset Created { get; set; }
-
-    public DateTimeOffset LastModified { get; set; }
-
-    public string CreatedBy { get; set; }
-
-    public string LastModifiedBy { get; set; }
-
-    public JObject Data { get; set; }
-
-    public JObject DataOld { get; set; }
-
-    public Status Status { get; set; }
-
-    public override long Partition { get; set; }
-
-    public string CreatedById
+    /// <inheritdoc />
+    public sealed class EnrichedContentEvent<T> : EnrichedContentEvent
     {
-      get
-      {
-        return CreatedBy == null ? null : CreatedBy.Contains(":") ? CreatedBy.Split(':')[1] : null;
-      }
+        /// <summary>
+        /// Data payload (updated).
+        /// </summary>
+        public new T Data { get; set; }
+
+        /// <summary>
+        /// Data payload (previous).
+        /// </summary>
+        public new T DataOld { get; set; }
     }
 
-    public string CreatedByType
+    /// <summary>
+    /// Event on a content.
+    /// </summary>
+    public class EnrichedContentEvent : EnrichedSchemaEventBase, IEnrichedEntityEvent
     {
-      get
-      {
-        return CreatedBy == null ? null : CreatedBy.Contains(":") ? CreatedBy.Split(':')[0] : null;
-      }
+        /// <summary>
+        /// Content event type.
+        /// </summary>
+        public EnrichedContentEventType Type { get; set; }
+
+        /// <summary>
+        /// Content id.
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// When the content has been created.
+        /// </summary>
+        public DateTimeOffset Created { get; set; }
+
+        /// <summary>
+        /// When the content has been modified.
+        /// </summary>
+        public DateTimeOffset LastModified { get; set; }
+
+        /// <summary>
+        /// Who has created the content.
+        /// </summary>
+        [JsonConverter(typeof(ActorConverter))]
+        public Actor CreatedBy { get; set; }
+
+        /// <summary>
+        /// Who has modified the content.
+        /// </summary>
+        [JsonConverter(typeof(ActorConverter))]
+        public Actor LastModifiedBy { get; set; }
+
+        /// <summary>
+        /// Data payload (updated).
+        /// </summary>
+        public JObject Data { get; set; }
+
+        /// <summary>
+        /// Data payload (previous).
+        /// </summary>
+        public JObject DataOld { get; set; }
+
+        /// <summary>
+        /// Status of the content.
+        /// </summary>
+        public Status Status { get; set; }
+
+        /// <summary>
+        /// Get a instance of EnrichedContentEvent where Data and DataOld have type T.
+        /// </summary>
+        /// <typeparam name="T">Type of Data and DataOld properties.</typeparam>
+        /// <returns>EnrichedContentEvent instance where Data and DataOld have type T.</returns>
+        public EnrichedContentEvent<T> ToTyped<T>()
+        {
+            var contentType = typeof(T);
+
+            if (contentType == null)
+            {
+                throw new ArgumentNullException(nameof(contentType));
+            }
+
+            var typedEvent = typeof(EnrichedContentEvent<>).MakeGenericType(contentType);
+
+            var obj = (EnrichedContentEvent<T>)Activator.CreateInstance(typedEvent);
+
+            foreach (var property in typeof(EnrichedContentEvent).GetProperties().Where(prop => prop.CanWrite))
+            {
+                property.SetValue(obj, property.GetValue(this));
+            }
+
+            if (this.Data != null)
+            {
+                obj.Data = (T)this.Data.ToObject(contentType);
+            }
+
+            if (this.DataOld != null)
+            {
+                obj.DataOld = (T)this.DataOld.ToObject(contentType);
+            }
+
+            return obj;
+        }
     }
-
-    public string LastModifiedById
-    {
-      get
-      {
-        return LastModifiedBy == null ? null : LastModifiedBy.Contains(":") ? LastModifiedBy.Split(':')[1] : null;
-      }
-    }
-
-    public string LastModifiedByType
-    {
-      get
-      {
-        return LastModifiedBy == null ? null : LastModifiedBy.Contains(":") ? LastModifiedBy.Split(':')[0] : null;
-      }
-    }
-
-    public EnrichedContentEvent<T> ToTyped<T>()
-    {
-      var contentType = typeof(T);
-
-      if (contentType == null)
-      {
-        throw new ArgumentNullException(nameof(contentType));
-      }
-
-      var typedEvent = typeof(EnrichedContentEvent<>).MakeGenericType(contentType);
-
-      var obj = (EnrichedContentEvent<T>)Activator.CreateInstance(typedEvent);
-
-      foreach (var property in typeof(EnrichedContentEvent).GetProperties().Where(prop => prop.CanWrite))
-      {
-        property.SetValue(obj, property.GetValue(this));
-      }
-
-      if (this.Data != null)
-      {
-        obj.Data = (T)this.Data.ToObject(contentType);
-      }
-
-      if (this.DataOld != null)
-      {
-        obj.DataOld = (T)this.DataOld.ToObject(contentType);
-      }
-
-      return obj;
-    }
-  }
 }

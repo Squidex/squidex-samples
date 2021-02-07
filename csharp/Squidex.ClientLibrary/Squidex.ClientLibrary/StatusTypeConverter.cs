@@ -11,31 +11,38 @@ using System.Globalization;
 
 namespace Squidex.ClientLibrary
 {
-  public sealed class StatusTypeConverter : TypeConverter
-  {
-    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    /// <summary>
+    /// Converter for the Status.
+    /// </summary>
+    public sealed class StatusTypeConverter : TypeConverter
     {
-      return sourceType == typeof(string);
-    }
+        /// <inheritdoc />
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            return sourceType == typeof(string);
+        }
 
-    public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-    {
-      return destinationType == typeof(string);
-    }
+        /// <inheritdoc />
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            return destinationType == typeof(string);
+        }
 
-    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-    {
-      if (value is string s)
-      {
-        return new Status(s);
-      }
+        /// <inheritdoc />
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            if (value is string s)
+            {
+                return new Status(s);
+            }
 
-      return default(Status);
-    }
+            return default(Status);
+        }
 
-    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-    {
-      return value.ToString();
+        /// <inheritdoc />
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            return value.ToString();
+        }
     }
-  }
 }

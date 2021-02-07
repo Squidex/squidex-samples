@@ -7,13 +7,39 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public enum EnrichedContentEventType
-  {
-    Created,
-    Deleted,
-    Published,
-    StatusChanged,
-    Updated,
-    Unpublished
-  }
+    /// <summary>
+    /// Type of event on a content.
+    /// </summary>
+    public enum EnrichedContentEventType
+    {
+        /// <summary>
+        /// Content Created.
+        /// </summary>
+        Created,
+
+        /// <summary>
+        /// Content Deleted.
+        /// </summary>
+        Deleted,
+
+        /// <summary>
+        /// Content Published.
+        /// </summary>
+        Published,
+
+        /// <summary>
+        /// Content Status Changed.
+        /// </summary>
+        StatusChanged,
+
+        /// <summary>
+        /// Content Updated.
+        /// </summary>
+        Updated,
+
+        /// <summary>
+        /// Content Unpublished.
+        /// </summary>
+        Unpublished
+    }
 }

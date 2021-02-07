@@ -7,12 +7,19 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedSchemaEvent : EnrichedSchemaEventBase, IEnrichedEntityEvent
-  {
-    public EnrichedSchemaEventType Type { get; set; }
+    /// <summary>
+    /// Event on a schema.
+    /// </summary>
+    public sealed class EnrichedSchemaEvent : EnrichedSchemaEventBase, IEnrichedEntityEvent
+    {
+        /// <summary>
+        /// Type of the event.
+        /// </summary>
+        public EnrichedSchemaEventType Type { get; set; }
 
-    public string Id { get; set; }
-
-    public override long Partition { get; set; }
-  }
+        /// <summary>
+        /// Schema id.
+        /// </summary>
+        public string Id { get; set; }
+    }
 }

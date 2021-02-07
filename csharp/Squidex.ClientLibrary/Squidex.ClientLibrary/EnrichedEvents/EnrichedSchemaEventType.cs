@@ -7,12 +7,34 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public enum EnrichedSchemaEventType
-  {
-    Created,
-    Deleted,
-    Published,
-    Unpublished,
-    Updated
-  }
+    /// <summary>
+    /// Schema event types.
+    /// </summary>
+    public enum EnrichedSchemaEventType
+    {
+        /// <summary>
+        /// Schema created.
+        /// </summary>
+        Created,
+
+        /// <summary>
+        /// Schema Deleted.
+        /// </summary>
+        Deleted,
+
+        /// <summary>
+        /// Schema Published.
+        /// </summary>
+        Published,
+
+        /// <summary>
+        /// Schema Unpublished.
+        /// </summary>
+        Unpublished,
+
+        /// <summary>
+        /// Schema updated.
+        /// </summary>
+        Updated
+    }
 }

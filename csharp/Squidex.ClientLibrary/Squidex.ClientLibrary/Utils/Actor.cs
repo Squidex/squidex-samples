@@ -5,31 +5,25 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Squidex.ClientLibrary.Utils
 {
     /// <summary>
-    /// Type of events on an asset.
+    /// Represent an actor that make actions.
     /// </summary>
-    public enum EnrichedAssetEventType
+    public class Actor
     {
         /// <summary>
-        /// Asset Created.
+        /// Id.
         /// </summary>
-        Created,
+        public string Id { get; set; }
 
         /// <summary>
-        /// Asset Deleted.
+        /// Type.
         /// </summary>
-        Deleted,
-
-        /// <summary>
-        /// Asset Annotated.
-        /// </summary>
-        Annotated,
-
-        /// <summary>
-        /// Asset Updated.
-        /// </summary>
-        Updated
+        public string Type { get; set; }
     }
 }

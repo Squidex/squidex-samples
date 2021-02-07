@@ -6,72 +6,89 @@
 // ==========================================================================
 
 using System;
+using Newtonsoft.Json;
 using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedAssetEvent : EnrichedUserEventBase, IEnrichedEntityEvent
-  {
-    public EnrichedAssetEventType Type { get; set; }
-
-    public string Id { get; set; }
-
-    public DateTimeOffset Created { get; set; }
-
-    public DateTimeOffset LastModified { get; set; }
-
-    public string CreatedBy { get; set; }
-
-    public string LastModifiedBy { get; set; }
-
-    public string MimeType { get; set; }
-
-    public string FileName { get; set; }
-
-    public long FileVersion { get; set; }
-
-    public long FileSize { get; set; }
-
-    public int? PixelWidth { get; set; }
-
-    public int? PixelHeight { get; set; }
-
-    public AssetType AssetType { get; set; }
-
-    public bool IsImage { get; set; }
-
-    public override long Partition { get; set; }
-
-    public string CreatedById
+    /// <summary>
+    /// Event on an asset.
+    /// </summary>
+    public sealed class EnrichedAssetEvent : EnrichedUserEventBase, IEnrichedEntityEvent
     {
-      get
-      {
-        return CreatedBy == null ? null : CreatedBy.Contains(":") ? CreatedBy.Split(':')[1] : null;
-      }
-    }
+        /// <summary>
+        /// Type of the event.
+        /// </summary>
+        public EnrichedAssetEventType Type { get; set; }
 
-    public string CreatedByType
-    {
-      get
-      {
-        return CreatedBy == null ? null : CreatedBy.Contains(":") ? CreatedBy.Split(':')[0] : null;
-      }
-    }
+        /// <summary>
+        /// Asset's id.
+        /// </summary>
+        public string Id { get; set; }
 
-    public string LastModifiedById
-    {
-      get
-      {
-        return LastModifiedBy == null ? null : LastModifiedBy.Contains(":") ? LastModifiedBy.Split(':')[1] : null;
-      }
-    }
+        /// <summary>
+        /// When the asset has been created.
+        /// </summary>
+        public DateTimeOffset Created { get; set; }
 
-    public string LastModifiedByType
-    {
-      get
-      {
-        return LastModifiedBy == null ? null : LastModifiedBy.Contains(":") ? LastModifiedBy.Split(':')[0] : null;
-      }
+        /// <summary>
+        /// When the asset has been modified.
+        /// </summary>
+        public DateTimeOffset LastModified { get; set; }
+
+        /// <summary>
+        /// Who has created the asset.
+        /// </summary>
+        public Actor CreatedBy { get; set; }
+
+        /// <summary>
+        /// Who has modified the asset.
+        /// </summary>
+        public Actor LastModifiedBy { get; set; }
+
+        /// <summary>
+        /// Mime type of the asset.
+        /// </summary>
+        public string MimeType { get; set; }
+
+        /// <summary>
+        /// File name of the asset.
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// Version of the asset.
+        /// </summary>
+        public long FileVersion { get; set; }
+
+        /// <summary>
+        /// Size of the asset.
+        /// </summary>
+        public long FileSize { get; set; }
+
+        /// <summary>
+        /// Width in pixel if the asset is an image.
+        /// </summary>
+        public int? PixelWidth { get; set; }
+
+        /// <summary>
+        /// Height in pixel if the asset is an image.
+        /// </summary>
+        public int? PixelHeight { get; set; }
+
+        /// <summary>
+        /// Type of the asset.
+        /// </summary>
+        public AssetType AssetType { get; set; }
+
+        /// <summary>
+        /// Is an image.
+        /// </summary>
+        [JsonIgnore]
+        public bool IsImage
+        {
+            get { return AssetType == AssetType.Image; }
+        }
     }
-  }
 }

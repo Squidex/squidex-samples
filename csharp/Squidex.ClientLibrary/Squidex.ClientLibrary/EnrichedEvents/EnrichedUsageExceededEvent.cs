@@ -7,12 +7,19 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedUsageExceededEvent : EnrichedEvent
-  {
-    public long CallsCurrent { get; set; }
+    /// <summary>
+    /// Usage Exceeded Event.
+    /// </summary>
+    public sealed class EnrichedUsageExceededEvent : EnrichedEvent
+    {
+        /// <summary>
+        /// Current calls.
+        /// </summary>
+        public long CallsCurrent { get; set; }
 
-    public long CallsLimit { get; set; }
-
-    public override long Partition { get; set; }
-  }
+        /// <summary>
+        /// Calls limit.
+        /// </summary>
+        public long CallsLimit { get; set; }
+    }
 }

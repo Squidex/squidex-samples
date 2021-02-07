@@ -9,12 +9,19 @@ using System;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedCommentEvent : EnrichedUserEventBase
-  {
-    public string Text { get; set; }
+    /// <summary>
+    /// Event generated from a comment.
+    /// </summary>
+    public sealed class EnrichedCommentEvent : EnrichedUserEventBase
+    {
+        /// <summary>
+        /// Comment's text.
+        /// </summary>
+        public string Text { get; set; }
 
-    public Uri Url { get; set; }
-
-    public override long Partition { get; set; }
-  }
+        /// <summary>
+        /// Url of the content commented.
+        /// </summary>
+        public Uri Url { get; set; }
+    }
 }

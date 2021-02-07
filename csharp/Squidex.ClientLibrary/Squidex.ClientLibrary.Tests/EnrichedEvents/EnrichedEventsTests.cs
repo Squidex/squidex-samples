@@ -9,13 +9,14 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.EnrichedEvents;
+using Squidex.ClientLibrary.Utils;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 {
-  public class EnrichedEventsTests
-  {
-    private string json_EnrichedContentEvent = @"{
+    public class EnrichedEventsTests
+    {
+        private string jsonEnrichedContentEvent = @"{
 			""type"": ""SchemaUpdated"",
 			""payload"": {
 				""$type"": ""EnrichedContentEvent"",
@@ -47,40 +48,36 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 			""timestamp"": ""2021-01-01T00:01:00Z""
 		}";
 
-    [Fact]
-    public void Should_deserialize_EnrichedContentEvent()
-    {
-      var envelope = JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json_EnrichedContentEvent, new JsonSerializerSettings
-      {
-        TypeNameHandling = TypeNameHandling.Objects,
-        SerializationBinder = new EnrichedEventSerializationBinder()
-      });
+        [Fact]
+        public void Should_deserialize_EnrichedContentEvent()
+        {
+            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(jsonEnrichedContentEvent);
 
-      Assert.True(envelope.Payload is EnrichedContentEvent);
+            Assert.True(envelope.Payload is EnrichedContentEvent);
 
-      var contentEvent = envelope.Payload as EnrichedContentEvent;
+            var contentEvent = envelope.Payload as EnrichedContentEvent;
 
-      Assert.Equal("SchemaUpdated", contentEvent.Name);
-      Assert.Equal("testapp", contentEvent.AppName);
-      Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.ActorId);
-      Assert.Equal(typeof(JObject), contentEvent.Data.GetType());
+            Assert.Equal("SchemaUpdated", contentEvent.Name);
+            Assert.Equal("testapp", contentEvent.App.Name);
+            Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.Actor.Id);
+            Assert.Equal(typeof(JObject), contentEvent.Data.GetType());
 
-      switch (contentEvent.SchemaName)
-      {
-        case "schema":
-          var res = contentEvent.ToTyped<SchemaData>();
+            switch (contentEvent.Schema.Name)
+            {
+                case "schema":
+                    var res = contentEvent.ToTyped<SchemaData>();
 
-          Assert.Equal(typeof(EnrichedContentEvent<SchemaData>), res.GetType());
-          Assert.Equal(typeof(SchemaData), res.Data.GetType());
+                    Assert.Equal(typeof(EnrichedContentEvent<SchemaData>), res.GetType());
+                    Assert.Equal(typeof(SchemaData), res.Data.GetType());
 
-          Assert.Equal("test2", res.Data.TestField);
-          Assert.Equal("test", res.DataOld.TestField);
-          break;
-        default: throw new Exception("Unknown schema");
-      }
-    }
+                    Assert.Equal("test2", res.Data.TestField);
+                    Assert.Equal("test", res.DataOld.TestField);
+                    break;
+                default: throw new Exception("Unknown schema");
+            }
+        }
 
-    private string json_EnrichedCommentEvent = @"{
+        private string jsonEnrichedCommentEvent = @"{
 		""type"": ""UserMentioned"",
 		""payload"": {
 			""$type"": ""EnrichedCommentEvent"",
@@ -96,33 +93,29 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 		""timestamp"": ""2021-01-01T00:00:00Z""
 	}";
 
-    [Fact]
-    public void Should_deserialize_EnrichedCommentEvent()
-    {
-      var envelope = JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json_EnrichedCommentEvent, new JsonSerializerSettings
-      {
-        TypeNameHandling = TypeNameHandling.Objects,
-        SerializationBinder = new EnrichedEventSerializationBinder()
-      });
+        [Fact]
+        public void Should_deserialize_EnrichedCommentEvent()
+        {
+            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(jsonEnrichedCommentEvent);
 
-      Assert.True(envelope.Payload is EnrichedCommentEvent);
+            Assert.True(envelope.Payload is EnrichedCommentEvent);
 
-      var contentEvent = envelope.Payload as EnrichedCommentEvent;
+            var contentEvent = envelope.Payload as EnrichedCommentEvent;
 
-      Assert.Equal("@user@test.com testmessage", contentEvent.Text);
-      Assert.Equal("UserMentioned", contentEvent.Name);
-      Assert.Equal("testapp", contentEvent.AppName);
-      Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.ActorId);
+            Assert.Equal("@user@test.com testmessage", contentEvent.Text);
+            Assert.Equal("UserMentioned", contentEvent.Name);
+            Assert.Equal("testapp", contentEvent.App.Name);
+            Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.Actor.Id);
+        }
     }
-  }
 
-  public class SchemaData
-  {
-    [JsonConverter(typeof(InvariantConverter))]
-    public string TestField { get; set; }
-  }
+    public class SchemaData
+    {
+        [JsonConverter(typeof(InvariantConverter))]
+        public string TestField { get; set; }
+    }
 
-  public class Schema : Content<SchemaData>
-  {
-  }
+    public class Schema : Content<SchemaData>
+    {
+    }
 }

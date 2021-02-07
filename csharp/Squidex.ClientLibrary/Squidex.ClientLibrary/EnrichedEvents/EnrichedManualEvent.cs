@@ -7,8 +7,10 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public sealed class EnrichedManualEvent : EnrichedUserEventBase
-  {
-    public override long Partition { get; set; }
-  }
+    /// <summary>
+    /// Event triggered manually.
+    /// </summary>
+    public sealed class EnrichedManualEvent : EnrichedUserEventBase
+    {
+    }
 }

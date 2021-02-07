@@ -5,27 +5,21 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
+using Newtonsoft.Json;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public abstract class EnrichedSchemaEventBase : EnrichedUserEventBase
-  {
-    public string SchemaId { get; set; }
-    public string SchemaName
+    /// <summary>
+    /// Abstract class for events on a schema.
+    /// </summary>
+    public abstract class EnrichedSchemaEventBase : EnrichedUserEventBase
     {
-      get
-      {
-        return SchemaId == null ? null : SchemaId.Contains(",") ? SchemaId.Split(',')[1] : null;
-      }
+        /// <summary>
+        /// Schema changed.
+        /// </summary>
+        [JsonConverter(typeof(NamedIdConverter))]
+        [JsonProperty("schemaId")]
+        public NamedId Schema { get; set; }
     }
-
-    public Guid SchemaGuid
-    {
-      get
-      {
-        return SchemaId == null ? default : SchemaId.Contains(",") ? Guid.Parse(SchemaId.Split(',')[0]) : default;
-      }
-    }
-  }
 }

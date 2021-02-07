@@ -7,8 +7,14 @@
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public interface IEnrichedEntityEvent
-  {
-    string Id { get; }
-  }
+    /// <summary>
+    /// Interface IEnrichedEntityEvent.
+    /// </summary>
+    public interface IEnrichedEntityEvent
+    {
+        /// <summary>
+        /// Id.
+        /// </summary>
+        string Id { get; }
+    }
 }

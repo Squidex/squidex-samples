@@ -6,34 +6,36 @@
 // ==========================================================================
 
 using System;
+using Newtonsoft.Json;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
-  public abstract class EnrichedEvent
-  {
-    public string AppId { get; set; }
-
-    public DateTimeOffset Timestamp { get; set; }
-
-    public string Name { get; set; }
-
-    public long Version { get; set; }
-
-    public abstract long Partition { get; set; }
-    public string AppName
+    /// <summary>
+    /// Abstract class for the events sent by the rules.
+    /// </summary>
+    public abstract class EnrichedEvent
     {
-      get
-      {
-        return AppId == null ? null : AppId.Contains(",") ? AppId.Split(',')[1] : null;
-      }
-    }
+        /// <summary>
+        /// Application that generated the event.
+        /// </summary>
+        [JsonConverter(typeof(NamedIdConverter))]
+        [JsonProperty("appId")]
+        public NamedId App { get; set; }
 
-    public Guid AppGuid
-    {
-      get
-      {
-        return AppId == null ? default : AppId.Contains(",") ? Guid.Parse(AppId.Split(',')[0]) : default;
-      }
+        /// <summary>
+        /// When the event has been generated.
+        /// </summary>
+        public DateTimeOffset Timestamp { get; set; }
+
+        /// <summary>
+        /// Name of the event.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Version of the object.
+        /// </summary>
+        public long Version { get; set; }
     }
-  }
 }
