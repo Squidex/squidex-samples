@@ -5,26 +5,63 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
+using System.ComponentModel;
+
 namespace Squidex.ClientLibrary
 {
-    /// <summary>
-    /// Default status strings.
-    /// </summary>
-    public static class Status
+  [TypeConverter(typeof(StatusTypeConverter))]
+  public readonly struct Status : IEquatable<Status>, IComparable<Status>
+  {
+    public static readonly Status Archived = new Status("Archived");
+    public static readonly Status Draft = new Status("Draft");
+    public static readonly Status Published = new Status("Published");
+
+    private readonly string name;
+
+    public string Name
     {
-        /// <summary>
-        /// Content is Archived (soft-delete).
-        /// </summary>
-        public const string Archived = "Archived";
-
-        /// <summary>
-        /// Content is not ready and not available in the API by default.
-        /// </summary>
-        public const string Draft = "Draft";
-
-        /// <summary>
-        /// Content is ready and published.
-        /// </summary>
-        public const string Published = "Published";
+      get { return name ?? "Unknown"; }
     }
+
+    public Status(string name)
+    {
+      this.name = name;
+    }
+
+    public override bool Equals(object obj)
+    {
+      return obj is Status status && Equals(status);
+    }
+
+    public bool Equals(Status other)
+    {
+      return string.Equals(Name, other.Name);
+    }
+
+    public override int GetHashCode()
+    {
+      return Name.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+      return Name;
+    }
+
+    public int CompareTo(Status other)
+    {
+      return string.Compare(Name, other.Name, StringComparison.Ordinal);
+    }
+
+    public static bool operator ==(Status lhs, Status rhs)
+    {
+      return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(Status lhs, Status rhs)
+    {
+      return !lhs.Equals(rhs);
+    }
+  }
 }
