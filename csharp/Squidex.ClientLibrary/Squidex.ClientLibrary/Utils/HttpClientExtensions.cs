@@ -24,7 +24,7 @@ namespace Squidex.ClientLibrary.Utils
 
         private static readonly JsonSerializerSettings CamelCasing = CreateSerializer(new CamelCasePropertyNamesContractResolver());
 
-        private static JsonSerializerSettings CreateSerializer(DefaultContractResolver contractResolver)
+        private static JsonSerializerSettings CreateSerializer(IContractResolver contractResolver)
         {
             var result = new JsonSerializerSettings
             {

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary.Utils
 {
     internal static class Guard
     {

@@ -198,15 +198,11 @@ namespace Squidex.ClientLibrary
 
             var messageHandler = CreateHttpMessageHandler();
 
-            var httpClient = Options.ClientFactory.CreateHttpClient(messageHandler);
-
-            if (httpClient == null)
-            {
-                httpClient = new HttpClient(messageHandler, false);
-            }
+            var httpClient =
+                Options.ClientFactory.CreateHttpClient(messageHandler) ??
+                    new HttpClient(messageHandler, false);
 
             httpClient.BaseAddress = url;
-
             httpClient.Timeout = Options.HttpClientTimeout;
 
             Options.Configurator.Configure(httpClient);

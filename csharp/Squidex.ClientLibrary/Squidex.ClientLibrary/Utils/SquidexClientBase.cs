@@ -106,10 +106,7 @@ namespace Squidex.ClientLibrary.Utils
                 request.Content = content;
             }
 
-            if (context != null)
-            {
-                context.AddToHeaders(request.Headers);
-            }
+            context?.AddToHeaders(request.Headers);
 
             return request;
         }

@@ -9,49 +9,48 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.EnrichedEvents;
-using Squidex.ClientLibrary.Utils;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 {
     public class EnrichedEventsTests
     {
-        private string jsonEnrichedContentEvent = @"{
-			""type"": ""SchemaUpdated"",
-			""payload"": {
-				""$type"": ""EnrichedContentEvent"",
-				""type"": ""Updated"",
-				""id"": ""062b936f-7496-4f87-bd4f-ba7bbb63c751"",
-				""created"": ""2021-01-01T00:00:00Z"",
-				""lastModified"": ""2021-01-01T00:01:00Z"",
-				""createdBy"": ""subject:601c2cbafa4e669f214c0438"",
-				""lastModifiedBy"": ""subject:601c2cbafa4e669f214c0438"",
-				""data"": {
-					""testField"": {
-						""iv"": ""test2""
+        private const string JsonEnrichedContentEvent = @"{
+			'type': 'SchemaUpdated',
+			'payload': {
+				'$type': 'EnrichedContentEvent',
+				'type': 'Updated',
+				'id': '062b936f-7496-4f87-bd4f-ba7bbb63c751',
+				'created': '2021-01-01T00:00:00Z',
+				'lastModified': '2021-01-01T00:01:00Z',
+				'createdBy': 'subject:601c2cbafa4e669f214c0438',
+				'lastModifiedBy': 'subject:601c2cbafa4e669f214c0438',
+				'data': {
+					'testField': {
+						'iv': 'test2'
 					}
 				},
-				""dataOld"": {
-					""testField"": {
-						""iv"": ""test""
+				'dataOld': {
+					'testField': {
+						'iv': 'test'
 					}
 				},
-				""status"": ""Published"",
-				""partition"": -792991992,
-				""schemaId"": ""062b936f-7496-4f87-bd4f-ba7bbb63c751,schema"",
-				""actor"": ""subject:601c2cbafa4e669f214c0438"",
-				""appId"": ""3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp"",
-				""timestamp"": ""2021-01-01T00:01:00Z"",
-				""name"": ""SchemaUpdated"",
-				""version"": 3
+				'status': 'Published',
+				'partition': -792991992,
+				'schemaId': '062b936f-7496-4f87-bd4f-ba7bbb63c751,schema',
+				'actor': 'subject:601c2cbafa4e669f214c0438',
+				'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
+				'timestamp': '2021-01-01T00:01:00Z',
+				'name': 'SchemaUpdated',
+				'version': 3
 			},
-			""timestamp"": ""2021-01-01T00:01:00Z""
+			'timestamp': '2021-01-01T00:01:00Z'
 		}";
 
         [Fact]
         public void Should_deserialize_EnrichedContentEvent()
         {
-            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(jsonEnrichedContentEvent);
+            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedContentEvent);
 
             Assert.True(envelope.Payload is EnrichedContentEvent);
 
@@ -77,26 +76,26 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
             }
         }
 
-        private string jsonEnrichedCommentEvent = @"{
-		""type"": ""UserMentioned"",
-		""payload"": {
-			""$type"": ""EnrichedCommentEvent"",
-			""text"": ""@user@test.com testmessage"",
-			""url"": ""/app/testapp/content/schema/0e5955e3-cd2a-49f2-92ba-303acf4dd192/comments"",
-			""partition"": -1730311374,
-			""actor"": ""subject:601c2cbafa4e669f214c0438"",
-			""appId"": ""3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp"",
-			""timestamp"": ""2021-01-01T00:00:00Z"",
-			""name"": ""UserMentioned"",
-			""version"": 0
-		},
-		""timestamp"": ""2021-01-01T00:00:00Z""
-	}";
+        public static string JsonEnrichedCommentEvent { get; } = @"{
+		    'type': 'UserMentioned',
+		    'payload': {
+			    '$type': 'EnrichedCommentEvent',
+			    'text': '@user@test.com testmessage',
+			    'url': '/app/testapp/content/schema/0e5955e3-cd2a-49f2-92ba-303acf4dd192/comments',
+			    'partition': -1730311374,
+			    'actor': 'subject:601c2cbafa4e669f214c0438',
+			    'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
+			    'timestamp': '2021-01-01T00:00:00Z',
+			    'name': 'UserMentioned',
+			    'version': 0
+		    },
+		    'timestamp': '2021-01-01T00:00:00Z'
+	    }";
 
         [Fact]
         public void Should_deserialize_EnrichedCommentEvent()
         {
-            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(jsonEnrichedCommentEvent);
+            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedCommentEvent);
 
             Assert.True(envelope.Payload is EnrichedCommentEvent);
 

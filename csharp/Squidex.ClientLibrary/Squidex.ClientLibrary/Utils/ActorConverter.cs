@@ -6,10 +6,7 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Squidex.ClientLibrary.Utils
 {
@@ -33,9 +30,9 @@ namespace Squidex.ClientLibrary.Utils
                 return null;
             }
 
-            var s = (reader.Value as string).Split(':');
+            var s = ((string)reader.Value).Split(':');
 
-            return new Actor()
+            return new Actor
             {
                 Id = s[1],
                 Type = s[0]
@@ -45,7 +42,8 @@ namespace Squidex.ClientLibrary.Utils
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var actor = value as Actor;
+            var actor = (Actor)value;
+
             serializer.Serialize(writer, $"{actor.Type}:{actor.Id}");
         }
     }

@@ -107,7 +107,7 @@ namespace Squidex.ClientLibrary
 
                 var href = self.Href.Substring(index + LinkStart.Length);
 
-                var hrefParts = href.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                var hrefParts = href.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                 return (hrefParts[0], hrefParts[1]);
             }

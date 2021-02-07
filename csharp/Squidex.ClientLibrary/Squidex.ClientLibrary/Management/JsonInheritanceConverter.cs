@@ -149,7 +149,7 @@ namespace Squidex.ClientLibrary.Management
             return GetSubtypeDiscriminator(type);
         }
 
-        private Type GetObjectSubtype(Type objectType, string discriminator)
+        private static Type GetObjectSubtype(Type objectType, string discriminator)
         {
             var attributes = objectType.GetTypeInfo().GetCustomAttributes<JsonInheritanceAttribute>(true);
 
@@ -164,7 +164,7 @@ namespace Squidex.ClientLibrary.Management
             return objectType;
         }
 
-        private string GetSubtypeDiscriminator(Type objectType)
+        private static string GetSubtypeDiscriminator(Type objectType)
         {
             var attributes = objectType.GetTypeInfo().GetCustomAttributes<JsonInheritanceAttribute>(true);
 

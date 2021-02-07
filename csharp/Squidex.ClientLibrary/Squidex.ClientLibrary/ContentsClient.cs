@@ -61,7 +61,7 @@ namespace Squidex.ClientLibrary
             {
                 var isAnyAdded = false;
 
-                var getResult = await GetAsync(query);
+                var getResult = await GetAsync(query, ct: ct);
 
                 foreach (var item in getResult.Items)
                 {

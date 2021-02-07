@@ -51,7 +51,7 @@ namespace Squidex.ClientLibrary.Management
         /// <inheritdoc/>
         public override string ToString()
         {
-            return string.Format("{0}\n{1}", Result, base.ToString());
+            return $"{Result}\n{base.ToString()}";
         }
     }
 
@@ -207,7 +207,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 var isAnyAdded = false;
 
-                var getResult = await GetAssetsAsync(app, query);
+                var getResult = await GetAssetsAsync(app, query, cancellationToken);
 
                 foreach (var item in getResult.Items)
                 {

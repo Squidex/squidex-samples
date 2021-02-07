@@ -30,10 +30,7 @@ namespace Squidex.ClientLibrary.Configuration
 
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
-                if (context != null)
-                {
-                    context.AddToHeaders(request.Headers);
-                }
+                context?.AddToHeaders(request.Headers);
 
                 return base.SendAsync(request, cancellationToken);
             }

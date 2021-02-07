@@ -102,14 +102,14 @@ namespace Squidex.ClientLibrary.EnrichedEvents
                 property.SetValue(obj, property.GetValue(this));
             }
 
-            if (this.Data != null)
+            if (Data != null)
             {
-                obj.Data = (T)this.Data.ToObject(contentType);
+                obj.Data = (T)Data.ToObject(contentType);
             }
 
-            if (this.DataOld != null)
+            if (DataOld != null)
             {
-                obj.DataOld = (T)this.DataOld.ToObject(contentType);
+                obj.DataOld = (T)DataOld.ToObject(contentType);
             }
 
             return obj;
