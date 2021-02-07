@@ -68,7 +68,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
       switch (contentEvent.SchemaName)
       {
         case "schema":
-          var res = contentEvent.ToTypedContent<SchemaData>();
+          var res = contentEvent.ToTyped<SchemaData>();
 
           Assert.Equal(typeof(EnrichedContentEvent<SchemaData>), res.GetType());
           Assert.Equal(typeof(SchemaData), res.Data.GetType());

@@ -72,7 +72,7 @@ namespace Squidex.ClientLibrary.EnrichedEvents
       }
     }
 
-    public EnrichedContentEvent<T> ToTypedContent<T>()
+    public EnrichedContentEvent<T> ToTyped<T>()
     {
       var contentType = typeof(T);
 
