@@ -58,7 +58,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["text"] = new JObject
                 {
@@ -76,7 +76,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["boolean"] = new JObject
                 {
@@ -94,7 +94,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["number"] = new JObject
                 {
@@ -112,7 +112,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["text"] = new JObject
                 {
@@ -130,7 +130,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["array"] = new JObject
                 {
@@ -148,7 +148,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["obj"] = new JObject
                 {
@@ -166,7 +166,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -184,7 +184,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -202,7 +202,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -220,7 +220,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -241,7 +241,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -263,7 +263,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -287,7 +287,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(jsonReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["text"] = new JObject
                 {
@@ -311,7 +311,7 @@ namespace Squidex.CLI.Tests
             EqualJson(expected, actual);
         }
 
-        private void EqualJson(DummyData expected, DummyData actual)
+        private void EqualJson(DynamicData expected, DynamicData actual)
         {
             var lhs = JsonConvert.SerializeObject(expected, Formatting.Indented);
             var rhs = JsonConvert.SerializeObject(actual, Formatting.Indented);

@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema.Annotations;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
@@ -27,10 +28,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         public string Schema { get; set; }
 
         [Required]
-        public Dictionary<string, Dictionary<string, JToken>> Data { get; set; }
+        public string Id { get; set; }
 
-        public Dictionary<string, ContentReference> References { get; set; }
+        [Required]
+        public DynamicData Data { get; set; }
 
-        public JObject Filter { get; set; }
+        public string Status { get; set; }
     }
 }

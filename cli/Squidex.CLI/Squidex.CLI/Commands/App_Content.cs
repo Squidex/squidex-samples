@@ -56,7 +56,7 @@ namespace Squidex.CLI.Commands
                     taskForSchema,
                     taskForLanguages);
 
-                var datas = new List<DummyData>();
+                var datas = new List<DynamicData>();
 
                 if (arguments.Count > 0)
                 {
@@ -195,7 +195,7 @@ namespace Squidex.CLI.Commands
                     }
                     else if (arguments.JsonArray)
                     {
-                        var allRecords = new List<DummyEntity>();
+                        var allRecords = new List<DynamicContent>();
 
                         await session.ExportAsync(arguments, log, entity =>
                         {

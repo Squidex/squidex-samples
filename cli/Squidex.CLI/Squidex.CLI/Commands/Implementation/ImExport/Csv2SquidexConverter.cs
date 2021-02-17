@@ -23,7 +23,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             mapping = JsonMapping.ForCsv2Json(fields);
         }
 
-        public IEnumerable<DummyData> ReadAll(CsvReader csvReader)
+        public IEnumerable<DynamicData> ReadAll(CsvReader csvReader)
         {
             if (csvReader.Read())
             {
@@ -31,7 +31,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
                 while (csvReader.Read())
                 {
-                    var data = new DummyData();
+                    var data = new DynamicData();
 
                     foreach (var field in mapping)
                     {
@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        private void SetValue(DummyData data, JToken value, JsonPath path)
+        private void SetValue(DynamicData data, JToken value, JsonPath path)
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {

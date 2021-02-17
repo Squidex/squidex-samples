@@ -13,6 +13,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
+using NJsonSchema.Generation.TypeMappers;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -52,6 +54,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());
             jsonSchemaGeneratorSettings.SchemaProcessors.Add(new GuidFixProcessor());
+
+            jsonSchemaGeneratorSettings.TypeMappers.Add(
+                new PrimitiveTypeMapper(typeof(DynamicData), schema =>
+                {
+                    schema.Type = JsonObjectType.Object;
+
+                    schema.AdditionalPropertiesSchema = new JsonSchema
+                    {
+                        Description = "Any"
+                    };
+                }));
 
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
         }

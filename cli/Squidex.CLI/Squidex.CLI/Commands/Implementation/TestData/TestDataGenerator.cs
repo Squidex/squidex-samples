@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Slugify;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.TestData
@@ -27,9 +28,9 @@ namespace Squidex.CLI.Commands.Implementation.TestData
             this.languages = languages;
         }
 
-        public DummyData GenerateTestData()
+        public DynamicData GenerateTestData()
         {
-            var data = new DummyData();
+            var data = new DynamicData();
 
             foreach (var field in schema.Fields)
             {

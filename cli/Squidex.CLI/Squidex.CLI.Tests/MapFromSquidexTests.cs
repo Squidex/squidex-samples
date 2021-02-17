@@ -17,11 +17,11 @@ namespace Squidex.CLI.Tests
 {
     public class MapFromSquidexTests
     {
-        private readonly DummyEntity content;
+        private readonly DynamicContent content;
 
         public MapFromSquidexTests()
         {
-            content = new DummyEntity
+            content = new DynamicContent
             {
                 Created = DateTimeOffset.Now
             };

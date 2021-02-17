@@ -7,14 +7,22 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Contents
+namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
-    public sealed class ContentReference
+    public sealed class AssetModel
     {
-        [Required]
-        public string Schema { get; set; }
+        public string Id { get; set; }
 
         [Required]
-        public object Filter { get; set; }
+        public string FileName { get; set; }
+
+        [Required]
+        public string MimeType { get; set; }
+
+        public string Slug { get; set; }
+
+        public bool IsProtected { get; set; }
+
+        public string Path { get; set; }
     }
 }

@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PackAsTool>true</PackAsTool>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <ToolCommandName>sq</ToolCommandName>
     <Version>6.2</Version>

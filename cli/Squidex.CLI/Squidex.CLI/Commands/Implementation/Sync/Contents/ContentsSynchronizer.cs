@@ -26,57 +26,151 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             this.log = log;
         }
 
-        public Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            log.WriteLine("Not supported");
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
 
-            return Task.CompletedTask;
+            var context = QueryContext.Default.Unpublished().IgnoreFallback();
+
+            foreach (var schema in schemas.Items)
+            {
+                var client = session.Contents(schema.Name);
+
+                var contents = new List<ContentModel>();
+                var contentBatch = 0;
+
+                await client.GetAllAsync(50, async content =>
+                {
+                    contents.Add(new ContentModel
+                    {
+                        Id = content.Id,
+                        Data = content.Data,
+                        Status = content.Status,
+                        Schema = schema.Name
+                    });
+
+                    if (contents.Count > 50)
+                    {
+                        var model = new ContentsModel
+                        {
+                            Contents = contents
+                        };
+
+                        await log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
+                        {
+                            await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
+                        });
+
+                        contents.Clear();
+                        contentBatch++;
+                    }
+                }, context);
+
+                if (contents.Count > 0)
+                {
+                    var model = new ContentsModel
+                    {
+                        Contents = contents
+                    };
+
+                    await log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
+                    {
+                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
+                    });
+                }
+            }
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var contentsBySchema =
-                GetContentFiles(directoryInfo)
-                    .Select(x => ReadContents(jsonHelper, x))
-                    .SelectMany(x => x.Contents).GroupBy(x => x.Schema)
-                    .Select(x => new ContentGroup(x.Key, x))
-                    .ToDictionary(x => x.SchemaName);
-
-            var edges = new HashSet<(ContentGroup From, ContentGroup To)>();
-
-            foreach (var from in contentsBySchema.Values)
+            foreach (var file in GetContentFiles(directoryInfo))
             {
-                foreach (var dependency in from.Dependencies)
+                ContentsModel model = null;
+
+                await log.DoSafeAsync($"Reading file {file.Name}", () =>
                 {
-                    if (contentsBySchema.TryGetValue(dependency, out var to))
+                    model = ReadContents(jsonHelper, file);
+
+                    return Task.CompletedTask;
+                });
+
+                if (model?.Contents?.Count > 0)
+                {
+                    if (options.Languages?.Length > 0)
                     {
-                        edges.Add((to, from));
+                        var allowedLanguages = options.Languages.ToHashSet();
+
+                        var toClear = new List<string>();
+
+                        foreach (var content in model.Contents)
+                        {
+                            foreach (var field in content.Data.Values)
+                            {
+                                foreach (var language in field.Children<JProperty>().Select(x => x.Name))
+                                {
+                                    if (language != "iv" && !allowedLanguages.Contains(language))
+                                    {
+                                        toClear.Add(language);
+                                    }
+                                }
+
+                                if (toClear.Count > 0)
+                                {
+                                    foreach (var language in toClear)
+                                    {
+                                        field.Remove(language);
+                                    }
+
+                                    toClear.Clear();
+                                }
+                            }
+                        }
+                    }
+
+                    var client = session.Contents(model.Contents.First().Schema);
+
+                    var request = new BulkUpdate
+                    {
+                        OptimizeValidation = true,
+                        DoNotScript = true,
+                        DoNotValidate = false,
+                        DoNotValidateWorkflow = true,
+                        Jobs = model.Contents.Select(x => new BulkUpdateJob
+                        {
+                            Id = x.Id,
+                            Data = x.Data,
+                            Schema = x.Schema,
+                            Status = x.Status,
+                            Type = BulkUpdateType.Upsert,
+                        }).ToList(),
+                    };
+
+                    var results = await client.BulkUpdateAsync(request);
+
+                    var i = 0;
+
+                    foreach (var result in results)
+                    {
+                        var content = model.Contents[i];
+
+                        log.StepStart(i.ToString());
+
+                        if (result.Error != null)
+                        {
+                            log.StepFailed(result.Error.ToString());
+                        }
+                        else if (result.ContentId != null)
+                        {
+                            log.StepSuccess();
+                        }
+                        else
+                        {
+                            log.StepSkipped("Unknown Reason");
+                        }
+
+                        i++;
                     }
                 }
-            }
-
-            var sortOrder = TopologicalSort.Sort(new HashSet<ContentGroup>(contentsBySchema.Values), edges);
-
-            if (sortOrder == null)
-            {
-                throw new SquidexException("Dependencies between content items have a cycle, cannot calculate best sync order.");
-            }
-
-            var cache = new ReferenceCache();
-
-            foreach (var (schema, group) in contentsBySchema)
-            {
-                await log.DoSafeLineAsync($"Schema {schema}: Resolving references", () =>
-                {
-                    group.ClearLanguages(options);
-
-                    return group.ResolveReferencesAsync(session, log, cache);
-                });
-
-                await log.DoSafeLineAsync($"Schema {schema}: Inserting", () =>
-                {
-                    return group.UpsertAsync(session, log);
-                });
             }
         }
 
@@ -118,20 +212,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 {
                     new ContentModel
                     {
+                        Status = "Published",
                         Schema = "my-schema",
-                        Filter = JObject.FromObject(new
+                        Id = Guid.NewGuid().ToString(),
+                        Data = new DynamicData
                         {
-                            Path = "data.id.iv",
-                            Op = "eq",
-                            Value = 1
-                        }),
-                        Data = new Dictionary<string, Dictionary<string, JToken>>
-                        {
-                            ["id"] = new Dictionary<string, JToken>
+                            ["id"] = new JObject
                             {
                                 ["iv"] = 1
                             },
-                            ["text"] = new Dictionary<string, JToken>
+                            ["text"] = new JObject
                             {
                                 ["iv"] = "Hello Squidex"
                             }

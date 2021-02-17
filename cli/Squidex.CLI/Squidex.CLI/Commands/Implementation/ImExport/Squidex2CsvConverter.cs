@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {
@@ -27,7 +28,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             mapping = JsonMapping.ForJson2Csv(fields);
         }
 
-        public IEnumerable<object> GetValues(DummyEntity entity)
+        public IEnumerable<object> GetValues(DynamicContent entity)
         {
             foreach (var field in mapping)
             {

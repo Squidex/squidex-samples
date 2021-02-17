@@ -77,6 +77,34 @@ namespace Squidex.CLI.Commands.Implementation
             }
         }
 
+        public static void ProcessSkipped(this ILogger log, string process, string reason)
+        {
+            lock (log)
+            {
+                log.StepStart(process);
+                log.StepSkipped(reason);
+            }
+        }
+
+        public static void ProcessCompleted(this ILogger log, string process)
+        {
+            lock (log)
+            {
+                log.StepStart(process);
+                log.StepSuccess();
+            }
+        }
+
+        public static void ProcessFailed(this ILogger log, string process, Exception exception)
+        {
+            lock (log)
+            {
+                log.StepStart(process);
+
+                HandleException(exception, log.StepFailed);
+            }
+        }
+
         public static async Task DoSafeLineAsync(this ILogger log, string process, Func<Task> action)
         {
             try

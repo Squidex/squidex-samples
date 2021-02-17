@@ -14,7 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public static class ExportHelper
     {
-        public static async Task ExportAsync(this ISession session, IExportSettings settings, ILogger log, Func<DummyEntity, Task> handler)
+        public static async Task ExportAsync(this ISession session, IExportSettings settings, ILogger log, Func<DynamicContent, Task> handler)
         {
             var ctx = QueryContext.Default.Unpublished(settings.Unpublished);
 
@@ -22,7 +22,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             var total = 0L;
             var totalRead = 0;
-            var currentPage = 0L;
+            var currentPage = 0;
 
             var handled = new HashSet<string>();
 

@@ -50,7 +50,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default)
+        public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(callback, nameof(callback));
 
@@ -61,7 +61,7 @@ namespace Squidex.ClientLibrary
             {
                 var isAnyAdded = false;
 
-                var getResult = await GetAsync(query, ct: ct);
+                var getResult = await GetAsync(query, context, ct);
 
                 foreach (var item in getResult.Items)
                 {
