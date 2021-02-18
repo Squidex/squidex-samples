@@ -16,7 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class Csv2SquidexConverter
     {
-        private readonly JsonMapping mapping = new JsonMapping();
+        private readonly JsonMapping mapping;
 
         public Csv2SquidexConverter(string fields)
         {
@@ -33,22 +33,22 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                 {
                     var data = new DynamicData();
 
-                    foreach (var field in mapping)
+                    foreach (var (name, path) in mapping)
                     {
-                        if (csvReader.TryGetField<string>(field.Name, out var value))
+                        if (csvReader.TryGetField<string>(name, out var value))
                         {
                             try
                             {
-                                SetValue(data, JToken.Parse(value), field.Path);
+                                SetValue(data, JToken.Parse(value), path);
                             }
                             catch (JsonReaderException)
                             {
-                                SetValue(data, JToken.Parse($"\"{value}\""), field.Path);
+                                SetValue(data, JToken.Parse($"\"{value}\""), path);
                             }
                         }
                         else
                         {
-                            throw new InvalidOperationException($"Cannot find field {field.Name} in CSV file. Please check the delimiters setting.");
+                            throw new InvalidOperationException($"Cannot find field {name} in CSV file. Please check the delimiters setting.");
                         }
                     }
 
@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        private void SetValue(DynamicData data, JToken value, JsonPath path)
+        private static void SetValue(DynamicData data, JToken value, JsonPath path)
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {
@@ -74,7 +74,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     {
                         while (array.Count < index + 1)
                         {
-                            array.Add(null);
+                            array.Add(JValue.CreateNull());
                         }
 
                         if (merge && array[index].Type == currentValue.Type)

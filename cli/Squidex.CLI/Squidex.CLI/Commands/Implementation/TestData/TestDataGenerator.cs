@@ -78,7 +78,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                             {
                                 1 => true,
                                 2 => false,
-                                _ => null,
+                                _ => null
                             };
                         }
                     }
@@ -116,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                         return result;
                     }
 
-                case GeolocationFieldPropertiesDto _:
+                case GeolocationFieldPropertiesDto:
                     {
                         var lat = random.Next(-90, 90);
                         var lon = random.Next(-180, 180);
@@ -128,7 +128,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                                 lon));
                     }
 
-                case JsonFieldPropertiesDto _:
+                case JsonFieldPropertiesDto:
                     {
                         return new JObject(
                             new JProperty("value",
@@ -228,7 +228,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
             var min = defaultMin;
             var max = defaultMax;
 
-            var defaultRange = (defaultMax - defaultMin);
+            var defaultRange = defaultMax - defaultMin;
 
             if (minValue.HasValue && maxValue.HasValue)
             {
@@ -248,7 +248,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
             var value = random.NextDouble();
 
-            return min + (value * (max - min));
+            return min + value * (max - min);
         }
     }
 }

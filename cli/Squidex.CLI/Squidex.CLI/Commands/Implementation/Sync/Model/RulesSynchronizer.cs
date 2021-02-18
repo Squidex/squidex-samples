@@ -73,7 +73,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
             {
                 foreach (var (name, rule) in rulesByName.ToList())
                 {
-                    if (!newRules.Any(x => x.Name == name))
+                    if (newRules.All(x => x.Name != name))
                     {
                         await log.DoSafeAsync($"Rule '{name}' deleting", async () =>
                         {

@@ -75,7 +75,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             {
                 foreach (var name in current.Items.Select(x => x.Name))
                 {
-                    if (!newSchemaNames.Any(x => x.Name == name))
+                    if (newSchemaNames.All(x => x.Name != name))
                     {
                         await log.DoSafeAsync($"Schema {name} deleting", async () =>
                         {
@@ -134,7 +134,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private IEnumerable<FileInfo> GetSchemaFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<FileInfo> GetSchemaFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("schemas/*.json"))
             {
@@ -177,7 +177,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, "../__json/schema");
         }
 
-        private void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)
+        private static void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)
         {
             if (schema.Fields != null)
             {
@@ -188,7 +188,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private void MapReferences(UpsertSchemaFieldDto field, Dictionary<string, string> map)
+        private static void MapReferences(UpsertSchemaFieldDto field, Dictionary<string, string> map)
         {
             MapReferences(field.Properties, map);
 

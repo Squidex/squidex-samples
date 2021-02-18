@@ -6,7 +6,9 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -37,8 +39,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 try
                 {
-                    await jsonHelper.WriteWithSchemaAs<AssetModel>(directoryInfo, $"assets/{asset.Id}.json", asset, Ref);
-
                     var filePath = Path.Combine(directoryInfo.FullName, $"assets/files/{asset.Id}.blob");
                     var fileHash = GetFileHash(filePath);
 
@@ -46,9 +46,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     {
                         var response = await session.Assets.GetAssetContentBySlugAsync(session.App, asset.Id, string.Empty);
 
-                        using (response.Stream)
+                        await using (response.Stream)
                         {
-                            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                            await using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                             {
                                 await response.Stream.CopyToAsync(fileStream);
                             }
@@ -67,8 +67,83 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 }
             });
 
+            var assets = new List<AssetModel>();
+            var assetBatch = 0;
+
+            Task SaveAsync()
+            {
+                var model = new AssetsModel
+                {
+                    Assets = assets
+                };
+
+                return log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
+                {
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, "../__json/assets");
+                });
+            }
+
+            var paths = new Dictionary<string, string>();
+
             await session.Assets.GetAllAsync(session.App, async asset =>
             {
+                var path = string.Empty;
+
+                if (asset.ParentId != null)
+                {
+                    if (!paths.TryGetValue(asset.ParentId, out path))
+                    {
+                        var folders = await session.Assets.GetAssetFoldersAsync(session.App, asset.ParentId);
+
+                        foreach (var folder in folders.Items)
+                        {
+                            var names = folders.Path.Select(x => x.FolderName).Union(Enumerable.Repeat(folder.FolderName, 1));
+
+                            paths[folder.Id] = string.Join("/", names);
+                        }
+
+                        for (var i = 0; i < folders.Path.Count; i++)
+                        {
+                            var names = folders.Path.Take(i + 1).Select(x => x.FolderName);
+
+                            paths[folders.Path.ElementAt(i).Id] = string.Join("/", names);
+                        }
+                    }
+
+                    if (!paths.TryGetValue(asset.ParentId, out path))
+                    {
+                        path = string.Empty;
+
+                        paths[asset.ParentId] = path;
+                    }
+                }
+
+                assets.Add(new AssetModel
+                {
+                    Id = asset.Id,
+                    Metadata = asset.Metadata,
+                    MimeType = asset.MimeType,
+                    Slug = asset.Slug,
+                    FileName = asset.FileName,
+                    FileHash = asset.FileHash,
+                    Path = path,
+                    Tags = asset.Tags,
+                    IsProtected = asset.IsProtected
+                });
+
+                if (assets.Count > 50)
+                {
+                    await SaveAsync();
+
+                    assets.Clear();
+                    assetBatch++;
+                }
+
+                if (assets.Count > 0)
+                {
+                    await SaveAsync();
+                }
+
                 await pipeline.SendAsync(asset);
             });
 
@@ -109,9 +184,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AssetMeta>(directoryInfo, "assets.json");
+            await jsonHelper.WriteJsonSchemaAsync<AssetsModel>(directoryInfo, "assets.json");
 
-            var sample = new AssetModel { FileName = "my.file.txt", MimeType = "plain/text" };
+            var sample = new AssetsModel
+            {
+                Assets = new List<AssetModel>
+                {
+                    new AssetModel
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FileName = "my.file.txt",
+                        FileHash = "<Optional Hash>",
+                        MimeType = "plain/text"
+                    }
+                }
+            };
 
             await jsonHelper.WriteWithSchema(directoryInfo, "assets/__asset.json", sample, Ref);
         }

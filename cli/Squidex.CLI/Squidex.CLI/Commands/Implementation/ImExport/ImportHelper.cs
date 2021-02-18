@@ -78,10 +78,9 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
         {
             var sb = new StringBuilder();
 
-            string line;
-
             using (var streamReader = new StreamReader(stream))
             {
+                string line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     if (line.Equals(separator, StringComparison.OrdinalIgnoreCase))

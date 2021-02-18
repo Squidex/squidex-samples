@@ -126,7 +126,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -208,7 +208,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -295,7 +295,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -380,7 +380,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -609,7 +609,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -861,7 +861,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -968,7 +968,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1055,7 +1055,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1162,7 +1162,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1396,7 +1396,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -1770,7 +1770,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The preview urls for the schema.</param>
         /// <returns>Schema updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SchemaDetailsDto> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<SchemaDetailsDto> PutPreviewUrlsAsync(string app, string name, ConfigurePreviewUrlsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Update the scripts.</summary>
@@ -1931,7 +1931,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2055,7 +2055,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2164,7 +2164,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2273,7 +2273,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2387,7 +2387,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2501,7 +2501,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2608,7 +2608,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2727,7 +2727,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2839,7 +2839,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -2947,7 +2947,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3060,7 +3060,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3168,7 +3168,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3281,7 +3281,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3389,7 +3389,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3502,7 +3502,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3610,7 +3610,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3723,7 +3723,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3831,7 +3831,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -3944,7 +3944,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4031,7 +4031,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4139,7 +4139,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4231,7 +4231,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4340,7 +4340,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4426,7 +4426,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4535,7 +4535,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4644,7 +4644,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4673,7 +4673,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The preview urls for the schema.</param>
         /// <returns>Schema updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<SchemaDetailsDto> PutPreviewUrlsAsync(string app, string name, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<SchemaDetailsDto> PutPreviewUrlsAsync(string app, string name, ConfigurePreviewUrlsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -4753,7 +4753,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4862,7 +4862,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -4971,7 +4971,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5064,7 +5064,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5157,7 +5157,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5357,9 +5357,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Run a rule.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the rule to run.</param>
+        /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
         /// <returns>Rule started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PutRuleRunAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PutRuleRunAsync(string app, string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get rule events.</summary>
@@ -5386,6 +5387,19 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Rule deqeued.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteEventAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Provide a list of all event types that are used in rules.</summary>
+        /// <returns>Rule events returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Provide the json schema for the event with the specified name.</summary>
+        /// <param name="name">The name of the event.</param>
+        /// <returns>Rule event type found.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<object> GetEventSchemaAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
     }
     
@@ -5469,7 +5483,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5556,7 +5570,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5660,7 +5674,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5735,7 +5749,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5844,7 +5858,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -5930,7 +5944,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6023,7 +6037,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6116,7 +6130,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6203,7 +6217,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6229,9 +6243,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Run a rule.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the rule to run.</param>
+        /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
         /// <returns>Rule started.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task PutRuleRunAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task PutRuleRunAsync(string app, string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -6240,9 +6255,14 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/run");
+            urlBuilder_.Append("apps/{app}/rules/{id}/run?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            if (fromSnapshots != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("fromSnapshots") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fromSnapshots, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -6284,7 +6304,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6387,7 +6407,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6474,7 +6494,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6560,7 +6580,170 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Provide a list of all event types that are used in rules.</summary>
+        /// <returns>Rule events returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("rules/eventtypes");
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Provide the json schema for the event with the specified name.</summary>
+        /// <param name="name">The name of the event.</param>
+        /// <returns>Rule event type found.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<object> GetEventSchemaAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (name == null)
+                throw new System.ArgumentNullException("name");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("rules/eventtypes/{name}");
+            urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Rule event not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6795,7 +6978,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -6899,7 +7082,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7030,7 +7213,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get API information.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<ExposedValues> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get ping status of the API.</summary>
@@ -7077,7 +7260,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Get API information.</summary>
         /// <returns>Infos returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ExposedValues> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("info");
@@ -7112,7 +7295,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, string>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ExposedValues>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -7127,7 +7310,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7197,7 +7380,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7272,7 +7455,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7494,7 +7677,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7709,7 +7892,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -7943,7 +8126,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8211,7 +8394,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8320,7 +8503,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8428,7 +8611,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8519,7 +8702,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8755,7 +8938,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -8841,7 +9024,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9107,7 +9290,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9193,7 +9376,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9280,7 +9463,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9372,7 +9555,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9448,7 +9631,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9525,7 +9708,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -9701,7 +9884,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <returns>Asset folders returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, string parentId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string app, string parentId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
@@ -9747,16 +9930,16 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="top">Optional OData parameter to define the number of items to retrieve.</param>
+        /// <param name="skip">Optional OData parameter to skip items.</param>
+        /// <param name="orderby">Optional OData order definition to sort the result set.</param>
+        /// <param name="filter">Optional OData order definition to filter the result set.</param>
         /// <param name="parentId">The optional parent folder id.</param>
-        /// <param name="ids">The optional asset ids.</param>
-        /// <param name="q">The optional json query.</param>
+        /// <param name="idsQuery">The optional asset ids.</param>
+        /// <param name="qQuery">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, int? top = null, int? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string top = null, string skip = null, string orderby = null, string filter = null, string parentId = null, string idsQuery = null, string qQuery = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
@@ -9986,7 +10169,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10138,7 +10321,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10166,7 +10349,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <returns>Asset folders returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetFoldersAsync(string app, string parentId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string app, string parentId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10210,7 +10393,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetFoldersDto>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -10231,7 +10414,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10335,7 +10518,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10444,7 +10627,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10530,7 +10713,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10639,7 +10822,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10726,7 +10909,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10751,16 +10934,16 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of assets to take.</param>
-        /// <param name="skip">Optional number of assets to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter definition.</param>
+        /// <param name="top">Optional OData parameter to define the number of items to retrieve.</param>
+        /// <param name="skip">Optional OData parameter to skip items.</param>
+        /// <param name="orderby">Optional OData order definition to sort the result set.</param>
+        /// <param name="filter">Optional OData order definition to filter the result set.</param>
         /// <param name="parentId">The optional parent folder id.</param>
-        /// <param name="ids">The optional asset ids.</param>
-        /// <param name="q">The optional json query.</param>
+        /// <param name="idsQuery">The optional asset ids.</param>
+        /// <param name="qQuery">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, int? top = null, int? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string top = null, string skip = null, string orderby = null, string filter = null, string parentId = null, string idsQuery = null, string qQuery = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10788,13 +10971,13 @@ namespace Squidex.ClientLibrary.Management
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (ids != null) 
+            if (idsQuery != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ids") + "=").Append(System.Uri.EscapeDataString(ConvertToString(ids, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ids") + "=").Append(System.Uri.EscapeDataString(ConvertToString(idsQuery, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
-            if (q != null) 
+            if (qQuery != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("q") + "=").Append(System.Uri.EscapeDataString(ConvertToString(q, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("q") + "=").Append(System.Uri.EscapeDataString(ConvertToString(qQuery, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -10849,7 +11032,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -10984,7 +11167,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11078,7 +11261,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11170,7 +11353,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11279,7 +11462,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11371,7 +11554,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11495,7 +11678,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -11604,7 +11787,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12077,7 +12260,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12181,7 +12364,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12290,7 +12473,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12382,7 +12565,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12469,7 +12652,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12573,7 +12756,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12660,7 +12843,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12752,7 +12935,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12839,7 +13022,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -12943,7 +13126,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13052,7 +13235,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13154,7 +13337,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13241,7 +13424,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13345,7 +13528,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13454,7 +13637,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13546,7 +13729,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13633,7 +13816,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13737,7 +13920,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13824,7 +14007,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -13933,7 +14116,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14035,7 +14218,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14111,7 +14294,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14214,7 +14397,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14301,7 +14484,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14405,7 +14588,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14486,7 +14669,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14595,7 +14778,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14680,7 +14863,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14767,7 +14950,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14854,7 +15037,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -14958,7 +15141,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -15067,7 +15250,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -15159,7 +15342,7 @@ namespace Squidex.ClientLibrary.Management
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
@@ -15298,8 +15481,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UsersDto : Resource
+    public partial class UsersDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The total number of users.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Total { get; set; }
@@ -15313,8 +15501,33 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UserDto : Resource
+    public partial class ResourceLink 
     {
+        /// <summary>The link url.</summary>
+        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Href { get; set; }
+    
+        /// <summary>The link method.</summary>
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Method { get; set; }
+    
+        /// <summary>Additional data about the link.</summary>
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Metadata { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class UserDto 
+    {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the user.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -15338,37 +15551,6 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<string> Permissions { get; set; } = new System.Collections.ObjectModel.Collection<string>();
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class Resource 
-    {
-        /// <summary>The links.</summary>
-        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ResourceLink 
-    {
-        /// <summary>The link url.</summary>
-        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Href { get; set; }
-    
-        /// <summary>The link method.</summary>
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Method { get; set; }
-    
-        /// <summary>Additional data about the link.</summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Metadata { get; set; }
     
     
     }
@@ -15478,8 +15660,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class EventConsumersDto : Resource
+    public partial class EventConsumersDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The event consumers.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<EventConsumerDto> Items { get; set; }
@@ -15488,8 +15675,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class EventConsumerDto : Resource
+    public partial class EventConsumerDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         [Newtonsoft.Json.JsonProperty("isStopped", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsStopped { get; set; }
     
@@ -15512,23 +15704,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class GraphQLPostDto 
+    public partial class ContentsDto 
     {
-        [Newtonsoft.Json.JsonProperty("operationName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OperationName { get; set; }
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
     
-        [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Query { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("variables", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object Variables { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentsDto : Resource
-    {
         /// <summary>The total number of content items.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Total { get; set; }
@@ -15547,20 +15729,25 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentDto : Resource
+    public partial class ContentDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The if of the content item.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
     
         /// <summary>The user that has created the content item.</summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the content item.</summary>
         [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string LastModifiedBy { get; set; }
     
         /// <summary>The data of the content item.</summary>
@@ -15570,7 +15757,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The reference data for the frontend UI.</summary>
         [Newtonsoft.Json.JsonProperty("referenceData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public NamedContentData ReferenceData { get; set; }
+        public ContentData ReferenceData { get; set; }
     
         /// <summary>The date and time when the content item has been created.</summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -15620,13 +15807,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class NamedContentData : ContentDataOfString
-    {
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class ContentDataOfString : System.Collections.Generic.Dictionary<string, ContentFieldData>
+    public partial class ContentData 
     {
         [Newtonsoft.Json.JsonProperty("ValidValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<KeyValuePairOfStringAndContentFieldData> ValidValues { get; set; }
@@ -15647,7 +15828,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, IJsonValue>
+    public partial class ContentFieldData 
     {
     
     }
@@ -15673,15 +15854,20 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The user who schedule the content.</summary>
         [Newtonsoft.Json.JsonProperty("scheduledBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string ScheduledBy { get; set; }
     
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class FieldDto : Resource
+    public partial class FieldDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the field.</summary>
         [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long FieldId { get; set; }
@@ -15721,18 +15907,6 @@ namespace Squidex.ClientLibrary.Management
     
     }
     
-    [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "fieldType")]
-    [JsonInheritanceAttribute("Array", typeof(ArrayFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Assets", typeof(AssetsFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Boolean", typeof(BooleanFieldPropertiesDto))]
-    [JsonInheritanceAttribute("DateTime", typeof(DateTimeFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Geolocation", typeof(GeolocationFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Json", typeof(JsonFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Number", typeof(NumberFieldPropertiesDto))]
-    [JsonInheritanceAttribute("References", typeof(ReferencesFieldPropertiesDto))]
-    [JsonInheritanceAttribute("String", typeof(StringFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Tags", typeof(TagsFieldPropertiesDto))]
-    [JsonInheritanceAttribute("UI", typeof(UIFieldPropertiesDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class FieldPropertiesDto 
     {
@@ -15755,6 +15929,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsRequired { get; set; }
     
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
         /// <summary>Indicates if the field should be rendered with half width only.</summary>
         [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsHalfWidth { get; set; }
@@ -15771,8 +15949,43 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ArrayFieldPropertiesDto : FieldPropertiesDto
+    public partial class ArrayFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MinItems { get; set; }
@@ -15785,12 +15998,55 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetsFieldPropertiesDto : FieldPropertiesDto
+    public partial class AssetsFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
         /// <summary>The preview mode for the asset.</summary>
         [Newtonsoft.Json.JsonProperty("previewMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AssetPreviewMode PreviewMode { get; set; }
+    
+        /// <summary>The language specific default value as a list of asset ids.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfStringOf DefaultValues { get; set; }
+    
+        /// <summary>The default value as a list of asset ids.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> DefaultValue { get; set; }
     
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -15871,8 +16127,53 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class BooleanFieldPropertiesDto : FieldPropertiesDto
+    public partial class LocalizedValueOfStringOf 
     {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class BooleanFieldPropertiesDto 
+    {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value for the field value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableBoolean DefaultValues { get; set; }
+    
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DefaultValue { get; set; }
@@ -15890,6 +16191,12 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LocalizedValueOfNullableBoolean 
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum BooleanFieldEditor
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Checkbox")]
@@ -15901,8 +16208,47 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class DateTimeFieldPropertiesDto : FieldPropertiesDto
+    public partial class DateTimeFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value for the field value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableInstant DefaultValues { get; set; }
+    
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? DefaultValue { get; set; }
@@ -15929,6 +16275,12 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LocalizedValueOfNullableInstant 
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum DateTimeFieldEditor
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Date")]
@@ -15951,11 +16303,42 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class GeolocationFieldPropertiesDto : FieldPropertiesDto
+    public partial class GeolocationFieldPropertiesDto 
     {
-        /// <summary>The default value for the field value.</summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DefaultValue { get; set; }
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
     
         /// <summary>The editor that is used to manage this field.</summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -15974,14 +16357,88 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class JsonFieldPropertiesDto : FieldPropertiesDto
+    public partial class JsonFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class NumberFieldPropertiesDto : FieldPropertiesDto
+    public partial class NumberFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value for the field value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableDouble DefaultValues { get; set; }
+    
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? DefaultValue { get; set; }
@@ -16015,6 +16472,12 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LocalizedValueOfNullableDouble 
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum NumberFieldEditor
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Input")]
@@ -16032,8 +16495,51 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ReferencesFieldPropertiesDto : FieldPropertiesDto
+    public partial class ReferencesFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value as a list of content ids.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfStringOf DefaultValues { get; set; }
+    
+        /// <summary>The default value as a list of content ids.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> DefaultValue { get; set; }
+    
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MinItems { get; set; }
@@ -16049,6 +16555,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>True to resolve references in the content list.</summary>
         [Newtonsoft.Json.JsonProperty("resolveReference", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool ResolveReference { get; set; }
+    
+        /// <summary>True when all references must be published.</summary>
+        [Newtonsoft.Json.JsonProperty("mustBePublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool MustBePublished { get; set; }
     
         /// <summary>The editor that is used to manage this field.</summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16080,8 +16590,47 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class StringFieldPropertiesDto : FieldPropertiesDto
+    public partial class StringFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value for the field value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfString DefaultValues { get; set; }
+    
         /// <summary>The default value for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string DefaultValue { get; set; }
@@ -16144,6 +16693,12 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class LocalizedValueOfString 
+    {
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum StringContentType
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
@@ -16193,8 +16748,51 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class TagsFieldPropertiesDto : FieldPropertiesDto
+    public partial class TagsFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        /// <summary>The language specific default value for the field value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfStringOf DefaultValues { get; set; }
+    
+        /// <summary>The default value.</summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> DefaultValue { get; set; }
+    
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MinItems { get; set; }
@@ -16230,8 +16828,43 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UIFieldPropertiesDto : FieldPropertiesDto
+    public partial class UIFieldPropertiesDto 
     {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>Placeholder to show when no value has been entered.</summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+    
+        /// <summary>Indicates if the field is required.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+    
+        /// <summary>Indicates if the field is required when publishing.</summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+    
+        /// <summary>Indicates if the field should be rendered with half width only.</summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+    
+        /// <summary>Optional url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
         /// <summary>The editor that is used to manage this field.</summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -16249,8 +16882,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class NestedFieldDto : Resource
+    public partial class NestedFieldDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the field.</summary>
         [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long FieldId { get; set; }
@@ -16333,11 +16971,15 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class BulkResultDto 
     {
-        /// <summary>The error when the import failed.</summary>
+        /// <summary>The error when the bulk job failed.</summary>
         [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ErrorDto Error { get; set; }
     
-        /// <summary>The id of the content when the import succeeds.</summary>
+        /// <summary>The index of the bulk job where the result belongs to. The order can change.</summary>
+        [Newtonsoft.Json.JsonProperty("jobIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int JobIndex { get; set; }
+    
+        /// <summary>The id of the content that has been handled successfully or not.</summary>
         [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContentId { get; set; }
     
@@ -16377,10 +17019,11 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The data to import.</summary>
         [Newtonsoft.Json.JsonProperty("datas", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<NamedContentData> Datas { get; set; } = new System.Collections.ObjectModel.Collection<NamedContentData>();
+        public System.Collections.Generic.ICollection<ContentData> Datas { get; set; } = new System.Collections.ObjectModel.Collection<ContentData>();
     
         /// <summary>True to automatically publish the content.</summary>
         [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use Bulk endpoint")]
         public bool Publish { get; set; }
     
         /// <summary>True to turn off scripting for faster inserts. Default: true.</summary>
@@ -16404,11 +17047,24 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>True to automatically publish the content.</summary>
         [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use Jobs.Status")]
         public bool Publish { get; set; }
     
         /// <summary>True to turn off scripting for faster inserts. Default: true.</summary>
         [Newtonsoft.Json.JsonProperty("doNotScript", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool DoNotScript { get; set; }
+    
+        /// <summary>True to turn off validation for faster inserts. Default: false.</summary>
+        [Newtonsoft.Json.JsonProperty("doNotValidate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DoNotValidate { get; set; }
+    
+        /// <summary>True to turn off validation of workflow rules. Default: false.</summary>
+        [Newtonsoft.Json.JsonProperty("doNotValidateWorkflow", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool DoNotValidateWorkflow { get; set; }
+    
+        /// <summary>True to check referrers of this content.</summary>
+        [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CheckReferrers { get; set; }
     
         /// <summary>True to turn off costly validation: Unique checks, asset checks and reference checks. Default: true.</summary>
         [Newtonsoft.Json.JsonProperty("optimizeValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16428,18 +17084,34 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
     
-        /// <summary>The data of the content when type is set to 'Upsert'.</summary>
+        /// <summary>The data of the content when type is set to 'Upsert', 'Create', 'Update' or 'Patch.</summary>
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public NamedContentData Data { get; set; }
+        public ContentData Data { get; set; }
     
-        /// <summary>The new status when the type is set to 'ChangeStatus'.</summary>
+        /// <summary>The new status when the type is set to 'ChangeStatus' or 'Upsert'.</summary>
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Status { get; set; }
+    
+        /// <summary>The due time.</summary>
+        [Newtonsoft.Json.JsonProperty("dueTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DueTime { get; set; }
     
         /// <summary>The update type.</summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BulkUpdateType Type { get; set; }
+    
+        /// <summary>The optional schema id or name.</summary>
+        [Newtonsoft.Json.JsonProperty("schema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Schema { get; set; }
+    
+        /// <summary>The number of expected items. Set it to a higher number to update multiple items when a query is defined.</summary>
+        [Newtonsoft.Json.JsonProperty("expectedCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long ExpectedCount { get; set; }
+    
+        /// <summary>The expected version.</summary>
+        [Newtonsoft.Json.JsonProperty("expectedVersion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long ExpectedVersion { get; set; }
     
     
     }
@@ -16488,8 +17160,17 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PropertyPath : System.Collections.ObjectModel.Collection<string>
+    public partial class PropertyPath 
     {
+        [Newtonsoft.Json.JsonProperty("Count", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Count { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Item", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Item { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Items { get; set; }
+    
     
     }
     
@@ -16513,8 +17194,20 @@ namespace Squidex.ClientLibrary.Management
         [System.Runtime.Serialization.EnumMember(Value = @"ChangeStatus")]
         ChangeStatus = 1,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"Create")]
+        Create = 2,
+    
         [System.Runtime.Serialization.EnumMember(Value = @"Delete")]
-        Delete = 2,
+        Delete = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Patch")]
+        Patch = 4,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Update")]
+        Update = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Validate")]
+        Validate = 6,
     
     }
     
@@ -16530,12 +17223,21 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("dueTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? DueTime { get; set; }
     
+        /// <summary>True to check referrers of this content.</summary>
+        [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CheckReferrers { get; set; }
+    
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ResourcesDto : Resource
+    public partial class ResourcesDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
     
     }
     
@@ -16545,7 +17247,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The result of the translation.</summary>
         [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public TranslationResult Result { get; set; }
+        public TranslationResultCode Result { get; set; }
     
         /// <summary>The translated text.</summary>
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -16555,7 +17257,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum TranslationResult
+    public enum TranslationResultCode
     {
         [System.Runtime.Serialization.EnumMember(Value = @"Translated")]
         Translated = 0,
@@ -16566,11 +17268,14 @@ namespace Squidex.ClientLibrary.Management
         [System.Runtime.Serialization.EnumMember(Value = @"NotTranslated")]
         NotTranslated = 2,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"NotImplemented")]
-        NotImplemented = 3,
+        [System.Runtime.Serialization.EnumMember(Value = @"NotConfigured")]
+        NotConfigured = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Unauthorized")]
+        Unauthorized = 4,
     
         [System.Runtime.Serialization.EnumMember(Value = @"Failed")]
-        Failed = 4,
+        Failed = 5,
     
     }
     
@@ -16584,7 +17289,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The target language.</summary>
         [Newtonsoft.Json.JsonProperty("targetLanguage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string TargetLanguage { get; set; }
     
         /// <summary>The optional source language.</summary>
@@ -16652,6 +17357,7 @@ namespace Squidex.ClientLibrary.Management
     {
         /// <summary>The date when the usage was tracked.</summary>
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Date { get; set; }
     
         /// <summary>The total number of API calls.</summary>
@@ -16688,6 +17394,7 @@ namespace Squidex.ClientLibrary.Management
     {
         /// <summary>The date when the usage was tracked.</summary>
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Date { get; set; }
     
         /// <summary>The number of assets.</summary>
@@ -16702,8 +17409,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SearchResultDto : Resource
+    public partial class SearchResultDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The name of the search result.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -16746,8 +17458,62 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchemaDetailsDto : SchemaDto
+    public partial class SchemaDetailsDto 
     {
+        /// <summary>The id of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the schema. Unique within the app.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
+        public string Name { get; set; }
+    
+        /// <summary>The name of the category.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+    
+        /// <summary>The schema properties.</summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SchemaPropertiesDto Properties { get; set; } = new SchemaPropertiesDto();
+    
+        /// <summary>Indicates if the schema is a singleton.</summary>
+        [Newtonsoft.Json.JsonProperty("isSingleton", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsSingleton { get; set; }
+    
+        /// <summary>Indicates if the schema is published.</summary>
+        [Newtonsoft.Json.JsonProperty("isPublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsPublished { get; set; }
+    
+        /// <summary>The user that has created the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string CreatedBy { get; set; }
+    
+        /// <summary>The user that has updated the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string LastModifiedBy { get; set; }
+    
+        /// <summary>The date and time when the schema has been created.</summary>
+        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created { get; set; }
+    
+        /// <summary>The date and time when the schema has been modified last.</summary>
+        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset LastModified { get; set; }
+    
+        /// <summary>The version of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Version { get; set; }
+    
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The scripts.</summary>
         [Newtonsoft.Json.JsonProperty("scripts", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -16776,6 +17542,38 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<FieldDto> Fields { get; set; } = new System.Collections.ObjectModel.Collection<FieldDto>();
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class SchemaPropertiesDto 
+    {
+        /// <summary>Optional label for the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+    
+        /// <summary>Hints to describe the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+    
+        /// <summary>The url to a the sidebar plugin for content lists.</summary>
+        [Newtonsoft.Json.JsonProperty("contentsSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentsSidebarUrl { get; set; }
+    
+        /// <summary>The url to a the sidebar plugin for content items.</summary>
+        [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentSidebarUrl { get; set; }
+    
+        /// <summary>True to validate the content items on publish.</summary>
+        [Newtonsoft.Json.JsonProperty("validateOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ValidateOnPublish { get; set; }
+    
+        /// <summary>Tags for automation processes.</summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
     
     
     }
@@ -16842,89 +17640,6 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchemaDto : Resource
-    {
-        /// <summary>The id of the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The name of the schema. Unique within the app.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
-        public string Name { get; set; }
-    
-        /// <summary>The name of the category.</summary>
-        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Category { get; set; }
-    
-        /// <summary>The schema properties.</summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SchemaPropertiesDto Properties { get; set; } = new SchemaPropertiesDto();
-    
-        /// <summary>Indicates if the schema is a singleton.</summary>
-        [Newtonsoft.Json.JsonProperty("isSingleton", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsSingleton { get; set; }
-    
-        /// <summary>Indicates if the schema is published.</summary>
-        [Newtonsoft.Json.JsonProperty("isPublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsPublished { get; set; }
-    
-        /// <summary>The user that has created the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string CreatedBy { get; set; }
-    
-        /// <summary>The user that has updated the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string LastModifiedBy { get; set; }
-    
-        /// <summary>The date and time when the schema has been created.</summary>
-        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Created { get; set; }
-    
-        /// <summary>The date and time when the schema has been modified last.</summary>
-        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset LastModified { get; set; }
-    
-        /// <summary>The version of the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Version { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchemaPropertiesDto 
-    {
-        /// <summary>Optional label for the editor.</summary>
-        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(100)]
-        public string Label { get; set; }
-    
-        /// <summary>Hints to describe the schema.</summary>
-        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
-        public string Hints { get; set; }
-    
-        /// <summary>The url to a the sidebar plugin for content lists.</summary>
-        [Newtonsoft.Json.JsonProperty("contentsSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ContentsSidebarUrl { get; set; }
-    
-        /// <summary>The url to a the sidebar plugin for content items.</summary>
-        [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ContentSidebarUrl { get; set; }
-    
-        /// <summary>Tags for automation processes.</summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> Tags { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AddFieldDto 
     {
         /// <summary>The name of the field. Must be unique within the schema.</summary>
@@ -16982,8 +17697,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchemasDto : Resource
+    public partial class SchemasDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The schemas.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<SchemaDto> Items { get; set; }
@@ -16992,23 +17712,67 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CreateSchemaDto : UpsertSchemaDto
+    public partial class SchemaDto 
     {
-        /// <summary>The name of the schema.</summary>
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
+        /// <summary>The id of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the schema. Unique within the app.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
     
-        /// <summary>Set to true to allow a single content item only.</summary>
+        /// <summary>The name of the category.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+    
+        /// <summary>The schema properties.</summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SchemaPropertiesDto Properties { get; set; } = new SchemaPropertiesDto();
+    
+        /// <summary>Indicates if the schema is a singleton.</summary>
         [Newtonsoft.Json.JsonProperty("isSingleton", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsSingleton { get; set; }
+    
+        /// <summary>Indicates if the schema is published.</summary>
+        [Newtonsoft.Json.JsonProperty("isPublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsPublished { get; set; }
+    
+        /// <summary>The user that has created the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string CreatedBy { get; set; }
+    
+        /// <summary>The user that has updated the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string LastModifiedBy { get; set; }
+    
+        /// <summary>The date and time when the schema has been created.</summary>
+        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset Created { get; set; }
+    
+        /// <summary>The date and time when the schema has been modified last.</summary>
+        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset LastModified { get; set; }
+    
+        /// <summary>The version of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Version { get; set; }
     
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class UpsertSchemaDto 
+    public partial class CreateSchemaDto 
     {
         /// <summary>The optional properties.</summary>
         [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17041,6 +17805,16 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>Set it to true to autopublish the schema.</summary>
         [Newtonsoft.Json.JsonProperty("isPublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsPublished { get; set; }
+    
+        /// <summary>The name of the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
+        public string Name { get; set; }
+    
+        /// <summary>Set to true to allow a single content item only.</summary>
+        [Newtonsoft.Json.JsonProperty("isSingleton", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsSingleton { get; set; }
     
     
     }
@@ -17132,6 +17906,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContentSidebarUrl { get; set; }
     
+        /// <summary>True to validate the content items on publish.</summary>
+        [Newtonsoft.Json.JsonProperty("validateOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ValidateOnPublish { get; set; }
+    
         /// <summary>Tags for automation processes.</summary>
         [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Tags { get; set; }
@@ -17140,8 +17918,40 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SynchronizeSchemaDto : UpsertSchemaDto
+    public partial class SynchronizeSchemaDto 
     {
+        /// <summary>The optional properties.</summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SchemaPropertiesDto Properties { get; set; }
+    
+        /// <summary>The optional scripts.</summary>
+        [Newtonsoft.Json.JsonProperty("scripts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SchemaScriptsDto Scripts { get; set; }
+    
+        /// <summary>The names of the fields that should be used in references.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> FieldsInReferences { get; set; }
+    
+        /// <summary>The names of the fields that should be shown in lists, including meta fields.</summary>
+        [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> FieldsInLists { get; set; }
+    
+        /// <summary>Optional fields.</summary>
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<UpsertSchemaFieldDto> Fields { get; set; }
+    
+        /// <summary>The optional preview urls.</summary>
+        [Newtonsoft.Json.JsonProperty("previewUrls", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IDictionary<string, string> PreviewUrls { get; set; }
+    
+        /// <summary>The category.</summary>
+        [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Category { get; set; }
+    
+        /// <summary>Set it to true to autopublish the schema.</summary>
+        [Newtonsoft.Json.JsonProperty("isPublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsPublished { get; set; }
+    
         /// <summary>True, when fields should not be deleted.</summary>
         [Newtonsoft.Json.JsonProperty("noFieldDeletion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool NoFieldDeletion { get; set; }
@@ -17164,7 +17974,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ConfigurePreviewUrlsDto : System.Collections.Generic.Dictionary<string, string>
+    public partial class ConfigurePreviewUrlsDto 
     {
     
     }
@@ -17284,8 +18094,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RulesDto : Resource
+    public partial class RulesDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The rules.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -17299,20 +18114,25 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RuleDto : Resource
+    public partial class RuleDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the rule.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
     
         /// <summary>The user that has created the rule.</summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the rule.</summary>
         [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string LastModifiedBy { get; set; }
     
         /// <summary>The date and time when the rule has been created.</summary>
@@ -17342,6 +18162,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The action properties.</summary>
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
         public RuleAction Action { get; set; }
     
         /// <summary>The number of completed executions.</summary>
@@ -17359,13 +18180,6 @@ namespace Squidex.ClientLibrary.Management
     
     }
     
-    [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "triggerType")]
-    [JsonInheritanceAttribute("AssetChanged", typeof(AssetChangedRuleTriggerDto))]
-    [JsonInheritanceAttribute("Comment", typeof(CommentRuleTriggerDto))]
-    [JsonInheritanceAttribute("ContentChanged", typeof(ContentChangedRuleTriggerDto))]
-    [JsonInheritanceAttribute("Manual", typeof(ManualRuleTriggerDto))]
-    [JsonInheritanceAttribute("SchemaChanged", typeof(SchemaChangedRuleTriggerDto))]
-    [JsonInheritanceAttribute("Usage", typeof(UsageRuleTriggerDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class RuleTriggerDto 
     {
@@ -17373,7 +18187,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetChangedRuleTriggerDto : RuleTriggerDto
+    public partial class AssetChangedRuleTriggerDto 
     {
         /// <summary>Javascript condition when to trigger.</summary>
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17383,7 +18197,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CommentRuleTriggerDto : RuleTriggerDto
+    public partial class CommentRuleTriggerDto 
     {
         /// <summary>Javascript condition when to trigger.</summary>
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17393,7 +18207,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContentChangedRuleTriggerDto : RuleTriggerDto
+    public partial class ContentChangedRuleTriggerDto 
     {
         /// <summary>The schema settings.</summary>
         [Newtonsoft.Json.JsonProperty("schemas", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17422,13 +18236,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ManualRuleTriggerDto : RuleTriggerDto
+    public partial class ManualRuleTriggerDto 
     {
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SchemaChangedRuleTriggerDto : RuleTriggerDto
+    public partial class SchemaChangedRuleTriggerDto 
     {
         /// <summary>Javascript condition when to trigger.</summary>
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17438,7 +18252,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UsageRuleTriggerDto : RuleTriggerDto
+    public partial class UsageRuleTriggerDto 
     {
         /// <summary>The number of monthly api calls.</summary>
         [Newtonsoft.Json.JsonProperty("limit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -17453,31 +18267,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "actionType")]
-    [JsonInheritanceAttribute("Webhook", typeof(WebhookRuleActionDto))]
-    [JsonInheritanceAttribute("Tweet", typeof(TweetRuleActionDto))]
-    [JsonInheritanceAttribute("Slack", typeof(SlackRuleActionDto))]
-    [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
-    [JsonInheritanceAttribute("Notification", typeof(NotificationRuleActionDto))]
-    [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
-    [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
-    [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
-    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchRuleActionDto))]
-    [JsonInheritanceAttribute("Discourse", typeof(DiscourseRuleActionDto))]
-    [JsonInheritanceAttribute("CreateContent", typeof(CreateContentRuleActionDto))]
-    [JsonInheritanceAttribute("Comment", typeof(CommentRuleActionDto))]
-    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueRuleActionDto))]
-    [JsonInheritanceAttribute("Algolia", typeof(AlgoliaRuleActionDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RuleAction 
+    public abstract partial class RuleAction 
     {
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties = new System.Collections.Generic.Dictionary<string, object>();
-    
-        [Newtonsoft.Json.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties; }
-            set { _additionalProperties = value; }
-        }
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
     
     
     }
@@ -17492,6 +18286,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The action properties.</summary>
         [Newtonsoft.Json.JsonProperty("action", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
         public RuleAction Action { get; set; }
     
     
@@ -17516,8 +18311,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RuleEventsDto : Resource
+    public partial class RuleEventsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The rule events.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -17531,8 +18331,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RuleEventDto : Resource
+    public partial class RuleEventDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the event.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
@@ -17711,7 +18516,7 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ExposedValues : System.Collections.Generic.Dictionary<string, string>
+    public partial class ExposedValues 
     {
     
     }
@@ -17832,7 +18637,7 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The user who created or updated the comment.</summary>
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string User { get; set; }
     
         /// <summary>The text of the comment.</summary>
@@ -17863,8 +18668,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class BackupJobsDto : Resource
+    public partial class BackupJobsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The backups.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -17874,8 +18684,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class BackupJobDto : Resource
+    public partial class BackupJobDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the backup job.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
@@ -18013,23 +18828,66 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetsDto : Resource
+    public partial class AssetFoldersDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The total number of assets.</summary>
         [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Total { get; set; }
     
-        /// <summary>The assets.</summary>
+        /// <summary>The assets folders.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<AssetDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetDto>();
+        public System.Collections.Generic.ICollection<AssetFolderDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetFolderDto>();
+    
+        /// <summary>The path to the current folder.</summary>
+        [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<AssetFolderDto> Path { get; set; } = new System.Collections.ObjectModel.Collection<AssetFolderDto>();
     
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetDto : Resource
+    public partial class AssetFolderDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
+        /// <summary>The id of the asset.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The id of the parent folder. Empty for files without parent.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ParentId { get; set; }
+    
+        /// <summary>The folder name.</summary>
+        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string FolderName { get; set; }
+    
+        /// <summary>The version of the asset folder.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Version { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AssetDto 
+    {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the asset.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
@@ -18096,12 +18954,12 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>The user that has created the schema.</summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string CreatedBy { get; set; }
     
         /// <summary>The user that has updated the asset.</summary>
         [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string LastModifiedBy { get; set; }
     
         /// <summary>The date and time when the asset has been created.</summary>
@@ -18122,17 +18980,17 @@ namespace Squidex.ClientLibrary.Management
     
         /// <summary>Determines of the created file is an image.</summary>
         [Newtonsoft.Json.JsonProperty("isImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete]
+        [System.Obsolete("Use Type instead")]
         public bool IsImage { get; set; }
     
         /// <summary>The width of the image in pixels if the asset is an image.</summary>
         [Newtonsoft.Json.JsonProperty("pixelWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete]
+        [System.Obsolete("Use Metdata instead")]
         public int? PixelWidth { get; set; }
     
         /// <summary>The height of the image in pixels if the asset is an image.</summary>
         [Newtonsoft.Json.JsonProperty("pixelHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete]
+        [System.Obsolete("Use Metdata instead")]
         public int? PixelHeight { get; set; }
     
     
@@ -18202,6 +19060,26 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AssetsDto 
+    {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
+        /// <summary>The total number of assets.</summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+    
+        /// <summary>The assets.</summary>
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<AssetDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetDto>();
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class AnnotateAssetDto 
     {
         /// <summary>The new name of the asset.</summary>
@@ -18228,8 +19106,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ClientsDto : Resource
+    public partial class ClientsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The clients.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18239,8 +19122,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ClientDto : Resource
+    public partial class ClientDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The client id.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18315,8 +19203,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContributorsDto : Resource
+    public partial class ContributorsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The contributors.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18334,8 +19227,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ContributorDto : Resource
+    public partial class ContributorDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The id of the user that contributes to the app.</summary>
         [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18388,8 +19286,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AppLanguagesDto : Resource
+    public partial class AppLanguagesDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The languages.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18399,8 +19302,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AppLanguageDto : Resource
+    public partial class AppLanguageDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The iso code of the language.</summary>
         [Newtonsoft.Json.JsonProperty("iso2Code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18432,7 +19340,7 @@ namespace Squidex.ClientLibrary.Management
     {
         /// <summary>The language to add.</summary>
         [Newtonsoft.Json.JsonProperty("language", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string Language { get; set; }
     
     
@@ -18457,8 +19365,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PatternsDto : Resource
+    public partial class PatternsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The patterns.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18468,8 +19381,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PatternDto : Resource
+    public partial class PatternDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>Unique id of the pattern.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
@@ -18512,8 +19430,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RolesDto : Resource
+    public partial class RolesDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The roles.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18523,8 +19446,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RoleDto : Resource
+    public partial class RoleDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The role name.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18582,8 +19510,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AppDto : Resource
+    public partial class AppDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The name of the app.</summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18674,8 +19607,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class WorkflowsDto : Resource
+    public partial class WorkflowsDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The workflow.</summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18690,8 +19628,13 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class WorkflowDto : Resource
+    public partial class WorkflowDto 
     {
+        /// <summary>The links.</summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.IDictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+    
         /// <summary>The workflow id.</summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Id { get; set; }
@@ -18793,8 +19736,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class WebhookRuleActionDto : RuleAction
+    public partial class WebhookRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The url to the webhook.</summary>
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18840,8 +19786,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class TweetRuleActionDto : RuleAction
+    public partial class TweetRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary> The generated access token.</summary>
         [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18861,8 +19810,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class SlackRuleActionDto : RuleAction
+    public partial class SlackRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The slack webhook url.</summary>
         [Newtonsoft.Json.JsonProperty("webhookUrl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18877,8 +19829,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PrerenderRuleActionDto : RuleAction
+    public partial class PrerenderRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The prerender token from your account.</summary>
         [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18893,8 +19848,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class NotificationRuleActionDto : RuleAction
+    public partial class NotificationRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The user id or email.</summary>
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18917,8 +19875,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class MediumRuleActionDto : RuleAction
+    public partial class MediumRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The self issued access token.</summary>
         [Newtonsoft.Json.JsonProperty("accessToken", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18954,8 +19915,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class FastlyRuleActionDto : RuleAction
+    public partial class FastlyRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The API key to grant access to Squidex.</summary>
         [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18970,8 +19934,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class EmailRuleActionDto : RuleAction
+    public partial class EmailRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The IP address or host to the SMTP server.</summary>
         [Newtonsoft.Json.JsonProperty("serverHost", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -18980,10 +19947,6 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The port to the SMTP server.</summary>
         [Newtonsoft.Json.JsonProperty("serverPort", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int ServerPort { get; set; }
-    
-        /// <summary>Specify whether the SMPT client uses Secure Sockets Layer (SSL) to encrypt the connection.</summary>
-        [Newtonsoft.Json.JsonProperty("serverUseSsl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool ServerUseSsl { get; set; }
     
         /// <summary>The username for the SMTP server.</summary>
         [Newtonsoft.Json.JsonProperty("serverUsername", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -19019,8 +19982,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ElasticSearchRuleActionDto : RuleAction
+    public partial class ElasticSearchRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The url to the elastic search instance or cluster.</summary>
         [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19051,8 +20017,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class DiscourseRuleActionDto : RuleAction
+    public partial class DiscourseRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The url to the discourse server.</summary>
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19089,8 +20058,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CreateContentRuleActionDto : RuleAction
+    public partial class CreateContentRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The content data.</summary>
         [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19113,8 +20085,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CommentRuleActionDto : RuleAction
+    public partial class CommentRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The comment text.</summary>
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19128,8 +20103,11 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AzureQueueRuleActionDto : RuleAction
+    public partial class AzureQueueRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The connection string to the storage account.</summary>
         [Newtonsoft.Json.JsonProperty("connectionString", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19140,12 +20118,19 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string Queue { get; set; }
     
+        /// <summary>Leave it empty to use the full event as body.</summary>
+        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Payload { get; set; }
+    
     
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AlgoliaRuleActionDto : RuleAction
+    public partial class AlgoliaRuleActionDto 
     {
+        [Newtonsoft.Json.JsonProperty("isFrozen", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsFrozen { get; set; }
+    
         /// <summary>The application ID.</summary>
         [Newtonsoft.Json.JsonProperty("appId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -19185,6 +20170,15 @@ namespace Squidex.ClientLibrary.Management
         public string Key { get; }
     
         public System.Type Type { get; }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.2.1.0 (Newtonsoft.Json v9.0.0.0)")]
+    internal class DateFormatConverter : Newtonsoft.Json.Converters.IsoDateTimeConverter
+    {
+        public DateFormatConverter()
+        {
+            DateTimeFormat = "yyyy-MM-dd";
+        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.8.2.0 (NJsonSchema v10.2.1.0 (Newtonsoft.Json v9.0.0.0))")]

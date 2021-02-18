@@ -39,6 +39,19 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 var contents = new List<ContentModel>();
                 var contentBatch = 0;
 
+                Task SaveAsync()
+                {
+                    var model = new ContentsModel
+                    {
+                        Contents = contents
+                    };
+
+                    return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
+                    {
+                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
+                    });
+                }
+
                 await client.GetAllAsync(50, async content =>
                 {
                     contents.Add(new ContentModel
@@ -51,15 +64,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     if (contents.Count > 50)
                     {
-                        var model = new ContentsModel
-                        {
-                            Contents = contents
-                        };
-
-                        await log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
-                        {
-                            await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
-                        });
+                        await SaveAsync();
 
                         contents.Clear();
                         contentBatch++;
@@ -68,15 +73,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 if (contents.Count > 0)
                 {
-                    var model = new ContentsModel
-                    {
-                        Contents = contents
-                    };
-
-                    await log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
-                    {
-                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
-                    });
+                    await SaveAsync();
                 }
             }
         }
@@ -141,26 +138,33 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                             Data = x.Data,
                             Schema = x.Schema,
                             Status = x.Status,
-                            Type = BulkUpdateType.Upsert,
-                        }).ToList(),
+                            Type = BulkUpdateType.Upsert
+                        }).ToList()
                     };
+
+                    var contentIdAssigned = false;
+                    var contentIndex = 0;
 
                     var results = await client.BulkUpdateAsync(request);
 
-                    var i = 0;
-
-                    foreach (var result in results)
+                    foreach (var content in model.Contents)
                     {
-                        var content = model.Contents[i];
+                        var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
 
-                        log.StepStart(i.ToString());
+                        log.StepStart(content.Ref);
 
-                        if (result.Error != null)
+                        if (result?.Error != null)
                         {
                             log.StepFailed(result.Error.ToString());
                         }
-                        else if (result.ContentId != null)
+                        else if (result?.ContentId != null)
                         {
+                            if (string.IsNullOrWhiteSpace(content.Id))
+                            {
+                                content.Id = result.ContentId;
+                                contentIdAssigned = true;
+                            }
+
                             log.StepSuccess();
                         }
                         else
@@ -168,7 +172,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                             log.StepSkipped("Unknown Reason");
                         }
 
-                        i++;
+                        contentIndex++;
+                    }
+
+                    if (contentIdAssigned)
+                    {
+                        await log.DoSafeAsync($"Saving {file.Name}", async () =>
+                        {
+                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, "../__json/contents");
+                        });
                     }
                 }
             }
@@ -191,7 +203,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             return result;
         }
 
-        private IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("contents/*.json"))
             {
@@ -212,9 +224,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 {
                     new ContentModel
                     {
-                        Status = "Published",
                         Schema = "my-schema",
-                        Id = Guid.NewGuid().ToString(),
                         Data = new DynamicData
                         {
                             ["id"] = new JObject
@@ -225,7 +235,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                             {
                                 ["iv"] = "Hello Squidex"
                             }
-                        }
+                        },
+                        Status = "Published"
                     }
                 }
             };

@@ -48,7 +48,7 @@ namespace Squidex.CLI.Commands
                         table.AddRow(app.Id, app.Name, app.LastModified);
                     }
 
-                    table.Write(Format.Default);
+                    table.Write();
                 }
                 else
                 {

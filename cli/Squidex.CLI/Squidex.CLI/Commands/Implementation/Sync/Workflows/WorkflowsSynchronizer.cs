@@ -68,11 +68,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             {
                 foreach (var (name, workflow) in workflowsByName.ToList())
                 {
-                    if (!newWorkflows.Any(x => x.Name != name))
+                    if (newWorkflows.All(x => x.Name == name))
                     {
                         await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
                         {
-                            await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id.ToString());
+                            await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id);
 
                             workflowsByName.Remove(name);
                         });
@@ -116,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                 await log.DoSafeAsync($"Workflow '{newWorkflow.Name}' updating", async () =>
                 {
-                    await session.Apps.PutWorkflowAsync(session.App, workflow.Id.ToString(), newWorkflow);
+                    await session.Apps.PutWorkflowAsync(session.App, workflow.Id, newWorkflow);
                 });
             }
         }

@@ -283,10 +283,8 @@ namespace Squidex.ClientLibrary
             {
                 throw new ArgumentException("URL must be a valid absolute URL.");
             }
-            else
-            {
-                url = url.TrimEnd('/', ' ');
-            }
+
+            url = url.TrimEnd('/', ' ');
 
             if (string.IsNullOrWhiteSpace(appName))
             {

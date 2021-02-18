@@ -34,13 +34,14 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             {
                 var value = GetValue(entity, field.Path);
 
-                if (value is JValue jValue)
+                switch (value)
                 {
-                    value = jValue.Value;
-                }
-                else if (value is JToken jToken)
-                {
-                    value = jToken.ToString();
+                    case JValue jValue:
+                        value = jValue.Value;
+                        break;
+                    case JToken jToken:
+                        value = jToken.ToString();
+                        break;
                 }
 
                 if (value is string text)
@@ -54,7 +55,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        private object GetValue(object current, JsonPath path)
+        private static object GetValue(object current, JsonPath path)
         {
             foreach (var (key, index) in path)
             {
@@ -91,7 +92,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                         return "<INVALID>";
                     }
                 }
-                else
+                else if (current != null)
                 {
                     var property = current.GetType().GetProperties().FirstOrDefault(x => x.CanRead && string.Equals(x.Name, key, StringComparison.OrdinalIgnoreCase));
 

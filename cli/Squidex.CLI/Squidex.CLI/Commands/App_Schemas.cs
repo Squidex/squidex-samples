@@ -55,7 +55,7 @@ namespace Squidex.CLI.Commands
                         table.AddRow(schema.Id, schema.Name, schema.IsPublished, schema.LastModified);
                     }
 
-                    table.Write(Format.Default);
+                    table.Write();
                 }
                 else
                 {
@@ -94,7 +94,7 @@ namespace Squidex.CLI.Commands
 
                 try
                 {
-                    schemaText = File.ReadAllText(arguments.File);
+                    schemaText = await File.ReadAllTextAsync(arguments.File);
                 }
                 catch (IOException)
                 {

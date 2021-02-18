@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                         break;
                     }
 
-                    DynamicData data = ReadOne(jsonReader);
+                    var data = ReadOne(jsonReader);
 
                     yield return data;
                 }
@@ -87,7 +87,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             return data;
         }
 
-        private void SetValue(DynamicData data, JToken value, JsonPath path)
+        private static void SetValue(DynamicData data, JToken value, JsonPath path)
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {
@@ -130,7 +130,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                 {
                     while (array.Count < index + 1)
                     {
-                        array.Add(null);
+                        array.Add(JValue.CreateNull());
                     }
 
                     if (merge && array[index].Type == currentValue.Type)

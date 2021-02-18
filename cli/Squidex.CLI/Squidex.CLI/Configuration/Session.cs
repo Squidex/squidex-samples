@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System.Collections.Generic;
-using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
@@ -29,7 +28,7 @@ namespace Squidex.CLI.Configuration
         {
             get
             {
-                apps ??= (apps = clientManager.CreateAppsClient());
+                apps ??= apps = clientManager.CreateAppsClient();
 
                 return apps;
             }
@@ -39,7 +38,7 @@ namespace Squidex.CLI.Configuration
         {
             get
             {
-                assets ??= (assets = clientManager.CreateAssetsClient());
+                assets ??= assets = clientManager.CreateAssetsClient();
 
                 return assets;
             }
@@ -49,7 +48,7 @@ namespace Squidex.CLI.Configuration
         {
             get
             {
-                backups ??= (backups = clientManager.CreateBackupsClient());
+                backups ??= backups = clientManager.CreateBackupsClient();
 
                 return backups;
             }
@@ -59,7 +58,7 @@ namespace Squidex.CLI.Configuration
         {
             get
             {
-                rules ??= (rules = clientManager.CreateExtendableRulesClient());
+                rules ??= rules = clientManager.CreateExtendableRulesClient();
 
                 return rules;
             }
@@ -69,7 +68,7 @@ namespace Squidex.CLI.Configuration
         {
             get
             {
-                schemas ??= (schemas = clientManager.CreateSchemasClient());
+                schemas ??= schemas = clientManager.CreateSchemasClient();
 
                 return schemas;
             }

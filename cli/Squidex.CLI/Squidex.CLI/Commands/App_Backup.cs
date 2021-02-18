@@ -52,17 +52,17 @@ namespace Squidex.CLI.Commands
                 {
                     while (!tcs.Token.IsCancellationRequested)
                     {
-                        var backups = await session.Backups.GetBackupsAsync(session.App);
+                        var backups = await session.Backups.GetBackupsAsync(session.App, tcs.Token);
                         var backup = backups.Items.FirstOrDefault(x => x.Started >= backupStarted);
 
-                        if (backup != null && backup.Stopped.HasValue)
+                        if (backup?.Stopped != null)
                         {
                             foundBackup = backup;
                             break;
                         }
                     }
 
-                    await Task.Delay(5000);
+                    await Task.Delay(5000, tcs.Token);
                 }
 
                 if (foundBackup == null)
@@ -73,9 +73,9 @@ namespace Squidex.CLI.Commands
                 {
                     log.WriteLine("Backup completed. Downloading...");
 
-                    using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
+                    await using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
                     {
-                        using (var download = await session.Backups.GetBackupContentAsync(session.App, foundBackup.Id.ToString()))
+                        using (var download = await session.Backups.GetBackupContentAsync(session.App, foundBackup.Id))
                         {
                             await download.Stream.CopyToAsync(fs);
                         }
@@ -85,7 +85,7 @@ namespace Squidex.CLI.Commands
                     {
                         log.WriteLine("Removing backup from app...");
 
-                        await session.Backups.DeleteBackupAsync(session.App, foundBackup.Id.ToString());
+                        await session.Backups.DeleteBackupAsync(session.App, foundBackup.Id);
                     }
 
                     log.WriteLine("> Backup completed and downloaded");
@@ -105,7 +105,7 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "timeout", Description = "The timeout to wait for the backup in minutes.")]
                 public int Timeout { get; set; } = 30;
 
-                [Option(LongName = "deleteAfterDownload", Description = "Defines wether the created backup shall be deleted from app after the backup task is completed")]
+                [Option(LongName = "deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed")]
                 public bool DeleteAfterDownload { get; set; }
 
                 public sealed class Validator : AbstractValidator<CreateArguments>

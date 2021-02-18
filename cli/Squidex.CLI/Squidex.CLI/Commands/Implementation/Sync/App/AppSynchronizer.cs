@@ -135,7 +135,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (clientId, value) in model.Clients)
+            foreach (var (clientId,  _) in model.Clients)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
@@ -190,7 +190,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (isoCode, value) in model.Languages)
+            foreach (var (isoCode, _) in model.Languages)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
 
@@ -248,7 +248,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (roleName, value) in model.Roles)
+            foreach (var (roleName, _) in model.Roles)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
 
@@ -293,7 +293,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     ["custom"] = new AppRoleModel
                     {
-                        Permissions = new string[]
+                        Permissions = new[]
                         {
                             "schemas.*"
                         }

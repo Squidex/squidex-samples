@@ -28,7 +28,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
             {
-                JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
+                var contract = base.CreateDictionaryContract(objectType);
 
                 contract.DictionaryKeyResolver = propertyName => propertyName;
 
@@ -47,9 +47,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
             {
+                FlattenInheritanceHierarchy = true,
                 SchemaType = SchemaType.JsonSchema,
-                SerializerSettings = jsonSerializerSettings,
-                FlattenInheritanceHierarchy = true
+                SchemaNameGenerator = new DefaultSchemaNameGenerator(),
+                SerializerSettings = jsonSerializerSettings
             };
 
             jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());

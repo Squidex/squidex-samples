@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation
@@ -147,7 +146,7 @@ namespace Squidex.CLI.Commands.Implementation
                         break;
                     }
 
-                case Exception ex3:
+                case { } ex3:
                     {
                         error(ex3.ToString());
                         throw ex3;
