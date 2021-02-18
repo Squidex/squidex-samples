@@ -60,10 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             var fileInfo = new FileInfo(Path.Combine(directory.FullName, path));
 
-            if (!fileInfo.Directory.Exists)
-            {
-                Directory.CreateDirectory(fileInfo.Directory.FullName);
-            }
+            Directory.CreateDirectory(fileInfo.Directory.FullName);
 
             return fileInfo;
         }

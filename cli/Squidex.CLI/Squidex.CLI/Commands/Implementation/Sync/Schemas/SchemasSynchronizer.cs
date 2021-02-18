@@ -27,6 +27,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             this.log = log;
         }
 
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in GetSchemaFiles(directoryInfo))
+            {
+                file.Delete();
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var current = await session.Schemas.GetSchemasAsync(session.App);
@@ -56,12 +66,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newSchemaNames =
+            var createModels =
                 GetSchemaFiles(directoryInfo)
                     .Select(x => jsonHelper.Read<SchemaCreateModel>(x, log))
                     .ToList();
 
-            if (!newSchemaNames.HasDistinctNames(x => x.Name))
+            if (!createModels.HasDistinctNames(x => x.Name))
             {
                 log.WriteLine("ERROR: Can only sync schemas when all target schemas have distinct names.");
                 return;
@@ -75,7 +85,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             {
                 foreach (var name in current.Items.Select(x => x.Name))
                 {
-                    if (newSchemaNames.All(x => x.Name != name))
+                    if (createModels.All(x => x.Name != name))
                     {
                         await log.DoSafeAsync($"Schema {name} deleting", async () =>
                         {
@@ -85,49 +95,49 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             }
 
-            foreach (var newSchema in newSchemaNames)
+            foreach (var schema in createModels)
             {
-                if (schemasByName.ContainsKey(newSchema.Name))
+                if (schemasByName.ContainsKey(schema.Name))
                 {
                     continue;
                 }
 
-                await log.DoSafeAsync($"Schema {newSchema.Name} creating", async () =>
+                await log.DoSafeAsync($"Schema {schema.Name} creating", async () =>
                 {
                     var request = new CreateSchemaDto
                     {
-                        Name = newSchema.Name,
-                        IsSingleton = newSchema.IsSingleton
+                        Name = schema.Name,
+                        IsSingleton = schema.IsSingleton
                     };
 
                     var created = await session.Schemas.PostSchemaAsync(session.App, request);
 
-                    schemasByName[newSchema.Name] = created;
+                    schemasByName[schema.Name] = created;
                 });
             }
 
             var schemaMap = schemasByName.ToDictionary(x => x.Key, x => x.Value.Id);
 
-            var newSchemas =
+            var models =
                 GetSchemaFiles(directoryInfo)
                     .Select(x => jsonHelper.Read<SchemeModel>(x, log))
                     .ToList();
 
-            foreach (var newSchema in newSchemas)
+            foreach (var schema in models)
             {
-                MapReferences(newSchema.Schema, schemaMap);
+                MapReferences(schema.Schema, schemaMap);
 
-                var version = schemasByName[newSchema.Name].Version;
+                var version = schemasByName[schema.Name].Version;
 
                 if (options.NoDeletion)
                 {
-                    newSchema.Schema.NoFieldDeletion = true;
-                    newSchema.Schema.NoFieldRecreation = true;
+                    schema.Schema.NoFieldDeletion = true;
+                    schema.Schema.NoFieldRecreation = true;
                 }
 
-                await log.DoVersionedAsync($"Schema {newSchema.Name} updating", version, async () =>
+                await log.DoVersionedAsync($"Schema {schema.Name} updating", version, async () =>
                 {
-                    var result = await session.Schemas.PutSchemaSyncAsync(session.App, newSchema.Name, newSchema.Schema);
+                    var result = await session.Schemas.PutSchemaSyncAsync(session.App, schema.Name, schema.Schema);
 
                     return result.Version;
                 });

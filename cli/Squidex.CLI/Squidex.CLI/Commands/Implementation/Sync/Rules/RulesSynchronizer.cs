@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Model
+namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 {
     public sealed class RulesSynchronizer : ISynchronizer
     {
@@ -23,6 +23,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
         public RulesSynchronizer(ILogger log)
         {
             this.log = log;
+        }
+
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in GetFiles(directoryInfo))
+            {
+                file.Delete();
+            }
+
+            return Task.CompletedTask;
         }
 
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -51,7 +61,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newRules = GetRuleFiles(directoryInfo, jsonHelper).ToList();
+            var newRules =
+                GetFiles(directoryInfo)
+                    .Select(x => jsonHelper.Read<RuleModel>(x, log))
+                    .ToList();
 
             if (!newRules.HasDistinctNames(x => x.Name))
             {
@@ -149,15 +162,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Model
             }
         }
 
-        private IEnumerable<RuleModel> GetRuleFiles(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("rules/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
-                    var rule = jsonHelper.Read<RuleModel>(file, log);
-
-                    yield return rule;
+                    yield return file;
                 }
             }
         }

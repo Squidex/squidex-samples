@@ -26,6 +26,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             this.log = log;
         }
 
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in GetFiles(directoryInfo))
+            {
+                file.Delete();
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
@@ -80,18 +90,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            foreach (var file in GetContentFiles(directoryInfo))
+            var models =
+                GetFiles(directoryInfo)
+                    .Select(x => (x, jsonHelper.Read<ContentsModel>(x, log)));
+
+            foreach (var (file, contents) in models)
             {
-                ContentsModel model = null;
-
-                await log.DoSafeAsync($"Reading file {file.Name}", () =>
-                {
-                    model = ReadContents(jsonHelper, file);
-
-                    return Task.CompletedTask;
-                });
-
-                if (model?.Contents?.Count > 0)
+                if (contents?.Contents?.Count > 0)
                 {
                     if (options.Languages?.Length > 0)
                     {
@@ -99,7 +104,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                         var toClear = new List<string>();
 
-                        foreach (var content in model.Contents)
+                        foreach (var content in contents.Contents)
                         {
                             foreach (var field in content.Data.Values)
                             {
@@ -124,7 +129,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         }
                     }
 
-                    var client = session.Contents(model.Contents.First().Schema);
+                    var client = session.Contents(contents.Contents.First().Schema);
 
                     var request = new BulkUpdate
                     {
@@ -132,7 +137,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         DoNotScript = true,
                         DoNotValidate = false,
                         DoNotValidateWorkflow = true,
-                        Jobs = model.Contents.Select(x => new BulkUpdateJob
+                        Jobs = contents.Contents.Select(x => new BulkUpdateJob
                         {
                             Id = x.Id,
                             Data = x.Data,
@@ -147,11 +152,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     var results = await client.BulkUpdateAsync(request);
 
-                    foreach (var content in model.Contents)
+                    foreach (var content in contents.Contents)
                     {
                         var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
 
-                        log.StepStart(content.Ref);
+                        log.StepStart(contentIndex.ToString());
 
                         if (result?.Error != null)
                         {
@@ -179,31 +184,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         await log.DoSafeAsync($"Saving {file.Name}", async () =>
                         {
-                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, "../__json/contents");
+                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, contents, "../__json/contents");
                         });
                     }
                 }
             }
         }
 
-        private ContentsModel ReadContents(JsonHelper jsonHelper, FileInfo file)
-        {
-            var result = jsonHelper.Read<ContentsModel>(file, log);
-
-            var index = 0;
-
-            foreach (var content in result.Contents)
-            {
-                content.File = file.Name;
-                content.Ref = index.ToString();
-
-                index++;
-            }
-
-            return result;
-        }
-
-        private static IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("contents/*.json"))
             {

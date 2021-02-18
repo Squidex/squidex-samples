@@ -7,21 +7,12 @@
 
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using NJsonSchema.Annotations;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public sealed class ContentModel
     {
-        [JsonSchemaIgnore]
-        [JsonIgnore]
-        public string File { get; set; }
-
-        [JsonSchemaIgnore]
-        [JsonIgnore]
-        public string Ref { get; set; }
-
         [Required]
         public string Schema { get; set; }
 

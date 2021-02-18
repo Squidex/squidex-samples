@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Model
+namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 {
     public sealed class RuleModel
     {

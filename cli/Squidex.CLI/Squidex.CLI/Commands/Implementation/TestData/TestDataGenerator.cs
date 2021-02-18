@@ -248,7 +248,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
             var value = random.NextDouble();
 
-            return min + value * (max - min);
+            return min + (value * (max - min));
         }
     }
 }

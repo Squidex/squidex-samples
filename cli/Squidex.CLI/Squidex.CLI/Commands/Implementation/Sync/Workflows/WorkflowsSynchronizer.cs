@@ -25,6 +25,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             this.log = log;
         }
 
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in GetFiles(directoryInfo))
+            {
+                file.Delete();
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetWorkflowsAsync(session.App);
@@ -46,9 +56,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newWorkflows = GetWorkflowModels(directoryInfo, jsonHelper).ToList();
+            var models =
+                GetFiles(directoryInfo)
+                    .Select(x => jsonHelper.Read<UpdateWorkflowDto>(x, log))
+                    .ToList();
 
-            if (!newWorkflows.HasDistinctNames(x => x.Name))
+            if (!models.HasDistinctNames(x => x.Name))
             {
                 log.WriteLine("ERROR: Can only sync workflows when all target workflows have distinct names.");
                 return;
@@ -68,7 +81,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             {
                 foreach (var (name, workflow) in workflowsByName.ToList())
                 {
-                    if (newWorkflows.All(x => x.Name == name))
+                    if (models.All(x => x.Name == name))
                     {
                         await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
                         {
@@ -80,56 +93,54 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 }
             }
 
-            foreach (var newWorkflow in newWorkflows)
+            foreach (var workflow in models)
             {
-                if (workflowsByName.ContainsKey(newWorkflow.Name))
+                if (workflowsByName.ContainsKey(workflow.Name))
                 {
                     continue;
                 }
 
-                await log.DoSafeAsync($"Workflow '{newWorkflow.Name}' creating", async () =>
+                await log.DoSafeAsync($"Workflow '{workflow.Name}' creating", async () =>
                 {
-                    if (workflowsByName.ContainsKey(newWorkflow.Name))
+                    if (workflowsByName.ContainsKey(workflow.Name))
                     {
                         throw new CLIException("Name already used.");
                     }
 
                     var request = new AddWorkflowDto
                     {
-                        Name = newWorkflow.Name
+                        Name = workflow.Name
                     };
 
                     var created = await session.Apps.PostWorkflowAsync(session.App, request);
 
-                    workflowsByName[newWorkflow.Name] = created.Items.FirstOrDefault(x => x.Name == newWorkflow.Name);
+                    workflowsByName[workflow.Name] = created.Items.FirstOrDefault(x => x.Name == workflow.Name);
                 });
             }
 
-            foreach (var newWorkflow in newWorkflows)
+            foreach (var workflow in models)
             {
-                var workflow = workflowsByName.GetValueOrDefault(newWorkflow.Name);
+                var existing = workflowsByName.GetValueOrDefault(workflow.Name);
 
-                if (workflow == null)
+                if (existing == null)
                 {
                     return;
                 }
 
-                await log.DoSafeAsync($"Workflow '{newWorkflow.Name}' updating", async () =>
+                await log.DoSafeAsync($"Workflow '{workflow.Name}' updating", async () =>
                 {
-                    await session.Apps.PutWorkflowAsync(session.App, workflow.Id, newWorkflow);
+                    await session.Apps.PutWorkflowAsync(session.App, existing.Id, workflow);
                 });
             }
         }
 
-        private IEnumerable<UpdateWorkflowDto> GetWorkflowModels(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        private IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("workflows/*.json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
-                    var workflow = jsonHelper.Read<UpdateWorkflowDto>(file, log);
-
-                    yield return workflow;
+                    yield return file;
                 }
             }
         }

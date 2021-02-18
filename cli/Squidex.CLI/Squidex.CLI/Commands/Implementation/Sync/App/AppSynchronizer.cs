@@ -24,6 +24,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             this.log = log;
         }
 
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var model = new AppModel

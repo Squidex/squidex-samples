@@ -154,10 +154,7 @@ namespace Squidex.CLI.Commands
                             fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
                         }
 
-                        if (!Directory.Exists(fileOrFolder))
-                        {
-                            Directory.CreateDirectory(fileOrFolder);
-                        }
+                        Directory.CreateDirectory(fileOrFolder);
                     }
                     else
                     {

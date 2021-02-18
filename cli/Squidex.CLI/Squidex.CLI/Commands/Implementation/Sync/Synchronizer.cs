@@ -54,6 +54,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, synchronizers.Count(), synchronizer.Name);
                 log.WriteLine();
 
+                await synchronizer.CleanupAsync(directoryInfo);
                 await synchronizer.ExportAsync(directoryInfo, jsonHelper, options, session);
 
                 log.WriteLine();

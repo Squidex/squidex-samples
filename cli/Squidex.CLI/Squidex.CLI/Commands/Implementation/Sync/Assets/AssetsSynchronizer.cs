@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Squidex.ClientLibrary.Management;
@@ -31,6 +32,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             this.log = log;
         }
 
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in GetFiles(directoryInfo))
+            {
+                file.Delete();
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var pipeline = new ActionBlock<AssetDto>(async asset =>
@@ -39,16 +50,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 try
                 {
-                    var filePath = Path.Combine(directoryInfo.FullName, $"assets/files/{asset.Id}.blob");
-                    var fileHash = GetFileHash(filePath);
+                    var assetFile = new FileInfo(Path.Combine(directoryInfo.FullName, $"assets/files/{asset.Id}.blob"));
+                    var assetHash = GetFileHash(assetFile);
 
-                    if (fileHash == null || !string.Equals(asset.FileHash, fileHash))
+                    Directory.CreateDirectory(assetFile.Directory.FullName);
+
+                    if (assetHash == null || !string.Equals(asset.FileHash, assetHash))
                     {
                         var response = await session.Assets.GetAssetContentBySlugAsync(session.App, asset.Id, string.Empty);
 
                         await using (response.Stream)
                         {
-                            await using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                            await using (var fileStream = assetFile.OpenWrite())
                             {
                                 await response.Stream.CopyToAsync(fileStream);
                             }
@@ -70,14 +83,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             var assets = new List<AssetModel>();
             var assetBatch = 0;
 
-            Task SaveAsync()
+            async Task SaveAsync()
             {
                 var model = new AssetsModel
                 {
                     Assets = assets
                 };
 
-                return log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
+                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
                 {
                     await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, "../__json/assets");
                 });
@@ -139,28 +152,33 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     assetBatch++;
                 }
 
-                if (assets.Count > 0)
-                {
-                    await SaveAsync();
-                }
-
                 await pipeline.SendAsync(asset);
             });
+
+            if (assets.Count > 0)
+            {
+                await SaveAsync();
+            }
 
             pipeline.Complete();
 
             await pipeline.Completion;
         }
 
-        private static string GetFileHash(string path)
+        private static string GetFileHash(FileInfo fileInfo)
         {
+            if (!fileInfo.Exists)
+            {
+                return null;
+            }
+
             try
             {
-                using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
+                using (var fileStream = fileInfo.OpenRead())
                 {
                     var incrementalHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
 
-                    var buffer = new byte[4096];
+                    var buffer = new byte[80000];
                     var bytesRead = 0;
 
                     while ((bytesRead = fileStream.Read(buffer)) > 0)
@@ -168,8 +186,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         incrementalHash.AppendData(buffer, 0, bytesRead);
                     }
 
-                    return Convert.ToBase64String(incrementalHash.GetHashAndReset());
+                    var hash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
+
+                    return hash;
                 }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                return null;
             }
             catch (FileNotFoundException)
             {
@@ -180,6 +204,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
         public Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             throw new NotImplementedException();
+        }
+
+        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        {
+            foreach (var file in directoryInfo.GetFiles("assets/*.json"))
+            {
+                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
+                {
+                    yield return file;
+                }
+            }
         }
 
         public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)

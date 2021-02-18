@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Model
+namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 {
     [Inheritance("actionType")]
     public sealed class DynamicRuleAction : Dictionary<string, JToken>
