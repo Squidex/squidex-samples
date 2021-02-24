@@ -17,6 +17,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public sealed class ContentsSynchronizer : ISynchronizer
     {
+        private const string Ref = "../__json/contents";
         private readonly ILogger log;
 
         public string Name => "contents";
@@ -58,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
                     {
-                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, "../__json/contents");
+                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, Ref);
                     });
                 }
 
@@ -114,7 +115,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
 
-                        log.StepStart(contentIndex.ToString());
+                        log.StepStart($"Upserting #{contentIndex}");
 
                         if (result?.Error != null)
                         {
@@ -142,7 +143,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         await log.DoSafeAsync($"Saving {file.Name}", async () =>
                         {
-                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, "../__json/contents");
+                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, Ref);
                         });
                     }
                 }
@@ -187,7 +188,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "contents/__contents.json", sample, "../__json/contents");
+            await jsonHelper.WriteWithSchema(directoryInfo, "contents/__contents.json", sample, Ref);
         }
     }
 }

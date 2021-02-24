@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
@@ -63,6 +65,23 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             Directory.CreateDirectory(fileInfo.Directory.FullName);
 
             return fileInfo;
+        }
+
+        public static string Sha256Base64(this string value)
+        {
+            return Sha256Base64(Encoding.UTF8.GetBytes(value));
+        }
+
+        public static string Sha256Base64(this byte[] bytes)
+        {
+            using (var sha = SHA256.Create())
+            {
+                var bytesHash = sha.ComputeHash(bytes);
+
+                var result = Convert.ToBase64String(bytesHash);
+
+                return result;
+            }
         }
     }
 }

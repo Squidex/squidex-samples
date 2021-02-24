@@ -32,7 +32,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     {
                         var file = new FileParameter(stream, asset.FileName, asset.MimeType);
 
-                        await session.Assets.PostAsset2Async(session.App, asset.Id, null, file);
+                        await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, file);
                     }
 
                     log.ProcessCompleted(process);

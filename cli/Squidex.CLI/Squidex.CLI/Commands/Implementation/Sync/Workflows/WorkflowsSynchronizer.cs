@@ -16,6 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 {
     public sealed class WorkflowsSynchronizer : ISynchronizer
     {
+        private const string Ref = "../__json/workflow";
         private readonly ILogger log;
 
         public string Name => "Workflow";
@@ -47,7 +48,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                 await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{index}.json", workflow, "../__json/workflow");
+                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{index}.json", workflow, Ref);
                 });
 
                 index++;
@@ -175,7 +176,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 Initial = "Draft"
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "workflows/__workflow.json", sample, "../__json/workflow");
+            await jsonHelper.WriteWithSchema(directoryInfo, "workflows/__workflow.json", sample, Ref);
         }
     }
 }

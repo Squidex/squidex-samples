@@ -16,8 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
     public sealed class AssetsSynchronizer : ISynchronizer
     {
-        private const string Ref = "../__json/asset";
-
+        private const string Ref = "../__json/assets";
         private readonly ILogger log;
 
         public int Order => -1000;
@@ -53,10 +52,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     Assets = assets
                 };
 
-                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
+                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", (Func<Task>)(async () =>
                 {
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, "../__json/assets");
-                });
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, (string)AssetsSynchronizer.Ref);
+                }));
             }
 
             var pathCache = new Dictionary<string, string>();
@@ -113,15 +112,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                     foreach (var asset in model.Assets)
                     {
-                        var result = results.FirstOrDefault(x => x.JobIndex == assetIndex);
+                        // We create wo commands per asset.
+                        var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));
+                        var result2 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2) + 1);
 
-                        log.StepStart(assetIndex.ToString());
+                        log.StepStart($"Upserting #{assetIndex}");
 
-                        if (result?.Error != null)
+                        if (result1?.Error != null)
                         {
-                            log.StepFailed(result.Error.ToString());
+                            log.StepFailed(result1.Error.ToString());
                         }
-                        else if (result?.Id != null)
+                        else if (result2?.Error != null)
+                        {
+                            log.StepFailed(result2.Error.ToString());
+                        }
+                        else if (result1?.Id != null && result2.Id != null)
                         {
                             log.StepSuccess();
                         }

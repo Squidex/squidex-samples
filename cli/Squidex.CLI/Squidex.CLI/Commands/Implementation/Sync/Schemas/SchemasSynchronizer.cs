@@ -16,6 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
     public sealed class SchemasSynchronizer : ISynchronizer
     {
+        private const string Ref = "../__json/schema";
         private readonly ILogger log;
 
         public int Order => -1000;
@@ -59,7 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                     MapReferences(model.Schema, schemaMap);
 
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, "../__json/schema");
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, Ref);
                 });
             }
         }
@@ -184,7 +185,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, "../__json/schema");
+            await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, Ref);
         }
 
         private static void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)

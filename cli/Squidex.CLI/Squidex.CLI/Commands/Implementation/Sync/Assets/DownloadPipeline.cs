@@ -27,7 +27,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 try
                 {
                     var assetFile = directoryInfo.GetBlobFile(asset.Id);
-                    var assetHash = GetFileHash(assetFile);
+                    var assetHash = GetFileHash(assetFile, asset);
 
                     Directory.CreateDirectory(assetFile.Directory.FullName);
 
@@ -62,7 +62,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             });
         }
 
-        private static string GetFileHash(FileInfo fileInfo)
+        private static string GetFileHash(FileInfo fileInfo, AssetDto asset)
         {
             if (!fileInfo.Exists)
             {
@@ -83,7 +83,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         incrementalHash.AppendData(buffer, 0, bytesRead);
                     }
 
-                    var hash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
+                    var fileHash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
+
+                    var hash = $"{fileHash}{asset.FileName}{asset.FileSize}".Sha256Base64();
 
                     return hash;
                 }

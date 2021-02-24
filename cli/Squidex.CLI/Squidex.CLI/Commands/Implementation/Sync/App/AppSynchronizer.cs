@@ -15,6 +15,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
     public sealed class AppSynchronizer : ISynchronizer
     {
+        private const string Ref = "__json/app";
         private readonly ILogger log;
 
         public string Name => "App";
@@ -84,7 +85,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             });
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, Ref);
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -327,7 +328,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, Ref);
         }
     }
 }

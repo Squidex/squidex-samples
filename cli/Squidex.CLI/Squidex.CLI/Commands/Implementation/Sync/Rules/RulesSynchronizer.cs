@@ -16,6 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 {
     public sealed class RulesSynchronizer : ISynchronizer
     {
+        private const string Ref = "../__json/rule";
         private readonly ILogger log;
 
         public string Name => "Rules";
@@ -52,7 +53,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
                 await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{index}.json", rule, "../__json/rule");
+                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{index}.json", rule, Ref);
                 });
 
                 index++;
@@ -191,7 +192,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 IsEnabled = true
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "rules/__rule.json", sample, "../__json/rule");
+            await jsonHelper.WriteWithSchema(directoryInfo, "rules/__rule.json", sample, Ref);
         }
     }
 }
