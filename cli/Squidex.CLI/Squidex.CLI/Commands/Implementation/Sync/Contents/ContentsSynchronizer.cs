@@ -64,13 +64,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 await client.GetAllAsync(50, async content =>
                 {
-                    contents.Add(new ContentModel
-                    {
-                        Id = content.Id,
-                        Data = content.Data,
-                        Status = content.Status,
-                        Schema = schema.Name
-                    });
+                    contents.Add(content.ToModel(schema.Name));
 
                     if (contents.Count > 50)
                     {
@@ -94,42 +88,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 GetFiles(directoryInfo)
                     .Select(x => (x, jsonHelper.Read<ContentsModel>(x, log)));
 
-            foreach (var (file, contents) in models)
+            foreach (var (file, model) in models)
             {
-                if (contents?.Contents?.Count > 0)
+                if (model?.Contents?.Count > 0)
                 {
-                    if (options.Languages?.Length > 0)
-                    {
-                        var allowedLanguages = options.Languages.ToHashSet();
+                    model.Clear(options.Languages);
 
-                        var toClear = new List<string>();
-
-                        foreach (var content in contents.Contents)
-                        {
-                            foreach (var field in content.Data.Values)
-                            {
-                                foreach (var language in field.Children<JProperty>().Select(x => x.Name))
-                                {
-                                    if (language != "iv" && !allowedLanguages.Contains(language))
-                                    {
-                                        toClear.Add(language);
-                                    }
-                                }
-
-                                if (toClear.Count > 0)
-                                {
-                                    foreach (var language in toClear)
-                                    {
-                                        field.Remove(language);
-                                    }
-
-                                    toClear.Clear();
-                                }
-                            }
-                        }
-                    }
-
-                    var client = session.Contents(contents.Contents.First().Schema);
+                    var client = session.Contents(model.Contents.First().Schema);
 
                     var request = new BulkUpdate
                     {
@@ -137,14 +102,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         DoNotScript = true,
                         DoNotValidate = false,
                         DoNotValidateWorkflow = true,
-                        Jobs = contents.Contents.Select(x => new BulkUpdateJob
-                        {
-                            Id = x.Id,
-                            Data = x.Data,
-                            Schema = x.Schema,
-                            Status = x.Status,
-                            Type = BulkUpdateType.Upsert
-                        }).ToList()
+                        Jobs = model.Contents.Select(x => x.ToJob()).ToList()
                     };
 
                     var contentIdAssigned = false;
@@ -152,7 +110,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     var results = await client.BulkUpdateAsync(request);
 
-                    foreach (var content in contents.Contents)
+                    foreach (var content in model.Contents)
                     {
                         var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
 
@@ -184,7 +142,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         await log.DoSafeAsync($"Saving {file.Name}", async () =>
                         {
-                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, contents, "../__json/contents");
+                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, "../__json/contents");
                         });
                     }
                 }

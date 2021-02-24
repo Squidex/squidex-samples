@@ -23,7 +23,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public string FileHash { get; set; }
 
-        public string Path { get; set; }
+        public string FolderPath { get; set; }
 
         public string Slug { get; set; }
 

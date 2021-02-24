@@ -9,10 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -44,41 +41,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var pipeline = new ActionBlock<AssetDto>(async asset =>
-            {
-                var process = $"Downloading {asset.Id}";
-
-                try
-                {
-                    var assetFile = new FileInfo(Path.Combine(directoryInfo.FullName, $"assets/files/{asset.Id}.blob"));
-                    var assetHash = GetFileHash(assetFile);
-
-                    Directory.CreateDirectory(assetFile.Directory.FullName);
-
-                    if (assetHash == null || !string.Equals(asset.FileHash, assetHash))
-                    {
-                        var response = await session.Assets.GetAssetContentBySlugAsync(session.App, asset.Id, string.Empty);
-
-                        await using (response.Stream)
-                        {
-                            await using (var fileStream = assetFile.OpenWrite())
-                            {
-                                await response.Stream.CopyToAsync(fileStream);
-                            }
-                        }
-
-                        log.ProcessCompleted(process);
-                    }
-                    else
-                    {
-                        log.ProcessSkipped(process, "Same hash.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.ProcessFailed(process, ex);
-                }
-            });
+            var downloadPipeline = new DownloadPipeline(session, log, directoryInfo);
 
             var assets = new List<AssetModel>();
             var assetBatch = 0;
@@ -96,53 +59,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 });
             }
 
-            var paths = new Dictionary<string, string>();
+            var pathCache = new Dictionary<string, string>();
 
             await session.Assets.GetAllAsync(session.App, async asset =>
             {
-                var path = string.Empty;
-
-                if (asset.ParentId != null)
-                {
-                    if (!paths.TryGetValue(asset.ParentId, out path))
-                    {
-                        var folders = await session.Assets.GetAssetFoldersAsync(session.App, asset.ParentId);
-
-                        foreach (var folder in folders.Items)
-                        {
-                            var names = folders.Path.Select(x => x.FolderName).Union(Enumerable.Repeat(folder.FolderName, 1));
-
-                            paths[folder.Id] = string.Join("/", names);
-                        }
-
-                        for (var i = 0; i < folders.Path.Count; i++)
-                        {
-                            var names = folders.Path.Take(i + 1).Select(x => x.FolderName);
-
-                            paths[folders.Path.ElementAt(i).Id] = string.Join("/", names);
-                        }
-                    }
-
-                    if (!paths.TryGetValue(asset.ParentId, out path))
-                    {
-                        path = string.Empty;
-
-                        paths[asset.ParentId] = path;
-                    }
-                }
-
-                assets.Add(new AssetModel
-                {
-                    Id = asset.Id,
-                    Metadata = asset.Metadata,
-                    MimeType = asset.MimeType,
-                    Slug = asset.Slug,
-                    FileName = asset.FileName,
-                    FileHash = asset.FileHash,
-                    Path = path,
-                    Tags = asset.Tags,
-                    IsProtected = asset.IsProtected
-                });
+                assets.Add(await asset.ToModelAsync(session, pathCache));
 
                 if (assets.Count > 50)
                 {
@@ -152,7 +73,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     assetBatch++;
                 }
 
-                await pipeline.SendAsync(asset);
+                await downloadPipeline.DownloadAsync(asset);
             });
 
             if (assets.Count > 0)
@@ -160,50 +81,59 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 await SaveAsync();
             }
 
-            pipeline.Complete();
-
-            await pipeline.Completion;
+            await downloadPipeline.CompleteAsync();
         }
 
-        private static string GetFileHash(FileInfo fileInfo)
+        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            if (!fileInfo.Exists)
-            {
-                return null;
-            }
+            var models =
+                GetFiles(directoryInfo)
+                    .Select(x => (x, jsonHelper.Read<AssetsModel>(x, log)));
 
-            try
+            foreach (var (file, model) in models)
             {
-                using (var fileStream = fileInfo.OpenRead())
+                if (model?.Assets?.Count > 0)
                 {
-                    var incrementalHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+                    var uploader = new UploadPipeline(session, log, directoryInfo);
 
-                    var buffer = new byte[80000];
-                    var bytesRead = 0;
+                    await uploader.UploadAsync(model.Assets);
+                    await uploader.CompleteAsync();
 
-                    while ((bytesRead = fileStream.Read(buffer)) > 0)
+                    var request = new BulkUpdateAssetsDto();
+
+                    foreach (var asset in model.Assets)
                     {
-                        incrementalHash.AppendData(buffer, 0, bytesRead);
+                        request.Jobs.Add(asset.ToMoveJob());
+                        request.Jobs.Add(asset.ToAnnotateJob());
                     }
 
-                    var hash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
+                    var assetIndex = 0;
 
-                    return hash;
+                    var results = await session.Assets.BulkUpdateAssetsAsync(session.App, request);
+
+                    foreach (var asset in model.Assets)
+                    {
+                        var result = results.FirstOrDefault(x => x.JobIndex == assetIndex);
+
+                        log.StepStart(assetIndex.ToString());
+
+                        if (result?.Error != null)
+                        {
+                            log.StepFailed(result.Error.ToString());
+                        }
+                        else if (result?.Id != null)
+                        {
+                            log.StepSuccess();
+                        }
+                        else
+                        {
+                            log.StepSkipped("Unknown Reason");
+                        }
+
+                        assetIndex++;
+                    }
                 }
             }
-            catch (DirectoryNotFoundException)
-            {
-                return null;
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
-        }
-
-        public Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
-        {
-            throw new NotImplementedException();
         }
 
         private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
