@@ -95,7 +95,7 @@ namespace Squidex.CLI.Commands
                 [Operand(Name = "name", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
                 public string Name { get; set; }
 
-                public sealed class Validator : AbstractValidator<ListArguments>
+                public sealed class Validator : AbstractValidator<CreateArguments>
                 {
                 }
             }

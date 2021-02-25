@@ -10155,7 +10155,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAsset2Async(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Updates the asset.</summary>
@@ -11605,7 +11605,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PostAsset2Async(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11665,7 +11665,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)

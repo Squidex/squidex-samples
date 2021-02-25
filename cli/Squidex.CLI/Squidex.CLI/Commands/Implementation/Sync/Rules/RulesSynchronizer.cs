@@ -40,10 +40,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
         {
             var current = await session.Rules.GetRulesAsync();
 
-            var index = 0;
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
-            foreach (var rule in current.Items.OrderBy(x => x.Created))
+            await current.Items.OrderBy(x => x.Created).Foreach(async (rule, i) =>
             {
+                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                {
+                    MapSchemas(contentTrigger, schemaMap);
+                }
+
                 var ruleName = rule.Name;
 
                 if (string.IsNullOrWhiteSpace(ruleName))
@@ -53,21 +59,19 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
                 await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{index}.json", rule, Ref);
+                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{i}.json", rule, Ref);
                 });
-
-                index++;
-            }
+            });
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var newRules =
+            var models =
                 GetFiles(directoryInfo)
                     .Select(x => jsonHelper.Read<RuleModel>(x, log))
                     .ToList();
 
-            if (!newRules.HasDistinctNames(x => x.Name))
+            if (!models.HasDistinctNames(x => x.Name))
             {
                 log.WriteLine("ERROR: Can only sync rules when all target rules have distinct names.");
                 return;
@@ -87,7 +91,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             {
                 foreach (var (name, rule) in rulesByName.ToList())
                 {
-                    if (newRules.All(x => x.Name != name))
+                    if (models.All(x => x.Name != name))
                     {
                         await log.DoSafeAsync($"Rule '{name}' deleting", async () =>
                         {
@@ -99,7 +103,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 }
             }
 
-            foreach (var newRule in newRules)
+            foreach (var newRule in models)
             {
                 if (rulesByName.ContainsKey(newRule.Name))
                 {
@@ -121,13 +125,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 });
             }
 
-            foreach (var newRule in newRules)
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
+
+            foreach (var newRule in models)
             {
                 var rule = rulesByName.GetValueOrDefault(newRule.Name);
 
                 if (rule == null)
                 {
                     return;
+                }
+
+                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                {
+                    MapSchemas(contentTrigger, schemaMap);
                 }
 
                 await log.DoVersionedAsync($"Rule '{newRule.Name}' updating", rule.Version, async () =>
@@ -160,6 +172,19 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                         });
                     }
                 }
+            }
+        }
+
+        private void MapSchemas(ContentChangedRuleTriggerDto dto, Dictionary<string, string> schemaMap)
+        {
+            foreach (var schema in dto.Schemas)
+            {
+                if (!schemaMap.TryGetValue(schema.SchemaId, out var found))
+                {
+                    log.WriteLine($"Schema {schema.SchemaId} not found.");
+                }
+
+                schema.SchemaId = found;
             }
         }
 

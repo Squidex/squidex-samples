@@ -28,7 +28,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 {
                     var assetFile = directoryInfo.GetBlobFile(asset.Id);
 
-                    using (var stream = assetFile.OpenRead())
+                    await using (var stream = assetFile.OpenRead())
                     {
                         var file = new FileParameter(stream, asset.FileName, asset.MimeType);
 

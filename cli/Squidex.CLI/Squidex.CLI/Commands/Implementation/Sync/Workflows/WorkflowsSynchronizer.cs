@@ -40,19 +40,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
         {
             var current = await session.Apps.GetWorkflowsAsync(session.App);
 
-            var index = 0;
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
-            foreach (var workflow in current.Items.OrderBy(x => x.Name))
+            await current.Items.OrderBy(x => x.Name).Foreach(async (workflow, i) =>
             {
                 var workflowName = workflow.Name;
 
+                MapSchemas(workflow, schemaMap);
+
                 await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{index}.json", workflow, Ref);
+                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{i}.json", workflow, Ref);
                 });
-
-                index++;
-            }
+            });
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -119,6 +120,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 });
             }
 
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+
             foreach (var workflow in models)
             {
                 var existing = workflowsByName.GetValueOrDefault(workflow.Name);
@@ -128,6 +132,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                     return;
                 }
 
+                MapSchemas(workflow, schemaMap);
+
                 await log.DoSafeAsync($"Workflow '{workflow.Name}' updating", async () =>
                 {
                     await session.Apps.PutWorkflowAsync(session.App, existing.Id, workflow);
@@ -135,7 +141,49 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             }
         }
 
-        private IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        private void MapSchemas(WorkflowDto workflow, Dictionary<string, string> schemaMap)
+        {
+            var schemaIds = new List<string>();
+
+            foreach (var schema in workflow.SchemaIds)
+            {
+                if (!schemaMap.TryGetValue(schema, out var found))
+                {
+                    log.WriteLine($"Schema {schema} not found.");
+
+                    schemaIds.Add(schema);
+                }
+                else
+                {
+                    schemaIds.Add(found);
+                }
+            }
+
+            workflow.SchemaIds = schemaIds;
+        }
+
+        private void MapSchemas(UpdateWorkflowDto workflow, Dictionary<string, string> schemaMap)
+        {
+            var schemaIds = new List<string>();
+
+            foreach (var schema in workflow.SchemaIds)
+            {
+                if (!schemaMap.TryGetValue(schema, out var found))
+                {
+                    log.WriteLine($"Schema {schema} not found.");
+
+                    schemaIds.Add(schema);
+                }
+                else
+                {
+                    schemaIds.Add(found);
+                }
+            }
+
+            workflow.SchemaIds = schemaIds;
+        }
+
+        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("workflows/*.json"))
             {

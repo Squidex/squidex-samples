@@ -53,10 +53,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     var model = new SchemeModel
                     {
                         Name = schema.Name,
-                        IsSingleton = details.IsSingleton
+                        IsSingleton = details.IsSingleton,
+                        IsPublished = false,
+                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details)
                     };
-
-                    model.Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details);
 
                     MapReferences(model.Schema, schemaMap);
 

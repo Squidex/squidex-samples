@@ -45,9 +45,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
             }
 
-            var step = 1;
-
-            foreach (var synchronizer in selectedSynchronizers)
+            await selectedSynchronizers.Foreach(async (synchronizer, step) =>
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
@@ -60,9 +58,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 log.WriteLine();
                 log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, synchronizers.Count(), synchronizer.Name);
                 log.WriteLine("--------------------------------------------------------");
-
-                step++;
-            }
+            });
         }
 
         public async Task ImportAsync(string path, SyncOptions options, ISession session)
@@ -75,9 +71,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             var jsonHelper = new JsonHelper();
 
-            var step = 1;
-
-            foreach (var synchronizer in selectedSynchronizers)
+            await selectedSynchronizers.Foreach(async (synchronizer, step) =>
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
@@ -89,9 +83,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 log.WriteLine();
                 log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, synchronizers.Count(), synchronizer.Name);
                 log.WriteLine("--------------------------------------------------------");
-
-                step++;
-            }
+            });
         }
 
         private void WriteSummary(DirectoryInfo directoryInfo, List<ISynchronizer> selectedSynchronizers)
@@ -100,14 +92,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             log.WriteLine();
             log.WriteLine("Executing the following steps");
 
-            var step = 1;
-
-            foreach (var synchronizer in selectedSynchronizers)
+            selectedSynchronizers.Foreach((synchronizer, step) =>
             {
                 log.WriteLine("* STEP {0} of {1}: {2}", step, synchronizers.Count(), synchronizer.Name);
-
-                step++;
-            }
+            });
         }
 
         public async Task GenerateTemplateAsync(string path)

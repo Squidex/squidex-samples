@@ -22,6 +22,28 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return source.Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count() == source.Count;
         }
 
+        public static void Foreach<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            var index = 0;
+
+            foreach (var item in source)
+            {
+                action(item, index);
+                index++;
+            }
+        }
+
+        public static async Task Foreach<T>(this IEnumerable<T> source, Func<T, int, Task> action)
+        {
+            var index = 0;
+
+            foreach (var item in source)
+            {
+                await action(item, index);
+                index++;
+            }
+        }
+
         public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema) where T : class
         {
             var fileInfo = GetFile(directory, path);

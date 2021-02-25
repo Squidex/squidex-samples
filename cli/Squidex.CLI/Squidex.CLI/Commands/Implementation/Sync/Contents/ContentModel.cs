@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents

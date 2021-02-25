@@ -42,7 +42,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 ParentPath = null,
                 Metadata = model.Metadata,
                 Slug = model.Slug,
-                Tags = model.Tags,
+                Tags = model.Tags
             };
         }
 

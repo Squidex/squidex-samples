@@ -52,10 +52,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     Assets = assets
                 };
 
-                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", (Func<Task>)(async () =>
+                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
                 {
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, (string)AssetsSynchronizer.Ref);
-                }));
+                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, Ref);
+                });
             }
 
             var pathCache = new Dictionary<string, string>();
@@ -89,7 +89,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 GetFiles(directoryInfo)
                     .Select(x => (x, jsonHelper.Read<AssetsModel>(x, log)));
 
-            foreach (var (file, model) in models)
+            foreach (var (_, model) in models)
             {
                 if (model?.Assets?.Count > 0)
                 {
@@ -110,7 +110,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                     var results = await session.Assets.BulkUpdateAssetsAsync(session.App, request);
 
-                    foreach (var asset in model.Assets)
+                    foreach (var _ in model.Assets)
                     {
                         // We create wo commands per asset.
                         var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));

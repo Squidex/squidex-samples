@@ -25,7 +25,7 @@ namespace Squidex.CLI.Commands
         public sealed class Log
         {
             [Command(Name = "analyze", Description = "Analyzes request log files.")]
-            public void Analyze(AnalyzeArguments arguments)
+            public static void Analyze(AnalyzeArguments arguments)
             {
                 using (var reader = new StreamReader(arguments.File))
                 {
