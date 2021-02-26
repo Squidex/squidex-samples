@@ -107,5 +107,18 @@ namespace Squidex.ClientLibrary.Tests
 
             Assert.Contains("\"doNotScript\": false", serialized);
         }
+
+        [Fact]
+        public void Should_serialize_invariant()
+        {
+            var source = new MyClass<string>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"iv\": \"hello\"", serialized);
+        }
     }
 }
