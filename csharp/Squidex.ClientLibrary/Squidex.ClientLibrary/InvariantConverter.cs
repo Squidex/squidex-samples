@@ -30,9 +30,19 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                return null;
+            }
+
             reader.Read();
 
-            if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
+            if (reader.TokenType == JsonToken.EndObject)
+            {
+                // empty object
+                return null;
+            }
+            else if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
             {
                 throw new JsonSerializationException("Property must have a invariant language property.");
             }
