@@ -106,6 +106,54 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
             Assert.Equal("testapp", contentEvent.App.Name);
             Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.Actor.Id);
         }
+
+        public static string JsonEnrichedAssetEvent { get; } = @"{
+	            'type': 'AssetCreatedFromSnapshot',
+	            'payload': {
+		            '$type': 'EnrichedAssetEvent',
+		            'type': 'Created',
+		            'id': 'c5dc4403-713d-4ebd-9a8f-a17efdba924e',
+		            'created': '2021-01-01T00:00:00Z',
+		            'lastModified': '2021-01-01T00:00:00Z',
+		            'createdBy': 'subject:6025a698a825d86becf541fe',
+		            'lastModifiedBy': 'subject:6025a698a825d86becf541fe',
+		            'mimeType': 'application/pdf',
+		            'fileName': 'name.pdf',
+		            'fileVersion': 0,
+		            'fileSize': 447021,
+		            'assetType': 'Unknown',
+		            'isImage': false,
+		            'partition': -755061617,
+		            'actor': 'subject:6025a698a825d86becf541fe',
+		            'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
+		            'timestamp': '1970-01-01T00:00:00Z',
+		            'name': 'AssetCreatedFromSnapshot',
+		            'version': 1
+	            },
+	            'timestamp': '1970-01-01T00:00:00Z'
+            }";
+
+        [Fact]
+        public void Should_deserialize_EnrichedAssetEvent()
+        {
+            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedAssetEvent);
+
+            Assert.True(envelope.Payload is EnrichedAssetEvent);
+
+            var contentEvent = envelope.Payload as EnrichedAssetEvent;
+
+            Assert.Equal("AssetCreatedFromSnapshot", contentEvent.Name);
+            Assert.Equal("testapp", contentEvent.App.Name);
+            Assert.Equal("6025a698a825d86becf541fe", contentEvent.Actor.Id);
+            Assert.Equal("c5dc4403-713d-4ebd-9a8f-a17efdba924e", contentEvent.Id);
+            Assert.Equal(447021, contentEvent.FileSize);
+            Assert.Equal("name.pdf", contentEvent.FileName);
+            Assert.Equal("application/pdf", contentEvent.MimeType);
+            Assert.Equal("6025a698a825d86becf541fe", contentEvent.LastModifiedBy.Id);
+            Assert.Equal("subject", contentEvent.LastModifiedBy.Type);
+            Assert.Equal("6025a698a825d86becf541fe", contentEvent.CreatedBy.Id);
+            Assert.Equal("subject", contentEvent.CreatedBy.Type);
+        }
     }
 
     public class SchemaData
