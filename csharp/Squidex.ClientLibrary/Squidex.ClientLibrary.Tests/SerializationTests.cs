@@ -20,6 +20,13 @@ namespace Squidex.ClientLibrary.Tests
             public T Value { get; set; }
         }
 
+        private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
+
+        public SerializationTests()
+        {
+            settings.Converters.Add(new InvariantConverter());
+        }
+
         [Fact]
         public void Should_serialize_datetime_to_iso8601()
         {
@@ -119,6 +126,36 @@ namespace Squidex.ClientLibrary.Tests
             var serialized = source.ToJson();
 
             Assert.Contains("\"iv\": \"hello\"", serialized);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant()
+        {
+            var json = "{ 'value': { 'iv': 'hello'} }";
+
+            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+
+            Assert.Equal("hello", res.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_null_value()
+        {
+            var json = "{ 'value': null }";
+
+            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+
+            Assert.Null(res.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_empty_value()
+        {
+            var json = "{ 'value': {} }";
+
+            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+
+            Assert.Null(res.Value);
         }
     }
 }
