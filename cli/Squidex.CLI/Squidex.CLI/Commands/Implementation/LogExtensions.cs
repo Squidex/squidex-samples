@@ -6,40 +6,19 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation
 {
-    public static class Extension
+    public static class LogExtensions
     {
-        public static bool JsonEquals<T, TOther>(this T lhs, TOther rhsOther)
-        {
-            var rhsOtherJson = JsonConvert.SerializeObject(rhsOther);
-
-            var rhs = JsonConvert.DeserializeObject<T>(rhsOtherJson);
-
-            var lhsJson = JsonConvert.SerializeObject(lhs);
-            var rhsJson = JsonConvert.SerializeObject(rhs);
-
-            return lhsJson == rhsJson;
-        }
-
-        public static bool SetEquals(this IEnumerable<string> lhs, IEnumerable<string> rhs)
-        {
-            if (rhs == null)
-            {
-                return false;
-            }
-
-            return new HashSet<string>(lhs).SetEquals(rhs);
-        }
+        private static readonly SemaphoreSlim LockObject = new SemaphoreSlim(1);
 
         public static async Task DoVersionedAsync(this ILogger log, string process, long version, Func<Task<long>> action)
         {
+            await LockObject.WaitAsync();
             try
             {
                 log.StepStart(process);
@@ -59,10 +38,15 @@ namespace Squidex.CLI.Commands.Implementation
             {
                 HandleException(ex, log.StepFailed);
             }
+            finally
+            {
+                LockObject.Release();
+            }
         }
 
         public static async Task DoSafeAsync(this ILogger log, string process, Func<Task> action)
         {
+            await LockObject.WaitAsync();
             try
             {
                 log.StepStart(process);
@@ -75,10 +59,15 @@ namespace Squidex.CLI.Commands.Implementation
             {
                 HandleException(ex, log.StepFailed);
             }
+            finally
+            {
+                LockObject.Release();
+            }
         }
 
         public static async Task DoSafeLineAsync(this ILogger log, string process, Func<Task> action)
         {
+            await LockObject.WaitAsync();
             try
             {
                 log.WriteLine("Start: {0}", process);
@@ -94,6 +83,53 @@ namespace Squidex.CLI.Commands.Implementation
             finally
             {
                 log.WriteLine();
+
+                LockObject.Release();
+            }
+        }
+
+        public static void ProcessSkipped(this ILogger log, string process, string reason)
+        {
+            LockObject.Wait();
+            try
+            {
+                log.StepStart(process);
+
+                log.StepSkipped(reason);
+            }
+            finally
+            {
+                LockObject.Release();
+            }
+        }
+
+        public static void ProcessCompleted(this ILogger log, string process)
+        {
+            LockObject.Wait();
+            try
+            {
+                log.StepStart(process);
+
+                log.StepSuccess();
+            }
+            finally
+            {
+                LockObject.Release();
+            }
+        }
+
+        public static void ProcessFailed(this ILogger log, string process, Exception exception)
+        {
+            LockObject.Wait();
+            try
+            {
+                log.StepStart(process);
+
+                HandleException(exception, log.StepFailed);
+            }
+            finally
+            {
+                LockObject.Release();
             }
         }
 
@@ -119,7 +155,7 @@ namespace Squidex.CLI.Commands.Implementation
                         break;
                     }
 
-                case Exception ex3:
+                case { } ex3:
                     {
                         error(ex3.ToString());
                         throw ex3;

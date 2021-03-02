@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
@@ -17,11 +16,11 @@ namespace Squidex.CLI.Tests
 {
     public class MapFromSquidexTests
     {
-        private readonly DummyEntity content;
+        private readonly DynamicContent content;
 
         public MapFromSquidexTests()
         {
-            content = new DummyEntity
+            content = new DynamicContent
             {
                 Created = DateTimeOffset.Now
             };

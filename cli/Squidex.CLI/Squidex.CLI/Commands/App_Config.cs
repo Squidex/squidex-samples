@@ -44,7 +44,7 @@ namespace Squidex.CLI.Commands
                         table.AddRow(key, app.Name, app.ClientId, app.ClientSecret.Truncate(10), app.ServiceUrl);
                     }
 
-                    table.Write(Format.Default);
+                    table.Write();
 
                     log.WriteLine();
                     log.WriteLine("Current App: {0}", config.CurrentApp);

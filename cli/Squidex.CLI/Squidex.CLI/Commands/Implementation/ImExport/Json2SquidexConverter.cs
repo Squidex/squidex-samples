@@ -25,7 +25,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        public IEnumerable<DummyData> ReadAll(JsonTextReader jsonReader)
+        public IEnumerable<DynamicData> ReadAll(JsonTextReader jsonReader)
         {
             if (jsonReader.Read() && jsonReader.TokenType == JsonToken.StartArray)
             {
@@ -36,18 +36,18 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                         break;
                     }
 
-                    DummyData data = ReadOne(jsonReader);
+                    var data = ReadOne(jsonReader);
 
                     yield return data;
                 }
             }
         }
 
-        public DummyData ReadOne(JsonTextReader jsonReader)
+        public DynamicData ReadOne(JsonTextReader jsonReader)
         {
             var item = jsonSerializer.Deserialize<Dictionary<string, JToken>>(jsonReader);
 
-            var data = new DummyData();
+            var data = new DynamicData();
 
             if (mapping != null)
             {
@@ -87,7 +87,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             return data;
         }
 
-        private void SetValue(DummyData data, JToken value, JsonPath path)
+        private static void SetValue(DynamicData data, JToken value, JsonPath path)
         {
             if (!data.TryGetValue(path[0].Key, out var property))
             {
@@ -130,7 +130,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                 {
                     while (array.Count < index + 1)
                     {
-                        array.Add(null);
+                        array.Add(JValue.CreateNull());
                     }
 
                     if (merge && array[index].Type == currentValue.Type)

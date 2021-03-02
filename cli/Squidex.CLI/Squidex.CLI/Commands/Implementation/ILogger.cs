@@ -13,8 +13,6 @@ namespace Squidex.CLI.Commands.Implementation
     {
         void StepStart(string process);
 
-        void StepFailed(Exception ex);
-
         void StepFailed(string reason);
 
         void StepSuccess();

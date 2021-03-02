@@ -136,22 +136,12 @@ namespace Squidex.ClientLibrary.Management
 
         internal string ToQueryJson()
         {
-            if (Query == null)
-            {
-                return null;
-            }
-
-            return Query.ToJson();
+            return Query?.ToJson();
         }
 
         internal string ToIdString()
         {
-            if (Ids == null)
-            {
-                return null;
-            }
-
-            return string.Join(",", Ids);
+            return Ids == null ? null : string.Join(",", Ids);
         }
     }
 

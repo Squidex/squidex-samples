@@ -16,6 +16,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         string Name { get; }
 
+        Task CleanupAsync(DirectoryInfo directoryInfo);
+
         Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session);
 
         Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session);

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Slugify;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.TestData
@@ -27,9 +28,9 @@ namespace Squidex.CLI.Commands.Implementation.TestData
             this.languages = languages;
         }
 
-        public DummyData GenerateTestData()
+        public DynamicData GenerateTestData()
         {
-            var data = new DummyData();
+            var data = new DynamicData();
 
             foreach (var field in schema.Fields)
             {
@@ -77,7 +78,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                             {
                                 1 => true,
                                 2 => false,
-                                _ => null,
+                                _ => null
                             };
                         }
                     }
@@ -115,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                         return result;
                     }
 
-                case GeolocationFieldPropertiesDto _:
+                case GeolocationFieldPropertiesDto:
                     {
                         var lat = random.Next(-90, 90);
                         var lon = random.Next(-180, 180);
@@ -127,7 +128,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
                                 lon));
                     }
 
-                case JsonFieldPropertiesDto _:
+                case JsonFieldPropertiesDto:
                     {
                         return new JObject(
                             new JProperty("value",
@@ -227,7 +228,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
             var min = defaultMin;
             var max = defaultMax;
 
-            var defaultRange = (defaultMax - defaultMin);
+            var defaultRange = defaultMax - defaultMin;
 
             if (minValue.HasValue && maxValue.HasValue)
             {

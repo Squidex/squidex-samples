@@ -46,7 +46,7 @@ namespace Squidex.CLI
 
         public static async Task WriteJsonToFileAsync<T>(T value, string path)
         {
-            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            await using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
             {
                 await stream.WriteJsonAsync(value);
             }

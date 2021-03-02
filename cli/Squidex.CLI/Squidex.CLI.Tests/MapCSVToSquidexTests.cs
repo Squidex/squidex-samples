@@ -12,7 +12,6 @@ using System.Text;
 using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
@@ -71,7 +70,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["text"] = new JObject
                 {
@@ -89,7 +88,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["boolean"] = new JObject
                 {
@@ -107,7 +106,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["number"] = new JObject
                 {
@@ -125,7 +124,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["text"] = new JObject
                 {
@@ -143,7 +142,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["array"] = new JObject
                 {
@@ -161,7 +160,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["object"] = new JObject
                 {
@@ -179,11 +178,11 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
-                    ["iv"] = new JArray(null, "Hello World")
+                    ["iv"] = new JArray(JValue.CreateNull(), "Hello World")
                 }
             };
 
@@ -197,7 +196,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -215,11 +214,11 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
-                    ["iv"] = new JArray(null, new JArray("Hello World"))
+                    ["iv"] = new JArray(JValue.CreateNull(), new JArray("Hello World"))
                 }
             };
 
@@ -233,7 +232,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -254,7 +253,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -276,7 +275,7 @@ namespace Squidex.CLI.Tests
 
             var actual = sut.ReadAll(csvReader).First();
 
-            var expected = new DummyData
+            var expected = new DynamicData
             {
                 ["json"] = new JObject
                 {
@@ -293,7 +292,7 @@ namespace Squidex.CLI.Tests
             EqualJson(expected, actual);
         }
 
-        private void EqualJson(DummyData expected, DummyData actual)
+        private static void EqualJson(DynamicData expected, DynamicData actual)
         {
             var lhs = JsonConvert.SerializeObject(expected, Formatting.Indented);
             var rhs = JsonConvert.SerializeObject(actual, Formatting.Indented);

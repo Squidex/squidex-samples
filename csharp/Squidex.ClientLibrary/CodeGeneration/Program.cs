@@ -34,6 +34,7 @@ namespace CodeGeneration
 
             code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
             code = code.Replace(" = new RuleTriggerDto();", string.Empty);
+            code = code.Replace(" = new RuleAction();", string.Empty);
             code = code.Replace("new System.Collections.Generic.Dictionary<string, System.Collections.ObjectModel.Collection<CallsUsagePerDateDto>>();", "new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();");
             code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
 

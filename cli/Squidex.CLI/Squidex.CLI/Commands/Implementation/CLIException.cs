@@ -8,7 +8,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation
 {
     [Serializable]
     public class CLIException : Exception

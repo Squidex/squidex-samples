@@ -15,6 +15,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
     public sealed class AppSynchronizer : ISynchronizer
     {
+        private const string Ref = "__json/app";
         private readonly ILogger log;
 
         public string Name => "App";
@@ -22,6 +23,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         public AppSynchronizer(ILogger log)
         {
             this.log = log;
+        }
+
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        {
+            return Task.CompletedTask;
         }
 
         public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -79,7 +85,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             });
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, Ref);
         }
 
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
@@ -135,7 +141,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (clientId, value) in model.Clients)
+            foreach (var (clientId,  _) in model.Clients)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
@@ -190,7 +196,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (isoCode, value) in model.Languages)
+            foreach (var (isoCode, _) in model.Languages)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
 
@@ -248,7 +254,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (roleName, value) in model.Roles)
+            foreach (var (roleName, _) in model.Roles)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
 
@@ -293,7 +299,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     ["custom"] = new AppRoleModel
                     {
-                        Permissions = new string[]
+                        Permissions = new[]
                         {
                             "schemas.*"
                         }
@@ -322,7 +328,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, "__json/app");
+            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, Ref);
         }
     }
 }

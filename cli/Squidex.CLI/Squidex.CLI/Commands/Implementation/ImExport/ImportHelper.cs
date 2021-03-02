@@ -14,12 +14,13 @@ using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Newtonsoft.Json;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public static class ImportHelper
     {
-        public static async Task ImportAsync(this ISession session, IImportSettings setting, ILogger log, IEnumerable<DummyData> datas)
+        public static async Task ImportAsync(this ISession session, IImportSettings setting, ILogger log, IEnumerable<DynamicData> datas)
         {
             var contents = session.Contents(setting.Schema);
 
@@ -40,7 +41,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             log.WriteLine("> Imported: {0}. Completed.", totalWritten);
         }
 
-        public static IEnumerable<DummyData> Read(this Csv2SquidexConverter converter, Stream stream, string delimiter)
+        public static IEnumerable<DynamicData> Read(this Csv2SquidexConverter converter, Stream stream, string delimiter)
         {
             using (var streamReader = new StreamReader(stream))
             {
@@ -59,7 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        public static IEnumerable<DummyData> ReadAsArray(this Json2SquidexConverter converter, Stream stream)
+        public static IEnumerable<DynamicData> ReadAsArray(this Json2SquidexConverter converter, Stream stream)
         {
             using (var streamReader = new StreamReader(stream))
             {
@@ -73,14 +74,13 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        public static IEnumerable<DummyData> ReadAsSeparatedObjects(this Json2SquidexConverter converter, Stream stream, string separator)
+        public static IEnumerable<DynamicData> ReadAsSeparatedObjects(this Json2SquidexConverter converter, Stream stream, string separator)
         {
             var sb = new StringBuilder();
 
-            string line;
-
             using (var streamReader = new StreamReader(stream))
             {
+                string line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     if (line.Equals(separator, StringComparison.OrdinalIgnoreCase))

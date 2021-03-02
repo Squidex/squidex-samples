@@ -50,7 +50,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, CancellationToken ct = default)
+        public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNull(callback, nameof(callback));
 
@@ -61,7 +61,7 @@ namespace Squidex.ClientLibrary
             {
                 var isAnyAdded = false;
 
-                var getResult = await GetAsync(query, ct: ct);
+                var getResult = await GetAsync(query, context, ct);
 
                 foreach (var item in getResult.Items)
                 {
@@ -313,19 +313,19 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task DeleteAsync(string id, CancellationToken ct = default)
+        public Task DeleteAsync(string id, bool permanent = false, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/", false), ct: ct);
+            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/?permanent={permanent}", false), ct: ct);
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
+        public async Task DeleteAsync(TEntity entity, bool permanent = false, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await DeleteAsync(entity.Id, ct);
+            await DeleteAsync(entity.Id, permanent, ct);
         }
 
         private string BuildSchemaUrl(string path, bool query, QueryContext context = null)

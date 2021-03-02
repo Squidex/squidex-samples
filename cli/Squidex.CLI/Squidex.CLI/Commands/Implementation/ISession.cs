@@ -18,12 +18,14 @@ namespace Squidex.CLI.Commands.Implementation
 
         IAppsClient Apps { get; }
 
+        IAssetsClient Assets { get; }
+
         IBackupsClient Backups { get; }
 
         ISchemasClient Schemas { get; }
 
         IExtendableRulesClient Rules { get; }
 
-        IContentsClient<DummyEntity, DummyData> Contents(string schema);
+        IContentsClient<DynamicContent, DynamicData> Contents(string schema);
     }
 }

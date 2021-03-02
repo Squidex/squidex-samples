@@ -5,12 +5,14 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Contents
+namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
-    public sealed class ReferenceCache : Dictionary<(string Schema, string Filter), string>
+    public class AssetsModel
     {
+        [Required]
+        public List<AssetModel> Assets { get; set; }
     }
 }

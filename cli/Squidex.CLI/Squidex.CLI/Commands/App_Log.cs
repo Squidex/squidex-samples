@@ -25,7 +25,7 @@ namespace Squidex.CLI.Commands
         public sealed class Log
         {
             [Command(Name = "analyze", Description = "Analyzes request log files.")]
-            public void Analyze(AnalyzeArguments arguments)
+            public static void Analyze(AnalyzeArguments arguments)
             {
                 using (var reader = new StreamReader(arguments.File))
                 {
@@ -54,7 +54,7 @@ namespace Squidex.CLI.Commands
                             table.AddRow(item.Path, item.TotalCalls);
                         }
 
-                        table.Write(Format.Default);
+                        table.Write();
 
                         Console.WriteLine();
 
@@ -67,7 +67,7 @@ namespace Squidex.CLI.Commands
                             table.AddRow(item.Path, item.TotalCosts);
                         }
 
-                        table.Write(Format.Default);
+                        table.Write();
 
                         Console.WriteLine();
 
@@ -80,7 +80,7 @@ namespace Squidex.CLI.Commands
                             table.AddRow(item.Path, item.AveragePerformance);
                         }
 
-                        table.Write(Format.Default);
+                        table.Write();
 
                         Console.WriteLine();
                         Console.WriteLine("Summary");
@@ -92,7 +92,7 @@ namespace Squidex.CLI.Commands
                         table.AddRow("Average performance", groups.Average(x => x.AveragePerformance));
                         table.AddRow("Average performance (without assets)", groups.Where(x => !x.IsAsset).Average(x => x.AveragePerformance));
 
-                        table.Write(Format.Default);
+                        table.Write();
                     }
                 }
             }

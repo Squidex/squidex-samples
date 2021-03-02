@@ -17,6 +17,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public sealed class ContentsSynchronizer : ISynchronizer
     {
+        private const string Ref = "../__json/contents";
         private readonly ILogger log;
 
         public string Name => "contents";
@@ -26,78 +27,130 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             this.log = log;
         }
 
-        public Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public Task CleanupAsync(DirectoryInfo directoryInfo)
         {
-            log.WriteLine("Not supported");
+            foreach (var file in GetFiles(directoryInfo))
+            {
+                file.Delete();
+            }
 
             return Task.CompletedTask;
         }
 
+        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        {
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
+            var context = QueryContext.Default.Unpublished().IgnoreFallback();
+
+            foreach (var schema in schemas.Items)
+            {
+                var client = session.Contents(schema.Name);
+
+                var contents = new List<ContentModel>();
+                var contentBatch = 0;
+
+                Task SaveAsync()
+                {
+                    var model = new ContentsModel
+                    {
+                        Contents = contents
+                    };
+
+                    return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
+                    {
+                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, Ref);
+                    });
+                }
+
+                await client.GetAllAsync(50, async content =>
+                {
+                    contents.Add(content.ToModel(schema.Name));
+
+                    if (contents.Count > 50)
+                    {
+                        await SaveAsync();
+
+                        contents.Clear();
+                        contentBatch++;
+                    }
+                }, context);
+
+                if (contents.Count > 0)
+                {
+                    await SaveAsync();
+                }
+            }
+        }
+
         public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var contentsBySchema =
-                GetContentFiles(directoryInfo)
-                    .Select(x => ReadContents(jsonHelper, x))
-                    .SelectMany(x => x.Contents).GroupBy(x => x.Schema)
-                    .Select(x => new ContentGroup(x.Key, x))
-                    .ToDictionary(x => x.SchemaName);
+            var models =
+                GetFiles(directoryInfo)
+                    .Select(x => (x, jsonHelper.Read<ContentsModel>(x, log)));
 
-            var edges = new HashSet<(ContentGroup From, ContentGroup To)>();
-
-            foreach (var from in contentsBySchema.Values)
+            foreach (var (file, model) in models)
             {
-                foreach (var dependency in from.Dependencies)
+                if (model?.Contents?.Count > 0)
                 {
-                    if (contentsBySchema.TryGetValue(dependency, out var to))
+                    model.Clear(options.Languages);
+
+                    var client = session.Contents(model.Contents.First().Schema);
+
+                    var request = new BulkUpdate
                     {
-                        edges.Add((to, from));
+                        OptimizeValidation = true,
+                        DoNotScript = true,
+                        DoNotValidate = false,
+                        DoNotValidateWorkflow = true,
+                        Jobs = model.Contents.Select(x => x.ToJob()).ToList()
+                    };
+
+                    var contentIdAssigned = false;
+                    var contentIndex = 0;
+
+                    var results = await client.BulkUpdateAsync(request);
+
+                    foreach (var content in model.Contents)
+                    {
+                        var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
+
+                        log.StepStart($"Upserting #{contentIndex}");
+
+                        if (result?.Error != null)
+                        {
+                            log.StepFailed(result.Error.ToString());
+                        }
+                        else if (result?.ContentId != null)
+                        {
+                            if (string.IsNullOrWhiteSpace(content.Id))
+                            {
+                                content.Id = result.ContentId;
+                                contentIdAssigned = true;
+                            }
+
+                            log.StepSuccess();
+                        }
+                        else
+                        {
+                            log.StepSkipped("Unknown Reason");
+                        }
+
+                        contentIndex++;
+                    }
+
+                    if (contentIdAssigned)
+                    {
+                        await log.DoSafeAsync($"Saving {file.Name}", async () =>
+                        {
+                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, Ref);
+                        });
                     }
                 }
             }
-
-            var sortOrder = TopologicalSort.Sort(new HashSet<ContentGroup>(contentsBySchema.Values), edges);
-
-            if (sortOrder == null)
-            {
-                throw new SquidexException("Dependencies between content items have a cycle, cannot calculate best sync order.");
-            }
-
-            var cache = new ReferenceCache();
-
-            foreach (var (schema, group) in contentsBySchema)
-            {
-                await log.DoSafeLineAsync($"Schema {schema}: Resolving references", () =>
-                {
-                    group.ClearLanguages(options);
-
-                    return group.ResolveReferencesAsync(session, log, cache);
-                });
-
-                await log.DoSafeLineAsync($"Schema {schema}: Inserting", () =>
-                {
-                    return group.UpsertAsync(session, log);
-                });
-            }
         }
 
-        private ContentsModel ReadContents(JsonHelper jsonHelper, FileInfo file)
-        {
-            var result = jsonHelper.Read<ContentsModel>(file, log);
-
-            var index = 0;
-
-            foreach (var content in result.Contents)
-            {
-                content.File = file.Name;
-                content.Ref = index.ToString();
-
-                index++;
-            }
-
-            return result;
-        }
-
-        private IEnumerable<FileInfo> GetContentFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
         {
             foreach (var file in directoryInfo.GetFiles("contents/*.json"))
             {
@@ -119,28 +172,23 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     new ContentModel
                     {
                         Schema = "my-schema",
-                        Filter = JObject.FromObject(new
+                        Data = new DynamicData
                         {
-                            Path = "data.id.iv",
-                            Op = "eq",
-                            Value = 1
-                        }),
-                        Data = new Dictionary<string, Dictionary<string, JToken>>
-                        {
-                            ["id"] = new Dictionary<string, JToken>
+                            ["id"] = new JObject
                             {
                                 ["iv"] = 1
                             },
-                            ["text"] = new Dictionary<string, JToken>
+                            ["text"] = new JObject
                             {
                                 ["iv"] = "Hello Squidex"
                             }
-                        }
+                        },
+                        Status = "Published"
                     }
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "contents/__contents.json", sample, "../__json/contents");
+            await jsonHelper.WriteWithSchema(directoryInfo, "contents/__contents.json", sample, Ref);
         }
     }
 }

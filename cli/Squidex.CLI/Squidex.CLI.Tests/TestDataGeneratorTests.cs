@@ -37,6 +37,9 @@ namespace Squidex.CLI.Tests
             var min = dates.Min();
             var max = dates.Max();
 
+            Assert.True(min >= minValue.Date);
+            Assert.True(max <= maxValue.Date);
+
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
 
@@ -59,6 +62,9 @@ namespace Squidex.CLI.Tests
 
             var min = dates.Min();
             var max = dates.Max();
+
+            Assert.True(min >= minValue.Date);
+            Assert.True(max <= maxValue.Date);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
@@ -83,6 +89,9 @@ namespace Squidex.CLI.Tests
             var min = dates.Min();
             var max = dates.Max();
 
+            Assert.True(min >= minValue.Date);
+            Assert.True(max <= maxValue.Date);
+
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
 
@@ -103,6 +112,9 @@ namespace Squidex.CLI.Tests
 
             var min = dates.Min();
             var max = dates.Max();
+
+            Assert.True(min >= minValue.Date);
+            Assert.True(max <= maxValue.Date);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
@@ -371,7 +383,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x);
 
-            Assert.Equal(new int[] { 20 }, strings.Select(x => x.Length).Distinct().ToArray());
+            Assert.Equal(new[] { 20 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
 
         [Fact]
@@ -386,7 +398,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x);
 
-            Assert.Equal(new int[] { 2 }, strings.Select(x => x.Length).Distinct().ToArray());
+            Assert.Equal(new[] { 2 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
 
         [Fact]
@@ -401,7 +413,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x);
 
-            Assert.Equal(new int[] { 100 }, strings.Select(x => x.Length).Distinct().ToArray());
+            Assert.Equal(new[] { 100 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
 
         [Fact]
@@ -416,7 +428,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x);
 
-            Assert.Equal(new int[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
+            Assert.Equal(new[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
 
         [Fact]
@@ -431,7 +443,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x);
 
-            Assert.Equal(new int[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
+            Assert.Equal(new[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
 
         [Fact]
@@ -448,7 +460,7 @@ namespace Squidex.CLI.Tests
 
             var strings = values.Select(x => (string)x).Distinct();
 
-            Assert.Equal(new string[] { "lorem-ipsum-dolorxxx" }, strings);
+            Assert.Equal(new[] { "lorem-ipsum-dolorxxx" }, strings);
         }
 
         [Fact]
@@ -480,7 +492,7 @@ namespace Squidex.CLI.Tests
             Assert.True(obj.ContainsKey("longitude"));
         }
 
-        private HashSet<List<string>> CreateManyStringTags(FieldPropertiesDto field)
+        private static HashSet<List<string>> CreateManyStringTags(FieldPropertiesDto field)
         {
             var values = new HashSet<List<string>>();
 
@@ -492,7 +504,7 @@ namespace Squidex.CLI.Tests
             return values;
         }
 
-        private HashSet<object> CreateManyScalars(FieldPropertiesDto field)
+        private static HashSet<object> CreateManyScalars(FieldPropertiesDto field)
         {
             var values = new HashSet<object>();
 
@@ -504,14 +516,14 @@ namespace Squidex.CLI.Tests
             return values;
         }
 
-        private object CreateScalar(FieldPropertiesDto field)
+        private static object CreateScalar(FieldPropertiesDto field)
         {
             var value = CreateValue(field);
 
             return (value as JValue)?.Value;
         }
 
-        private JToken CreateValue(FieldPropertiesDto field)
+        private static JToken CreateValue(FieldPropertiesDto field)
         {
             var schema = new SchemaDetailsDto
             {

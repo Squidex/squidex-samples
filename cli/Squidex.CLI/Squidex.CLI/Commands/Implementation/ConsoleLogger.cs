@@ -56,11 +56,6 @@ namespace Squidex.CLI.Commands.Implementation
             Console.WriteLine($"skipped: {reason.TrimEnd('.')}.");
         }
 
-        public void StepFailed(Exception ex)
-        {
-            Console.WriteLine($"failed with {ex.Message}");
-        }
-
         public void StepFailed(string reason)
         {
             Console.WriteLine($"failed: {reason.TrimEnd('.')}.");

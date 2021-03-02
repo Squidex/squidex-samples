@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
@@ -18,6 +20,28 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         public static bool HasDistinctNames<T>(this ICollection<T> source, Func<T, string> selector)
         {
             return source.Select(selector).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().Count() == source.Count;
+        }
+
+        public static void Foreach<T>(this IEnumerable<T> source, Action<T, int> action)
+        {
+            var index = 0;
+
+            foreach (var item in source)
+            {
+                action(item, index);
+                index++;
+            }
+        }
+
+        public static async Task Foreach<T>(this IEnumerable<T> source, Func<T, int, Task> action)
+        {
+            var index = 0;
+
+            foreach (var item in source)
+            {
+                await action(item, index);
+                index++;
+            }
         }
 
         public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema) where T : class
@@ -60,12 +84,26 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             var fileInfo = new FileInfo(Path.Combine(directory.FullName, path));
 
-            if (!fileInfo.Directory.Exists)
-            {
-                Directory.CreateDirectory(fileInfo.Directory.FullName);
-            }
+            Directory.CreateDirectory(fileInfo.Directory.FullName);
 
             return fileInfo;
+        }
+
+        public static string Sha256Base64(this string value)
+        {
+            return Sha256Base64(Encoding.UTF8.GetBytes(value));
+        }
+
+        public static string Sha256Base64(this byte[] bytes)
+        {
+            using (var sha = SHA256.Create())
+            {
+                var bytesHash = sha.ComputeHash(bytes);
+
+                var result = Convert.ToBase64String(bytesHash);
+
+                return result;
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {
@@ -27,19 +28,20 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             mapping = JsonMapping.ForJson2Csv(fields);
         }
 
-        public IEnumerable<object> GetValues(DummyEntity entity)
+        public IEnumerable<object> GetValues(DynamicContent entity)
         {
             foreach (var field in mapping)
             {
                 var value = GetValue(entity, field.Path);
 
-                if (value is JValue jValue)
+                switch (value)
                 {
-                    value = jValue.Value;
-                }
-                else if (value is JToken jToken)
-                {
-                    value = jToken.ToString();
+                    case JValue jValue:
+                        value = jValue.Value;
+                        break;
+                    case JToken jToken:
+                        value = jToken.ToString();
+                        break;
                 }
 
                 if (value is string text)
@@ -53,7 +55,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        private object GetValue(object current, JsonPath path)
+        private static object GetValue(object current, JsonPath path)
         {
             foreach (var (key, index) in path)
             {
@@ -90,7 +92,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                         return "<INVALID>";
                     }
                 }
-                else
+                else if (current != null)
                 {
                     var property = current.GetType().GetProperties().FirstOrDefault(x => x.CanRead && string.Equals(x.Name, key, StringComparison.OrdinalIgnoreCase));
 

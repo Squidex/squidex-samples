@@ -118,7 +118,7 @@ namespace Squidex.CLI.Commands
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
+                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules, contents.")]
                 public string[] Targets { get; set; }
 
                 public SyncOptions ToOptions()

@@ -35,17 +35,16 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     return path;
                 }
 
-                if (parts.Length == 1)
+                switch (parts.Length)
                 {
-                    result.Add((parts[0], GetPath(parts[0])));
-                }
-                else if (parts.Length == 2)
-                {
-                    result.Add((parts[0], GetPath(parts[1])));
-                }
-                else
-                {
-                    throw new SquidexException("Field definition not valid.");
+                    case 1:
+                        result.Add((parts[0], GetPath(parts[0])));
+                        break;
+                    case 2:
+                        result.Add((parts[0], GetPath(parts[1])));
+                        break;
+                    default:
+                        throw new SquidexException("Field definition not valid.");
                 }
             }
 
@@ -79,17 +78,16 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     return path;
                 }
 
-                if (parts.Length == 1)
+                switch (parts.Length)
                 {
-                    result.Add((parts[0], GetPath(parts[0])));
-                }
-                else if (parts.Length == 2)
-                {
-                    result.Add((parts[1], GetPath(parts[0])));
-                }
-                else
-                {
-                    throw new SquidexException("Field definition not valid.");
+                    case 1:
+                        result.Add((parts[0], GetPath(parts[0])));
+                        break;
+                    case 2:
+                        result.Add((parts[1], GetPath(parts[0])));
+                        break;
+                    default:
+                        throw new SquidexException("Field definition not valid.");
                 }
             }
 

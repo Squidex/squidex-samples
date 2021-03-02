@@ -56,7 +56,7 @@ namespace Squidex.CLI.Commands
                     taskForSchema,
                     taskForLanguages);
 
-                var datas = new List<DummyData>();
+                var datas = new List<DynamicData>();
 
                 if (arguments.Count > 0)
                 {
@@ -70,7 +70,7 @@ namespace Squidex.CLI.Commands
 
                 if (!string.IsNullOrWhiteSpace(arguments.File))
                 {
-                    using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
+                    await using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
                     {
                         await stream.WriteJsonAsync(datas);
                     }
@@ -96,7 +96,7 @@ namespace Squidex.CLI.Commands
                 {
                     var converter = new Json2SquidexConverter(arguments.Fields);
 
-                    using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
                         if (arguments.JsonArray)
                         {
@@ -116,7 +116,7 @@ namespace Squidex.CLI.Commands
                 {
                     var converter = new Csv2SquidexConverter(arguments.Fields);
 
-                    using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
                         var datas = converter.Read(stream, arguments.Delimiter);
 
@@ -141,11 +141,7 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Export(ExportArguments arguments)
             {
-                var ctx = QueryContext.Default.Unpublished(arguments.Unpublished);
-
                 var session = configuration.StartSession();
-
-                var contents = session.Contents(arguments.Schema);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -158,10 +154,7 @@ namespace Squidex.CLI.Commands
                             fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
                         }
 
-                        if (!Directory.Exists(fileOrFolder))
-                        {
-                            Directory.CreateDirectory(fileOrFolder);
-                        }
+                        Directory.CreateDirectory(fileOrFolder);
                     }
                     else
                     {
@@ -195,7 +188,7 @@ namespace Squidex.CLI.Commands
                     }
                     else if (arguments.JsonArray)
                     {
-                        var allRecords = new List<DummyEntity>();
+                        var allRecords = new List<DynamicContent>();
 
                         await session.ExportAsync(arguments, log, entity =>
                         {
@@ -215,9 +208,9 @@ namespace Squidex.CLI.Commands
                     }
                     else
                     {
-                        using (var stream = new FileStream(fileOrFolder, FileMode.Create, FileAccess.Write))
+                        await using (var stream = new FileStream(fileOrFolder, FileMode.Create, FileAccess.Write))
                         {
-                            using (var writer = new StreamWriter(stream))
+                            await using (var writer = new StreamWriter(stream))
                             {
                                 await session.ExportAsync(arguments, log, async entity =>
                                 {
@@ -253,23 +246,23 @@ namespace Squidex.CLI.Commands
 
                     var converter = new Squidex2CsvConverter(arguments.Fields);
 
-                    using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                    await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
                     {
-                        using (var streamWriter = new StreamWriter(stream))
+                        await using (var streamWriter = new StreamWriter(stream))
                         {
                             var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                             {
                                 Delimiter = ";"
                             };
 
-                            using (var writer = new CsvWriter(streamWriter, csvOptions))
+                            await using (var writer = new CsvWriter(streamWriter, csvOptions))
                             {
                                 foreach (var fieldName in converter.FieldNames)
                                 {
                                     writer.WriteField(fieldName);
                                 }
 
-                                writer.NextRecord();
+                                await writer.NextRecordAsync();
 
                                 await session.ExportAsync(arguments, log, async entity =>
                                 {
