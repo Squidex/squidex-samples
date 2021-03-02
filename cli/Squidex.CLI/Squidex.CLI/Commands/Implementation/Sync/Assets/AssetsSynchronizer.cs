@@ -110,7 +110,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                     var results = await session.Assets.BulkUpdateAssetsAsync(session.App, request);
 
-                    foreach (var _ in model.Assets)
+                    foreach (var asset in model.Assets)
                     {
                         // We create wo commands per asset.
                         var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));

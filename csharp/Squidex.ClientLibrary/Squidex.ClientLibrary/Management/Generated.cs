@@ -10171,9 +10171,10 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset to delete.</param>
         /// <param name="checkReferrers">True to check referrers of this asset.</param>
+        /// <param name="permanent">True to delete the asset permanently.</param>
         /// <returns>Asset deleted.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, bool? permanent = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Bulk update assets.</summary>
@@ -11846,9 +11847,10 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset to delete.</param>
         /// <param name="checkReferrers">True to check referrers of this asset.</param>
+        /// <param name="permanent">True to delete the asset permanently.</param>
         /// <returns>Asset deleted.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task DeleteAssetAsync(string app, string id, bool? checkReferrers = null, bool? permanent = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11863,6 +11865,10 @@ namespace Squidex.ClientLibrary.Management
             if (checkReferrers != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("checkReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (permanent != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("permanent") + "=").Append(System.Uri.EscapeDataString(ConvertToString(permanent, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -17246,6 +17252,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("schema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Schema { get; set; }
     
+        /// <summary>True to delete the content permanently.</summary>
+        [Newtonsoft.Json.JsonProperty("permanent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Permanent { get; set; }
+    
         /// <summary>The number of expected items. Set it to a higher number to update multiple items when a query is defined.</summary>
         [Newtonsoft.Json.JsonProperty("expectedCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long ExpectedCount { get; set; }
@@ -17751,6 +17761,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContentSidebarUrl { get; set; }
     
+        /// <summary>The url to the editor plugin.</summary>
+        [Newtonsoft.Json.JsonProperty("contentEditorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentEditorUrl { get; set; }
+    
         /// <summary>True to validate the content items on publish.</summary>
         [Newtonsoft.Json.JsonProperty("validateOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool ValidateOnPublish { get; set; }
@@ -17969,6 +17983,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The url to a the sidebar plugin for content items.</summary>
         [Newtonsoft.Json.JsonProperty("contentSidebarUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ContentSidebarUrl { get; set; }
+    
+        /// <summary>The url to the editor plugin.</summary>
+        [Newtonsoft.Json.JsonProperty("contentEditorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ContentEditorUrl { get; set; }
     
         /// <summary>True to validate the content items on publish.</summary>
         [Newtonsoft.Json.JsonProperty("validateOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -19136,6 +19154,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The asset metadata.</summary>
         [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IDictionary<string, object> Metadata { get; set; }
+    
+        /// <summary>True to delete the asset permanently.</summary>
+        [Newtonsoft.Json.JsonProperty("permanent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Permanent { get; set; }
     
         /// <summary>The expected version.</summary>
         [Newtonsoft.Json.JsonProperty("expectedVersion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

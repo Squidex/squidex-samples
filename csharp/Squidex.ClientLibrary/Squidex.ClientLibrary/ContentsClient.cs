@@ -313,19 +313,19 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task DeleteAsync(string id, CancellationToken ct = default)
+        public Task DeleteAsync(string id, bool permanent = false, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/", false), ct: ct);
+            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/?permanent={permanent}", false), ct: ct);
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAsync(TEntity entity, CancellationToken ct = default)
+        public async Task DeleteAsync(TEntity entity, bool permanent = false, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await DeleteAsync(entity.Id, ct);
+            await DeleteAsync(entity.Id, permanent, ct);
         }
 
         private string BuildSchemaUrl(string path, bool query, QueryContext context = null)

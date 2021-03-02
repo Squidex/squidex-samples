@@ -50,6 +50,11 @@ namespace Squidex.ClientLibrary
         public BulkUpdateType Type { get; set; }
 
         /// <summary>
+        /// To delete the content permanently.
+        /// </summary>
+        public bool Permanent { get; set; }
+
+        /// <summary>
         /// The number of expected items. Set it to a higher number to update multiple items when a query is defined.
         /// </summary>
         public long ExpectedCount { get; set; } = 1;
