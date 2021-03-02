@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Squidex.ClientLibrary
 {
     /// <summary>
-    /// A client to query and manage conten items.
+    /// A client to query and manage content items.
     /// </summary>
     /// <typeparam name="TEntity">The type for the content entity.</typeparam>
     /// <typeparam name="TData">The type that represents the data structure.</typeparam>
@@ -257,7 +257,7 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Gets a content item by ID.
         /// </summary>
-        /// <param name="id">The ID of the conten item. Cannot be null or empty.</param>
+        /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
@@ -277,6 +277,60 @@ namespace Squidex.ClientLibrary
         /// The matching content items.
         /// </returns>
         Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Query all contents items that reference the content item with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
+        /// <param name="query">The optional query.</param>
+        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The matching content items.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Query all contents items that reference the specified content item.
+        /// </summary>
+        /// <param name="entity">The content item. Cannot be null.</param>
+        /// <param name="query">The optional query.</param>
+        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The matching content items.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
+        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Query all references of the content item with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
+        /// <param name="query">The optional query.</param>
+        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The matching content items.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Query all references of the specified content item.
+        /// </summary>
+        /// <param name="entity">The content item. Cannot be null.</param>
+        /// <param name="query">The optional query.</param>
+        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The matching content items.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
+        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets content items by ids across all schemas.

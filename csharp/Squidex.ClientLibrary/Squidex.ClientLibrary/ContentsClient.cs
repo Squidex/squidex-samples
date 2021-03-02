@@ -153,6 +153,42 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
+        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            return GetReferencingAsync(entity.Id, query, context, ct);
+        }
+
+        /// <inheritdoc/>
+        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+
+            var q = query?.ToQuery(true) ?? string.Empty;
+
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl($"{id}/referencing{q}", true, context), null, context, ct);
+        }
+
+        /// <inheritdoc/>
+        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            return GetReferencesAsync(entity.Id, query, context, ct);
+        }
+
+        /// <inheritdoc/>
+        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.NotNullOrEmpty(id, nameof(id));
+
+            var q = query?.ToQuery(true) ?? string.Empty;
+
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl($"{id}/references{q}", true, context), null, context, ct);
+        }
+
+        /// <inheritdoc/>
         public Task<TEntity> CreateAsync(TData data, bool publish = false, CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));

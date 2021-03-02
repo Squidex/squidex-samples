@@ -40,11 +40,13 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// <summary>
         /// Who has created the asset.
         /// </summary>
+        [JsonConverter(typeof(ActorConverter))]
         public Actor CreatedBy { get; set; }
 
         /// <summary>
         /// Who has modified the asset.
         /// </summary>
+        [JsonConverter(typeof(ActorConverter))]
         public Actor LastModifiedBy { get; set; }
 
         /// <summary>
