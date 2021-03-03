@@ -81,23 +81,32 @@ namespace Squidex.ClientLibrary
         }
 
         /// <summary>
-        /// Equals operator.
+        /// Operator to compare to status objects for equality.
         /// </summary>
-        /// <param name="lhs">Left.</param>
-        /// <param name="rhs">Right.</param>
+        /// <param name="lhs">The left side of the operator.</param>
+        /// <param name="rhs">The right side of the operator.</param>
         public static bool operator ==(Status lhs, Status rhs)
         {
             return lhs.Equals(rhs);
         }
 
         /// <summary>
-        /// Not equals operator.
+        /// Operator to compare to status objects for inequality.
         /// </summary>
-        /// <param name="lhs">Left.</param>
-        /// <param name="rhs">Right.</param>
+        /// <param name="lhs">The left side of the operator.</param>
+        /// <param name="rhs">The right side of the operator.</param>
         public static bool operator !=(Status lhs, Status rhs)
         {
             return !lhs.Equals(rhs);
+        }
+
+        /// <summary>
+        /// Operator to compare the status to a string.
+        /// </summary>
+        /// <param name="status">The status to convert.</param>
+        public static implicit operator string(Status status)
+        {
+            return status.ToString();
         }
     }
 }
