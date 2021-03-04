@@ -16,7 +16,7 @@ jobs:
     - name: setup dotnet
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 5.0.100
 
     - name: publish
       run: |
@@ -26,4 +26,4 @@ jobs:
     - name: pack
       run: |
         cd csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/bin/Release
-        dotnet nuget push *.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }} 
+        dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --skip-duplicate -k ${{ secrets.nuget }} --no-symbols 1 

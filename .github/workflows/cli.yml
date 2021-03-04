@@ -59,7 +59,7 @@ jobs:
     - name: push dotnet tool to nuget.org
       run: |
         cd cli/Squidex.CLI/Squidex.CLI/bin/Release
-        dotnet nuget push *.nupkg --source 'https://api.nuget.org/v3/index.json' -k ${{ secrets.nuget }}
+        dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --skip-duplicate -k ${{ secrets.nuget }} --no-symbols 1 
 
     - name: create dir
       run: |
@@ -92,7 +92,7 @@ jobs:
 
     - name: archive osx-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/netcoreapp3.1/osx-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net5.0/osx-x64/publish/
         zip -r '../../../out/osx-x64.zip' *
 
     - name: release
