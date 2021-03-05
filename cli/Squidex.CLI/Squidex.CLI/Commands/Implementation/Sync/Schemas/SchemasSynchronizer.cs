@@ -96,24 +96,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             }
 
-            foreach (var schema in createModels)
+            foreach (var model in createModels)
             {
-                if (schemasByName.ContainsKey(schema.Name))
+                if (schemasByName.ContainsKey(model.Name))
                 {
                     continue;
                 }
 
-                await log.DoSafeAsync($"Schema {schema.Name} creating", async () =>
+                await log.DoSafeAsync($"Schema {model.Name} creating", async () =>
                 {
-                    var request = new CreateSchemaDto
-                    {
-                        Name = schema.Name,
-                        IsSingleton = schema.IsSingleton
-                    };
+                    var created = await session.Schemas.PostSchemaAsync(session.App, model.ToRequest());
 
-                    var created = await session.Schemas.PostSchemaAsync(session.App, request);
-
-                    schemasByName[schema.Name] = created;
+                    schemasByName[model.Name] = created;
                 });
             }
 
@@ -124,21 +118,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     .Select(x => jsonHelper.Read<SchemeModel>(x, log))
                     .ToList();
 
-            foreach (var schema in models)
+            foreach (var model in models)
             {
-                MapReferences(schema.Schema, schemaMap);
+                MapReferences(model.Schema, schemaMap);
 
-                var version = schemasByName[schema.Name].Version;
+                var version = schemasByName[model.Name].Version;
 
                 if (options.NoDeletion)
                 {
-                    schema.Schema.NoFieldDeletion = true;
-                    schema.Schema.NoFieldRecreation = true;
+                    model.Schema.NoFieldDeletion = true;
+                    model.Schema.NoFieldRecreation = true;
                 }
 
-                await log.DoVersionedAsync($"Schema {schema.Name} updating", version, async () =>
+                await log.DoVersionedAsync($"Schema {model.Name} updating", version, async () =>
                 {
-                    var result = await session.Schemas.PutSchemaSyncAsync(session.App, schema.Name, schema.Schema);
+                    var result = await session.Schemas.PutSchemaSyncAsync(session.App, model.Name, model.Schema);
 
                     return result.Version;
                 });
