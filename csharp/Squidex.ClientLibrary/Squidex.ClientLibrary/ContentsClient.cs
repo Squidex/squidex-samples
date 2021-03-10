@@ -296,36 +296,36 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default)
+        public Task<TEntity> ChangeStatusAsync(string id, string status, bool checkReferrers = false, CancellationToken ct = default)
         {
             Guard.NotNull(id, nameof(id));
             Guard.NotNull(status, nameof(status));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status", false), new { status }.ToContent(), ct: ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status?checkReferrers={checkReferrers}", false), new { status }.ToContent(), ct: ct);
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
+        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, bool checkReferrers = false, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            return ChangeStatusAsync(entity.Id, status, ct);
+            return ChangeStatusAsync(entity.Id, status, checkReferrers, ct);
         }
 
         /// <inheritdoc/>
-        public Task DeleteAsync(string id, bool permanent = false, CancellationToken ct = default)
+        public Task DeleteAsync(string id, bool permanent = false, bool checkReferrers = false, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}/?permanent={permanent}", false), ct: ct);
+            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}?permanent={permanent}&checkReferrers={checkReferrers}", false), ct: ct);
         }
 
         /// <inheritdoc/>
-        public async Task DeleteAsync(TEntity entity, bool permanent = false, CancellationToken ct = default)
+        public async Task DeleteAsync(TEntity entity, bool permanent = false, bool checkReferrers = false, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            await DeleteAsync(entity.Id, permanent, ct);
+            await DeleteAsync(entity.Id, permanent, checkReferrers, ct);
         }
 
         private string BuildSchemaUrl(string path, bool query, QueryContext context = null)
