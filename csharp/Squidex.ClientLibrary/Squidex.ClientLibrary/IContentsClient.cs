@@ -80,7 +80,6 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="id">The ID of the content item to change. Cannot be null or empty.</param>
         /// <param name="status">The new status of the content item.</param>
-        /// <param name="checkReferrers">True to check for referrers.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// The updated content item.
@@ -89,14 +88,13 @@ namespace Squidex.ClientLibrary
         /// <exception cref="ArgumentNullException"><paramref name="status"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="status"/> is empty.</exception>
-        Task<TEntity> ChangeStatusAsync(string id, string status, bool checkReferrers = false, CancellationToken ct = default);
+        Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default);
 
         /// <summary>
         /// Change the status of the specified content item.
         /// </summary>
         /// <param name="entity">The content item to change.</param>
         /// <param name="status">The new status of the content item.</param>
-        /// <param name="checkReferrers">True to check for referrers.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
         /// The updated content item.
@@ -104,7 +102,34 @@ namespace Squidex.ClientLibrary
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="status"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="status"/> is empty.</exception>
-        Task<TEntity> ChangeStatusAsync(TEntity entity, string status, bool checkReferrers = false, CancellationToken ct = default);
+        Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default);
+
+        /// <summary>
+        /// Change the status of the content item with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the content item to change. Cannot be null or empty.</param>
+        /// <param name="request">The status request.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The updated content item.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+        Task<TEntity> ChangeStatusAsync(string id, ChangeStatus request, CancellationToken ct = default);
+
+        /// <summary>
+        /// Change the status of the specified content item.
+        /// </summary>
+        /// <param name="entity">The content item to change.</param>
+        /// <param name="request">The status request.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The updated content item.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
+        Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus request, CancellationToken ct = default);
 
         /// <summary>
         /// Patch the data of the content item with the specified ID.

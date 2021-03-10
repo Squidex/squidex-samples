@@ -296,20 +296,37 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> ChangeStatusAsync(string id, string status, bool checkReferrers = false, CancellationToken ct = default)
+        public Task<TEntity> ChangeStatusAsync(string id, ChangeStatus request, CancellationToken ct = default)
+        {
+            Guard.NotNull(id, nameof(id));
+            Guard.NotNull(request, nameof(request));
+
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status", false), request.ToContent(), ct: ct);
+        }
+
+        /// <inheritdoc/>
+        public Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus status, CancellationToken ct = default)
+        {
+            Guard.NotNull(entity, nameof(entity));
+
+            return ChangeStatusAsync(entity.Id, status, ct);
+        }
+
+        /// <inheritdoc/>
+        public Task<TEntity> ChangeStatusAsync(string id, string status, CancellationToken ct = default)
         {
             Guard.NotNull(id, nameof(id));
             Guard.NotNull(status, nameof(status));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status?checkReferrers={checkReferrers}", false), new { status }.ToContent(), ct: ct);
+            return ChangeStatusAsync(id, new ChangeStatus { Status = status }, ct);
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, bool checkReferrers = false, CancellationToken ct = default)
+        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
-            return ChangeStatusAsync(entity.Id, status, checkReferrers, ct);
+            return ChangeStatusAsync(entity.Id, new ChangeStatus { Status = status }, ct);
         }
 
         /// <inheritdoc/>
