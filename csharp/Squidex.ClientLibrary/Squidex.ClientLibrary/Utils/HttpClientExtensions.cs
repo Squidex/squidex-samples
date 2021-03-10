@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -31,6 +32,7 @@ namespace Squidex.ClientLibrary.Utils
                 ContractResolver = contractResolver
             };
 
+            result.Converters.Add(new StringEnumConverter());
             result.Converters.Add(new UTCIsoDateTimeConverter());
 
             return result;

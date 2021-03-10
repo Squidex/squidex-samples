@@ -116,6 +116,19 @@ namespace Squidex.ClientLibrary.Tests
         }
 
         [Fact]
+        public void Should_serialize_type()
+        {
+            var source = new BulkUpdateJob
+            {
+                Type = BulkUpdateType.ChangeStatus
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"type\": \"ChangeStatus\"", serialized);
+        }
+
+        [Fact]
         public void Should_serialize_invariant()
         {
             var source = new MyClass<string>

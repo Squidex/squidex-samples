@@ -25,6 +25,26 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Delete a content item.
         /// </summary>
-        Delete
+        Delete,
+
+        /// <summary>
+        /// Create a content item.
+        /// </summary>
+        Create,
+
+        /// <summary>
+        /// Patch a content item.
+        /// </summary>
+        Patch,
+
+        /// <summary>
+        /// Update a content item.
+        /// </summary>
+        Update,
+
+        /// <summary>
+        /// Validate a content item.
+        /// </summary>
+        Validate
     }
 }
