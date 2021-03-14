@@ -5,9 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
@@ -46,7 +44,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             };
         }
 
-        public static async Task<AssetModel> ToModelAsync(this AssetDto asset, ISession session, Dictionary<string, string> cache)
+        public static async Task<AssetModel> ToModelAsync(this AssetDto asset, FolderTree folders)
         {
             return new AssetModel
             {
@@ -56,46 +54,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 Slug = asset.Slug,
                 FileName = asset.FileName,
                 FileHash = asset.FileHash,
-                FolderPath = await asset.ResolvePathAsync(session, cache),
+                FolderPath = await folders.GetPathAsync(asset.ParentId),
                 Tags = asset.Tags,
                 IsProtected = asset.IsProtected
             };
-        }
-
-        public static async Task<string> ResolvePathAsync(this AssetDto asset, ISession session, Dictionary<string, string> cache)
-        {
-            var path = string.Empty;
-
-            if (asset.ParentId != null)
-            {
-                if (!cache.TryGetValue(asset.ParentId, out path))
-                {
-                    var folders = await session.Assets.GetAssetFoldersAsync(session.App, asset.ParentId);
-
-                    foreach (var folder in folders.Items)
-                    {
-                        var names = folders.Path.Select(x => x.FolderName).Union(Enumerable.Repeat(folder.FolderName, 1));
-
-                        cache[folder.Id] = string.Join("/", names);
-                    }
-
-                    for (var i = 0; i < folders.Path.Count; i++)
-                    {
-                        var names = folders.Path.Take(i + 1).Select(x => x.FolderName);
-
-                        cache[folders.Path.ElementAt(i).Id] = string.Join("/", names);
-                    }
-                }
-
-                if (!cache.TryGetValue(asset.ParentId, out path))
-                {
-                    path = string.Empty;
-
-                    cache[asset.ParentId] = path;
-                }
-            }
-
-            return path;
         }
     }
 }
