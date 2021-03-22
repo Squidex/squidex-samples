@@ -7,6 +7,7 @@
 
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Utils;
 using Xunit;
 
@@ -139,6 +140,19 @@ namespace Squidex.ClientLibrary.Tests
             var serialized = source.ToJson();
 
             Assert.Contains("\"iv\": \"hello\"", serialized);
+        }
+
+        [Fact]
+        public void Should_serialize_dynamic_properties_with_original_casing()
+        {
+            var source = new DynamicData
+            {
+                ["Property1"] = new JObject()
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"Property1\": {}", serialized);
         }
 
         [Fact]

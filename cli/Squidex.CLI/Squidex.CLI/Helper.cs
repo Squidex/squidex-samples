@@ -22,8 +22,14 @@ namespace Squidex.CLI
 
         static Helper()
         {
-            SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             SerializerSettings.Converters.Add(new StringEnumConverter());
+            SerializerSettings.ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy
+                {
+                    ProcessDictionaryKeys = false
+                }
+            };
             SerializerSettings.Formatting = Formatting.Indented;
 
             Serializer = JsonSerializer.Create(SerializerSettings);
