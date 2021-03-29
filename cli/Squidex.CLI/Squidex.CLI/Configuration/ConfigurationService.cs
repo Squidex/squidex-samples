@@ -11,6 +11,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration
 {
@@ -162,13 +163,20 @@ namespace Squidex.CLI.Configuration
 
         private static SquidexOptions CreateOptions(ConfiguredApp app)
         {
-            return new SquidexOptions
+            var options = new SquidexOptions
             {
                 AppName = app.Name,
                 ClientId = app.ClientId,
                 ClientSecret = app.ClientSecret,
                 Url = app.ServiceUrl
             };
+
+            if (app.IgnoreSelfSigned)
+            {
+                options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+            }
+
+            return options;
         }
 
         public Configuration GetConfiguration()

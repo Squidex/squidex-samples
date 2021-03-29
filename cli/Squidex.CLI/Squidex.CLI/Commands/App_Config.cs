@@ -149,6 +149,9 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client)")]
                 public bool Create { get; set; }
 
+                [Option(LongName = "ignore-self-signed", ShortName = "i", Description = "Ignores self signed certificates")]
+                public bool IgnoreSelfSigned { get; set; }
+
                 public string ToEntryName()
                 {
                     return !string.IsNullOrWhiteSpace(Label) ? Label : Name;
@@ -161,6 +164,7 @@ namespace Squidex.CLI.Commands
                         Name = Name,
                         ClientId = ClientId,
                         ClientSecret = ClientSecret,
+                        IgnoreSelfSigned = IgnoreSelfSigned,
                         ServiceUrl = ServiceUrl
                     };
                 }
