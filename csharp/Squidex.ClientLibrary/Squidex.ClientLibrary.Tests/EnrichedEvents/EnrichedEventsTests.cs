@@ -19,12 +19,20 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 			'type': 'SchemaUpdated',
 			'payload': {
 				'$type': 'EnrichedContentEvent',
-				'type': 'Updated',
 				'id': '062b936f-7496-4f87-bd4f-ba7bbb63c751',
-				'created': '2021-01-01T00:00:00Z',
-				'lastModified': '2021-01-01T00:01:00Z',
+				'actor': 'subject:601c2cbafa4e669f214c0438',
+				'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
+                'created': '2021-01-01T00:00:00Z',
 				'createdBy': 'subject:601c2cbafa4e669f214c0438',
+				'lastModified': '2021-01-01T00:01:00Z',
 				'lastModifiedBy': 'subject:601c2cbafa4e669f214c0438',
+				'name': 'SchemaUpdated',
+				'partition': -792991992,
+				'schemaId': '062b936f-7496-4f87-bd4f-ba7bbb63c751,schema',
+                'status': 'Published',
+				'timestamp': '2021-01-01T00:01:00Z',
+				'type': 'Updated',
+				'version': 3,
 				'data': {
 					'testField': {
 						'iv': 'test2'
@@ -34,15 +42,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 					'testField': {
 						'iv': 'test'
 					}
-				},
-				'status': 'Published',
-				'partition': -792991992,
-				'schemaId': '062b936f-7496-4f87-bd4f-ba7bbb63c751,schema',
-				'actor': 'subject:601c2cbafa4e669f214c0438',
-				'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
-				'timestamp': '2021-01-01T00:01:00Z',
-				'name': 'SchemaUpdated',
-				'version': 3
+				}
 			},
 			'timestamp': '2021-01-01T00:01:00Z'
 		}";
@@ -80,13 +80,13 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 		    'type': 'UserMentioned',
 		    'payload': {
 			    '$type': 'EnrichedCommentEvent',
-			    'text': '@user@test.com testmessage',
-			    'url': '/app/testapp/content/schema/0e5955e3-cd2a-49f2-92ba-303acf4dd192/comments',
-			    'partition': -1730311374,
 			    'actor': 'subject:601c2cbafa4e669f214c0438',
 			    'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
-			    'timestamp': '2021-01-01T00:00:00Z',
 			    'name': 'UserMentioned',
+			    'partition': -1730311374,
+                'text': '@user@test.com testmessage',
+			    'timestamp': '2021-01-01T00:00:00Z',
+			    'url': '/app/testapp/content/schema/0e5955e3-cd2a-49f2-92ba-303acf4dd192/comments',
 			    'version': 0
 		    },
 		    'timestamp': '2021-01-01T00:00:00Z'
@@ -111,23 +111,23 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 	            'type': 'AssetCreatedFromSnapshot',
 	            'payload': {
 		            '$type': 'EnrichedAssetEvent',
-		            'type': 'Created',
 		            'id': 'c5dc4403-713d-4ebd-9a8f-a17efdba924e',
+		           	'actor': 'subject:6025a698a825d86becf541fe',
+		            'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
+		            'assetType': 'Unknown',
 		            'created': '2021-01-01T00:00:00Z',
-		            'lastModified': '2021-01-01T00:00:00Z',
 		            'createdBy': 'subject:6025a698a825d86becf541fe',
+		            'fileName': 'name.pdf',
+		            'fileSize': 447021,
+		            'fileVersion': 0,
+		            'isImage': false,
+		            'lastModified': '2021-01-01T00:00:00Z',
 		            'lastModifiedBy': 'subject:6025a698a825d86becf541fe',
 		            'mimeType': 'application/pdf',
-		            'fileName': 'name.pdf',
-		            'fileVersion': 0,
-		            'fileSize': 447021,
-		            'assetType': 'Unknown',
-		            'isImage': false,
-		            'partition': -755061617,
-		            'actor': 'subject:6025a698a825d86becf541fe',
-		            'appId': '3e2df825-86a9-43cb-8eb7-97d5a5bd4eea,testapp',
-		            'timestamp': '1970-01-01T00:00:00Z',
 		            'name': 'AssetCreatedFromSnapshot',
+		            'partition': -755061617,
+		            'timestamp': '1970-01-01T00:00:00Z',
+                    'type': 'Created',
 		            'version': 1
 	            },
 	            'timestamp': '1970-01-01T00:00:00Z'

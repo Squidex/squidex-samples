@@ -21,6 +21,17 @@ namespace Squidex.ClientLibrary.Tests
             public T Value { get; set; }
         }
 
+        public sealed class MyCamelClass<T>
+        {
+            public T Value { get; set; }
+        }
+
+        [KeepCasing]
+        public sealed class MyPascalClass<T>
+        {
+            public T Value { get; set; }
+        }
+
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
 
         public SerializationTests()
@@ -183,6 +194,32 @@ namespace Squidex.ClientLibrary.Tests
             var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
 
             Assert.Null(res.Value);
+        }
+
+        [Fact]
+        public void Should_serialize_with_camel_case()
+        {
+            var source = new MyCamelClass<string>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"value\": \"hello\"", serialized);
+        }
+
+        [Fact]
+        public void Should_serialize_with_pascal_case()
+        {
+            var source = new MyPascalClass<string>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"Value\": \"hello\"", serialized);
         }
     }
 }

@@ -6,6 +6,8 @@
 // ==========================================================================
 
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Squidex.ClientLibrary
 {
@@ -14,7 +16,14 @@ namespace Squidex.ClientLibrary
     /// </summary>
     /// <seealso cref="Attribute" />
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class KeepCasingAttribute : Attribute
+    public sealed class KeepCasingAttribute : JsonContainerAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeepCasingAttribute"/> class.
+        /// </summary>
+        public KeepCasingAttribute()
+        {
+            NamingStrategyType = typeof(DefaultNamingStrategy);
+        }
     }
 }

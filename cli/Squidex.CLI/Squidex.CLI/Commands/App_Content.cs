@@ -234,7 +234,7 @@ namespace Squidex.CLI.Commands
                 {
                     if (arguments.FilePerContent)
                     {
-                        throw new SquidexException("Multiple files are not supported for CSV export.");
+                        throw new CLIException("Multiple files are not supported for CSV export.");
                     }
 
                     var file = arguments.Output;
