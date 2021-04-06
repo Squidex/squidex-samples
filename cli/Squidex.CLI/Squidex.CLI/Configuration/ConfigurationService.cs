@@ -64,18 +64,7 @@ namespace Squidex.CLI.Configuration
         {
             try
             {
-                var file = new FileInfo(".configuration");
-
-                using (var stream = file.Create())
-                {
-                    using (var streamWriter = new StreamWriter(stream))
-                    {
-                        using (var jsonWriter = new JsonTextWriter(streamWriter))
-                        {
-                            jsonSerializer.Serialize(jsonWriter, configuration);
-                        }
-                    }
-                }
+                File.WriteAllText(".configuration", JsonConvert.SerializeObject(configuration));
             }
             catch (Exception ex)
             {
