@@ -1,10 +1,12 @@
 # Squidex Proxy
 
+![Docker Pulls](https://img.shields.io/docker/pulls/squidex/node-proxy)
+
 This node application works as a small proxy server in front of Squidex for high availability. 
 
 The goal is to make our clients and architecture more resilient in case something goes wrong.
 
-## How to run it?
+## How to run it locally?
 
 Just install node and run
 
@@ -14,6 +16,10 @@ npm start
 ```
 
 Then go to `http://localhost:3000/api/content/squidex-website/feature-news`
+
+## How to run it on a server
+
+Just use the docker build: https://hub.docker.com/repository/docker/squidex/node-proxy/general
 
 ## How it works?
 
@@ -38,3 +44,8 @@ The surrogate key is calculate as combination of the app id and content id, such
 ```
 {APP-ID}--{CONTENT-ID}
 ```
+
+## How to configure it?
+
+This proxy only has a few environment variables: [config.ts](config.ts)
+

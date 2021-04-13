@@ -1,0 +1,7 @@
+# Build results
+dist
+
+# NodeJS 
+node_modules
+
+.vscode
