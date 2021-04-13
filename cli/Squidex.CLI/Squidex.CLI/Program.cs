@@ -58,6 +58,11 @@ namespace Squidex.CLI
 
                 return appRunner.Run(args);
             }
+            catch (CLIException ex)
+            {
+                Console.WriteLine("ERROR: {0}", ex.Message);
+                return -1;
+            }
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR: {0}", ex);

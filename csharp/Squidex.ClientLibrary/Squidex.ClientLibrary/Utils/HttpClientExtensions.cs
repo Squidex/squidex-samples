@@ -8,7 +8,6 @@
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -21,15 +20,13 @@ namespace Squidex.ClientLibrary.Utils
 {
     public static class HttpClientExtensions
     {
-        private static readonly JsonSerializerSettings PascalCasing = CreateSerializer(new DefaultContractResolver());
+        private static readonly JsonSerializerSettings SerializerSettings = CreateSerializer();
 
-        private static readonly JsonSerializerSettings CamelCasing = CreateSerializer(new CamelCasePropertyNamesContractResolver());
-
-        private static JsonSerializerSettings CreateSerializer(IContractResolver contractResolver)
+        private static JsonSerializerSettings CreateSerializer()
         {
             var result = new JsonSerializerSettings
             {
-                ContractResolver = contractResolver
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
             result.Converters.Add(new StringEnumConverter());
@@ -63,12 +60,7 @@ namespace Squidex.ClientLibrary.Utils
 
         public static string ToJson<T>(this T value)
         {
-            var serializerSettings =
-                value.GetType().GetCustomAttribute<KeepCasingAttribute>() != null ?
-                    PascalCasing :
-                    CamelCasing;
-
-            var json = JsonConvert.SerializeObject(value, Formatting.Indented, serializerSettings);
+            var json = JsonConvert.SerializeObject(value, Formatting.Indented, SerializerSettings);
 
             return json;
         }

@@ -7,6 +7,7 @@
 
 using System;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Utils;
 using Xunit;
 
@@ -17,6 +18,17 @@ namespace Squidex.ClientLibrary.Tests
         public sealed class MyClass<T>
         {
             [JsonConverter(typeof(InvariantConverter))]
+            public T Value { get; set; }
+        }
+
+        public sealed class MyCamelClass<T>
+        {
+            public T Value { get; set; }
+        }
+
+        [KeepCasing]
+        public sealed class MyPascalClass<T>
+        {
             public T Value { get; set; }
         }
 
@@ -142,6 +154,19 @@ namespace Squidex.ClientLibrary.Tests
         }
 
         [Fact]
+        public void Should_serialize_dynamic_properties_with_original_casing()
+        {
+            var source = new DynamicData
+            {
+                ["Property1"] = new JObject()
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"Property1\": {}", serialized);
+        }
+
+        [Fact]
         public void Should_deserialize_invariant()
         {
             var json = "{ 'value': { 'iv': 'hello'} }";
@@ -169,6 +194,32 @@ namespace Squidex.ClientLibrary.Tests
             var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
 
             Assert.Null(res.Value);
+        }
+
+        [Fact]
+        public void Should_serialize_with_camel_case()
+        {
+            var source = new MyCamelClass<string>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"value\": \"hello\"", serialized);
+        }
+
+        [Fact]
+        public void Should_serialize_with_pascal_case()
+        {
+            var source = new MyPascalClass<string>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"Value\": \"hello\"", serialized);
         }
     }
 }

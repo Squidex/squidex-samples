@@ -16,5 +16,7 @@ namespace Squidex.CLI.Configuration
         public string ClientSecret { get; set; }
 
         public string Name { get; set; }
+
+        public bool IgnoreSelfSigned { get; set; }
     }
 }

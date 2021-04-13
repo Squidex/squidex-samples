@@ -58,11 +58,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 });
             }
 
-            var pathCache = new Dictionary<string, string>();
+            var tree = new FolderTree(session);
 
             await session.Assets.GetAllAsync(session.App, async asset =>
             {
-                assets.Add(await asset.ToModelAsync(session, pathCache));
+                assets.Add(await asset.ToModelAsync(tree));
 
                 if (assets.Count > 50)
                 {

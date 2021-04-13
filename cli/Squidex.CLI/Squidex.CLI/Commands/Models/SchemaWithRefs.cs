@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Models
@@ -50,7 +51,7 @@ namespace Squidex.CLI.Commands.Models
                 }
                 catch (IOException ex)
                 {
-                    throw new SquidexException($"Cannot deserialize schema: {ex.Message}");
+                    throw new CLIException($"Cannot deserialize schema: {ex.Message}");
                 }
             }
         }

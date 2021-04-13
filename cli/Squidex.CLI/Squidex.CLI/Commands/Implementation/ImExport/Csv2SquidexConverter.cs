@@ -102,7 +102,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     }
                 }
 
-                throw new SquidexException("Invalid json mapping.");
+                throw new CLIException("Invalid json mapping.");
             }
 
             object container = property;

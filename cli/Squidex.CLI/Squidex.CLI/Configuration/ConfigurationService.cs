@@ -11,6 +11,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration
 {
@@ -63,22 +64,11 @@ namespace Squidex.CLI.Configuration
         {
             try
             {
-                var file = new FileInfo(".configuration");
-
-                using (var stream = file.Create())
-                {
-                    using (var streamWriter = new StreamWriter(stream))
-                    {
-                        using (var jsonWriter = new JsonTextWriter(streamWriter))
-                        {
-                            jsonSerializer.Serialize(jsonWriter, configuration);
-                        }
-                    }
-                }
+                File.WriteAllText(".configuration", JsonConvert.SerializeObject(configuration));
             }
             catch (Exception ex)
             {
-                throw new SquidexException("Failed to save configuration file.", ex);
+                throw new CLIException("Failed to save configuration file.", ex);
             }
         }
 
@@ -111,7 +101,7 @@ namespace Squidex.CLI.Configuration
         {
             if (!configuration.Apps.ContainsKey(entry))
             {
-                throw new SquidexException("App config with the name does not exist.");
+                throw new CLIException("App config with the name does not exist.");
             }
 
             configuration.CurrentApp = entry;
@@ -123,7 +113,7 @@ namespace Squidex.CLI.Configuration
         {
             if (!configuration.Apps.ContainsKey(entry))
             {
-                throw new SquidexException("App config with the name does not exist.");
+                throw new CLIException("App config with the name does not exist.");
             }
 
             configuration.Apps.Remove(entry);
@@ -157,18 +147,25 @@ namespace Squidex.CLI.Configuration
                 return new Session(app.Name, new SquidexClientManager(options));
             }
 
-            throw new SquidexException("Cannot find valid configuration.");
+            throw new CLIException("Cannot find valid configuration.");
         }
 
         private static SquidexOptions CreateOptions(ConfiguredApp app)
         {
-            return new SquidexOptions
+            var options = new SquidexOptions
             {
                 AppName = app.Name,
                 ClientId = app.ClientId,
                 ClientSecret = app.ClientSecret,
                 Url = app.ServiceUrl
             };
+
+            if (app.IgnoreSelfSigned)
+            {
+                options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+            }
+
+            return options;
         }
 
         public Configuration GetConfiguration()

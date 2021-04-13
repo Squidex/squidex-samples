@@ -98,7 +98,7 @@ namespace Squidex.CLI.Commands
                 }
                 catch (IOException)
                 {
-                    throw new SquidexException("Cannot read schema file.");
+                    throw new CLIException("Cannot read schema file.");
                 }
 
                 if (string.IsNullOrWhiteSpace(schemaName))
@@ -111,13 +111,13 @@ namespace Squidex.CLI.Commands
                     }
                     catch (JsonException ex)
                     {
-                        throw new SquidexException($"Cannot deserialize schema: {ex.Message}");
+                        throw new CLIException($"Cannot deserialize schema: {ex.Message}");
                     }
                 }
 
                 if (string.IsNullOrWhiteSpace(schemaName))
                 {
-                    throw new SquidexException("Schema name cannot be empty.");
+                    throw new CLIException("Schema name cannot be empty.");
                 }
 
                 SchemaDetailsDto targetSchema;
