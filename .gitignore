@@ -15,6 +15,7 @@ bin/
 obj/
 out/
 publish/
+dist/
 
 # NodeJS 
 node_modules/
