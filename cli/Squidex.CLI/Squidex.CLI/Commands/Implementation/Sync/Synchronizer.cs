@@ -35,6 +35,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             var directoryInfo = Directory.CreateDirectory(path);
 
             var selectedSynchronizers = GetSynchronizers(options.Targets);
+            var selectedCount = selectedSynchronizers.Count;
 
             WriteSummary(directoryInfo, selectedSynchronizers);
 
@@ -49,14 +50,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
-                log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, selectedCount, synchronizer.Name);
                 log.WriteLine();
 
                 await synchronizer.CleanupAsync(directoryInfo);
                 await synchronizer.ExportAsync(directoryInfo, jsonHelper, options, session);
 
                 log.WriteLine();
-                log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, selectedSynchronizers.Count, synchronizer.Name);
                 log.WriteLine("--------------------------------------------------------");
             });
         }
@@ -66,6 +67,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             var directoryInfo = new DirectoryInfo(path);
 
             var selectedSynchronizers = GetSynchronizers(options.Targets);
+            var selectedCount = selectedSynchronizers.Count;
 
             WriteSummary(directoryInfo, selectedSynchronizers);
 
@@ -75,13 +77,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 log.WriteLine();
                 log.WriteLine("--------------------------------------------------------");
-                log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, selectedCount, synchronizer.Name);
                 log.WriteLine();
 
                 await synchronizer.ImportAsync(directoryInfo, jsonHelper, options, session);
 
                 log.WriteLine();
-                log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, selectedCount, synchronizer.Name);
                 log.WriteLine("--------------------------------------------------------");
             });
         }
@@ -92,9 +94,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             log.WriteLine();
             log.WriteLine("Executing the following steps");
 
+            var selectedCount = selectedSynchronizers.Count;
+
             selectedSynchronizers.Foreach((synchronizer, step) =>
             {
-                log.WriteLine("* STEP {0} of {1}: {2}", step, synchronizers.Count(), synchronizer.Name);
+                log.WriteLine("* STEP {0} of {1}: {2}", step, selectedCount, synchronizer.Name);
             });
         }
 

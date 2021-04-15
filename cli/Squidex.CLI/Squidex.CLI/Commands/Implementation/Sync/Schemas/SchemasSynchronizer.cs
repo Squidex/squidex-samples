@@ -82,7 +82,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
             var schemasByName = current.Items.ToDictionary(x => x.Name);
 
-            if (!options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var name in current.Items.Select(x => x.Name))
                 {
@@ -124,7 +124,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                 var version = schemasByName[model.Name].Version;
 
-                if (options.NoDeletion)
+                if (!options.Delete)
                 {
                     model.Schema.NoFieldDeletion = true;
                     model.Schema.NoFieldRecreation = true;

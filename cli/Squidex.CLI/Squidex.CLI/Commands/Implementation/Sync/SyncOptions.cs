@@ -13,6 +13,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public string[] Languages { get; set; }
 
-        public bool NoDeletion { get; set; }
+        public bool Delete { get; set; }
     }
 }

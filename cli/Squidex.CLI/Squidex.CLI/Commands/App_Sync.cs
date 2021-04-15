@@ -55,7 +55,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "in", Description = "Imports the app from a folder")]
             public async Task In(InArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.Emulate);
 
                 await synchronizer.ImportAsync(arguments.Folder, arguments.ToOptions(), session);
 
@@ -95,12 +95,15 @@ namespace Squidex.CLI.Commands
                 [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
                 public string[] Targets { get; set; }
 
-                [Option(LongName = "nodelete", Description = "Use this flag to prevent deletions.")]
-                public bool NoDeletion { get; set; }
+                [Option(LongName = "delete", Description = "Use this flag to also delete entities.")]
+                public bool Delete { get; set; }
+
+                [Option(LongName = "emulate", Description = "Use this flag to not make any updates and to emulate the changes.")]
+                public bool Emulate { get; set; }
 
                 public SyncOptions ToOptions()
                 {
-                    return new SyncOptions { NoDeletion = NoDeletion, Targets = Targets };
+                    return new SyncOptions { Delete = Delete, Targets = Targets };
                 }
 
                 public sealed class Validator : AbstractValidator<InArguments>

@@ -18,13 +18,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return new FileInfo(Path.Combine(directoryInfo.FullName, $"assets/files/{id}.blob"));
         }
 
-        public static BulkUpdateAssetsJobDto ToMoveJob(this AssetModel model)
+        public static BulkUpdateAssetsJobDto ToMoveJob(this AssetModel model, string parentId)
         {
             return new BulkUpdateAssetsJobDto
             {
                 Id = model.Id,
                 Type = BulkUpdateAssetType.Move,
-                ParentPath = model.FolderPath
+                ParentId = parentId
             };
         }
 
@@ -36,8 +36,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 Type = BulkUpdateAssetType.Annotate,
                 FileName = model.FileName,
                 IsProtected = model.IsProtected,
-                ParentId = null,
-                ParentPath = null,
                 Metadata = model.Metadata,
                 Slug = model.Slug,
                 Tags = model.Tags

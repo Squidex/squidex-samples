@@ -131,18 +131,18 @@ namespace Squidex.CLI.Configuration
             sessionApp = entry;
         }
 
-        public ISession StartSession()
+        public ISession StartSession(bool emulate)
         {
             if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {
-                var options = CreateOptions(app);
+                var options = CreateOptions(app, emulate);
 
                 return new Session(app.Name, new SquidexClientManager(options));
             }
 
             if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
             {
-                var options = CreateOptions(app);
+                var options = CreateOptions(app, emulate);
 
                 return new Session(app.Name, new SquidexClientManager(options));
             }
@@ -150,7 +150,7 @@ namespace Squidex.CLI.Configuration
             throw new CLIException("Cannot find valid configuration.");
         }
 
-        private static SquidexOptions CreateOptions(ConfiguredApp app)
+        private static SquidexOptions CreateOptions(ConfiguredApp app, bool emulate)
         {
             var options = new SquidexOptions
             {
@@ -163,6 +163,11 @@ namespace Squidex.CLI.Configuration
             if (app.IgnoreSelfSigned)
             {
                 options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+            }
+
+            if (emulate)
+            {
+                options.ClientFactory = new GetOnlyHttpClientFactory();
             }
 
             return options;

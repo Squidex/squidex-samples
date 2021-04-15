@@ -20,6 +20,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public UploadPipeline(ISession session, ILogger log, DirectoryInfo directoryInfo)
         {
+            var tree = new FolderTree(session);
+
             pipeline = new ActionBlock<AssetModel>(async asset =>
             {
                 var process = $"Uploading {asset.Id}";
@@ -32,7 +34,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     {
                         var file = new FileParameter(stream, asset.FileName, asset.MimeType);
 
-                        await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, file);
+                        await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
                     }
 
                     log.ProcessCompleted(process);

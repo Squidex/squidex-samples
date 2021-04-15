@@ -1581,7 +1581,7 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<SchemaDetailsDto> PutSchemaUIFieldsAsync(string app, string name, ConfigureUIFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Reorders the fields.</summary>
+        /// <summary>Reorder all fields.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="name">The name of the schema.</param>
         /// <param name="request">The request that contains the field ids.</param>
@@ -1590,7 +1590,7 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<SchemaDetailsDto> PutSchemaFieldOrderingAsync(string app, string name, ReorderFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Reorders the nested fields.</summary>
+        /// <summary>Reorder all nested fields.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="name">The name of the schema.</param>
         /// <param name="parentId">The parent field id.</param>
@@ -2223,7 +2223,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Reorders the fields.</summary>
+        /// <summary>Reorder all fields.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="name">The name of the schema.</param>
         /// <param name="request">The request that contains the field ids.</param>
@@ -2334,7 +2334,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Reorders the nested fields.</summary>
+        /// <summary>Reorder all nested fields.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="name">The name of the schema.</param>
         /// <param name="parentId">The parent field id.</param>
@@ -8423,7 +8423,7 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string app, string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the comment.</summary>
+        /// <summary>Update a comment.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="commentsId">The id of the comments.</param>
         /// <param name="commentId">The id of the comment.</param>
@@ -8433,7 +8433,7 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task PutCommentAsync(string app, string commentsId, string commentId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Deletes the comment.</summary>
+        /// <summary>Delete a comment.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="commentsId">The id of the comments.</param>
         /// <param name="commentId">The id of the comment.</param>
@@ -8682,7 +8682,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the comment.</summary>
+        /// <summary>Update a comment.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="commentsId">The id of the comments.</param>
         /// <param name="commentId">The id of the comment.</param>
@@ -8792,7 +8792,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Deletes the comment.</summary>
+        /// <summary>Delete a comment.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="commentsId">The id of the comments.</param>
         /// <param name="commentId">The id of the comment.</param>
@@ -8999,7 +8999,7 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Deletes the notification.</summary>
+        /// <summary>Delete a notification.</summary>
         /// <param name="userId">The user id.</param>
         /// <param name="commentId">The id of the comment.</param>
         /// <returns>Comment deleted.</returns>
@@ -9125,7 +9125,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Deletes the notification.</summary>
+        /// <summary>Delete a notification.</summary>
         /// <param name="userId">The user id.</param>
         /// <param name="commentId">The id of the comment.</param>
         /// <returns>Comment deleted.</returns>
@@ -10028,6 +10028,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="height">The target height of the asset, if it is an image.</param>
         /// <param name="quality">Optional image quality, it is is an jpeg image.</param>
         /// <param name="mode">The resize mode when the width and height is defined.</param>
+        /// <param name="bg">Optional background color.</param>
         /// <param name="focusX">Override the y focus point.</param>
         /// <param name="focusY">Override the x focus point.</param>
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
@@ -10036,7 +10037,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get the asset content.</summary>
@@ -10048,6 +10049,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="height">The target height of the asset, if it is an image.</param>
         /// <param name="quality">Optional image quality, it is is an jpeg image.</param>
         /// <param name="mode">The resize mode when the width and height is defined.</param>
+        /// <param name="bg">Optional background color.</param>
         /// <param name="focusX">Override the y focus point.</param>
         /// <param name="focusY">Override the x focus point.</param>
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
@@ -10057,7 +10059,7 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         [System.Obsolete]
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get asset folders.</summary>
@@ -10068,21 +10070,21 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string app, string parentId = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Upload a new asset.</summary>
+        /// <summary>Create an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="request">The asset folder object that needs to be added to the App.</param>
         /// <returns>Asset folder created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetFolderDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the asset folder.</summary>
+        /// <summary>Update an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Delete an asset folder.</summary>
@@ -10093,13 +10095,13 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task DeleteAssetFolderAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Moves the asset folder.</summary>
+        /// <summary>Move an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder moved.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderParentAsync(string app, string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets tags.</summary>
@@ -10153,12 +10155,13 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The optional custom asset id.</param>
         /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the asset.</summary>
+        /// <summary>Update an asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
@@ -10242,6 +10245,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="height">The target height of the asset, if it is an image.</param>
         /// <param name="quality">Optional image quality, it is is an jpeg image.</param>
         /// <param name="mode">The resize mode when the width and height is defined.</param>
+        /// <param name="bg">Optional background color.</param>
         /// <param name="focusX">Override the y focus point.</param>
         /// <param name="focusY">Override the x focus point.</param>
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
@@ -10250,7 +10254,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string app, string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10293,6 +10297,10 @@ namespace Squidex.ClientLibrary.Management
             if (mode != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("mode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (bg != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("bg") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bg, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (focusX != null) 
             {
@@ -10403,6 +10411,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="height">The target height of the asset, if it is an image.</param>
         /// <param name="quality">Optional image quality, it is is an jpeg image.</param>
         /// <param name="mode">The resize mode when the width and height is defined.</param>
+        /// <param name="bg">Optional background color.</param>
         /// <param name="focusX">Override the y focus point.</param>
         /// <param name="focusY">Override the x focus point.</param>
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
@@ -10412,7 +10421,7 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         [System.Obsolete]
-        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? keepformat = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -10447,6 +10456,10 @@ namespace Squidex.ClientLibrary.Management
             if (mode != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("mode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(mode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (bg != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("bg") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bg, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (focusX != null) 
             {
@@ -10643,12 +10656,12 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Upload a new asset.</summary>
+        /// <summary>Create an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="request">The asset folder object that needs to be added to the App.</param>
         /// <returns>Asset folder created.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetFolderDto> PostAssetFolderAsync(string app, CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10695,7 +10708,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -10749,13 +10762,13 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the asset folder.</summary>
+        /// <summary>Update an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderAsync(string app, string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -10806,7 +10819,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -10948,13 +10961,13 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Moves the asset folder.</summary>
+        /// <summary>Move an asset folder.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder moved.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PutAssetFolderParentAsync(string app, string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderParentAsync(string app, string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11005,7 +11018,7 @@ namespace Squidex.ClientLibrary.Management
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -11290,15 +11303,15 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (id != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (duplicate != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -11317,7 +11330,7 @@ namespace Squidex.ClientLibrary.Management
                         var content_file_ = new System.Net.Http.StreamContent(file.Data);
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
-                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                        content_.Add(content_file_, "File", file.FileName ?? "File");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -11604,9 +11617,10 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The optional custom asset id.</param>
         /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string app, string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11620,7 +11634,11 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (duplicate != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("Duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -11639,7 +11657,7 @@ namespace Squidex.ClientLibrary.Management
                         var content_file_ = new System.Net.Http.StreamContent(file.Data);
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
-                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                        content_.Add(content_file_, "File", file.FileName ?? "File");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -11732,7 +11750,7 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Updates the asset.</summary>
+        /// <summary>Update an asset.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
@@ -11864,11 +11882,11 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (checkReferrers != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("checkReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("CheckReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (permanent != null) 
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("permanent") + "=").Append(System.Uri.EscapeDataString(ConvertToString(permanent, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("Permanent") + "=").Append(System.Uri.EscapeDataString(ConvertToString(permanent, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
@@ -12485,38 +12503,6 @@ namespace Squidex.ClientLibrary.Management
         System.Threading.Tasks.Task<AppLanguagesDto> DeleteLanguageAsync(string app, string language, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get app patterns.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <returns>Patterns returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> GetPatternsAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create a new app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="request">Pattern to be added to the app.</param>
-        /// <returns>Pattern created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> PostPatternAsync(string app, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update an app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the pattern to be updated.</param>
-        /// <param name="request">Pattern to be updated for the app.</param>
-        /// <returns>Pattern updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete an app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the pattern to be deleted.</param>
-        /// <returns>Pattern deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<PatternsDto> DeletePatternAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get app roles.</summary>
         /// <param name="app">The name of the app.</param>
         /// <returns>Roles returned.</returns>
@@ -12581,7 +12567,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AppDto> UpdateAppAsync(string app, UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AppDto> PutAppAsync(string app, UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Archive the app.</summary>
@@ -12589,6 +12575,21 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>App archived.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAppAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get the app settings.</summary>
+        /// <param name="app">The name of the app to get the settings for.</param>
+        /// <returns>App settingsd returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AppSettingsDto> GetAppSettingsAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Update the app settings.</summary>
+        /// <param name="app">The name of the app to update.</param>
+        /// <param name="request">The values to update.</param>
+        /// <returns>App updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AppSettingsDto> PutAppSettingsAsync(string app, UpdateAppSettingsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload the app image.</summary>
@@ -13861,406 +13862,6 @@ namespace Squidex.ClientLibrary.Management
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get app patterns.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <returns>Patterns returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PatternsDto> GetPatternsAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (app == null)
-                throw new System.ArgumentNullException("app");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/patterns");
-            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-    
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<PatternsDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Create a new app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="request">Pattern to be added to the app.</param>
-        /// <returns>Pattern created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PatternsDto> PostPatternAsync(string app, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (app == null)
-                throw new System.ArgumentNullException("app");
-    
-            if (request == null)
-                throw new System.ArgumentNullException("request");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/patterns");
-            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-    
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<PatternsDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Pattern request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Update an app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the pattern to be updated.</param>
-        /// <param name="request">Pattern to be updated for the app.</param>
-        /// <returns>Pattern updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PatternsDto> PutPatternAsync(string app, string id, UpdatePatternDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (app == null)
-                throw new System.ArgumentNullException("app");
-    
-            if (id == null)
-                throw new System.ArgumentNullException("id");
-    
-            if (request == null)
-                throw new System.ArgumentNullException("request");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/patterns/{id}");
-            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-    
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<PatternsDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Pattern request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Pattern or app not found.", status_, responseText_, headers_, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Delete an app pattern.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the pattern to be deleted.</param>
-        /// <returns>Pattern deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<PatternsDto> DeletePatternAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (app == null)
-                throw new System.ArgumentNullException("app");
-    
-            if (id == null)
-                throw new System.ArgumentNullException("id");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/patterns/{id}");
-            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-    
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-    
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<PatternsDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Pattern or app not found.", status_, responseText_, headers_, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get app roles.</summary>
         /// <param name="app">The name of the app.</param>
         /// <returns>Roles returned.</returns>
@@ -15037,7 +14638,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AppDto> UpdateAppAsync(string app, UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AppDto> PutAppAsync(string app, UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -15183,6 +14784,201 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 204)
                         {
                             return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Get the app settings.</summary>
+        /// <param name="app">The name of the app to get the settings for.</param>
+        /// <returns>App settingsd returned.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AppSettingsDto> GetAppSettingsAsync(string app, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/settings");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Update the app settings.</summary>
+        /// <param name="app">The name of the app to update.</param>
+        /// <param name="request">The values to update.</param>
+        /// <returns>App updated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<AppSettingsDto> PutAppSettingsAsync(string app, UpdateAppSettingsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+    
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("apps/{app}/settings");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -16510,6 +16306,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> DefaultValue { get; set; }
     
+        /// <summary>The initial id to the folder.</summary>
+        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FolderId { get; set; }
+    
         /// <summary>The minimum allowed items for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MinItems { get; set; }
@@ -16860,6 +16660,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("patternMessage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PatternMessage { get; set; }
     
+        /// <summary>The initial id to the folder when the control supports file uploads.</summary>
+        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FolderId { get; set; }
+    
         /// <summary>The minimum allowed length for the field value.</summary>
         [Newtonsoft.Json.JsonProperty("minLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MinLength { get; set; }
@@ -17141,6 +16945,10 @@ namespace Squidex.ClientLibrary.Management
         [System.ComponentModel.DataAnnotations.Required]
         public string Message { get; set; }
     
+        /// <summary>The error code.</summary>
+        [Newtonsoft.Json.JsonProperty("errorCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ErrorCode { get; set; }
+    
         /// <summary>The optional trace id.</summary>
         [Newtonsoft.Json.JsonProperty("traceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TraceId { get; set; }
@@ -17209,7 +17017,7 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("doNotValidateWorkflow", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool DoNotValidateWorkflow { get; set; }
     
-        /// <summary>True to check referrers of this content.</summary>
+        /// <summary>True to check referrers of deleted contents.</summary>
         [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool CheckReferrers { get; set; }
     
@@ -18814,7 +18622,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class RestoreRequestDto 
     {
         /// <summary>The name of the app.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
     
@@ -18911,6 +18719,57 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The version of the asset folder.</summary>
         [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Version { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class CreateAssetFolderDto 
+    {
+        /// <summary>The name of the folder.</summary>
+        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string FolderName { get; set; }
+    
+        /// <summary>The id of the parent folder.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ParentId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class RenameAssetFolderDto 
+    {
+        /// <summary>The name of the folder.</summary>
+        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string FolderName { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class MoveAssetFolderDto 
+    {
+        /// <summary>The parent folder id.</summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ParentId { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AssetsDto : Resource
+    {
+        /// <summary>The total number of assets.</summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+    
+        /// <summary>The assets.</summary>
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<AssetDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetDto>();
     
     
     }
@@ -19054,63 +18913,20 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class CreateAssetFolderDto 
-    {
-        /// <summary>The name of the folder.</summary>
-        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string FolderName { get; set; }
-    
-        /// <summary>The id of the parent folder.</summary>
-        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ParentId { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class RenameAssetFolderDto 
-    {
-        /// <summary>The name of the folder.</summary>
-        [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string FolderName { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class MoveAssetFolderDto 
-    {
-        /// <summary>The parent folder id.</summary>
-        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ParentId { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class AssetsDto : Resource
-    {
-        /// <summary>The total number of assets.</summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Total { get; set; }
-    
-        /// <summary>The assets.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<AssetDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<AssetDto>();
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class BulkUpdateAssetsDto 
     {
         /// <summary>The contents to update or insert.</summary>
         [Newtonsoft.Json.JsonProperty("jobs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.ICollection<BulkUpdateAssetsJobDto> Jobs { get; set; } = new System.Collections.ObjectModel.Collection<BulkUpdateAssetsJobDto>();
+    
+        /// <summary>True to check referrers of deleted assets.</summary>
+        [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CheckReferrers { get; set; }
+    
+        /// <summary>True to turn off costly validation: Folder checks. Default: true.</summary>
+        [Newtonsoft.Json.JsonProperty("optimizeValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool OptimizeValidation { get; set; }
     
     
     }
@@ -19130,10 +18946,6 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The parent folder id.</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ParentId { get; set; }
-    
-        /// <summary>The optional path to the folder.</summary>
-        [Newtonsoft.Json.JsonProperty("parentPath", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ParentPath { get; set; }
     
         /// <summary>The new name of the asset.</summary>
         [Newtonsoft.Json.JsonProperty("fileName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -19212,10 +19024,6 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The parent folder id.</summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ParentId { get; set; }
-    
-        /// <summary>The optional path to the folder.</summary>
-        [Newtonsoft.Json.JsonProperty("parentPath", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ParentPath { get; set; }
     
     
     }
@@ -19450,61 +19258,6 @@ namespace Squidex.ClientLibrary.Management
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PatternsDto : Resource
-    {
-        /// <summary>The patterns.</summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<PatternDto> Items { get; set; } = new System.Collections.ObjectModel.Collection<PatternDto>();
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class PatternDto : Resource
-    {
-        /// <summary>Unique id of the pattern.</summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-    
-        /// <summary>The name of the suggestion.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Name { get; set; }
-    
-        /// <summary>The regex pattern.</summary>
-        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Pattern { get; set; }
-    
-        /// <summary>The regex message.</summary>
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Message { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class UpdatePatternDto 
-    {
-        /// <summary>The name of the suggestion.</summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Name { get; set; }
-    
-        /// <summary>The regex pattern.</summary>
-        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Pattern { get; set; }
-    
-        /// <summary>The regex message.</summary>
-        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Message { get; set; }
-    
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class RolesDto : Resource
     {
         /// <summary>The roles.</summary>
@@ -19662,6 +19415,90 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The optional description of your app.</summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class AppSettingsDto : Resource
+    {
+        /// <summary>The configured app patterns.</summary>
+        [Newtonsoft.Json.JsonProperty("patterns", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<PatternDto> Patterns { get; set; } = new System.Collections.ObjectModel.Collection<PatternDto>();
+    
+        /// <summary>The configured UI editors.</summary>
+        [Newtonsoft.Json.JsonProperty("editors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<EditorDto> Editors { get; set; } = new System.Collections.ObjectModel.Collection<EditorDto>();
+    
+        /// <summary>Hide the scheduler for content items.</summary>
+        [Newtonsoft.Json.JsonProperty("hideScheduler", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool HideScheduler { get; set; }
+    
+        /// <summary>The version of the app.</summary>
+        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Version { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class PatternDto 
+    {
+        /// <summary>Unique id of the pattern.</summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+    
+        /// <summary>The name of the suggestion.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Name { get; set; }
+    
+        /// <summary>The regex pattern.</summary>
+        [Newtonsoft.Json.JsonProperty("regex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Regex { get; set; }
+    
+        /// <summary>The regex message.</summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Message { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class EditorDto 
+    {
+        /// <summary>The name of the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Name { get; set; }
+    
+        /// <summary>The url to the editor.</summary>
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Url { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.6.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class UpdateAppSettingsDto 
+    {
+        /// <summary>The configured app patterns.</summary>
+        [Newtonsoft.Json.JsonProperty("patterns", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<PatternDto> Patterns { get; set; } = new System.Collections.ObjectModel.Collection<PatternDto>();
+    
+        /// <summary>The configured UI editors.</summary>
+        [Newtonsoft.Json.JsonProperty("editors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.ICollection<EditorDto> Editors { get; set; } = new System.Collections.ObjectModel.Collection<EditorDto>();
+    
+        /// <summary>Hide the scheduler for content items.</summary>
+        [Newtonsoft.Json.JsonProperty("hideScheduler", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool HideScheduler { get; set; }
     
     
     }
@@ -19829,6 +19666,12 @@ namespace Squidex.ClientLibrary.Management
     
         [System.Runtime.Serialization.EnumMember(Value = @"GET")]
         GET = 2,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"DELETE")]
+        DELETE = 3,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"PATCH")]
+        PATCH = 4,
     
     }
     

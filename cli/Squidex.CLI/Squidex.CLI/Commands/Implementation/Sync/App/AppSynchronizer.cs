@@ -123,7 +123,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         {
             var current = await session.Apps.GetClientsAsync(session.App);
 
-            if (!options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var client in current.Items)
                 {
@@ -180,7 +180,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         {
             var current = await session.Apps.GetLanguagesAsync(session.App);
 
-            if (!options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var language in current.Items)
                 {
@@ -235,7 +235,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         {
             var current = await session.Apps.GetRolesAsync(session.App);
 
-            if (!options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var role in current.Items)
                 {

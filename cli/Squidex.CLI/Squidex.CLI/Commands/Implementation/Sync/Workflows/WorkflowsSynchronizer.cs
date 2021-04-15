@@ -79,7 +79,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
             var workflowsByName = current.Items.ToDictionary(x => x.Name);
 
-            if (options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var (name, workflow) in workflowsByName.ToList())
                 {

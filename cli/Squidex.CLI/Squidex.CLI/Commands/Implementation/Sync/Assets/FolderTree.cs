@@ -75,8 +75,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
             foreach (var name in names)
             {
-                if (current.Children.TryGetValue(name, out current))
+                if (current.Children.TryGetValue(name, out var child))
                 {
+                    current = child;
                     continue;
                 }
 

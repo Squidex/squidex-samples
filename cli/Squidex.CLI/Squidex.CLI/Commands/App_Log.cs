@@ -16,6 +16,8 @@ using CsvHelper.Configuration;
 using FluentValidation;
 using FluentValidation.Attributes;
 
+#pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
+
 namespace Squidex.CLI.Commands
 {
     public sealed partial class App

@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
                 if (sb.Length > 0)
                 {
-                    nextWord.Append(" ");
+                    nextWord.Append(' ');
                 }
 
                 nextWord.Append(word);
@@ -115,7 +115,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
             while (sb.Length < maxCharacters)
             {
-                sb.Append(".");
+                sb.Append('.');
             }
 
             return sb.ToString();

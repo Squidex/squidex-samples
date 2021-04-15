@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Rules
@@ -40,16 +41,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
         {
             var current = await session.Rules.GetRulesAsync();
 
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+            await MapSchemaIdsToNamesAsync(session, current);
 
             await current.Items.OrderBy(x => x.Created).Foreach(async (rule, i) =>
             {
-                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
-                {
-                    MapSchemas(contentTrigger, schemaMap);
-                }
-
                 var ruleName = rule.Name;
 
                 if (string.IsNullOrWhiteSpace(ruleName))
@@ -87,7 +82,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
             var rulesByName = current.Items.ToDictionary(x => x.Name);
 
-            if (!options.NoDeletion)
+            if (options.Delete)
             {
                 foreach (var (name, rule) in rulesByName.ToList())
                 {
@@ -102,6 +97,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                     }
                 }
             }
+
+            await MapSchemaNamesToIdsAsync(session, models);
 
             foreach (var newRule in models)
             {
@@ -125,9 +122,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 });
             }
 
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-            var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
-
             foreach (var newRule in models)
             {
                 var rule = rulesByName.GetValueOrDefault(newRule.Name);
@@ -135,11 +129,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 if (rule == null)
                 {
                     return;
-                }
-
-                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
-                {
-                    MapSchemas(contentTrigger, schemaMap);
                 }
 
                 await log.DoVersionedAsync($"Rule '{newRule.Name}' updating", rule.Version, async () =>
@@ -171,6 +160,36 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                             return result.Version;
                         });
                     }
+                }
+            }
+        }
+
+        private async Task MapSchemaIdsToNamesAsync(ISession session, ExtendableRules current)
+        {
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
+            var map = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+
+            foreach (var rule in current.Items)
+            {
+                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                {
+                    MapSchemas(contentTrigger, map);
+                }
+            }
+        }
+
+        private async Task MapSchemaNamesToIdsAsync(ISession session, List<RuleModel> models)
+        {
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
+            var map = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
+
+            foreach (var newRule in models)
+            {
+                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                {
+                    MapSchemas(contentTrigger, map);
                 }
             }
         }

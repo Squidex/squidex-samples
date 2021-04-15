@@ -5,24 +5,21 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.CLI.Commands.Implementation;
+using System.Net.Http;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration
 {
-    public interface IConfigurationService
+    public sealed class GetOnlyHttpClientFactory : IHttpClientFactory
     {
-        Configuration GetConfiguration();
+        public HttpClient CreateHttpClient(HttpMessageHandler messageHandler)
+        {
+            return new GetOnlyHttpClient(messageHandler);
+        }
 
-        void Upsert(string entry, ConfiguredApp appConfig);
-
-        void Reset();
-
-        void Remove(string entry);
-
-        void UseApp(string entry);
-
-        void UseAppInSession(string entry);
-
-        ISession StartSession(bool emulate = false);
+        public HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner)
+        {
+            return null;
+        }
     }
 }

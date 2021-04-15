@@ -89,6 +89,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 GetFiles(directoryInfo)
                     .Select(x => (x, jsonHelper.Read<AssetsModel>(x, log)));
 
+            var tree = new FolderTree(session);
+
             foreach (var (_, model) in models)
             {
                 if (model?.Assets?.Count > 0)
@@ -102,7 +104,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                     foreach (var asset in model.Assets)
                     {
-                        request.Jobs.Add(asset.ToMoveJob());
+                        var parentId = await tree.GetIdAsync(asset.FolderPath);
+
+                        request.Jobs.Add(asset.ToMoveJob(parentId));
                         request.Jobs.Add(asset.ToAnnotateJob());
                     }
 
