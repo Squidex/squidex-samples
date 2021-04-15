@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Models;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 #pragma warning disable IDE0059 // Value assigned to symbol is never used

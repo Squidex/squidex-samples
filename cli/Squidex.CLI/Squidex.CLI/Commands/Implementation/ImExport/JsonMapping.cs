@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {

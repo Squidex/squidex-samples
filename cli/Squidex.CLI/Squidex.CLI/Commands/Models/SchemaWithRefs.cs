@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
-using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Models
 {

@@ -5,10 +5,10 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Configuration
 {
@@ -23,7 +23,7 @@ namespace Squidex.CLI.Configuration
         {
             if (request.Method != HttpMethod.Get)
             {
-                throw new InvalidOperationException("Not possible in emulation mode.");
+                throw new CLIException("Emulated");
             }
 
             return base.Send(request, cancellationToken);
@@ -33,7 +33,7 @@ namespace Squidex.CLI.Configuration
         {
             if (request.Method != HttpMethod.Get)
             {
-                throw new InvalidOperationException("Not possible in emulation mode.");
+                throw new CLIException("Emulated");
             }
 
             return base.SendAsync(request, cancellationToken);
