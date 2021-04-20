@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>sebastianstehle</Authors>
     <Company>Squidex UG (haftungsbeschränkt)</Company>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
