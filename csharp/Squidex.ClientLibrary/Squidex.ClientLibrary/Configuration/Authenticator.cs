@@ -1,4 +1,4 @@
-﻿// ==========================================================================
+// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -22,7 +22,7 @@ namespace Squidex.ClientLibrary.Configuration
     /// <seealso cref="IAuthenticator" />
     public class Authenticator : IAuthenticator
     {
-        private readonly HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient;
         private readonly string clientId;
         private readonly string clientSecret;
         private readonly Uri serviceUrl;
@@ -33,14 +33,15 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="serviceUrl">The service URL. Cannot be null or empty.</param>
         /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
         /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
+        /// <param name="configurator">The configurator that can be used to make changes to the HTTP requests.</param>
         /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="serviceUrl"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
-        public Authenticator(string serviceUrl, string clientId, string clientSecret)
-            : this(new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret)
+        public Authenticator(string serviceUrl, string clientId, string clientSecret, IHttpConfigurator configurator)
+            : this(new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret, configurator)
         {
         }
 
@@ -50,12 +51,13 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="serviceUrl">The service URL. Cannot be null.</param>
         /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
         /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
+        /// <param name="configurator">The configurator that can be used to make changes to the HTTP requests.</param>
         /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
-        public Authenticator(Uri serviceUrl, string clientId, string clientSecret)
+        public Authenticator(Uri serviceUrl, string clientId, string clientSecret, IHttpConfigurator configurator)
         {
             Guard.NotNull(serviceUrl, nameof(serviceUrl));
             Guard.NotNullOrEmpty(clientId, nameof(clientId));
@@ -64,6 +66,18 @@ namespace Squidex.ClientLibrary.Configuration
             this.serviceUrl = serviceUrl;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
+
+            var handler = new HttpClientHandler();
+            if (configurator != null)
+            {
+                configurator.Configure(handler);
+            }
+
+            httpClient = new HttpClient(handler);
+            if (configurator != null)
+            {
+                configurator.Configure(httpClient);
+            }
         }
 
         /// <inheritdoc/>

@@ -1,4 +1,4 @@
-﻿// ==========================================================================
+// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -324,8 +324,8 @@ namespace Squidex.ClientLibrary
                 }
 
                 var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
-
-                authenticator = new CachingAuthenticator($"TOKEN_{Url}", cache, new Authenticator(Url, clientId, clientSecret));
+                var squidexAuthenticator = new Authenticator(Url, clientId, clientSecret, Configurator);
+                authenticator = new CachingAuthenticator($"TOKEN_{Url}", cache, squidexAuthenticator);
             }
 
             if (configurator == null)
