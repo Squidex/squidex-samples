@@ -14,8 +14,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Utils;
 
-// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-
 namespace Squidex.ClientLibrary
 {
     /// <summary>

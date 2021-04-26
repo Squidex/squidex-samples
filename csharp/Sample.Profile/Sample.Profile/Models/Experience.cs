@@ -11,7 +11,7 @@ using Squidex.ClientLibrary;
 
 namespace Sample.Profile.Models
 {
-    public class Experience : SquidexEntityBase<ExperienceData>
+    public class Experience : Content<ExperienceData>
     {
     }
 

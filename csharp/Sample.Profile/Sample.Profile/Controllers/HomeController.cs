@@ -40,44 +40,44 @@ namespace Sample.Profile.Controllers
 
         private async Task LoadSkillsAsync(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Skill, SkillData>("skills").GetAsync();
+            var records = await clientManager.CreateContentsClient<Skill, SkillData>("skills").GetAsync();
 
             vm.Skills = records.Items;
         }
 
         private async Task LoadProjectsAsync(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Project, ProjectData>("projects").GetAsync();
+            var records = await clientManager.CreateContentsClient<Project, ProjectData>("projects").GetAsync();
 
             vm.Projects = records.Items;
         }
 
         private async Task LoadPublicationsAsync(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Publication, PublicationData>("publications").GetAsync();
+            var records = await clientManager.CreateContentsClient<Publication, PublicationData>("publications").GetAsync();
 
             vm.Publications = records.Items;
         }
 
         private async Task LoadExperienceAsync(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Experience, ExperienceData>("experience").GetAsync();
+            var records = await clientManager.CreateContentsClient<Experience, ExperienceData>("experience").GetAsync();
 
             vm.Experiences = records.Items;
         }
 
         private async Task LoadEducationAsync(HomeVM vm)
         {
-            var records = await clientManager.GetClient<Education, EducationData>("education").GetAsync();
+            var records = await clientManager.CreateContentsClient<Education, EducationData>("education").GetAsync();
 
             vm.Education = records.Items;
         }
 
         private async Task LoadBasics(HomeVM vm)
         {
-            var query = new ODataQuery { Top = 1 };
+            var query = new ContentQuery { Top = 1 };
 
-            var records = await clientManager.GetClient<Basics, BasicsData>("basics").GetAsync(query);
+            var records = await clientManager.CreateContentsClient<Basics, BasicsData>("basics").GetAsync(query);
 
             vm.Basics = records.Items.FirstOrDefault()?.Data ?? new BasicsData();
         }

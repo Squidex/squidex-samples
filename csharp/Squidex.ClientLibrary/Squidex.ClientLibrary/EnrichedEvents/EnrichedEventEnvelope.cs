@@ -36,6 +36,9 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// </summary>
         /// <param name="json">The string to be deserialized.</param>
         /// <param name="settings">Custom JsonSerializerSettings settings. TypeNameHandling and SerializationBinder will be overwritten.</param>
+        /// <returns>
+        /// The enriched event.
+        /// </returns>
         public static EnrichedEventEnvelope DeserializeEnvelope(string json, JsonSerializerSettings settings = null)
         {
             if (settings == null)

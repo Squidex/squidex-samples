@@ -10,7 +10,7 @@ using Squidex.ClientLibrary;
 
 namespace Sample.Profile.Models
 {
-    public class Project : SquidexEntityBase<ProjectData>
+    public class Project : Content<ProjectData>
     {
     }
 

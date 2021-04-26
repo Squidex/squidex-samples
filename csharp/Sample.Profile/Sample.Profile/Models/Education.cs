@@ -11,7 +11,7 @@ using Squidex.ClientLibrary;
 
 namespace Sample.Profile.Models
 {
-    public class Education : SquidexEntityBase<EducationData>
+    public class Education : Content<EducationData>
     {
     }
 

@@ -29,7 +29,7 @@ namespace Sample.Profile
             services.Configure<SquidexOptions>(Configuration.GetSection("app"));
 
             services.AddSingleton(c =>
-                SquidexClientManager.FromOption(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
+                new SquidexClientManager(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
 
             services.AddMvc();
         }

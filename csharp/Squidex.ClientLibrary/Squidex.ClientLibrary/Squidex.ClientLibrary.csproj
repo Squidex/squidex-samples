@@ -39,9 +39,7 @@
   <ItemGroup>
     <None Include="logo-squared.png" Pack="true" PackagePath="\" />
   </ItemGroup>
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\Squidex.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+  
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
