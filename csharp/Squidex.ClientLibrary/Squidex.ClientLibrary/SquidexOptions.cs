@@ -1,4 +1,4 @@
-﻿// ==========================================================================
+// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -311,23 +311,6 @@ namespace Squidex.ClientLibrary
                 assetCDN = assetCDN.TrimEnd('/', ' ');
             }
 
-            if (authenticator == null)
-            {
-                if (string.IsNullOrWhiteSpace(clientId))
-                {
-                    throw new ArgumentException("Client id is not defined.");
-                }
-
-                if (string.IsNullOrWhiteSpace(clientSecret))
-                {
-                    throw new ArgumentException("Client secret is not defined.");
-                }
-
-                var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
-
-                authenticator = new CachingAuthenticator($"TOKEN_{Url}", cache, new Authenticator(Url, clientId, clientSecret));
-            }
-
             if (configurator == null)
             {
                 configurator = NoopHttpConfigurator.Instance;
@@ -341,6 +324,23 @@ namespace Squidex.ClientLibrary
             if (httpClientTimeout == TimeSpan.Zero)
             {
                 httpClientTimeout = TimeSpan.FromSeconds(100);
+            }
+
+            if (authenticator == null)
+            {
+                if (string.IsNullOrWhiteSpace(clientId))
+                {
+                    throw new ArgumentException("Client id is not defined.");
+                }
+
+                if (string.IsNullOrWhiteSpace(clientSecret))
+                {
+                    throw new ArgumentException("Client secret is not defined.");
+                }
+
+                var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
+                var squidexAuthenticator = new Authenticator(this);
+                authenticator = new CachingAuthenticator($"TOKEN_{Url}", cache, squidexAuthenticator);
             }
 
             isFrozen = true;
