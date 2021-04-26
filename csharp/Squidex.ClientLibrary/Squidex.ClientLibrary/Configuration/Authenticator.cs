@@ -1,4 +1,4 @@
-// ==========================================================================
+﻿// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -23,29 +23,30 @@ namespace Squidex.ClientLibrary.Configuration
     public class Authenticator : IAuthenticator
     {
         private readonly HttpClient httpClient;
-        private readonly SquidexOptions squidexOptions;
+        private readonly SquidexOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Authenticator"/> class.
         /// </summary>
-        /// <param name="squidexOptions">The options to configure.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="squidexOptions"/> is null.</exception>
-        public Authenticator(SquidexOptions squidexOptions)
+        /// <param name="options">The options to configure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        public Authenticator(SquidexOptions options)
         {
-            Guard.NotNull(squidexOptions, nameof(squidexOptions));
+            Guard.NotNull(options, nameof(options));
 
             var handler = new HttpClientHandler();
 
-            squidexOptions.Configurator.Configure(handler);
+            options.Configurator.Configure(handler);
 
             httpClient =
-                squidexOptions.ClientFactory.CreateHttpClient(handler) ??
+                options.ClientFactory.CreateHttpClient(handler) ??
                 new HttpClient(handler, false);
 
-            httpClient.Timeout = squidexOptions.HttpClientTimeout;
+            httpClient.Timeout = options.HttpClientTimeout;
 
-            squidexOptions.Configurator.Configure(httpClient);
-            this.squidexOptions = squidexOptions;
+            options.Configurator.Configure(httpClient);
+
+            this.options = options;
         }
 
         /// <inheritdoc/>
@@ -57,16 +58,16 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
-            var url = $"{squidexOptions.Url}/identity-server/connect/token";
+            var url = $"{options.Url}/identity-server/connect/token";
 
-            var bodyString = $"grant_type=client_credentials&client_id={squidexOptions.ClientId}&client_secret={squidexOptions.ClientSecret}&scope=squidex-api";
+            var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
             var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
 
             using (var response = await httpClient.PostAsync(url, bodyContent))
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new SecurityException($"Failed to retrieve access token for client '{squidexOptions.ClientId}', got HTTP {response.StatusCode}.");
+                    throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
                 }
 
                 var jsonString = await response.Content.ReadAsStringAsync();
