@@ -23,61 +23,29 @@ namespace Squidex.ClientLibrary.Configuration
     public class Authenticator : IAuthenticator
     {
         private readonly HttpClient httpClient;
-        private readonly string clientId;
-        private readonly string clientSecret;
-        private readonly Uri serviceUrl;
+        private readonly SquidexOptions squidexOptions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Authenticator"/> class with the service URL, client identifier and secret.
+        /// Initializes a new instance of the <see cref="Authenticator"/> class.
         /// </summary>
-        /// <param name="serviceUrl">The service URL. Cannot be null or empty.</param>
-        /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
-        /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
-        /// <param name="configurator">The configurator that can be used to make changes to the HTTP requests.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="serviceUrl"/> is empty.</exception>
-        /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
-        /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
-        public Authenticator(string serviceUrl, string clientId, string clientSecret, IHttpConfigurator configurator)
-            : this(new Uri(serviceUrl, UriKind.Absolute), clientId, clientSecret, configurator)
+        /// <param name="squidexOptions">The options to configure.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="squidexOptions"/> is null.</exception>
+        public Authenticator(SquidexOptions squidexOptions)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Authenticator"/> class with the service URL, client identifier and secret.
-        /// </summary>
-        /// <param name="serviceUrl">The service URL. Cannot be null.</param>
-        /// <param name="clientId">The client identifier. Cannot be null or empty.</param>
-        /// <param name="clientSecret">The client secret. Cannot be null or empty.</param>
-        /// <param name="configurator">The configurator that can be used to make changes to the HTTP requests.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="serviceUrl"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="clientId"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="clientSecret"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="clientId"/> is empty.</exception>
-        /// <exception cref="ArgumentException"><paramref name="clientSecret"/> is empty.</exception>
-        public Authenticator(Uri serviceUrl, string clientId, string clientSecret, IHttpConfigurator configurator)
-        {
-            Guard.NotNull(serviceUrl, nameof(serviceUrl));
-            Guard.NotNullOrEmpty(clientId, nameof(clientId));
-            Guard.NotNullOrEmpty(clientSecret, nameof(clientSecret));
-
-            this.serviceUrl = serviceUrl;
-            this.clientId = clientId;
-            this.clientSecret = clientSecret;
+            Guard.NotNull(squidexOptions, nameof(squidexOptions));
 
             var handler = new HttpClientHandler();
-            if (configurator != null)
-            {
-                configurator.Configure(handler);
-            }
 
-            httpClient = new HttpClient(handler);
-            if (configurator != null)
-            {
-                configurator.Configure(httpClient);
-            }
+            squidexOptions.Configurator.Configure(handler);
+
+            httpClient =
+                squidexOptions.ClientFactory.CreateHttpClient(handler) ??
+                new HttpClient(handler, false);
+
+            httpClient.Timeout = squidexOptions.HttpClientTimeout;
+
+            squidexOptions.Configurator.Configure(httpClient);
+            this.squidexOptions = squidexOptions;
         }
 
         /// <inheritdoc/>
@@ -89,16 +57,16 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
-            var url = $"{serviceUrl}identity-server/connect/token";
+            var url = $"{squidexOptions.Url}/identity-server/connect/token";
 
-            var bodyString = $"grant_type=client_credentials&client_id={clientId}&client_secret={clientSecret}&scope=squidex-api";
+            var bodyString = $"grant_type=client_credentials&client_id={squidexOptions.ClientId}&client_secret={squidexOptions.ClientSecret}&scope=squidex-api";
             var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
 
             using (var response = await httpClient.PostAsync(url, bodyContent))
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new SecurityException($"Failed to retrieve access token for client '{clientId}', got HTTP {response.StatusCode}.");
+                    throw new SecurityException($"Failed to retrieve access token for client '{squidexOptions.ClientId}', got HTTP {response.StatusCode}.");
                 }
 
                 var jsonString = await response.Content.ReadAsStringAsync();
