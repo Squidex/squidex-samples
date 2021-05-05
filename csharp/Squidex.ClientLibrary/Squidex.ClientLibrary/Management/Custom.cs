@@ -7,8 +7,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HeyRed.Mime;
 using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable RECS0096 // Type parameter is never used
@@ -33,10 +36,10 @@ namespace Squidex.ClientLibrary.Management
                     !Message.EndsWith(":", StringComparison.OrdinalIgnoreCase) &&
                     !Message.EndsWith(",", StringComparison.OrdinalIgnoreCase))
                 {
-                    sb.Append(":");
+                    sb.Append(':');
                 }
 
-                sb.Append(" ");
+                sb.Append(' ');
                 sb.Append(string.Join(", ", Details));
             }
 
@@ -149,47 +152,63 @@ namespace Squidex.ClientLibrary.Management
     public partial interface IAssetsClient
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
+        /// <summary>
+        /// Upload a new asset.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="parentId">The optional parent folder id.</param>
+        /// <param name="id">The optional custom asset id.</param>
+        /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
+        /// <param name="file">The file to upload.</param>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// Asset created.
+        /// </returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="query">The optional asset query.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, System.Threading.CancellationToken cancellationToken = default);
+        Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, CancellationToken cancellationToken = default);
 
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get assets.</summary>
+        /// <summary>
+        /// Get assets.
+        /// </summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="callback">The callback that is invoke for each asset.</param>
         /// <param name="batchSize">The number of assets per request.</param>
-        /// <returns>Assets returned.</returns>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// Assets returned.
+        /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default);
+        Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default);
     }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class AssetsClient
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get assets.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="query">The optional asset query.</param>
-        /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, System.Threading.CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Guard.NotNull(file, nameof(file));
+
+            return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)));
+        }
+
+        /// <inheritdoc />
+        public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, CancellationToken cancellationToken = default)
         {
             return GetAssetsAsync(app,  query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
         }
 
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get assets.</summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="callback">The callback that is invoke for each asset.</param>
-        /// <param name="batchSize">The number of assets per request.</param>
-        /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, System.Threading.CancellationToken cancellationToken = default)
+        /// <inheritdoc />
+        public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default)
         {
             var query = new AssetQuery { Top = batchSize, Skip = 0 };
             var added = new HashSet<string>();

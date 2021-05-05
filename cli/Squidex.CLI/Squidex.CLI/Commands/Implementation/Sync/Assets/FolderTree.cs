@@ -14,8 +14,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
     public sealed class FolderTree
     {
-        private static readonly char[] TrimChars = { '/', '\\', ' ' };
-        private static readonly char[] SplitChars = { ' ', '/', '\\' };
+        private static readonly char[] TrimChars = { '/', '\\', ' ', '.' };
+        private static readonly char[] SplitChars = { '/', '\\' };
         private static readonly string RootId = Guid.Empty.ToString();
         private readonly Dictionary<string, FolderNode> nodes = new Dictionary<string, FolderNode>();
         private readonly ISession session;
@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public async Task<string> GetIdAsync(string path)
         {
-            if (path == null)
+            if (path == null || path.Equals(".", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }

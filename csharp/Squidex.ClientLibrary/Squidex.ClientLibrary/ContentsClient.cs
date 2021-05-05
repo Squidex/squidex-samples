@@ -377,15 +377,15 @@ namespace Squidex.ClientLibrary
             {
                 if (queryBuilder.Length > 0)
                 {
-                    queryBuilder.Append("&");
+                    queryBuilder.Append('&');
                 }
                 else
                 {
-                    queryBuilder.Append("?");
+                    queryBuilder.Append('?');
                 }
 
                 queryBuilder.Append(kvp.Key);
-                queryBuilder.Append("=");
+                queryBuilder.Append('=');
                 queryBuilder.Append(Uri.EscapeUriString(kvp.Value.ToString()));
             }
 

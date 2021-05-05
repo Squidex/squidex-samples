@@ -144,7 +144,7 @@ namespace Squidex.ClientLibrary.Management
         /// <returns>
         /// The discriminator value for the specified type.
         /// </returns>
-        public string GetDiscriminatorValue(Type type)
+        public virtual string GetDiscriminatorValue(Type type)
         {
             return GetSubtypeDiscriminator(type);
         }

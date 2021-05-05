@@ -29,7 +29,7 @@ namespace Squidex.ClientLibrary
         /// <remarks>
         /// This property is not supported anymore. A content item is pending when the <see cref="NewStatus"/> property is not null.
         /// </remarks>
-        [Obsolete]
+        [Obsolete("Use NewStatus")]
         public bool IsPending { get; set; }
 
         /// <summary>
