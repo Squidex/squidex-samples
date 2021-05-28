@@ -12,6 +12,7 @@ using System.Text;
 using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
@@ -54,13 +55,13 @@ namespace Squidex.CLI.Tests
         [Fact]
         public void Should_throw_exception_if_field_names_is_null()
         {
-            Assert.Throws<SquidexException>(() => new Csv2SquidexConverter(null));
+            Assert.Throws<CLIException>(() => new Csv2SquidexConverter(null));
         }
 
         [Fact]
         public void Should_throw_exception_if_field_names_is_empty()
         {
-            Assert.Throws<SquidexException>(() => new Csv2SquidexConverter(string.Empty));
+            Assert.Throws<CLIException>(() => new Csv2SquidexConverter(string.Empty));
         }
 
         [Fact]
@@ -111,6 +112,42 @@ namespace Squidex.CLI.Tests
                 ["number"] = new JObject
                 {
                     ["iv"] = 1234
+                }
+            };
+
+            EqualJson(expected, actual);
+        }
+
+        [Fact]
+        public void Should_read_number_string()
+        {
+            var sut = new Csv2SquidexConverter("number/raw");
+
+            var actual = sut.ReadAll(csvReader).First();
+
+            var expected = new DynamicData
+            {
+                ["number"] = new JObject
+                {
+                    ["iv"] = "1234"
+                }
+            };
+
+            EqualJson(expected, actual);
+        }
+
+        [Fact]
+        public void Should_read_number_from_path_to_string()
+        {
+            var sut = new Csv2SquidexConverter("path=number/raw");
+
+            var actual = sut.ReadAll(csvReader).First();
+
+            var expected = new DynamicData
+            {
+                ["path"] = new JObject
+                {
+                    ["iv"] = "1234"
                 }
             };
 

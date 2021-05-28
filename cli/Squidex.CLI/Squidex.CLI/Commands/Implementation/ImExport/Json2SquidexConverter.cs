@@ -1,4 +1,4 @@
-// ==========================================================================
+﻿// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -51,7 +51,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             if (mapping != null)
             {
-                foreach (var (name, path) in mapping)
+                foreach (var (name, path, _) in mapping)
                 {
                     if (item.TryGetValue(name, out var value))
                     {

@@ -38,7 +38,7 @@ namespace Squidex.CLI.Tests
             var max = dates.Max();
 
             Assert.True(min >= minValue.Date);
-            Assert.True(max <= maxValue.Date);
+            Assert.True(max <= maxValue);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
@@ -64,7 +64,7 @@ namespace Squidex.CLI.Tests
             var max = dates.Max();
 
             Assert.True(min >= minValue.Date);
-            Assert.True(max <= maxValue.Date);
+            Assert.True(max <= maxValue);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
@@ -90,7 +90,7 @@ namespace Squidex.CLI.Tests
             var max = dates.Max();
 
             Assert.True(min >= minValue.Date);
-            Assert.True(max <= maxValue.Date);
+            Assert.True(max <= maxValue);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }
@@ -114,7 +114,7 @@ namespace Squidex.CLI.Tests
             var max = dates.Max();
 
             Assert.True(min >= minValue.Date);
-            Assert.True(max <= maxValue.Date);
+            Assert.True(max <= maxValue);
 
             Assert.True(dates.All(x => x.Kind == DateTimeKind.Utc));
         }

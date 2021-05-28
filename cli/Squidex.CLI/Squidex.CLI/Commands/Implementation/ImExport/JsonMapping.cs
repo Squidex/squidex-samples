@@ -7,20 +7,26 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {
-    public sealed class JsonMapping : List<(string Name, JsonPath Path)>
+    public sealed class JsonMapping : List<(string Name, JsonPath Path, string Format)>
     {
+        private static readonly Regex FormatRegex = new Regex("(?<Lhs>[^\\/=]*)(=(?<Rhs>[^\\/]*))?(\\/(?<Format>.*))?", RegexOptions.Compiled);
+
         public static JsonMapping ForJson2Csv(string fields)
         {
             fields ??= string.Empty;
 
             var result = new JsonMapping();
 
-            foreach (var item in fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var field in fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                var parts = item.Split('=');
+                if (string.IsNullOrWhiteSpace(field))
+                {
+                    continue;
+                }
 
                 static JsonPath GetPath(string value)
                 {
@@ -34,16 +40,23 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     return path;
                 }
 
-                switch (parts.Length)
+                var match = FormatRegex.Match(field);
+
+                if (match.Success)
                 {
-                    case 1:
-                        result.Add((parts[0], GetPath(parts[0])));
-                        break;
-                    case 2:
-                        result.Add((parts[0], GetPath(parts[1])));
-                        break;
-                    default:
-                        throw new CLIException("Field definition not valid.");
+                    var name = match.Groups["Lhs"].Value;
+                    var path = name;
+
+                    if (match.Groups["Rhs"].Success)
+                    {
+                        path = match.Groups["Rhs"].Value;
+                    }
+
+                    result.Add((name, GetPath(path), GetFormat(match)));
+                }
+                else
+                {
+                    throw new CLIException("Field definition not valid.");
                 }
             }
 
@@ -61,9 +74,12 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             var result = new JsonMapping();
 
-            foreach (var item in fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var field in fields.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                var parts = item.Split('=');
+                if (string.IsNullOrWhiteSpace(field))
+                {
+                    continue;
+                }
 
                 static JsonPath GetPath(string value)
                 {
@@ -77,16 +93,23 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                     return path;
                 }
 
-                switch (parts.Length)
+                var match = FormatRegex.Match(field);
+
+                if (match.Success)
                 {
-                    case 1:
-                        result.Add((parts[0], GetPath(parts[0])));
-                        break;
-                    case 2:
-                        result.Add((parts[1], GetPath(parts[0])));
-                        break;
-                    default:
-                        throw new CLIException("Field definition not valid.");
+                    var name = match.Groups["Lhs"].Value;
+                    var path = name;
+
+                    if (match.Groups["Rhs"].Success)
+                    {
+                        name = match.Groups["Rhs"].Value;
+                    }
+
+                    result.Add((name, GetPath(path), GetFormat(match)));
+                }
+                else
+                {
+                    throw new CLIException("Field definition not valid.");
                 }
             }
 
@@ -96,6 +119,18 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
 
             return result;
+        }
+
+        private static string GetFormat(Match match)
+        {
+            var format = "json";
+
+            if (match.Groups["Format"].Success)
+            {
+                format = match.Groups["Format"].Value;
+            }
+
+            return format;
         }
 
         private static bool IsDataDraft(JsonPath path)

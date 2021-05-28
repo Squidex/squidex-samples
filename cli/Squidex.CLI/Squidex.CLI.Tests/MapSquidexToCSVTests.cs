@@ -1,4 +1,4 @@
-// ==========================================================================
+﻿// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -8,17 +8,18 @@
 using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
 
 namespace Squidex.CLI.Tests
 {
-    public class MapFromSquidexTests
+    public class MapSquidexToCSVTests
     {
         private readonly DynamicContent content;
 
-        public MapFromSquidexTests()
+        public MapSquidexToCSVTests()
         {
             content = new DynamicContent
             {
@@ -59,13 +60,13 @@ namespace Squidex.CLI.Tests
         [Fact]
         public void Should_throw_exception_if_field_names_is_null()
         {
-            Assert.Throws<SquidexException>(() => new Squidex2CsvConverter(null));
+            Assert.Throws<CLIException>(() => new Squidex2CsvConverter(null));
         }
 
         [Fact]
         public void Should_throw_exception_if_field_names_is_empty()
         {
-            Assert.Throws<SquidexException>(() => new Squidex2CsvConverter(string.Empty));
+            Assert.Throws<CLIException>(() => new Squidex2CsvConverter(string.Empty));
         }
 
         [Fact]

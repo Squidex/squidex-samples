@@ -20,19 +20,20 @@ namespace Squidex.ClientLibrary.Utils
 {
     public static class HttpClientExtensions
     {
-        private static readonly JsonSerializerSettings SerializerSettings = CreateSerializer();
+        private static readonly JsonSerializerSettings SerializerSettings;
+        private static readonly JsonSerializer Serializer;
 
-        private static JsonSerializerSettings CreateSerializer()
+        static HttpClientExtensions()
         {
-            var result = new JsonSerializerSettings
+            SerializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            result.Converters.Add(new StringEnumConverter());
-            result.Converters.Add(new UTCIsoDateTimeConverter());
+            SerializerSettings.Converters.Add(new StringEnumConverter());
+            SerializerSettings.Converters.Add(new UTCIsoDateTimeConverter());
 
-            return result;
+            Serializer = JsonSerializer.CreateDefault(SerializerSettings);
         }
 
         public static HttpContent ToContent<T>(this T value)
@@ -67,10 +68,16 @@ namespace Squidex.ClientLibrary.Utils
 
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
         {
-            var jsonString = await content.ReadAsStringAsync();
-            var jsonObject = JsonConvert.DeserializeObject<T>(jsonString);
-
-            return jsonObject;
+            using (var stream = await content.ReadAsStreamAsync())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    using (var jsonReader = new JsonTextReader(reader))
+                    {
+                        return Serializer.Deserialize<T>(jsonReader);
+                    }
+                }
+            }
         }
     }
 }

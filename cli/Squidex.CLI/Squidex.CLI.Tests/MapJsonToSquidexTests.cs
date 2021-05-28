@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
@@ -47,7 +48,7 @@ namespace Squidex.CLI.Tests
         [Fact]
         public void Should_throw_exception_if_field_names_is_empty()
         {
-            Assert.Throws<SquidexException>(() => new Json2SquidexConverter(string.Empty));
+            Assert.Throws<CLIException>(() => new Json2SquidexConverter(string.Empty));
         }
 
         [Fact]

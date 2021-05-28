@@ -33,13 +33,20 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                 {
                     var data = new DynamicData();
 
-                    foreach (var (name, path) in mapping)
+                    foreach (var (name, path, format) in mapping)
                     {
                         if (csvReader.TryGetField<string>(name, out var value))
                         {
                             try
                             {
-                                SetValue(data, JToken.Parse(value), path);
+                                if (format == "raw")
+                                {
+                                    SetValue(data, value, path);
+                                }
+                                else
+                                {
+                                    SetValue(data, JToken.Parse(value), path);
+                                }
                             }
                             catch (JsonReaderException)
                             {
