@@ -130,9 +130,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     model.Schema.NoFieldRecreation = true;
                 }
 
+                var fieldRules = GetFieldRules(model);
+
                 await log.DoVersionedAsync($"Schema {model.Name} updating", version, async () =>
                 {
                     var result = await session.Schemas.PutSchemaSyncAsync(session.App, model.Name, model.Schema);
+
+                    if (fieldRules?.FieldRules?.Count > 0)
+                    {
+                        await session.Schemas.PutRulesAsync(session.App, model.Name, fieldRules);
+                    }
 
                     return result.Version;
                 });
@@ -225,6 +232,24 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     references.SchemaIds = names;
                 }
             }
+        }
+
+        private static ConfigureFieldRulesDto GetFieldRules(SchemeModel model)
+        {
+            if (model.Schema.FieldRules == null)
+            {
+                return null;
+            }
+
+            var configureFieldRules = new ConfigureFieldRulesDto();
+            configureFieldRules.FieldRules = new List<FieldRuleDto>();
+
+            foreach (var item in model.Schema.FieldRules)
+            {
+                configureFieldRules.FieldRules.Add(item);
+            }
+
+            return configureFieldRules;
         }
     }
 }
