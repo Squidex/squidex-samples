@@ -5,6 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Squidex.ClientLibrary.Management;
+
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
     public sealed class SchemaCreateModel
@@ -12,5 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         public string Name { get; set; }
 
         public bool IsSingleton { get; set; }
+
+        public SchemaType Type { get; set; }
     }
 }

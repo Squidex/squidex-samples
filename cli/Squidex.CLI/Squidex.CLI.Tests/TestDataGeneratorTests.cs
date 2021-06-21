@@ -525,7 +525,7 @@ namespace Squidex.CLI.Tests
 
         private static JToken CreateValue(FieldPropertiesDto field)
         {
-            var schema = new SchemaDetailsDto
+            var schema = new SchemaDto
             {
                 Fields = new List<FieldDto>
                 {

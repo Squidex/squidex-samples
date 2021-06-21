@@ -18,11 +18,11 @@ namespace Squidex.CLI.Commands.Implementation.TestData
     public sealed class TestDataGenerator
     {
         private readonly SlugHelper slugify = new SlugHelper();
-        private readonly SchemaDetailsDto schema;
+        private readonly SchemaDto schema;
         private readonly AppLanguagesDto languages;
         private readonly Random random = new Random();
 
-        public TestDataGenerator(SchemaDetailsDto schema, AppLanguagesDto languages)
+        public TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
         {
             this.schema = schema;
             this.languages = languages;

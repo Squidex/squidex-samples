@@ -13,7 +13,7 @@ namespace Squidex.CLI.Commands.Models
 {
     public static class SchemaWithRefsExtensions
     {
-        public static SchemaWithRefs<SchemaDetailsDto> EnrichSchemaNames(this SchemaWithRefs<SchemaDetailsDto> target, ICollection<SchemaDto> allSchemas)
+        public static SchemaWithRefs<SchemaDto> EnrichSchemaNames(this SchemaWithRefs<SchemaDto> target, ICollection<SchemaDto> allSchemas)
         {
             void Handle(ReferencesFieldPropertiesDto properties)
             {

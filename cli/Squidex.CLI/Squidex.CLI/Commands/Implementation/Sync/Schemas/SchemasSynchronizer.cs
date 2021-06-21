@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
     public sealed class SchemasSynchronizer : ISynchronizer
@@ -55,7 +57,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                         Name = schema.Name,
                         IsSingleton = details.IsSingleton,
                         IsPublished = false,
-                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details)
+                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details),
+                        Type = details.Type
                     };
 
                     MapReferences(model.Schema, schemaMap);
@@ -130,16 +133,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     model.Schema.NoFieldRecreation = true;
                 }
 
-                var fieldRules = GetFieldRules(model);
-
                 await log.DoVersionedAsync($"Schema {model.Name} updating", version, async () =>
                 {
                     var result = await session.Schemas.PutSchemaSyncAsync(session.App, model.Name, model.Schema);
-
-                    if (fieldRules?.FieldRules?.Count > 0)
-                    {
-                        await session.Schemas.PutRulesAsync(session.App, model.Name, fieldRules);
-                    }
 
                     return result.Version;
                 });
@@ -232,24 +228,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     references.SchemaIds = names;
                 }
             }
-        }
-
-        private static ConfigureFieldRulesDto GetFieldRules(SchemeModel model)
-        {
-            if (model.Schema.FieldRules == null)
-            {
-                return null;
-            }
-
-            var configureFieldRules = new ConfigureFieldRulesDto();
-            configureFieldRules.FieldRules = new List<FieldRuleDto>();
-
-            foreach (var item in model.Schema.FieldRules)
-            {
-                configureFieldRules.FieldRules.Add(item);
-            }
-
-            return configureFieldRules;
         }
     }
 }

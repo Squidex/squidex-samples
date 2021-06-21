@@ -73,7 +73,7 @@ namespace Squidex.CLI.Commands
                 {
                     var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
 
-                    var result = new SchemaWithRefs<SchemaDetailsDto>(schema).EnrichSchemaNames(allSchemas.Items);
+                    var result = new SchemaWithRefs<SchemaDto>(schema).EnrichSchemaNames(allSchemas.Items);
 
                     log.WriteLine(result.JsonPrettyString());
                 }
@@ -104,7 +104,7 @@ namespace Squidex.CLI.Commands
                 {
                     try
                     {
-                        var sourceSchema = SchemaWithRefs<SchemaDetailsDto>.Parse(schemaText);
+                        var sourceSchema = SchemaWithRefs<SchemaDto>.Parse(schemaText);
 
                         schemaName = sourceSchema.Schema.Name;
                     }
@@ -119,7 +119,7 @@ namespace Squidex.CLI.Commands
                     throw new CLIException("Schema name cannot be empty.");
                 }
 
-                SchemaDetailsDto targetSchema;
+                SchemaDto targetSchema;
                 try
                 {
                     targetSchema = await session.Schemas.GetSchemaAsync(session.App, schemaName);

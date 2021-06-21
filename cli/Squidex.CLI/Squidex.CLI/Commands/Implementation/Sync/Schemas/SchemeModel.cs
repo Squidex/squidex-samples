@@ -17,6 +17,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public bool IsPublished { get; set; }
 
+        public SchemaType Type { get; set; }
+
         public SynchronizeSchemaDto Schema { get; set; }
     }
 }

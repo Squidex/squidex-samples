@@ -63,7 +63,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     });
                 }
 
-                await client.GetAllAsync(50, async content =>
+                await client.GetAllAsync(async content =>
                 {
                     contents.Add(content.ToModel(schema.Name));
 
@@ -74,7 +74,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         contents.Clear();
                         contentBatch++;
                     }
-                }, context);
+                }, context: context);
 
                 if (contents.Count > 0)
                 {
