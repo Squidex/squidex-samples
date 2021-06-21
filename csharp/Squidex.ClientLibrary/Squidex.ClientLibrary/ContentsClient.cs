@@ -48,11 +48,20 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public async Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default)
+        public Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default)
         {
+            return GetAllAsync(callback, batchSize, context, ct);
+        }
+
+        /// <inheritdoc/>
+        public async Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext context = null, CancellationToken ct = default)
+        {
+            Guard.Between(10, batchSize, 10_000, nameof(batchSize));
             Guard.NotNull(callback, nameof(callback));
 
             var query = new ContentQuery { Top = batchSize };
+
+            context = (context ?? QueryContext.Default).WithoutTotal();
 
             var added = new HashSet<string>();
             do

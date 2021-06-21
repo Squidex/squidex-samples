@@ -47,5 +47,20 @@ namespace Squidex.ClientLibrary.Utils
                 throw new ArgumentException("Collection does not contain an item.", parameterName);
             }
         }
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Between<TValue>(TValue target, TValue lower, TValue upper, string parameterName) where TValue : IComparable
+        {
+            if (!target.IsBetween(lower, upper))
+            {
+                throw new ArgumentException($"Value must be between {lower} and {upper}", parameterName);
+            }
+        }
+
+        public static bool IsBetween<TValue>(this TValue value, TValue low, TValue high) where TValue : IComparable
+        {
+            return Comparer<TValue>.Default.Compare(low, value) <= 0 && Comparer<TValue>.Default.Compare(high, value) >= 0;
+        }
     }
 }

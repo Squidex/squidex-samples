@@ -52,10 +52,10 @@ namespace Squidex.ClientLibrary
         public bool IsFlatten { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether unpublished content items will be delivered.
+        /// Gets a value indicating whether unpublished content items will be returned.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if unpublished content items will be delivered; otherwise, <c>false</c>.
+        ///   <c>true</c> if unpublished content items will be returned; otherwise, <c>false</c>.
         /// </value>
         public bool IsUnpublished { get; private set; }
 
@@ -66,6 +66,22 @@ namespace Squidex.ClientLibrary
         ///   <c>true</c> if the Content CDN will not be used; otherwise, <c>false</c>.
         /// </value>
         public bool IsNotUsingCDN { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the total number of results should not be returned.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the total number of results should not be returned; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNotQueryingTotal { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the total number of results should not be returned for slow queries.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if the total number of results should not be returned for slow queries; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsNotQueryingSlowTotal { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether fallback handling for undefined field languages will be turned off.
@@ -94,7 +110,7 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Creates a new copy of the context object and defines whether unpublished content items will be deliverd.
         /// </summary>
-        /// <param name="unpublished">if set to <c>true</c> unpublished content items will be delivered.</param>
+        /// <param name="unpublished">if set to <c>true</c> unpublished content items will be returned.</param>
         /// <returns>
         /// The new query context.
         /// </returns>
@@ -113,6 +129,30 @@ namespace Squidex.ClientLibrary
         public QueryContext WithoutCDN(bool value = true)
         {
             return Clone(c => c.IsNotUsingCDN = value);
+        }
+
+        /// <summary>
+        /// Creates a new copy of the context object and defines whether the total number of results should not be returned.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> the total number of results should not be returned.</param>
+        /// <returns>
+        /// The new query context.
+        /// </returns>
+        public QueryContext WithoutTotal(bool value = true)
+        {
+            return Clone(c => c.IsNotQueryingTotal = value);
+        }
+
+        /// <summary>
+        /// Creates a new copy of the context object and defines whether the total number of results should not be returned for slow queries.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> the total number of results should not be returned for slow queries.</param>
+        /// <returns>
+        /// The new query context.
+        /// </returns>
+        public QueryContext WithoutSlowTotal(bool value = true)
+        {
+            return Clone(c => c.IsNotQueryingSlowTotal = value);
         }
 
         /// <summary>
@@ -167,6 +207,16 @@ namespace Squidex.ClientLibrary
             if (IsUnpublished)
             {
                 headers.TryAddWithoutValidation("X-Unpublished", "true");
+            }
+
+            if (IsNotQueryingTotal)
+            {
+                headers.TryAddWithoutValidation("X-NoTotal", "true");
+            }
+
+            if (IsNotQueryingSlowTotal)
+            {
+                headers.TryAddWithoutValidation("X-NoSlowTotal", "true");
             }
 
             if (Languages != null)

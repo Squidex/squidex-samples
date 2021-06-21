@@ -210,6 +210,9 @@ namespace Squidex.ClientLibrary.Management
         /// <inheritdoc />
         public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default)
         {
+            Guard.Between(10, batchSize, 10_000, nameof(batchSize));
+            Guard.NotNull(callback, nameof(callback));
+
             var query = new AssetQuery { Top = batchSize, Skip = 0 };
             var added = new HashSet<string>();
             do
