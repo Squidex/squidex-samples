@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using NJsonSchema;
@@ -43,12 +44,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
             };
 
+            jsonSerializerSettings.Converters.Add(new StringEnumConverter());
             jsonSerializerSettings.Formatting = Formatting.Indented;
 
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
             {
                 FlattenInheritanceHierarchy = true,
-                SchemaType = SchemaType.JsonSchema,
+                SchemaType = SchemaType.OpenApi3,
                 SchemaNameGenerator = new DefaultSchemaNameGenerator(),
                 SerializerSettings = jsonSerializerSettings
             };
@@ -104,12 +106,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             using (var textWriter = new StreamWriter(stream))
             {
-                using (var jsonWriter = new JsonTextWriter(textWriter))
-                {
-                    var obj = GetSchema<T>();
+                var schema = GetSchema<T>();
 
-                    jsonSerializer.Serialize(jsonWriter, obj);
-                }
+                textWriter.Write(schema.ToJson());
             }
         }
 
