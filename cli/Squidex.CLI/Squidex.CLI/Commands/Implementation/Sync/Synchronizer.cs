@@ -34,16 +34,22 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             using (var fs = FileSystems.Create(path))
             {
+                if (!fs.CanWrite)
+                {
+                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    return;
+                }
+
                 var selectedSynchronizers = GetSynchronizers(options.Targets);
                 var selectedCount = selectedSynchronizers.Count;
 
                 WriteSummary(fs, selectedSynchronizers);
 
-                var jsonHelper = new JsonHelper();
+                var sync = new SyncService(fs);
 
                 foreach (var synchronizer in selectedSynchronizers)
                 {
-                    await synchronizer.GenerateSchemaAsync(fs, jsonHelper);
+                    await synchronizer.GenerateSchemaAsync(sync);
                 }
 
                 await selectedSynchronizers.Foreach(async (synchronizer, step) =>
@@ -54,7 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                     log.WriteLine();
 
                     await synchronizer.CleanupAsync(fs);
-                    await synchronizer.ExportAsync(fs, jsonHelper, options, session);
+                    await synchronizer.ExportAsync(sync, options, session);
 
                     log.WriteLine();
                     log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, selectedSynchronizers.Count, synchronizer.Name);
@@ -72,7 +78,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
                 WriteSummary(fs, selectedSynchronizers);
 
-                var jsonHelper = new JsonHelper();
+                var sync = new SyncService(fs);
 
                 await selectedSynchronizers.Foreach(async (synchronizer, step) =>
                 {
@@ -81,7 +87,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                     log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, selectedCount, synchronizer.Name);
                     log.WriteLine();
 
-                    await synchronizer.ImportAsync(fs, jsonHelper, options, session);
+                    await synchronizer.ImportAsync(sync, options, session);
 
                     log.WriteLine();
                     log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, selectedCount, synchronizer.Name);
@@ -108,11 +114,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             using (var fs = FileSystems.Create(path))
             {
-                var jsonHelper = new JsonHelper();
+                if (!fs.CanWrite)
+                {
+                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    return;
+                }
+
+                var sync = new SyncService(fs);
 
                 foreach (var synchronizer in GetSynchronizers())
                 {
-                    await synchronizer.GenerateSchemaAsync(fs, jsonHelper);
+                    await synchronizer.GenerateSchemaAsync(sync);
                 }
             }
         }

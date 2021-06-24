@@ -204,7 +204,7 @@ namespace Squidex.ClientLibrary.Management
         /// <inheritdoc />
         public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, CancellationToken cancellationToken = default)
         {
-            return GetAssetsAsync(app,  query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
+            return GetAssetsAsync(app, query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
         }
 
         /// <inheritdoc />

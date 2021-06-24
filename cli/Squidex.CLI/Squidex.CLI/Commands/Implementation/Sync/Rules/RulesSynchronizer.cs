@@ -37,7 +37,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var current = await session.Rules.GetRulesAsync();
 
@@ -54,16 +54,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
                 await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<RuleModel>(fs, new FilePath("rules", $"rule{i}.json"), rule, Ref);
+                    await sync.WriteWithSchemaAs<RuleModel>(new FilePath("rules", $"rule{i}.json"), rule, Ref);
                 });
             });
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(fs)
-                    .Select(x => jsonHelper.Read<RuleModel>(x, log))
+                GetFiles(sync.FileSystem)
+                    .Select(x => sync.Read<RuleModel>(x, log))
                     .ToList();
 
             if (!models.HasDistinctNames(x => x.Name))
@@ -218,9 +218,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<RuleModel>(fs, new FilePath("rule.json"));
+            await sync.WriteJsonSchemaAsync<RuleModel>(new FilePath("rule.json"));
 
             var sample = new RuleModel
             {
@@ -236,7 +236,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 IsEnabled = true
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("rules", "__rule.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("rules", "__rule.json"), sample, Ref);
         }
     }
 }

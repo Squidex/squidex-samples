@@ -38,9 +38,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
-            var downloadPipeline = new DownloadPipeline(session, log, fs);
+            var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem);
 
             var assets = new List<AssetModel>();
             var assetBatch = 0;
@@ -54,7 +54,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
                 {
-                    await jsonHelper.WriteWithSchema(fs, new FilePath("assets", $"{assetBatch}.json"), model, Ref);
+                    await sync.WriteWithSchema(new FilePath("assets", $"{assetBatch}.json"), model, Ref);
                 });
             }
 
@@ -83,11 +83,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             await downloadPipeline.CompleteAsync();
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(fs)
-                    .Select(x => (x, jsonHelper.Read<AssetsModel>(x, log)));
+                GetFiles(sync.FileSystem)
+                    .Select(x => (x, sync.Read<AssetsModel>(x, log)));
 
             var tree = new FolderTree(session);
 
@@ -95,7 +95,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             {
                 if (model?.Assets?.Count > 0)
                 {
-                    var uploader = new UploadPipeline(session, log, fs);
+                    var uploader = new UploadPipeline(session, log, sync.FileSystem);
 
                     await uploader.UploadAsync(model.Assets);
                     await uploader.CompleteAsync();
@@ -156,9 +156,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AssetsModel>(fs, new FilePath("assets.json"));
+            await sync.WriteJsonSchemaAsync<AssetsModel>(new FilePath("assets.json"));
 
             var sample = new AssetsModel
             {
@@ -174,7 +174,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 }
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("assets", "__asset.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("assets", "__asset.json"), sample, Ref);
         }
     }
 }

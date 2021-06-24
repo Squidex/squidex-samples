@@ -30,7 +30,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var model = new AppModel
             {
@@ -85,12 +85,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             });
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("app.json"), model, Ref);
+            await sync.WriteWithSchema(new FilePath("app.json"), model, Ref);
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
-            var appFile = fs.GetFile(new FilePath("app.json"));
+            var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
 
             if (!appFile.Exists)
             {
@@ -98,7 +98,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 return;
             }
 
-            var model = jsonHelper.Read<AppModel>(appFile, log);
+            var model = sync.Read<AppModel>(appFile, log);
 
             await SynchronizeClientsAsync(model, options, session);
             await SynchronizeRolesAsync(model, options, session);
@@ -141,7 +141,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             }
 
-            foreach (var (clientId,  _) in model.Clients)
+            foreach (var (clientId, _) in model.Clients)
             {
                 var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
 
@@ -289,9 +289,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AppModel>(fs, new FilePath("app.json"));
+            await sync.WriteJsonSchemaAsync<AppModel>(new FilePath("app.json"));
 
             var sample = new AppModel
             {
@@ -328,7 +328,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("__app.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("__app.json"), sample, Ref);
         }
     }
 }

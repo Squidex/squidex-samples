@@ -146,6 +146,8 @@ namespace Squidex.ClientLibrary.Utils
         public void Dispose()
         {
             httpClient?.Dispose();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

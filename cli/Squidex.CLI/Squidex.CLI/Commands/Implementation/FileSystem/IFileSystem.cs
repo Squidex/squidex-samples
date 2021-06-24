@@ -14,6 +14,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
     {
         string FullName { get; }
 
+        bool CanWrite => true;
+
         IFile GetFile(FilePath path);
 
         IEnumerable<IFile> GetFiles(FilePath path, string extension);

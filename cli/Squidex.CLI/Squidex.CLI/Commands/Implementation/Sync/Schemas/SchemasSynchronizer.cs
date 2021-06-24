@@ -40,7 +40,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var current = await session.Schemas.GetSchemasAsync(session.App);
 
@@ -57,22 +57,22 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                         Name = schema.Name,
                         IsSingleton = details.IsSingleton,
                         IsPublished = false,
-                        Schema = jsonHelper.Convert<SynchronizeSchemaDto>(details),
+                        Schema = sync.Convert<SynchronizeSchemaDto>(details),
                         Type = details.Type
                     };
 
                     MapReferences(model.Schema, schemaMap);
 
-                    await jsonHelper.WriteWithSchema(fs, new FilePath($"schemas", "{schema.Name}.json"), model, Ref);
+                    await sync.WriteWithSchema(new FilePath($"schemas", "{schema.Name}.json"), model, Ref);
                 });
             }
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var createModels =
-                GetSchemaFiles(fs)
-                    .Select(x => jsonHelper.Read<SchemaCreateModel>(x, log))
+                GetSchemaFiles(sync.FileSystem)
+                    .Select(x => sync.Read<SchemaCreateModel>(x, log))
                     .ToList();
 
             if (!createModels.HasDistinctNames(x => x.Name))
@@ -117,8 +117,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             var schemaMap = schemasByName.ToDictionary(x => x.Key, x => x.Value.Id);
 
             var models =
-                GetSchemaFiles(fs)
-                    .Select(x => jsonHelper.Read<SchemeModel>(x, log))
+                GetSchemaFiles(sync.FileSystem)
+                    .Select(x => sync.Read<SchemeModel>(x, log))
                     .ToList();
 
             foreach (var model in models)
@@ -153,9 +153,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<SchemeModel>(fs, new FilePath("schema.json"));
+            await sync.WriteJsonSchemaAsync<SchemeModel>(new FilePath("schema.json"));
 
             var sample = new SchemeModel
             {
@@ -182,7 +182,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("schemas", "__schema.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("schemas", "__schema.json"), sample, Ref);
         }
 
         private static void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)

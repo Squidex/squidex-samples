@@ -18,10 +18,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         Task CleanupAsync(IFileSystem fs);
 
-        Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session);
+        Task ExportAsync(ISyncService sync, SyncOptions options, ISession session);
 
-        Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session);
+        Task ImportAsync(ISyncService sync, SyncOptions options, ISession session);
 
-        Task GenerateSchemaAsync(IFileSystem directoryInfo, JsonHelper jsonHelper);
+        Task GenerateSchemaAsync(ISyncService sync);
     }
 }

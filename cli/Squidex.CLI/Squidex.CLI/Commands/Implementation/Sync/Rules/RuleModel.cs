@@ -39,7 +39,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
         {
             return new UpdateExtendableRuleDto
             {
-                Action = Action, Trigger = Trigger, Name = Name
+                Action = Action,
+                Trigger = Trigger,
+                Name = Name
             };
         }
 
@@ -47,7 +49,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
         {
             return new CreateExtendableRuleDto
             {
-                Action = Action, Trigger = Trigger
+                Action = Action,
+                Trigger = Trigger
             };
         }
     }

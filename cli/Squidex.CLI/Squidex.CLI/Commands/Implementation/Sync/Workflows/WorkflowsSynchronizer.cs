@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetWorkflowsAsync(session.App);
 
@@ -51,16 +51,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                 await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(fs, new FilePath($"workflows", "workflow{i}.json"), workflow, Ref);
+                    await sync.WriteWithSchemaAs<UpdateWorkflowDto>(new FilePath($"workflows", "workflow{i}.json"), workflow, Ref);
                 });
             });
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(fs)
-                    .Select(x => jsonHelper.Read<UpdateWorkflowDto>(x, log))
+                GetFiles(sync.FileSystem)
+                    .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
                     .ToList();
 
             if (!models.HasDistinctNames(x => x.Name))
@@ -194,9 +194,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<UpdateWorkflowDto>(fs, new FilePath("workflow.json"));
+            await sync.WriteJsonSchemaAsync<UpdateWorkflowDto>(new FilePath("workflow.json"));
 
             var sample = new UpdateWorkflowDto
             {
@@ -224,7 +224,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 Initial = "Draft"
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("workflows", "__workflow.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("workflows", "__workflow.json"), sample, Ref);
         }
     }
 }

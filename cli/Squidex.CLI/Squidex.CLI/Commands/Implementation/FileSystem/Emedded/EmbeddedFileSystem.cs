@@ -15,14 +15,14 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
     public sealed class EmbeddedFileSystem : IFileSystem
     {
         private readonly Assembly assembly;
-        private readonly string name;
 
         public string FullName { get; }
+
+        public bool CanWrite => false;
 
         public EmbeddedFileSystem(Assembly assembly, string name)
         {
             this.assembly = assembly;
-            this.name = name;
 
             FullName = $"{assembly.FullName}.{name}";
         }

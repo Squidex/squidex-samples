@@ -37,7 +37,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
 
@@ -59,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
                     {
-                        await jsonHelper.WriteWithSchema(fs, new FilePath("contents", schema.Name, "{contentBatch}.json"), model, Ref);
+                        await sync.WriteWithSchema(new FilePath("contents", schema.Name, "{contentBatch}.json"), model, Ref);
                     });
                 }
 
@@ -83,11 +83,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(fs)
-                    .Select(x => (x, jsonHelper.Read<ContentsModel>(x, log)));
+                GetFiles(sync.FileSystem)
+                    .Select(x => (x, sync.Read<ContentsModel>(x, log)));
 
             foreach (var (file, model) in models)
             {
@@ -143,7 +143,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         await log.DoSafeAsync($"Saving {file.Name}", async () =>
                         {
-                            await jsonHelper.WriteWithSchema(file, model, Ref);
+                            await sync.WriteWithSchema(file, model, Ref);
                         });
                     }
                 }
@@ -161,9 +161,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await jsonHelper.WriteJsonSchemaAsync<ContentsModel>(fs, new FilePath("contents.json"));
+            await sync.WriteJsonSchemaAsync<ContentsModel>(new FilePath("contents.json"));
 
             var sample = new ContentsModel
             {
@@ -188,7 +188,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 }
             };
 
-            await jsonHelper.WriteWithSchema(fs, new FilePath("contents", "__contents.json"), sample, Ref);
+            await sync.WriteWithSchema(new FilePath("contents", "__contents.json"), sample, Ref);
         }
     }
 }

@@ -83,7 +83,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 var request = new CreateAssetFolderDto
                 {
-                    FolderName = name, ParentId = current.Id
+                    FolderName = name,
+                    ParentId = current.Id
                 };
 
                 var folder = await session.Assets.PostAssetFolderAsync(session.App, request);
