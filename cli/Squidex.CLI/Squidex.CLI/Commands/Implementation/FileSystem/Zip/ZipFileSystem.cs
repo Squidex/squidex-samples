@@ -29,7 +29,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
         public IFile GetFile(FilePath path)
         {
-            var relativePath = Path.Combine(path.Elements.ToArray());
+            string relativePath = GetRelativePath(path);
 
             return new ZipFile(zipArchive, relativePath, path.Elements.Last(), FullName);
         }
@@ -45,6 +45,11 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
                     yield return new ZipFile(zipArchive, entry.FullName, entry.Name, FullName);
                 }
             }
+        }
+
+        private static string GetRelativePath(FilePath path)
+        {
+            return Path.Combine(path.Elements.ToArray());
         }
 
         public void Dispose()
