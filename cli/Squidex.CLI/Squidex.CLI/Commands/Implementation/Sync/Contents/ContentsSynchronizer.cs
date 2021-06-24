@@ -7,10 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
@@ -27,9 +27,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
-            foreach (var file in GetFiles(directoryInfo))
+            foreach (var file in GetFiles(fs))
             {
                 file.Delete();
             }
@@ -37,7 +37,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
 
@@ -59,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
                     {
-                        await jsonHelper.WriteWithSchema(directoryInfo, $"contents/{schema.Name}{contentBatch}.json", model, Ref);
+                        await jsonHelper.WriteWithSchema(fs, new FilePath("contents", schema.Name, "{contentBatch}.json"), model, Ref);
                     });
                 }
 
@@ -83,10 +83,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(directoryInfo)
+                GetFiles(fs)
                     .Select(x => (x, jsonHelper.Read<ContentsModel>(x, log)));
 
             foreach (var (file, model) in models)
@@ -143,16 +143,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     {
                         await log.DoSafeAsync($"Saving {file.Name}", async () =>
                         {
-                            await jsonHelper.WriteWithSchema(directoryInfo, file.FullName, model, Ref);
+                            await jsonHelper.WriteWithSchema(file, model, Ref);
                         });
                     }
                 }
             }
         }
 
-        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
         {
-            foreach (var file in directoryInfo.GetFiles("contents/*.json"))
+            foreach (var file in fs.GetFiles(new FilePath("contents"), ".json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
@@ -161,9 +161,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<ContentsModel>(directoryInfo, "contents.json");
+            await jsonHelper.WriteJsonSchemaAsync<ContentsModel>(fs, new FilePath("contents.json"));
 
             var sample = new ContentsModel
             {
@@ -188,7 +188,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "contents/__contents.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("contents", "__contents.json"), sample, Ref);
         }
     }
 }

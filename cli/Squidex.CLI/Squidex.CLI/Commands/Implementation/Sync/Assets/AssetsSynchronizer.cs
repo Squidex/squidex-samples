@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -28,9 +28,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
-            foreach (var file in GetFiles(directoryInfo))
+            foreach (var file in GetFiles(fs))
             {
                 file.Delete();
             }
@@ -38,9 +38,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var downloadPipeline = new DownloadPipeline(session, log, directoryInfo);
+            var downloadPipeline = new DownloadPipeline(session, log, fs);
 
             var assets = new List<AssetModel>();
             var assetBatch = 0;
@@ -54,7 +54,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
                 {
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"assets/{assetBatch}.json", model, Ref);
+                    await jsonHelper.WriteWithSchema(fs, new FilePath("assets", $"{assetBatch}.json"), model, Ref);
                 });
             }
 
@@ -83,10 +83,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             await downloadPipeline.CompleteAsync();
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(directoryInfo)
+                GetFiles(fs)
                     .Select(x => (x, jsonHelper.Read<AssetsModel>(x, log)));
 
             var tree = new FolderTree(session);
@@ -95,7 +95,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             {
                 if (model?.Assets?.Count > 0)
                 {
-                    var uploader = new UploadPipeline(session, log, directoryInfo);
+                    var uploader = new UploadPipeline(session, log, fs);
 
                     await uploader.UploadAsync(model.Assets);
                     await uploader.CompleteAsync();
@@ -145,9 +145,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
-        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
         {
-            foreach (var file in directoryInfo.GetFiles("assets/*.json"))
+            foreach (var file in fs.GetFiles(new FilePath("assets"), ".json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
@@ -156,9 +156,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AssetsModel>(directoryInfo, "assets.json");
+            await jsonHelper.WriteJsonSchemaAsync<AssetsModel>(fs, new FilePath("assets.json"));
 
             var sample = new AssetsModel
             {
@@ -174,7 +174,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "assets/__asset.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("assets", "__asset.json"), sample, Ref);
         }
     }
 }

@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
@@ -26,9 +26,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
-            foreach (var file in GetFiles(directoryInfo))
+            foreach (var file in GetFiles(fs))
             {
                 file.Delete();
             }
@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var current = await session.Apps.GetWorkflowsAsync(session.App);
 
@@ -51,15 +51,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                 await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(directoryInfo, $"workflows/workflow{i}.json", workflow, Ref);
+                    await jsonHelper.WriteWithSchemaAs<UpdateWorkflowDto>(fs, new FilePath($"workflows", "workflow{i}.json"), workflow, Ref);
                 });
             });
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(directoryInfo)
+                GetFiles(fs)
                     .Select(x => jsonHelper.Read<UpdateWorkflowDto>(x, log))
                     .ToList();
 
@@ -183,9 +183,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             workflow.SchemaIds = schemaIds;
         }
 
-        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
         {
-            foreach (var file in directoryInfo.GetFiles("workflows/*.json"))
+            foreach (var file in fs.GetFiles(new FilePath("workflows"), ".json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
@@ -194,9 +194,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<UpdateWorkflowDto>(directoryInfo, "workflow.json");
+            await jsonHelper.WriteJsonSchemaAsync<UpdateWorkflowDto>(fs, new FilePath("workflow.json"));
 
             var sample = new UpdateWorkflowDto
             {
@@ -224,7 +224,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
                 Initial = "Draft"
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "workflows/__workflow.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("workflows", "__workflow.json"), sample, Ref);
         }
     }
 }

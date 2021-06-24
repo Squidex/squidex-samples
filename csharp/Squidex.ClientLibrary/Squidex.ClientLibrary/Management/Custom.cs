@@ -165,7 +165,7 @@ namespace Squidex.ClientLibrary.Management
         /// Asset created.
         /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default);
 
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
@@ -194,11 +194,11 @@ namespace Squidex.ClientLibrary.Management
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc />
-        public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default(CancellationToken))
+        public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(file, nameof(file));
 
-            return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)));
+            return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)), cancellationToken);
         }
 
         /// <inheritdoc />

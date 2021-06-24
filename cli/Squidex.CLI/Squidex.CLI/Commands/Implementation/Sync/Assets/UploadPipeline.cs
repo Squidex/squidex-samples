@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -18,7 +18,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
     {
         private readonly ActionBlock<AssetModel> pipeline;
 
-        public UploadPipeline(ISession session, ILogger log, DirectoryInfo directoryInfo)
+        public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
         {
             var tree = new FolderTree(session);
 
@@ -28,7 +28,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 try
                 {
-                    var assetFile = directoryInfo.GetBlobFile(asset.Id);
+                    var assetFile = fs.GetBlobFile(asset.Id);
 
                     await using (var stream = assetFile.OpenRead())
                     {

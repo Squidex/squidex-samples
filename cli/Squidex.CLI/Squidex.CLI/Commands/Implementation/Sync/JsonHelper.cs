@@ -15,6 +15,7 @@ using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Generation.TypeMappers;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
@@ -72,7 +73,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
         }
 
-        public T Read<T>(FileInfo file, ILogger log)
+        public T Read<T>(IFile file, ILogger log)
         {
             var json = File.ReadAllText(file.FullName);
 

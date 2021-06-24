@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -27,9 +27,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
-            foreach (var file in GetFiles(directoryInfo))
+            foreach (var file in GetFiles(fs))
             {
                 file.Delete();
             }
@@ -37,7 +37,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var current = await session.Rules.GetRulesAsync();
 
@@ -54,15 +54,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
                 await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
                 {
-                    await jsonHelper.WriteWithSchemaAs<RuleModel>(directoryInfo, $"rules/rule{i}.json", rule, Ref);
+                    await jsonHelper.WriteWithSchemaAs<RuleModel>(fs, new FilePath("rules", $"rule{i}.json"), rule, Ref);
                 });
             });
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var models =
-                GetFiles(directoryInfo)
+                GetFiles(fs)
                     .Select(x => jsonHelper.Read<RuleModel>(x, log))
                     .ToList();
 
@@ -207,9 +207,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             }
         }
 
-        private static IEnumerable<FileInfo> GetFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
         {
-            foreach (var file in directoryInfo.GetFiles("rules/*.json"))
+            foreach (var file in fs.GetFiles(new FilePath("rules"), ".json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
@@ -218,9 +218,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<RuleModel>(directoryInfo, "rule.json");
+            await jsonHelper.WriteJsonSchemaAsync<RuleModel>(fs, new FilePath("rule.json"));
 
             var sample = new RuleModel
             {
@@ -236,7 +236,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
                 IsEnabled = true
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "rules/__rule.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("rules", "__rule.json"), sample, Ref);
         }
     }
 }

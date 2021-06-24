@@ -7,11 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -44,11 +44,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, object sample, string schema) where T : class
+        public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, IFileSystem fs, FilePath path, object sample, string schema) where T : class
         {
-            var fileInfo = GetFile(directory, path);
+            var file = fs.GetFile(path);
 
-            using (var stream = fileInfo.Open(FileMode.Create))
+            return WriteWithSchemaAs<T>(jsonHelper, file, sample, schema);
+        }
+
+        public static Task WriteWithSchemaAs<T>(this JsonHelper jsonHelper, IFile file, object sample, string schema) where T : class
+        {
+            using (var stream = file.OpenWrite())
             {
                 jsonHelper.WriteAs<T>(sample, stream, $"./{schema}.json");
             }
@@ -56,11 +61,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return Task.CompletedTask;
         }
 
-        public static Task WriteWithSchema<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path, T sample, string schema) where T : class
+        public static Task WriteWithSchema<T>(this JsonHelper jsonHelper, IFileSystem fs, FilePath path, T sample, string schema) where T : class
         {
-            var fileInfo = GetFile(directory, path);
+            var file = fs.GetFile(path);
 
-            using (var stream = fileInfo.Open(FileMode.Create))
+            return WriteWithSchema(jsonHelper, file, sample, schema);
+        }
+
+        public static Task WriteWithSchema<T>(this JsonHelper jsonHelper, IFile file, T sample, string schema) where T : class
+        {
+            using (var stream = file.OpenWrite())
             {
                 jsonHelper.Write(sample, stream, $"./{schema}.json");
             }
@@ -68,25 +78,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return Task.CompletedTask;
         }
 
-        public static Task WriteJsonSchemaAsync<T>(this JsonHelper jsonHelper, DirectoryInfo directory, string path)
+        public static Task WriteJsonSchemaAsync<T>(this JsonHelper jsonHelper, IFileSystem fs, FilePath path)
         {
-            var fileInfo = GetFile(directory, Path.Combine("__json", path));
+            var file = fs.GetFile(new FilePath("__json").Combine(path));
 
-            using (var stream = fileInfo.Open(FileMode.Create))
+            return WriteJsonSchemaAsync<T>(jsonHelper, file);
+        }
+
+        public static Task WriteJsonSchemaAsync<T>(this JsonHelper jsonHelper, IFile file)
+        {
+            using (var stream = file.OpenWrite())
             {
                 jsonHelper.WriteSchema<T>(stream);
             }
 
             return Task.CompletedTask;
-        }
-
-        private static FileInfo GetFile(DirectoryInfo directory, string path)
-        {
-            var fileInfo = new FileInfo(Path.Combine(directory.FullName, path));
-
-            Directory.CreateDirectory(fileInfo.Directory.FullName);
-
-            return fileInfo;
         }
 
         public static string Sha256Base64(this string value)

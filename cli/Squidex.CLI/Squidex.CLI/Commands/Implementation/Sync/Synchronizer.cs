@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -32,65 +32,67 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public async Task ExportAsync(string path, SyncOptions options, ISession session)
         {
-            var directoryInfo = Directory.CreateDirectory(path);
-
-            var selectedSynchronizers = GetSynchronizers(options.Targets);
-            var selectedCount = selectedSynchronizers.Count;
-
-            WriteSummary(directoryInfo, selectedSynchronizers);
-
-            var jsonHelper = new JsonHelper();
-
-            foreach (var synchronizer in selectedSynchronizers)
+            using (var fs = FileSystems.Create(path))
             {
-                await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
+                var selectedSynchronizers = GetSynchronizers(options.Targets);
+                var selectedCount = selectedSynchronizers.Count;
+
+                WriteSummary(fs, selectedSynchronizers);
+
+                var jsonHelper = new JsonHelper();
+
+                foreach (var synchronizer in selectedSynchronizers)
+                {
+                    await synchronizer.GenerateSchemaAsync(fs, jsonHelper);
+                }
+
+                await selectedSynchronizers.Foreach(async (synchronizer, step) =>
+                {
+                    log.WriteLine();
+                    log.WriteLine("--------------------------------------------------------");
+                    log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, selectedCount, synchronizer.Name);
+                    log.WriteLine();
+
+                    await synchronizer.CleanupAsync(fs);
+                    await synchronizer.ExportAsync(fs, jsonHelper, options, session);
+
+                    log.WriteLine();
+                    log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, selectedSynchronizers.Count, synchronizer.Name);
+                    log.WriteLine("--------------------------------------------------------");
+                });
             }
-
-            await selectedSynchronizers.Foreach(async (synchronizer, step) =>
-            {
-                log.WriteLine();
-                log.WriteLine("--------------------------------------------------------");
-                log.WriteLine("* STEP {0} of {1}: Exporting {2} started", step, selectedCount, synchronizer.Name);
-                log.WriteLine();
-
-                await synchronizer.CleanupAsync(directoryInfo);
-                await synchronizer.ExportAsync(directoryInfo, jsonHelper, options, session);
-
-                log.WriteLine();
-                log.WriteLine("* STEP {0} of {1}: Exporting {2} completed", step, selectedSynchronizers.Count, synchronizer.Name);
-                log.WriteLine("--------------------------------------------------------");
-            });
         }
 
         public async Task ImportAsync(string path, SyncOptions options, ISession session)
         {
-            var directoryInfo = new DirectoryInfo(path);
-
-            var selectedSynchronizers = GetSynchronizers(options.Targets);
-            var selectedCount = selectedSynchronizers.Count;
-
-            WriteSummary(directoryInfo, selectedSynchronizers);
-
-            var jsonHelper = new JsonHelper();
-
-            await selectedSynchronizers.Foreach(async (synchronizer, step) =>
+            using (var fs = FileSystems.Create(path))
             {
-                log.WriteLine();
-                log.WriteLine("--------------------------------------------------------");
-                log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, selectedCount, synchronizer.Name);
-                log.WriteLine();
+                var selectedSynchronizers = GetSynchronizers(options.Targets);
+                var selectedCount = selectedSynchronizers.Count;
 
-                await synchronizer.ImportAsync(directoryInfo, jsonHelper, options, session);
+                WriteSummary(fs, selectedSynchronizers);
 
-                log.WriteLine();
-                log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, selectedCount, synchronizer.Name);
-                log.WriteLine("--------------------------------------------------------");
-            });
+                var jsonHelper = new JsonHelper();
+
+                await selectedSynchronizers.Foreach(async (synchronizer, step) =>
+                {
+                    log.WriteLine();
+                    log.WriteLine("--------------------------------------------------------");
+                    log.WriteLine("* STEP {0} of {1}: Importing {2} started", step, selectedCount, synchronizer.Name);
+                    log.WriteLine();
+
+                    await synchronizer.ImportAsync(fs, jsonHelper, options, session);
+
+                    log.WriteLine();
+                    log.WriteLine("* STEP {0} of {1}: Importing {2} completed", step, selectedCount, synchronizer.Name);
+                    log.WriteLine("--------------------------------------------------------");
+                });
+            }
         }
 
-        private void WriteSummary(DirectoryInfo directoryInfo, List<ISynchronizer> selectedSynchronizers)
+        private void WriteSummary(IFileSystem fs, List<ISynchronizer> selectedSynchronizers)
         {
-            log.WriteLine("Synchronizing from {0}", directoryInfo.FullName);
+            log.WriteLine("Synchronizing from {0}", fs.FullName);
             log.WriteLine();
             log.WriteLine("Executing the following steps");
 
@@ -104,13 +106,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public async Task GenerateTemplateAsync(string path)
         {
-            var directoryInfo = Directory.CreateDirectory(path);
-
-            var jsonHelper = new JsonHelper();
-
-            foreach (var synchronizer in GetSynchronizers())
+            using (var fs = FileSystems.Create(path))
             {
-                await synchronizer.GenerateSchemaAsync(directoryInfo, jsonHelper);
+                var jsonHelper = new JsonHelper();
+
+                foreach (var synchronizer in GetSynchronizers())
+                {
+                    await synchronizer.GenerateSchemaAsync(fs, jsonHelper);
+                }
             }
         }
 

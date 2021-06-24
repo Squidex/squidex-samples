@@ -5,8 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -16,12 +16,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         string Name { get; }
 
-        Task CleanupAsync(DirectoryInfo directoryInfo);
+        Task CleanupAsync(IFileSystem fs);
 
-        Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session);
+        Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session);
 
-        Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session);
+        Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session);
 
-        Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper);
+        Task GenerateSchemaAsync(IFileSystem directoryInfo, JsonHelper jsonHelper);
     }
 }

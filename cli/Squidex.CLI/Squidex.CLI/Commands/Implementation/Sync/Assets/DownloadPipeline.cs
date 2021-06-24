@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -18,7 +19,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
     {
         private readonly ActionBlock<AssetDto> pipeline;
 
-        public DownloadPipeline(ISession session, ILogger log, DirectoryInfo directoryInfo)
+        public DownloadPipeline(ISession session, ILogger log, IFileSystem fs)
         {
             pipeline = new ActionBlock<AssetDto>(async asset =>
             {
@@ -26,10 +27,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                 try
                 {
-                    var assetFile = directoryInfo.GetBlobFile(asset.Id);
+                    var assetFile = fs.GetBlobFile(asset.Id);
                     var assetHash = GetFileHash(assetFile, asset);
-
-                    Directory.CreateDirectory(assetFile.Directory.FullName);
 
                     if (assetHash == null || !string.Equals(asset.FileHash, assetHash))
                     {
@@ -62,16 +61,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             });
         }
 
-        private static string GetFileHash(FileInfo fileInfo, AssetDto asset)
+        private static string GetFileHash(IFile file, AssetDto asset)
         {
-            if (!fileInfo.Exists)
+            if (file == null)
             {
                 return null;
             }
 
             try
             {
-                using (var fileStream = fileInfo.OpenRead())
+                using (var fileStream = file.OpenRead())
                 {
                     var incrementalHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
 

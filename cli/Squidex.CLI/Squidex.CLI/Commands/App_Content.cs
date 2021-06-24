@@ -22,8 +22,6 @@ using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
-#pragma warning disable IDE0059 // Value assigned to symbol is never used
-
 namespace Squidex.CLI.Commands
 {
     public partial class App

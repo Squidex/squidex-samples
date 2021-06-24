@@ -1,0 +1,44 @@
+﻿// ==========================================================================
+//  Squidex Headless CMS
+// ==========================================================================
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
+// ==========================================================================
+
+using System.IO;
+
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
+{
+    public sealed class DefaultFile : IFile
+    {
+        private readonly FileInfo fileInfo;
+
+        public string FullName => fileInfo.FullName;
+
+        public string Name => fileInfo.Name;
+
+        public bool Exists => fileInfo.Exists;
+
+        public DefaultFile(FileInfo fileInfo)
+        {
+            this.fileInfo = fileInfo;
+        }
+
+        public void Delete()
+        {
+            fileInfo.Delete();
+        }
+
+        public Stream OpenRead()
+        {
+            return fileInfo.OpenRead();
+        }
+
+        public Stream OpenWrite()
+        {
+            Directory.CreateDirectory(fileInfo.Directory.FullName);
+
+            return fileInfo.OpenWrite();
+        }
+    }
+}

@@ -6,9 +6,9 @@
 // ==========================================================================
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
@@ -25,12 +25,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var model = new AppModel
             {
@@ -85,12 +85,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             });
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "app.json", model, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("app.json"), model, Ref);
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
-            var appFile = new FileInfo(Path.Combine(directoryInfo.FullName, "app.json"));
+            var appFile = fs.GetFile(new FilePath("app.json"));
 
             if (!appFile.Exists)
             {
@@ -289,9 +289,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<AppModel>(directoryInfo, "app.json");
+            await jsonHelper.WriteJsonSchemaAsync<AppModel>(fs, new FilePath("app.json"));
 
             var sample = new AppModel
             {
@@ -328,7 +328,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "__app.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("__app.json"), sample, Ref);
         }
     }
 }

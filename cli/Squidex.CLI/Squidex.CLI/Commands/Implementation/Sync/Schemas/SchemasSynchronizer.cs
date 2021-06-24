@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -30,9 +30,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             this.log = log;
         }
 
-        public Task CleanupAsync(DirectoryInfo directoryInfo)
+        public Task CleanupAsync(IFileSystem fs)
         {
-            foreach (var file in GetSchemaFiles(directoryInfo))
+            foreach (var file in GetSchemaFiles(fs))
             {
                 file.Delete();
             }
@@ -40,7 +40,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ExportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var current = await session.Schemas.GetSchemasAsync(session.App);
 
@@ -63,15 +63,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                     MapReferences(model.Schema, schemaMap);
 
-                    await jsonHelper.WriteWithSchema(directoryInfo, $"schemas/{schema.Name}.json", model, Ref);
+                    await jsonHelper.WriteWithSchema(fs, new FilePath($"schemas", "{schema.Name}.json"), model, Ref);
                 });
             }
         }
 
-        public async Task ImportAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper, SyncOptions options, ISession session)
+        public async Task ImportAsync(IFileSystem fs, JsonHelper jsonHelper, SyncOptions options, ISession session)
         {
             var createModels =
-                GetSchemaFiles(directoryInfo)
+                GetSchemaFiles(fs)
                     .Select(x => jsonHelper.Read<SchemaCreateModel>(x, log))
                     .ToList();
 
@@ -117,7 +117,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             var schemaMap = schemasByName.ToDictionary(x => x.Key, x => x.Value.Id);
 
             var models =
-                GetSchemaFiles(directoryInfo)
+                GetSchemaFiles(fs)
                     .Select(x => jsonHelper.Read<SchemeModel>(x, log))
                     .ToList();
 
@@ -142,9 +142,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private static IEnumerable<FileInfo> GetSchemaFiles(DirectoryInfo directoryInfo)
+        private static IEnumerable<IFile> GetSchemaFiles(IFileSystem fs)
         {
-            foreach (var file in directoryInfo.GetFiles("schemas/*.json"))
+            foreach (var file in fs.GetFiles(new FilePath("schemas"), ".json"))
             {
                 if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
                 {
@@ -153,9 +153,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        public async Task GenerateSchemaAsync(DirectoryInfo directoryInfo, JsonHelper jsonHelper)
+        public async Task GenerateSchemaAsync(IFileSystem fs, JsonHelper jsonHelper)
         {
-            await jsonHelper.WriteJsonSchemaAsync<SchemeModel>(directoryInfo, "schema.json");
+            await jsonHelper.WriteJsonSchemaAsync<SchemeModel>(fs, new FilePath("schema.json"));
 
             var sample = new SchemeModel
             {
@@ -182,7 +182,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             };
 
-            await jsonHelper.WriteWithSchema(directoryInfo, "schemas/__schema.json", sample, Ref);
+            await jsonHelper.WriteWithSchema(fs, new FilePath("schemas", "__schema.json"), sample, Ref);
         }
 
         private static void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)

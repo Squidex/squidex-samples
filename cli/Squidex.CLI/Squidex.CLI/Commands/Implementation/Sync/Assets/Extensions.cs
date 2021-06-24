@@ -5,17 +5,17 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using System.Threading.Tasks;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
     public static class Extensions
     {
-        public static FileInfo GetBlobFile(this DirectoryInfo directoryInfo, string id)
+        public static IFile GetBlobFile(this IFileSystem fs, string id)
         {
-            return new FileInfo(Path.Combine(directoryInfo.FullName, $"assets/files/{id}.blob"));
+            return fs.GetFile(new FilePath("assets", "files", $"{id}.blob"));
         }
 
         public static BulkUpdateAssetsJobDto ToMoveJob(this AssetModel model, string parentId)

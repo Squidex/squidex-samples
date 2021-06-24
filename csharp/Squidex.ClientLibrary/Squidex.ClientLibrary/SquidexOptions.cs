@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.Net.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary.Configuration;
