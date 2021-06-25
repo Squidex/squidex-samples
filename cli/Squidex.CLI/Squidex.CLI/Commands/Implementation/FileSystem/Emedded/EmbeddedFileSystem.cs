@@ -15,16 +15,18 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
     public sealed class EmbeddedFileSystem : IFileSystem
     {
         private readonly Assembly assembly;
+        private readonly string assemblyPath;
 
         public string FullName { get; }
 
         public bool CanWrite => false;
 
-        public EmbeddedFileSystem(Assembly assembly, string name)
+        public EmbeddedFileSystem(Assembly assembly, string assemblyPath)
         {
             this.assembly = assembly;
+            this.assemblyPath = assemblyPath;
 
-            FullName = $"{assembly.FullName}.{name}";
+            FullName = $"{assembly.FullName}/{assemblyPath}";
         }
 
         public IFile GetFile(FilePath path)
@@ -53,7 +55,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 
         private string GetRelativePath(FilePath path)
         {
-            return string.Join('.', Enumerable.Repeat(FullName, 1).Concat(path.Elements));
+            return string.Join('.', Enumerable.Repeat(assemblyPath, 1).Concat(path.Elements));
         }
 
         public void Dispose()

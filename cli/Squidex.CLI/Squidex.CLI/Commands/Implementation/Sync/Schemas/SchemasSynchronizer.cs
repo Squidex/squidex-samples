@@ -55,10 +55,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     var model = new SchemeModel
                     {
                         Name = schema.Name,
-                        IsSingleton = details.IsSingleton,
-                        IsPublished = false,
                         Schema = sync.Convert<SynchronizeSchemaDto>(details),
-                        Type = details.Type
+                        SchemaType = details.Type,
+                        IsSingleton = details.IsSingleton
                     };
 
                     MapReferences(model.Schema, schemaMap);
@@ -129,7 +128,11 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                 if (!options.Delete)
                 {
-                    model.Schema.NoFieldDeletion = true;
+                    model.Schema.NoFieldRecreation = true;
+                }
+
+                if (!options.Recreate)
+                {
                     model.Schema.NoFieldRecreation = true;
                 }
 

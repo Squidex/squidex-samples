@@ -1,0 +1,35 @@
+{
+  "$schema": "./../__json/schema.json",
+  "name": "my-schema",
+  "isSingleton": false,
+  "isPublished": false,
+  "type": "Default",
+  "schema": {
+    "noFieldDeletion": false,
+    "noFieldRecreation": false,
+    "properties": {
+      "label": "My Schema",
+      "validateOnPublish": false
+    },
+    "fields": [
+      {
+        "name": "my-string",
+        "isHidden": false,
+        "isLocked": false,
+        "isDisabled": false,
+        "partitioning": "invariant",
+        "properties": {
+          "fieldType": "String",
+          "isUnique": false,
+          "inlineEditable": false,
+          "contentType": "Unspecified",
+          "editor": "Input",
+          "isRequired": true,
+          "isRequiredOnPublish": false,
+          "isHalfWidth": false
+        }
+      }
+    ],
+    "isPublished": true
+  }
+}

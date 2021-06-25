@@ -79,7 +79,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public T Read<T>(IFile file, ILogger log)
         {
-            var json = File.ReadAllText(file.FullName);
+            var json = file.ReadAllText();
 
             var schema = GetSchema<T>();
 

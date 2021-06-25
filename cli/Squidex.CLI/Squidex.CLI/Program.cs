@@ -37,6 +37,7 @@ namespace Squidex.CLI
                     .AddSingleton<App.Config>()
                     .AddSingleton<App.Content>()
                     .AddSingleton<App.Log>()
+                    .AddSingleton<App.OpenLibrary>()
                     .AddSingleton<App.Schemas>()
                     .AddSingleton<App.Sync>()
                     .AddSingleton<App.Twitter>()

@@ -28,7 +28,6 @@ namespace Squidex.CLI.Commands
             public Sync(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
             {
                 this.configuration = configuration;
-
                 this.synchronizer = synchronizer;
 
                 this.log = log;
@@ -98,12 +97,15 @@ namespace Squidex.CLI.Commands
                 [Option(LongName = "delete", Description = "Use this flag to also delete entities.")]
                 public bool Delete { get; set; }
 
+                [Option(LongName = "recreate", Description = "Use this flag to also recreate entities.")]
+                public bool Recreate { get; set; }
+
                 [Option(LongName = "emulate", Description = "Use this flag to not make any updates and to emulate the changes.")]
                 public bool Emulate { get; set; }
 
                 public SyncOptions ToOptions()
                 {
-                    return new SyncOptions { Delete = Delete, Targets = Targets };
+                    return new SyncOptions { Delete = Delete, Recreate = Recreate, Targets = Targets };
                 }
 
                 public sealed class Validator : AbstractValidator<InArguments>

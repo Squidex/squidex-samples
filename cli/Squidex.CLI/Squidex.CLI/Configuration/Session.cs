@@ -83,13 +83,18 @@ namespace Squidex.CLI.Configuration
             this.clientManager = clientManager;
         }
 
-        public IContentsClient<DynamicContent, DynamicData> Contents(string schema)
+        public IContentsClient<TEntity, TData> Contents<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
         {
-            if (!contents.TryGetValue(schema, out var client))
-            {
-                client = clientManager.CreateDynamicContentsClient(schema);
+            return clientManager.CreateContentsClient<TEntity, TData>(schemaName);
+        }
 
-                contents[schema] = client;
+        public IContentsClient<DynamicContent, DynamicData> Contents(string schemaName)
+        {
+            if (!contents.TryGetValue(schemaName, out var client))
+            {
+                client = clientManager.CreateDynamicContentsClient(schemaName);
+
+                contents[schemaName] = client;
             }
 
             return client;

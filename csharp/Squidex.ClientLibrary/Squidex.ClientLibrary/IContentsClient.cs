@@ -289,8 +289,8 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Gets all content items in batches.
         /// </summary>
-        /// <param name="batchSize">Size of each batch.</param>
         /// <param name="callback">The callbac that is invoked for each content item..</param>
+        /// <param name="batchSize">Size of each batch.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>

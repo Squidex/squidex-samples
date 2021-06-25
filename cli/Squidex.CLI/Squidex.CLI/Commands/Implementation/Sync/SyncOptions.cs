@@ -14,5 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         public string[] Languages { get; set; }
 
         public bool Delete { get; set; }
+
+        public bool Recreate { get; set; }
     }
 }

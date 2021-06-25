@@ -26,6 +26,8 @@ namespace Squidex.CLI.Commands.Implementation
 
         IExtendableRulesClient Rules { get; }
 
-        IContentsClient<DynamicContent, DynamicData> Contents(string schema);
+        IContentsClient<TEntity, TData> Contents<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new();
+
+        IContentsClient<DynamicContent, DynamicData> Contents(string schemaName);
     }
 }
