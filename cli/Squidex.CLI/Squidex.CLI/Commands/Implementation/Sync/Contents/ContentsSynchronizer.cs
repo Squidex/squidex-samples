@@ -59,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
                     {
-                        await sync.WriteWithSchema(new FilePath("contents", schema.Name, "{contentBatch}.json"), model, Ref);
+                        await sync.WriteWithSchema(new FilePath("contents", schema.Name, $"{contentBatch}.json"), model, Ref);
                     });
                 }
 

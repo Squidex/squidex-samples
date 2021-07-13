@@ -60,6 +60,11 @@ namespace Squidex.CLI.Commands
             {
                 configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
 
+                if (arguments.Use)
+                {
+                    configuration.UseApp(arguments.Name);
+                }
+
                 log.WriteLine("> App added.");
             }
 
@@ -140,17 +145,20 @@ namespace Squidex.CLI.Commands
                 [Operand(Name = "client-secret", Description = "The client secret.")]
                 public string ClientSecret { get; set; }
 
-                [Option(LongName = "url", ShortName = "u", Description = "The optional url to your squidex installation. Default: https://cloud.squidex.io")]
+                [Option(LongName = "url", ShortName = "u", Description = "The optional url to your squidex installation. Default: https://cloud.squidex.io.")]
                 public string ServiceUrl { get; set; }
 
                 [Option(LongName = "label", ShortName = "l", Description = "Optional label for this app.")]
                 public string Label { get; set; }
 
-                [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client)")]
+                [Option(LongName = "create", ShortName = "c", Description = "Create the app if it does not exist (needs admin client).")]
                 public bool Create { get; set; }
 
-                [Option(LongName = "ignore-self-signed", ShortName = "i", Description = "Ignores self signed certificates")]
+                [Option(LongName = "ignore-self-signed", ShortName = "i", Description = "Ignores self signed certificates.")]
                 public bool IgnoreSelfSigned { get; set; }
+
+                [Option(LongName = "use", Description = "Use the config.")]
+                public bool Use { get; set; }
 
                 public string ToEntryName()
                 {

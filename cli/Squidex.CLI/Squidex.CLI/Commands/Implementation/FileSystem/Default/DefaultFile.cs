@@ -40,5 +40,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 
             return fileInfo.OpenWrite();
         }
+
+        public override string ToString()
+        {
+            return FullName;
+        }
     }
 }

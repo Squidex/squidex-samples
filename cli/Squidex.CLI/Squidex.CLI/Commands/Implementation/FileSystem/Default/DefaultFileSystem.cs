@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 
             if (Directory.Exists(directory))
             {
-                foreach (var file in Directory.GetFiles(directory))
+                foreach (var file in Directory.GetFiles(directory, $"*{extension}", SearchOption.AllDirectories))
                 {
                     var fileInfo = new FileInfo(file);
 

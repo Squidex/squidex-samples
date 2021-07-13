@@ -58,5 +58,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
             return entry.Open();
         }
+
+        public override string ToString()
+        {
+            return FullName;
+        }
     }
 }

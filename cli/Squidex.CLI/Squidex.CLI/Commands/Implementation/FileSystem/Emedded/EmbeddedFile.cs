@@ -64,5 +64,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 
             return false;
         }
+
+        public override string ToString()
+        {
+            return FullName;
+        }
     }
 }

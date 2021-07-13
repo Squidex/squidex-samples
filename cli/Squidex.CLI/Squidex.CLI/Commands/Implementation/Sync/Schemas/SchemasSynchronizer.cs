@@ -62,7 +62,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                     MapReferences(model.Schema, schemaMap);
 
-                    await sync.WriteWithSchema(new FilePath($"schemas", "{schema.Name}.json"), model, Ref);
+                    await sync.WriteWithSchema(new FilePath($"schemas", $"{schema.Name}.json"), model, Ref);
                 });
             }
         }
