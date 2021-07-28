@@ -63,9 +63,13 @@ namespace Squidex.CLI.Commands
                 if (arguments.Use)
                 {
                     configuration.UseApp(arguments.Name);
-                }
 
-                log.WriteLine("> App added.");
+                    log.WriteLine("> App added and selected.");
+                }
+                else
+                {
+                    log.WriteLine("> App added.");
+                }
             }
 
             [Command(Name = "use", Description = "Use an app.")]

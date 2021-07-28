@@ -9,16 +9,27 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public static class Extensions
     {
-        public static BulkUpdateJob ToJob(this ContentModel model)
+        public static BulkUpdateJob ToJob(this ContentModel model, SchemasDto schemas)
         {
+            var id = model.Id;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            var singleton = schemas.Items.Single(x => x.Name == model.Schema && x.IsSingleton);
+#pragma warning restore CS0618 // Type or member is obsolete
+            if (singleton != null)
+            {
+                id = singleton.Id;
+            }
+
             return new BulkUpdateJob
             {
-                Id = model.Id,
+                Id = id,
                 Data = model.Data,
                 Schema = model.Schema,
                 Status = model.Status,

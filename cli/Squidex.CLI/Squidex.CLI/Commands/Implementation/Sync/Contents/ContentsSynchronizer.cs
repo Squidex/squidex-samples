@@ -89,6 +89,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 GetFiles(sync.FileSystem)
                     .Select(x => (x, sync.Read<ContentsModel>(x, log)));
 
+            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
             foreach (var (file, model) in models)
             {
                 if (model?.Contents?.Count > 0)
@@ -103,7 +105,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         DoNotScript = true,
                         DoNotValidate = false,
                         DoNotValidateWorkflow = true,
-                        Jobs = model.Contents.Select(x => x.ToJob()).ToList()
+                        Jobs = model.Contents.Select(x => x.ToJob(schemas)).ToList()
                     };
 
                     var contentIdAssigned = false;
