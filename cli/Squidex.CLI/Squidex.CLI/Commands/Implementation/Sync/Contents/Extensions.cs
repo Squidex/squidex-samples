@@ -20,7 +20,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             var id = model.Id;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            var singleton = schemas.Items.Single(x => x.Name == model.Schema && x.IsSingleton);
+            var singleton = schemas.Items.FirstOrDefault(x => x.Name == model.Schema && x.IsSingleton);
 #pragma warning restore CS0618 // Type or member is obsolete
             if (singleton != null)
             {
