@@ -50,6 +50,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             jsonSerializerSettings.Converters.Add(new StringEnumConverter());
             jsonSerializerSettings.Formatting = Formatting.Indented;
+            jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
             {
@@ -74,16 +75,16 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 }));
 
             jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
+
             FileSystem = fileSystem;
         }
 
         public T Read<T>(IFile file, ILogger log)
         {
-            var json = file.ReadAllText();
+            var jsonText = file.ReadAllText();
+            var jsonSchema = GetSchema<T>();
 
-            var schema = GetSchema<T>();
-
-            var errors = schema.Validate(json);
+            var errors = jsonSchema.Validate(jsonText);
 
             if (errors.Any())
             {
@@ -104,7 +105,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 throw new JsonException($"Error reading file {file.FullName}");
             }
 
-            return JsonConvert.DeserializeObject<T>(json, jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings);
         }
 
         public Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
@@ -133,9 +134,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 using (var textWriter = new StreamWriter(stream))
                 {
-                    var schema = GetSchema<T>();
+                    var jsonSchema = GetSchema<T>();
 
-                    textWriter.Write(schema.ToJson());
+                    textWriter.Write(jsonSchema.ToJson());
                 }
             }
 

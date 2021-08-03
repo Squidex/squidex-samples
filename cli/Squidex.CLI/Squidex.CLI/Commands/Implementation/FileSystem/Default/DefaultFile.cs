@@ -38,7 +38,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
         {
             Directory.CreateDirectory(fileInfo.Directory.FullName);
 
-            return fileInfo.OpenWrite();
+            return new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write);
         }
 
         public override string ToString()
