@@ -16,6 +16,7 @@ using Newtonsoft.Json.Serialization;
 using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Generation.TypeMappers;
+using NJsonSchema.Infrastructure;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
@@ -55,7 +56,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
             {
                 FlattenInheritanceHierarchy = true,
-                SchemaType = SchemaType.OpenApi3,
+                SchemaType = SchemaType.JsonSchema,
                 SchemaNameGenerator = new DefaultSchemaNameGenerator(),
                 SerializerSettings = jsonSerializerSettings
             };
@@ -135,8 +136,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 using (var textWriter = new StreamWriter(stream))
                 {
                     var jsonSchema = GetSchema<T>();
+                    var jsonSchemaType = jsonSchemaGeneratorSettings.SchemaType;
 
-                    textWriter.Write(jsonSchema.ToJson());
+                    var json = JsonSchemaSerialization.ToJson(
+                        jsonSchema,
+                        jsonSchemaType,
+                        JsonSchema.CreateJsonSerializerContractResolver(jsonSchemaType),
+                        Formatting.Indented);
+
+                    textWriter.Write(json);
                 }
             }
 
