@@ -308,7 +308,7 @@ namespace Squidex.ClientLibrary
                     throw new ArgumentException("Content CDN URL must be absolute if specified.");
                 }
 
-                assetCDN = assetCDN.TrimEnd('/', ' ');
+                contentCDN = contentCDN.TrimEnd('/', ' ');
             }
 
             if (configurator == null)
