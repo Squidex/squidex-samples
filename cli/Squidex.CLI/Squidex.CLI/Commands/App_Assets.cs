@@ -86,7 +86,7 @@ namespace Squidex.CLI.Commands
 
                                 var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: fileParameter);
 
-                                if (result._meta.IsDuplicate == "true")
+                                if (result._meta?.IsDuplicate == "true")
                                 {
                                     log.StepSkipped("duplicate.");
                                 }
