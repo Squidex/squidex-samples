@@ -167,6 +167,19 @@ namespace Squidex.ClientLibrary.Management
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Replace asset content.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="file">The file to upload.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// Asset updated.
+        /// </returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        Task<AssetDto> PutAssetContentAsync(string app, string id, FileInfo file, CancellationToken cancellationToken = default);
+
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
         /// <param name="query">The optional asset query.</param>
@@ -199,6 +212,14 @@ namespace Squidex.ClientLibrary.Management
             Guard.NotNull(file, nameof(file));
 
             return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)), cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<AssetDto> PutAssetContentAsync(string app, string id, FileInfo file, CancellationToken cancellationToken = default)
+        {
+            Guard.NotNull(file, nameof(file));
+
+            return PutAssetContentAsync(app, id, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)), cancellationToken);
         }
 
         /// <inheritdoc />

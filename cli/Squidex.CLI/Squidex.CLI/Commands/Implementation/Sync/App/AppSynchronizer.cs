@@ -80,7 +80,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     model.Roles[role.Name] = new AppRoleModel
                     {
-                        Permissions = role.Permissions.ToArray()
+                        Permissions = role.Permissions
                     };
                 }
             });
@@ -299,7 +299,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     ["custom"] = new AppRoleModel
                     {
-                        Permissions = new[]
+                        Permissions = new List<string>
                         {
                             "schemas.*"
                         }

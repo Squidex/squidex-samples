@@ -27,9 +27,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public string Slug { get; set; }
 
-        public ICollection<string> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
-        public IDictionary<string, object> Metadata { get; set; }
+        public Dictionary<string, object> Metadata { get; set; }
 
         public bool IsProtected { get; set; }
     }

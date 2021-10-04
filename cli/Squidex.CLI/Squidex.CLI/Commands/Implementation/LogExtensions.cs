@@ -65,29 +65,6 @@ namespace Squidex.CLI.Commands.Implementation
             }
         }
 
-        public static async Task DoSafeLineAsync(this ILogger log, string process, Func<Task> action)
-        {
-            await LockObject.WaitAsync();
-            try
-            {
-                log.WriteLine("Start: {0}", process);
-
-                await action();
-
-                log.WriteLine("Done : {0}", process);
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex, error => log.WriteLine("Error: {0}; {1}", process, error));
-            }
-            finally
-            {
-                log.WriteLine();
-
-                LockObject.Release();
-            }
-        }
-
         public static void ProcessSkipped(this ILogger log, string process, string reason)
         {
             LockObject.Wait();
@@ -133,7 +110,7 @@ namespace Squidex.CLI.Commands.Implementation
             }
         }
 
-        private static void HandleException(Exception ex, Action<string> error)
+        public static void HandleException(Exception ex, Action<string> error)
         {
             switch (ex)
             {

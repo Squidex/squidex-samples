@@ -67,7 +67,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>(),
@@ -77,7 +77,7 @@ namespace Squidex.CLI.Tests
                     }
                 });
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>(),
@@ -90,7 +90,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
             Assert.Equal("folder2", await sut.GetPathAsync(folder2.Id));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedTwiceExactly();
         }
 
@@ -111,7 +111,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>(),
@@ -125,7 +125,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
             Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -146,7 +146,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>
@@ -162,7 +162,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
             Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -183,7 +183,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>
@@ -197,7 +197,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal(folder1.Id, await sut.GetIdAsync("folder1"));
             Assert.Equal(folder2.Id, await sut.GetIdAsync("folder2"));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -218,7 +218,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>
@@ -234,7 +234,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
             Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -255,7 +255,7 @@ namespace Squidex.CLI.Tests
                 FolderName = "folder2"
             };
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<AssetFolderScope>._, A<CancellationToken>._))
                 .Returns(new AssetFoldersDto
                 {
                     Items = new List<AssetFolderDto>
@@ -273,7 +273,7 @@ namespace Squidex.CLI.Tests
             Assert.Equal(folder1.Id, await sut.GetIdAsync("folder1"));
             Assert.Equal(folder2.Id, await sut.GetIdAsync("folder2"));
 
-            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<CancellationToken>._))
+            A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope>._, A<CancellationToken>._))
                 .MustHaveHappenedOnceExactly();
         }
     }

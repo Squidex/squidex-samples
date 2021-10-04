@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
@@ -12,6 +13,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
     public sealed class AppRoleModel
     {
         [Required]
-        public string[] Permissions { get; set; }
+        public List<string> Permissions { get; set; }
     }
 }

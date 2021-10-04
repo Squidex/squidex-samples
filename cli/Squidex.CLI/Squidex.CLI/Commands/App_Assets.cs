@@ -5,7 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
@@ -13,6 +15,7 @@ using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands
 {
@@ -47,7 +50,7 @@ namespace Squidex.CLI.Commands
                     var relativeFolder = Path.GetRelativePath(folder.FullName, file.Directory.FullName);
                     var relativePath = Path.GetRelativePath(folder.FullName, file.FullName);
 
-                    var targetFolder = arguments.TargetFolder;
+                    var targetFolder = arguments.TargetFolder ?? ".";
 
                     if (!string.IsNullOrWhiteSpace(relativePath) && relativePath != ".")
                     {
@@ -56,10 +59,49 @@ namespace Squidex.CLI.Commands
 
                     var parentId = await folderTree.GetIdAsync(targetFolder);
 
-                    await log.DoSafeLineAsync($"Uploading {relativePath}", async () =>
+                    var existings = await assets.GetAssetsAsync(session.App, new AssetQuery
                     {
-                        await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: file);
+                        ParentId = parentId,
+                        Filter = $"fileName eq '{file.Name}'",
+                        Top = 2
                     });
+
+                    try
+                    {
+                        if (existings.Items.Count > 0)
+                        {
+                            var existing = existings.Items.First();
+
+                            log.WriteLine($"Updating: {relativePath}");
+
+                            await assets.PutAssetContentAsync(session.App, existing.Id, file: file);
+
+                            log.StepSuccess();
+                        }
+                        else
+                        {
+                            log.WriteLine($"Uploading: {relativePath}");
+
+                            var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: file);
+
+                            if (result._meta.IsDuplicate == "true")
+                            {
+                                log.StepSkipped("duplicate.");
+                            }
+                            else
+                            {
+                                log.StepSuccess();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogExtensions.HandleException(ex, error => log.WriteLine("Error: {0}", error));
+                    }
+                    finally
+                    {
+                        log.WriteLine();
+                    }
                 }
 
                 log.WriteLine("> Import completed");

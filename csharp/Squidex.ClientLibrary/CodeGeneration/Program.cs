@@ -22,6 +22,12 @@ namespace CodeGeneration
             generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
             generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
             generatorSettings.CSharpGeneratorSettings.ExcludedTypeNames = new[] { "JsonInheritanceConverter" };
+            generatorSettings.CSharpGeneratorSettings.ArrayType = "System.Collections.Generic.List";
+            generatorSettings.CSharpGeneratorSettings.ArrayInstanceType = "System.Collections.Generic.List";
+            generatorSettings.CSharpGeneratorSettings.ArrayBaseType = "System.Collections.Generic.List";
+            generatorSettings.CSharpGeneratorSettings.DictionaryBaseType = "System.Collections.Generic.Dictionary";
+            generatorSettings.CSharpGeneratorSettings.DictionaryInstanceType = "System.Collections.Generic.Dictionary";
+            generatorSettings.CSharpGeneratorSettings.DictionaryType = "System.Collections.Generic.Dictionary";
             generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
             generatorSettings.ExceptionClass = "SquidexManagementException";
