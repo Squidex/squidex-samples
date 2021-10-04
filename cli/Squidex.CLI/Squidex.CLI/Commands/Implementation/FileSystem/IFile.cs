@@ -13,6 +13,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
     {
         string FullName { get; }
 
+        string FullLocalName { get; }
+
         string Name { get; }
 
         bool Exists { get; }

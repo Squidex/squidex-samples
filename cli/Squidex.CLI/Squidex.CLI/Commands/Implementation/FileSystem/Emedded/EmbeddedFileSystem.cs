@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
         {
             var relativePath = GetRelativePath(path);
 
-            return new EmbeddedFile(assembly, path.Elements.Last(), relativePath);
+            return new EmbeddedFile(assembly, path.Elements.Last(), relativePath, path.ToString());
         }
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)
@@ -42,15 +42,25 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 
             foreach (var fullName in assembly.GetManifestResourceNames())
             {
-                if (fullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase))
+                if (fullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(fullName, extension))
                 {
                     var segments = fullName.Split('.');
 
                     var name = string.Join('.', segments.TakeLast(2));
 
-                    yield return new EmbeddedFile(assembly, name, fullName);
+                    yield return new EmbeddedFile(assembly, name, fullName, fullName);
                 }
             }
+        }
+
+        private static bool MatchsExtension(string fullName, string extension)
+        {
+            if (extension == ".*")
+            {
+                return true;
+            }
+
+            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
         }
 
         private string GetRelativePath(FilePath path)

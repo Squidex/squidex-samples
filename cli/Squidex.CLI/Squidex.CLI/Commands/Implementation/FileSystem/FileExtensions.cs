@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.IO;
+using System.Linq;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem
 {
@@ -20,6 +21,13 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        public static string LocalFolderPath(this IFile file)
+        {
+            var elements = file.FullLocalName.Split('/', '\\');
+
+            return Path.Combine(elements.SkipLast(1).ToArray());
         }
     }
 }

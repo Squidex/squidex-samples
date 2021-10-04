@@ -17,17 +17,20 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 
         public string FullName { get; }
 
+        public string FullLocalName { get; }
+
         public string Name { get; }
 
         public bool Exists => CanOpen();
 
-        public EmbeddedFile(Assembly assembly, string name, string fullName)
+        public EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName)
         {
             this.assembly = assembly;
 
             Name = name;
 
             FullName = fullName;
+            FullLocalName = fullLocalName;
         }
 
         public Stream OpenRead()

@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using FluentValidation.Attributes;
+using HeyRed.Mime;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
@@ -42,76 +44,77 @@ namespace Squidex.CLI.Commands
 
                 var assets = session.Assets;
 
-                var folder = new DirectoryInfo(arguments.Folder);
-                var folderTree = new FolderTree(session);
-
-                foreach (var file in folder.GetFiles("*.*", SearchOption.AllDirectories))
+                using (var fs = FileSystems.Create(arguments.Path))
                 {
-                    var relativeFolder = Path.GetRelativePath(folder.FullName, file.Directory.FullName);
-                    var relativePath = Path.GetRelativePath(folder.FullName, file.FullName);
+                    var folderTree = new FolderTree(session);
 
-                    var targetFolder = arguments.TargetFolder ?? ".";
-
-                    if (!string.IsNullOrWhiteSpace(relativePath) && relativePath != ".")
+                    foreach (var file in fs.GetFiles(FilePath.Root, ".*"))
                     {
-                        targetFolder = Path.Combine(targetFolder, relativeFolder);
-                    }
+                        var targetFolder = file.LocalFolderPath();
 
-                    var parentId = await folderTree.GetIdAsync(targetFolder);
-
-                    var existings = await assets.GetAssetsAsync(session.App, new AssetQuery
-                    {
-                        ParentId = parentId,
-                        Filter = $"fileName eq '{file.Name}'",
-                        Top = 2
-                    });
-
-                    try
-                    {
-                        if (existings.Items.Count > 0)
+                        if (!string.IsNullOrWhiteSpace(arguments.TargetFolder))
                         {
-                            var existing = existings.Items.First();
-
-                            log.WriteLine($"Updating: {relativePath}");
-
-                            await assets.PutAssetContentAsync(session.App, existing.Id, file: file);
-
-                            log.StepSuccess();
+                            targetFolder = Path.Combine(arguments.TargetFolder, targetFolder);
                         }
-                        else
+
+                        var parentId = await folderTree.GetIdAsync(targetFolder);
+
+                        var existings = await assets.GetAssetsAsync(session.App, new AssetQuery
                         {
-                            log.WriteLine($"Uploading: {relativePath}");
+                            ParentId = parentId,
+                            Filter = $"fileName eq '{file.Name}'",
+                            Top = 2
+                        });
 
-                            var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: file);
+                        try
+                        {
+                            var fileParameter = new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name));
 
-                            if (result._meta.IsDuplicate == "true")
+                            if (existings.Items.Count > 0)
                             {
-                                log.StepSkipped("duplicate.");
+                                var existing = existings.Items.First();
+
+                                log.WriteLine($"Updating: {file.FullName}");
+
+                                await assets.PutAssetContentAsync(session.App, existing.Id, fileParameter);
+
+                                log.StepSuccess();
                             }
                             else
                             {
-                                log.StepSuccess();
+                                log.WriteLine($"Uploading: {file.FullName}");
+
+                                var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: fileParameter);
+
+                                if (result._meta.IsDuplicate == "true")
+                                {
+                                    log.StepSkipped("duplicate.");
+                                }
+                                else
+                                {
+                                    log.StepSuccess();
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            LogExtensions.HandleException(ex, error => log.WriteLine("Error: {0}", error));
+                        }
+                        finally
+                        {
+                            log.WriteLine();
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        LogExtensions.HandleException(ex, error => log.WriteLine("Error: {0}", error));
-                    }
-                    finally
-                    {
-                        log.WriteLine();
-                    }
-                }
 
-                log.WriteLine("> Import completed");
+                    log.WriteLine("> Import completed");
+                }
             }
 
             [Validator(typeof(Validator))]
             public sealed class ImportArguments : IArgumentModel
             {
                 [Operand(Name = "folder", Description = "The source folder.")]
-                public string Folder { get; set; }
+                public string Path { get; set; }
 
                 [Option(ShortName = "t", LongName = "target", Description = "Path to the target folder.")]
                 public string TargetFolder { get; set; }
@@ -123,7 +126,7 @@ namespace Squidex.CLI.Commands
                 {
                     public Validator()
                     {
-                        RuleFor(x => x.Folder).NotEmpty();
+                        RuleFor(x => x.Path).NotEmpty();
                     }
                 }
             }

@@ -18,6 +18,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
         public string FullName { get; }
 
+        public string FullLocalName => archivePath;
+
         public string Name { get; }
 
         public bool Exists => entry != null;

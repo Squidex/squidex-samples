@@ -36,15 +36,31 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)
         {
-            var relativePath = Path.Combine(path.Elements.ToArray());
+            var relativePath = path.ToString();
 
             foreach (var entry in zipArchive.Entries)
             {
-                if (entry.FullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && entry.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase))
+                // Entry is a folder.
+                if (string.IsNullOrWhiteSpace(entry.Name))
+                {
+                    continue;
+                }
+
+                if (entry.FullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(entry.Name, extension))
                 {
                     yield return new ZipFile(zipArchive, entry.FullName, entry.Name, FullName);
                 }
             }
+        }
+
+        private static bool MatchsExtension(string fullName, string extension)
+        {
+            if (extension == ".*")
+            {
+                return true;
+            }
+
+            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
         }
 
         private static string GetRelativePath(FilePath path)

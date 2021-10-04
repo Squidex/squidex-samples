@@ -15,13 +15,17 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 
         public string FullName => fileInfo.FullName;
 
+        public string FullLocalName { get; }
+
         public string Name => fileInfo.Name;
 
         public bool Exists => fileInfo.Exists;
 
-        public DefaultFile(FileInfo fileInfo)
+        public DefaultFile(FileInfo fileInfo, string fullLocalName)
         {
             this.fileInfo = fileInfo;
+
+            FullLocalName = fullLocalName;
         }
 
         public void Delete()

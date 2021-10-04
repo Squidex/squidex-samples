@@ -27,25 +27,39 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
         {
             string fullPath = GetFullPath(path);
 
-            return new DefaultFile(new FileInfo(fullPath));
+            var relativePath = Path.GetRelativePath(directory.FullName, fullPath);
+
+            return new DefaultFile(new FileInfo(fullPath), relativePath);
         }
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)
         {
-            var directory = GetFullPath(path);
+            var fullPath = GetFullPath(path);
 
-            if (Directory.Exists(directory))
+            if (Directory.Exists(fullPath))
             {
-                foreach (var file in Directory.GetFiles(directory, $"*{extension}", SearchOption.AllDirectories))
+                foreach (var file in Directory.GetFiles(fullPath, $"*{extension}", SearchOption.AllDirectories))
                 {
                     var fileInfo = new FileInfo(file);
 
-                    if (fileInfo.Exists && string.Equals(fileInfo.Extension, extension, StringComparison.OrdinalIgnoreCase))
+                    if (fileInfo.Exists && MatchsExtension(fileInfo.FullName, extension))
                     {
-                        yield return new DefaultFile(fileInfo);
+                        var relativePath = Path.GetRelativePath(directory.FullName, fileInfo.FullName);
+
+                        yield return new DefaultFile(fileInfo, relativePath);
                     }
                 }
             }
+        }
+
+        private static bool MatchsExtension(string fullName, string extension)
+        {
+            if (extension == ".*")
+            {
+                return true;
+            }
+
+            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
         }
 
         private string GetFullPath(FilePath path)
