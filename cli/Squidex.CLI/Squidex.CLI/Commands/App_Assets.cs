@@ -36,7 +36,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "import", Description = "Import all files from the source folder.")]
-            public async Task List(ImportArguments arguments)
+            public async Task Import(ImportArguments arguments)
             {
                 var session = configuration.StartSession();
 
