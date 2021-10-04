@@ -34,10 +34,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     {
                         var file = new FileParameter(stream, asset.FileName, asset.MimeType);
 
-                        await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
-                    }
+                        var result = await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
 
-                    log.ProcessCompleted(process);
+                        if (string.Equals(asset.FileHash, result.FileHash, StringComparison.Ordinal))
+                        {
+                            log.ProcessSkipped(process, "Same hash.");
+                        }
+                        else
+                        {
+                            log.ProcessCompleted(process);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

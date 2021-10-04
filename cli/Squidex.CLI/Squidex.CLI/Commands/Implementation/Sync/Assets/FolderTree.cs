@@ -23,6 +23,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public FolderTree(ISession session)
         {
+            nodes[RootId] = rootNode;
+
             this.session = session;
         }
 
@@ -38,21 +40,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 return current.Path;
             }
 
-            var folders = await session.Assets.GetAssetFoldersAsync(session.App, id);
+            var folder = await QueryAsync(id, false);
 
-            current = rootNode;
-
-            foreach (var folder in folders.Path)
-            {
-                current = TryAdd(current, folder.Id, folder.FolderName);
-            }
-
-            foreach (var child in folders.Items)
-            {
-                TryAdd(current, child.Id, child.FolderName);
-            }
-
-            return current.Path;
+            return folder.Path;
         }
 
         public async Task<string> GetIdAsync(string path)
@@ -81,21 +71,63 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     continue;
                 }
 
-                var request = new CreateAssetFolderDto
+                var node = await QueryAsync(current.Id, true);
+
+                if (node.Children.TryGetValue(name, out child))
                 {
-                    FolderName = name,
-                    ParentId = current.Id
-                };
+                    current = child;
+                    continue;
+                }
 
-                var folder = await session.Assets.PostAssetFolderAsync(session.App, request);
-
-                current = TryAdd(current, folder.Id, name);
+                current = await AddFolderAsync(current, name);
             }
 
             return current.Id;
         }
 
-        private static FolderNode TryAdd(FolderNode node, string id, string name)
+        private async Task<FolderNode> AddFolderAsync(FolderNode current, string name)
+        {
+            var request = new CreateAssetFolderDto
+            {
+                FolderName = name,
+                ParentId = current.Id
+            };
+
+            var folder = await session.Assets.PostAssetFolderAsync(session.App, request);
+
+            current = TryAdd(current, folder.Id, name);
+            current.HasBeenQueried = true;
+
+            return current;
+        }
+
+        private async Task<FolderNode> QueryAsync(string id, bool needsChildren)
+        {
+            if (nodes.TryGetValue(id, out var node) && (node.HasBeenQueried || !needsChildren))
+            {
+                return node;
+            }
+
+            var folders = await session.Assets.GetAssetFoldersAsync(session.App, id);
+
+            var current = rootNode;
+
+            foreach (var folder in folders.Path)
+            {
+                current = TryAdd(current, folder.Id, folder.FolderName);
+            }
+
+            current.HasBeenQueried = true;
+
+            foreach (var child in folders.Items)
+            {
+                TryAdd(current, child.Id, child.FolderName);
+            }
+
+            return current;
+        }
+
+        private FolderNode TryAdd(FolderNode node, string id, string name)
         {
             if (node.Children.TryGetValue(name, out var child))
             {
@@ -104,7 +136,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
             child = new FolderNode(id, GetPath(node, name));
 
-            return node.Add(child, name);
+            nodes[id] = child;
+            node.Add(child, name);
+
+            return child;
         }
 
         private static string GetPath(FolderNode node, string name)

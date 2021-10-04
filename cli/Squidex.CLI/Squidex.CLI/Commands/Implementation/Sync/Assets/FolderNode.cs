@@ -17,12 +17,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public FolderNode Parent { get; set; }
 
-        public FolderNode Add(FolderNode child, string name)
+        public bool HasBeenQueried { get; set; }
+
+        public void Add(FolderNode child, string name)
         {
             Children[name] = child;
             child.Parent = this;
-
-            return child;
         }
     }
 }
