@@ -96,18 +96,20 @@ namespace Squidex.CLI.Commands
 
                     await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                     {
-                        if (arguments.JsonArray)
-                        {
-                            var datas = converter.ReadAsArray(stream);
+                        var datas = converter.ReadAsArray(stream);
 
-                            await session.ImportAsync(arguments, log, datas);
-                        }
-                        else
-                        {
-                            var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
+                        await session.ImportAsync(arguments, log, datas);
+                    }
+                }
+                else if (arguments.Format == Format.JSON_Separated)
+                {
+                    var converter = new Json2SquidexConverter(arguments.Fields);
 
-                            await session.ImportAsync(arguments, log, datas);
-                        }
+                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                    {
+                        var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
+
+                        await session.ImportAsync(arguments, log, datas);
                     }
                 }
                 else
@@ -141,106 +143,99 @@ namespace Squidex.CLI.Commands
             {
                 var session = configuration.StartSession();
 
-                if (arguments.Format == Format.JSON)
+                string OpenFile(string extension)
                 {
-                    var fileOrFolder = arguments.Output;
-
-                    if (arguments.FilePerContent)
-                    {
-                        if (string.IsNullOrWhiteSpace(fileOrFolder))
-                        {
-                            fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
-                        }
-
-                        Directory.CreateDirectory(fileOrFolder);
-                    }
-                    else
-                    {
-                        if (string.IsNullOrWhiteSpace(fileOrFolder))
-                        {
-                            fileOrFolder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.json";
-                        }
-
-                        if (File.Exists(fileOrFolder))
-                        {
-                            File.Delete(fileOrFolder);
-                        }
-                    }
-
-                    if (arguments.FilePerContent)
-                    {
-                        await session.ExportAsync(arguments, log, async entity =>
-                        {
-                            var fileName = $"{arguments.Schema}_{entity.Id}.json";
-                            var filePath = Path.Combine(fileOrFolder, fileName);
-
-                            if (arguments.FullEntities)
-                            {
-                                await Helper.WriteJsonToFileAsync(entity, filePath);
-                            }
-                            else
-                            {
-                                await Helper.WriteJsonToFileAsync(entity.Data, filePath);
-                            }
-                        });
-                    }
-                    else if (arguments.JsonArray)
-                    {
-                        var allRecords = new List<DynamicContent>();
-
-                        await session.ExportAsync(arguments, log, entity =>
-                        {
-                            allRecords.Add(entity);
-
-                            return Task.CompletedTask;
-                        });
-
-                        if (arguments.FullEntities)
-                        {
-                            await Helper.WriteJsonToFileAsync(allRecords, fileOrFolder);
-                        }
-                        else
-                        {
-                            await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), fileOrFolder);
-                        }
-                    }
-                    else
-                    {
-                        await using (var stream = new FileStream(fileOrFolder, FileMode.Create, FileAccess.Write))
-                        {
-                            await using (var writer = new StreamWriter(stream))
-                            {
-                                await session.ExportAsync(arguments, log, async entity =>
-                                {
-                                    if (arguments.FullEntities)
-                                    {
-                                        await writer.WriteJsonAsync(entity);
-                                    }
-                                    else
-                                    {
-                                        await writer.WriteJsonAsync(entity.Data);
-                                    }
-
-                                    await writer.WriteLineAsync();
-                                    await writer.WriteLineAsync(JsonSeparator);
-                                });
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (arguments.FilePerContent)
-                    {
-                        throw new CLIException("Multiple files are not supported for CSV export.");
-                    }
-
                     var file = arguments.Output;
 
                     if (string.IsNullOrWhiteSpace(file))
                     {
-                        file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}.csv";
+                        file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}{extension}";
                     }
+
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
+
+                    return file;
+                }
+
+                if (arguments.Format == Format.JSON && arguments.FilePerContent)
+                {
+                    var folder = arguments.Output;
+
+                    if (string.IsNullOrWhiteSpace(folder))
+                    {
+                        folder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
+                    }
+
+                    Directory.CreateDirectory(folder);
+
+                    await session.ExportAsync(arguments, log, async entity =>
+                    {
+                        var fileName = $"{arguments.Schema}_{entity.Id}.json";
+                        var filePath = Path.Combine(folder, fileName);
+
+                        if (arguments.FullEntities)
+                        {
+                            await Helper.WriteJsonToFileAsync(entity, filePath);
+                        }
+                        else
+                        {
+                            await Helper.WriteJsonToFileAsync(entity.Data, filePath);
+                        }
+                    });
+                }
+                else if (arguments.Format == Format.JSON && !arguments.FilePerContent)
+                {
+                    var file = OpenFile(".json");
+
+                    var allRecords = new List<DynamicContent>();
+
+                    await session.ExportAsync(arguments, log, entity =>
+                    {
+                        allRecords.Add(entity);
+
+                        return Task.CompletedTask;
+                    });
+
+                    if (arguments.FullEntities)
+                    {
+                        await Helper.WriteJsonToFileAsync(allRecords, file);
+                    }
+                    else
+                    {
+                        await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), file);
+                    }
+                }
+                else if (arguments.Format == Format.JSON_Separated && !arguments.FilePerContent)
+                {
+                    var file = OpenFile(".json");
+
+                    await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                    {
+                        await using (var writer = new StreamWriter(stream))
+                        {
+                            await session.ExportAsync(arguments, log, async entity =>
+                            {
+                                if (arguments.FullEntities)
+                                {
+                                    await writer.WriteJsonAsync(entity);
+                                }
+                                else
+                                {
+                                    await writer.WriteJsonAsync(entity.Data);
+                                }
+
+                                await writer.WriteLineAsync();
+                                await writer.WriteLineAsync(JsonSeparator);
+                            });
+                        }
+                    }
+                }
+                else if (arguments.Format == Format.CSV && !arguments.FilePerContent)
+                {
+                    var file = OpenFile(".csv");
 
                     var converter = new Squidex2CsvConverter(arguments.Fields);
 
@@ -282,12 +277,17 @@ namespace Squidex.CLI.Commands
                         }
                     }
                 }
+                else
+                {
+                    throw new CLIException("Multiple files are not supported for this format.");
+                }
             }
 
             public enum Format
             {
                 CSV,
-                JSON
+                JSON,
+                JSON_Separated
             }
 
             [Validator(typeof(Validator))]
@@ -307,9 +307,6 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
-
-                [Option(LongName = "array", Description = "Read the JSON as a single json array.")]
-                public bool JsonArray { get; set; }
 
                 [Option(LongName = "format", Description = "Defines the input format.")]
                 public Format Format { get; set; }
@@ -359,9 +356,6 @@ namespace Squidex.CLI.Commands
 
                 [Option(LongName = "fields", Description = "Comma separated list of fields. CSV only.")]
                 public string Fields { get; set; }
-
-                [Option(LongName = "array", Description = "Write the JSON as a single json array.")]
-                public bool JsonArray { get; set; }
 
                 [Option(LongName = "full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
                 public bool FullEntities { get; set; }
