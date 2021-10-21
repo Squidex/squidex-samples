@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -15,11 +14,16 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
     {
         public static readonly FilePath Root = new FilePath(string.Empty);
 
-        public IEnumerable<string> Elements { get; }
+        public string[] Elements { get; }
 
         public FilePath(params string[] elements)
         {
             Elements = elements;
+        }
+
+        public static FilePath Create(string path)
+        {
+            return new FilePath(path.Split('/', '\\'));
         }
 
         public FilePath Combine(FilePath path)
@@ -29,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
 
         public override string ToString()
         {
-            return Path.Combine(Elements.ToArray());
+            return Path.Combine(Elements);
         }
     }
 }

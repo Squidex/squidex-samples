@@ -20,7 +20,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         private const string Ref = "../__json/contents";
         private readonly ILogger log;
 
-        public string Name => "contents";
+        public string Name => "Contents";
 
         public ContentsSynchronizer(ILogger log)
         {

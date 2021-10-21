@@ -6,6 +6,8 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,7 +76,7 @@ namespace Squidex.CLI.Commands
                             {
                                 var existing = existings.Items.First();
 
-                                log.WriteLine($"Updating: {file.FullName}");
+                                log.WriteLine($"Uploading: {file.FullName}");
 
                                 await assets.PutAssetContentAsync(session.App, existing.Id, fileParameter);
 
@@ -82,7 +84,7 @@ namespace Squidex.CLI.Commands
                             }
                             else
                             {
-                                log.WriteLine($"Uploading: {file.FullName}");
+                                log.WriteLine($"Uploading New: {file.FullName}");
 
                                 var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: fileParameter);
 
@@ -110,6 +112,56 @@ namespace Squidex.CLI.Commands
                 }
             }
 
+            [Command(Name = "export", Description = "Export all files to the source folder.")]
+            public async Task Export(ImportArguments arguments)
+            {
+                var session = configuration.StartSession();
+
+                var assets = session.Assets;
+
+                using (var fs = FileSystems.Create(arguments.Path))
+                {
+                    var folderTree = new FolderTree(session);
+                    var folderNames = new HashSet<string>();
+
+                    var parentId = await folderTree.GetIdAsync(arguments.TargetFolder);
+
+                    var downloadPipeline = new DownloadPipeline(session, log, fs)
+                    {
+                        FilePathProviderAsync = async asset =>
+                        {
+                            var assetFolder = await folderTree.GetPathAsync(asset.ParentId);
+                            var assetPath = asset.FileName;
+
+                            if (!string.IsNullOrWhiteSpace(assetFolder))
+                            {
+                                assetPath = Path.Combine(assetFolder, assetPath);
+                            }
+
+                            if (!folderNames.Add(assetPath))
+                            {
+                                assetPath = Path.Combine(assetFolder, $"{asset.Id}_{asset.FileName}");
+                            }
+
+                            return FilePath.Create(assetPath);
+                        }
+                    };
+
+                    await assets.GetAllByQueryAsync(session.App, async asset =>
+                    {
+                        await downloadPipeline.DownloadAsync(asset);
+                    },
+                    new AssetQuery
+                    {
+                        ParentId = parentId
+                    });
+
+                    await downloadPipeline.CompleteAsync();
+
+                    log.WriteLine("> Export completed");
+                }
+            }
+
             [Validator(typeof(Validator))]
             public sealed class ImportArguments : IArgumentModel
             {
@@ -123,6 +175,24 @@ namespace Squidex.CLI.Commands
                 public bool Duplicate { get; set; }
 
                 public sealed class Validator : AbstractValidator<ImportArguments>
+                {
+                    public Validator()
+                    {
+                        RuleFor(x => x.Path).NotEmpty();
+                    }
+                }
+            }
+
+            [Validator(typeof(Validator))]
+            public sealed class ExportArguments : IArgumentModel
+            {
+                [Operand(Name = "folder", Description = "The source folder.")]
+                public string Path { get; set; }
+
+                [Option(ShortName = "t", LongName = "target", Description = "Path to the target folder.")]
+                public string SourceFolder { get; set; }
+
+                public sealed class Validator : AbstractValidator<ExportArguments>
                 {
                     public Validator()
                     {

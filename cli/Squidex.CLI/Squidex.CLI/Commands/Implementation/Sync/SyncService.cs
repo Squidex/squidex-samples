@@ -109,29 +109,25 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings);
         }
 
-        public Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
+        public async Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
         {
-            using (var stream = file.OpenWrite())
+            await using (var stream = file.OpenWrite())
             {
                 Write(Convert<T>(sample), stream, $"./{schema}.json");
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class
+        public async Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class
         {
-            using (var stream = file.OpenWrite())
+            await using (var stream = file.OpenWrite())
             {
                 Write(sample, stream, $"./{schema}.json");
             }
-
-            return Task.CompletedTask;
         }
 
-        public Task WriteJsonSchemaAsync<T>(IFile file)
+        public async Task WriteJsonSchemaAsync<T>(IFile file)
         {
-            using (var stream = file.OpenWrite())
+            await using (var stream = file.OpenWrite())
             {
                 using (var textWriter = new StreamWriter(stream))
                 {
@@ -147,8 +143,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                     textWriter.Write(json);
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         public void Write<T>(T value, Stream stream, string schemaRef = null) where T : class

@@ -15,7 +15,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
     {
         public static IFile GetBlobFile(this IFileSystem fs, string id)
         {
-            return fs.GetFile(new FilePath("assets", "files", $"{id}.blob"));
+            return fs.GetFile(GetBlobPath(id));
+        }
+
+        public static FilePath GetBlobPath(this string id)
+        {
+            return new FilePath("assets", "files", $"{id}.blob");
         }
 
         public static BulkUpdateAssetsJobDto ToMoveJob(this AssetModel model, string parentId)

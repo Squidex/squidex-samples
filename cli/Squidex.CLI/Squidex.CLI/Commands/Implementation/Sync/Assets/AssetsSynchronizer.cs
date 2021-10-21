@@ -40,7 +40,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
-            var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem);
+            var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem)
+            {
+                FilePathProvider = asset => asset.Id.GetBlobPath()
+            };
 
             var assets = new List<AssetModel>();
             var assetBatch = 0;
@@ -95,7 +98,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             {
                 if (model?.Assets?.Count > 0)
                 {
-                    var uploader = new UploadPipeline(session, log, sync.FileSystem);
+                    var uploader = new UploadPipeline(session, log, sync.FileSystem)
+                    {
+                        FilePathProvider = asset => asset.Id.GetBlobPath()
+                    };
 
                     await uploader.UploadAsync(model.Assets);
                     await uploader.CompleteAsync();

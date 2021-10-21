@@ -16,19 +16,52 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
     public sealed class UploadPipeline
     {
-        private readonly ActionBlock<AssetModel> pipeline;
+        private readonly ITargetBlock<AssetModel> pipelineStart;
+        private readonly IDataflowBlock pipelineEnd;
+
+        public Func<AssetModel, FilePath> FilePathProvider { get; set; }
+
+        public Func<AssetModel, Task<FilePath>> FilePathProviderAsync { get; set; }
 
         public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
         {
             var tree = new FolderTree(session);
 
-            pipeline = new ActionBlock<AssetModel>(async asset =>
+            var fileNameStep = new TransformBlock<AssetModel, (AssetModel, FilePath)>(async asset =>
             {
-                var process = $"Uploading {asset.Id}";
+                FilePath path;
+
+                if (FilePathProvider != null)
+                {
+                    path = FilePathProvider(asset);
+                }
+                else if (FilePathProviderAsync != null)
+                {
+                    path = await FilePathProviderAsync(asset);
+                }
+                else
+                {
+                    path = new FilePath(asset.Id);
+                }
+
+                return (asset, path);
+            },
+            new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = 1,
+                MaxMessagesPerTask = 1,
+                BoundedCapacity = 1
+            });
+
+            var uploadStep = new ActionBlock<(AssetModel, FilePath)>(async item =>
+            {
+                var (asset, path) = item;
+
+                var process = $"Uploading {path}";
 
                 try
                 {
-                    var assetFile = fs.GetBlobFile(asset.Id);
+                    var assetFile = fs.GetFile(path);
 
                     await using (var stream = assetFile.OpenRead())
                     {
@@ -56,21 +89,29 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 MaxMessagesPerTask = 1,
                 BoundedCapacity = 16
             });
+
+            fileNameStep.LinkTo(uploadStep, new DataflowLinkOptions
+            {
+                PropagateCompletion = true
+            });
+
+            pipelineStart = fileNameStep;
+            pipelineEnd = uploadStep;
         }
 
         public async Task UploadAsync(IEnumerable<AssetModel> assets)
         {
             foreach (var asset in assets)
             {
-                await pipeline.SendAsync(asset);
+                await pipelineStart.SendAsync(asset);
             }
         }
 
         public Task CompleteAsync()
         {
-            pipeline.Complete();
+            pipelineEnd.Complete();
 
-            return pipeline.Completion;
+            return pipelineEnd.Completion;
         }
     }
 }

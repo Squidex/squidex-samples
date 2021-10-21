@@ -17,17 +17,50 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
     public sealed class DownloadPipeline
     {
-        private readonly ActionBlock<AssetDto> pipeline;
+        private readonly ITargetBlock<AssetDto> pipelineStart;
+        private readonly IDataflowBlock pipelineEnd;
+
+        public Func<AssetDto, FilePath> FilePathProvider { get; set; }
+
+        public Func<AssetDto, Task<FilePath>> FilePathProviderAsync { get; set; }
 
         public DownloadPipeline(ISession session, ILogger log, IFileSystem fs)
         {
-            pipeline = new ActionBlock<AssetDto>(async asset =>
+            var fileNameStep = new TransformBlock<AssetDto, (AssetDto, FilePath)>(async asset =>
             {
-                var process = $"Downloading {asset.Id}";
+                FilePath path;
+
+                if (FilePathProvider != null)
+                {
+                    path = FilePathProvider(asset);
+                }
+                else if (FilePathProviderAsync != null)
+                {
+                    path = await FilePathProviderAsync(asset);
+                }
+                else
+                {
+                    path = new FilePath(asset.Id);
+                }
+
+                return (asset, path);
+            },
+            new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = 1,
+                MaxMessagesPerTask = 1,
+                BoundedCapacity = 1
+            });
+
+            var downloadStep = new ActionBlock<(AssetDto, FilePath)>(async item =>
+            {
+                var (asset, path) = item;
+
+                var process = $"Downloading {path}";
 
                 try
                 {
-                    var assetFile = fs.GetBlobFile(asset.Id);
+                    var assetFile = fs.GetFile(path);
                     var assetHash = GetFileHash(assetFile, asset);
 
                     if (assetHash == null || !string.Equals(asset.FileHash, assetHash))
@@ -36,9 +69,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                         await using (response.Stream)
                         {
-                            await using (var fileStream = assetFile.OpenWrite())
+                            await using (var stream = assetFile.OpenWrite())
                             {
-                                await response.Stream.CopyToAsync(fileStream);
+                                await response.Stream.CopyToAsync(stream);
                             }
                         }
 
@@ -59,6 +92,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 MaxMessagesPerTask = 1,
                 BoundedCapacity = 16
             });
+
+            fileNameStep.LinkTo(downloadStep, new DataflowLinkOptions
+            {
+                PropagateCompletion = true
+            });
+
+            pipelineStart = fileNameStep;
+            pipelineEnd = downloadStep;
         }
 
         private static string GetFileHash(IFile file, AssetDto asset)
@@ -101,14 +142,14 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public Task DownloadAsync(AssetDto asset)
         {
-            return pipeline.SendAsync(asset);
+            return pipelineStart.SendAsync(asset);
         }
 
         public Task CompleteAsync()
         {
-            pipeline.Complete();
+            pipelineEnd.Complete();
 
-            return pipeline.Completion;
+            return pipelineEnd.Completion;
         }
     }
 }

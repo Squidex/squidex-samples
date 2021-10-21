@@ -19,9 +19,7 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.Management
 {
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class ErrorDto
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc/>
         public override string ToString()
@@ -47,9 +45,7 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class SquidexManagementException<TResult>
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc/>
         public override string ToString()
@@ -148,9 +144,7 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial interface IAssetsClient
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
         /// Upload a new asset.
@@ -200,11 +194,23 @@ namespace Squidex.ClientLibrary.Management
         /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
         Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get assets.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="callback">The callback that is invoke for each asset.</param>
+        /// <param name="query">The optional asset query.</param>
+        /// <param name="batchSize">The number of assets per request.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// Assets returned.
+        /// </returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery query = null, int batchSize = 200, CancellationToken cancellationToken = default);
     }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class AssetsClient
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc />
         public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default)
@@ -229,12 +235,25 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc />
-        public async Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default)
+        public Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200, CancellationToken cancellationToken = default)
+        {
+            return GetAllByQueryAsync(app, callback, null, batchSize, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public async Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery query = null, int batchSize = 200, CancellationToken cancellationToken = default)
         {
             Guard.Between(batchSize, 10, 10_000, nameof(batchSize));
             Guard.NotNull(callback, nameof(callback));
 
-            var query = new AssetQuery { Top = batchSize, Skip = 0 };
+            if (query == null)
+            {
+                query = new AssetQuery();
+            }
+
+            query.Top = batchSize;
+            query.Skip = 0;
+
             var added = new HashSet<string>();
             do
             {

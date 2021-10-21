@@ -19,7 +19,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
         private const string Ref = "../__json/workflow";
         private readonly ILogger log;
 
-        public string Name => "Workflow";
+        public string Name => "Workflows";
 
         public WorkflowsSynchronizer(ILogger log)
         {
