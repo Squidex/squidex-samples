@@ -19,7 +19,9 @@ using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.Management
 {
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class ErrorDto
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc/>
         public override string ToString()
@@ -45,7 +47,9 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class SquidexManagementException<TResult>
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc/>
         public override string ToString()
@@ -144,7 +148,9 @@ namespace Squidex.ClientLibrary.Management
         }
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial interface IAssetsClient
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
         /// Upload a new asset.
@@ -210,7 +216,9 @@ namespace Squidex.ClientLibrary.Management
         Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery query = null, int batchSize = 200, CancellationToken cancellationToken = default);
     }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     public partial class AssetsClient
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc />
         public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default)
