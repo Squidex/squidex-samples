@@ -121,7 +121,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             }
 
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
-            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
 
             foreach (var workflow in models)
             {
