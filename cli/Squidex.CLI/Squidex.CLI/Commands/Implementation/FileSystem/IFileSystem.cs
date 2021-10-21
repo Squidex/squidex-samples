@@ -16,6 +16,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
 
         bool CanWrite => true;
 
+        bool CanAccessInParallel => false;
+
         IFile GetFile(FilePath path);
 
         IEnumerable<IFile> GetFiles(FilePath path, string extension);

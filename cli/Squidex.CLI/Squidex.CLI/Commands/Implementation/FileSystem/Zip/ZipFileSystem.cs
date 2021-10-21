@@ -20,6 +20,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
         public string FullName => fileInfo.FullName;
 
+        public bool CanAccessInParallel => false;
+
         public ZipFileSystem(FileInfo fileInfo)
         {
             zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);

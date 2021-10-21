@@ -52,6 +52,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 BoundedCapacity = 1
             });
 
+            var maxDegreeOfParallelism = fs.CanAccessInParallel ? Environment.ProcessorCount * 2 : 1;
+
             var downloadStep = new ActionBlock<(AssetDto, FilePath)>(async item =>
             {
                 var (asset, path) = item;
@@ -88,9 +90,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 }
             }, new ExecutionDataflowBlockOptions
             {
-                MaxDegreeOfParallelism = 8,
+                MaxDegreeOfParallelism = maxDegreeOfParallelism,
                 MaxMessagesPerTask = 1,
-                BoundedCapacity = 16
+                BoundedCapacity = maxDegreeOfParallelism * 2
             });
 
             fileNameStep.LinkTo(downloadStep, new DataflowLinkOptions
