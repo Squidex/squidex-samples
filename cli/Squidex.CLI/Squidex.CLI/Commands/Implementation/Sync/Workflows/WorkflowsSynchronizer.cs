@@ -51,7 +51,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                 await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
                 {
-                    await sync.WriteWithSchemaAs<UpdateWorkflowDto>(new FilePath($"workflows", "workflow{i}.json"), workflow, Ref);
+                    await sync.WriteWithSchemaAs<UpdateWorkflowDto>(new FilePath($"workflows", $"workflow{i}.json"), workflow, Ref);
                 });
             });
         }
