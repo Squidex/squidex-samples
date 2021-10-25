@@ -13,7 +13,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 {
     public sealed class JsonMapping : List<(string Name, JsonPath Path, string Format)>
     {
-        private static readonly Regex FormatRegex = new Regex("(?<Lhs>[^\\/=]*)(=(?<Rhs>[^\\/]*))?(\\/(?<Format>.*))?", RegexOptions.Compiled);
+        private static readonly Regex FormatRegex = new Regex("(?<Lhs>[^\\/=]*)(=(?<Rhs>[^\\/]*))?(\\/(?<Format>.*))?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         public static JsonMapping ForJson2Csv(string fields)
         {

@@ -101,12 +101,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             pipelineEnd = uploadStep;
         }
 
-        public async Task UploadAsync(IEnumerable<AssetModel> assets)
+        public Task UploadAsync(AssetModel asset)
         {
-            foreach (var asset in assets)
-            {
-                await pipelineStart.SendAsync(asset);
-            }
+            return pipelineStart.SendAsync(asset);
         }
 
         public Task CompleteAsync()

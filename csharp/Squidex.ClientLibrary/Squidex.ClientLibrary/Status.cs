@@ -59,13 +59,13 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc />
         public bool Equals(Status other)
         {
-            return string.Equals(Name, other.Name);
+            return string.Equals(Name, other.Name, StringComparison.Ordinal);
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return StringComparer.Ordinal.GetHashCode(Name);
         }
 
         /// <inheritdoc />

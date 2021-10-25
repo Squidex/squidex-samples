@@ -63,9 +63,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 try
                 {
                     var assetFile = fs.GetFile(path);
-                    var assetHash = GetFileHash(assetFile, asset);
+                    var assetHash = assetFile.GetFileHash(asset);
 
-                    if (assetHash == null || !string.Equals(asset.FileHash, assetHash))
+                    if (assetHash == null || !string.Equals(asset.FileHash, assetHash, StringComparison.Ordinal))
                     {
                         var response = await session.Assets.GetAssetContentBySlugAsync(session.App, asset.Id, string.Empty);
 
@@ -102,44 +102,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
             pipelineStart = fileNameStep;
             pipelineEnd = downloadStep;
-        }
-
-        private static string GetFileHash(IFile file, AssetDto asset)
-        {
-            if (file == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                using (var fileStream = file.OpenRead())
-                {
-                    var incrementalHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-
-                    var buffer = new byte[80000];
-                    var bytesRead = 0;
-
-                    while ((bytesRead = fileStream.Read(buffer)) > 0)
-                    {
-                        incrementalHash.AppendData(buffer, 0, bytesRead);
-                    }
-
-                    var fileHash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
-
-                    var hash = $"{fileHash}{asset.FileName}{asset.FileSize}".Sha256Base64();
-
-                    return hash;
-                }
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return null;
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
         }
 
         public Task DownloadAsync(AssetDto asset)

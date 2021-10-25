@@ -9,6 +9,7 @@ using System;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
+    [AttributeUsage(AttributeTargets.All)]
     public sealed class InheritanceAttribute : Attribute
     {
         public string Discriminator { get; }

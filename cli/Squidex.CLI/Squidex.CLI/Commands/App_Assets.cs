@@ -50,6 +50,8 @@ namespace Squidex.CLI.Commands
                 {
                     var folderTree = new FolderTree(session);
 
+                    var assetQuery = new AssetQuery();
+
                     foreach (var file in fs.GetFiles(FilePath.Root, ".*"))
                     {
                         var targetFolder = file.LocalFolderPath();
@@ -59,34 +61,37 @@ namespace Squidex.CLI.Commands
                             targetFolder = Path.Combine(arguments.TargetFolder, targetFolder);
                         }
 
-                        var parentId = await folderTree.GetIdAsync(targetFolder);
+                        assetQuery.ParentId = await folderTree.GetIdAsync(targetFolder);
+                        assetQuery.Filter = $"fileName eq '{file.Name}'";
 
-                        var existings = await assets.GetAssetsAsync(session.App, new AssetQuery
-                        {
-                            ParentId = parentId,
-                            Filter = $"fileName eq '{file.Name}'",
-                            Top = 2
-                        });
+                        var existings = await assets.GetAssetsAsync(session.App, assetQuery);
+                        var existing = existings.Items.FirstOrDefault();
+
+                        var fileHash = file.GetFileHash();
 
                         try
                         {
                             var fileParameter = new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name));
 
-                            if (existings.Items.Count > 0)
+                            log.WriteLine($"Uploading: {file.FullName}");
+
+                            if (existings.Items.Any(x => string.Equals(x.FileHash, fileHash, StringComparison.Ordinal)))
                             {
-                                var existing = existings.Items.First();
-
-                                log.WriteLine($"Uploading: {file.FullName}");
-
+                                log.StepSkipped("Same hash.");
+                            }
+                            else if (existings.Items.Count > 1)
+                            {
+                                log.StepSkipped("Multiple candidates found.");
+                            }
+                            else if (existing != null)
+                            {
                                 await assets.PutAssetContentAsync(session.App, existing.Id, fileParameter);
 
-                                log.StepSuccess();
+                                log.StepSuccess("Existing Asset");
                             }
                             else
                             {
-                                log.WriteLine($"Uploading New: {file.FullName}");
-
-                                var result = await assets.PostAssetAsync(session.App, parentId, duplicate: arguments.Duplicate, file: fileParameter);
+                                var result = await assets.PostAssetAsync(session.App, assetQuery.ParentId, null, arguments.Duplicate, fileParameter);
 
                                 if (result._meta?.IsDuplicate == "true")
                                 {
@@ -94,7 +99,7 @@ namespace Squidex.CLI.Commands
                                 }
                                 else
                                 {
-                                    log.StepSuccess();
+                                    log.StepSuccess("New Asset");
                                 }
                             }
                         }
@@ -147,16 +152,21 @@ namespace Squidex.CLI.Commands
                         }
                     };
 
-                    await assets.GetAllByQueryAsync(session.App, async asset =>
+                    try
                     {
-                        await downloadPipeline.DownloadAsync(asset);
-                    },
-                    new AssetQuery
+                        await assets.GetAllByQueryAsync(session.App, async asset =>
+                        {
+                            await downloadPipeline.DownloadAsync(asset);
+                        },
+                        new AssetQuery
+                        {
+                            ParentId = parentId
+                        });
+                    }
+                    finally
                     {
-                        ParentId = parentId
-                    });
-
-                    await downloadPipeline.CompleteAsync();
+                        await downloadPipeline.CompleteAsync();
+                    }
 
                     log.WriteLine("> Export completed");
                 }

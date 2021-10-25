@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.ClientLibrary", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGeneration", "..\..\csharp\Squidex.ClientLibrary\CodeGeneration\CodeGeneration.csproj", "{362BCA53-EEC9-42ED-BEAF-682F8796F6AF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.ClientLibrary.Tests", "..\..\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary.Tests\Squidex.ClientLibrary.Tests.csproj", "{47A22427-3BFF-465D-9F87-8C58B2A72264}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{362BCA53-EEC9-42ED-BEAF-682F8796F6AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{362BCA53-EEC9-42ED-BEAF-682F8796F6AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{362BCA53-EEC9-42ED-BEAF-682F8796F6AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47A22427-3BFF-465D-9F87-8C58B2A72264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47A22427-3BFF-465D-9F87-8C58B2A72264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47A22427-3BFF-465D-9F87-8C58B2A72264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47A22427-3BFF-465D-9F87-8C58B2A72264}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

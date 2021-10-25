@@ -279,23 +279,24 @@ namespace Squidex.ClientLibrary
 
         internal void CheckAndFreeze()
         {
+#pragma warning disable MA0015 // Specify the parameter name in ArgumentException
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
-                throw new ArgumentException("URL must be a valid absolute URL.");
+                throw new ArgumentException("URL must be a valid absolute URL.", nameof(Url));
             }
 
             url = url.TrimEnd('/', ' ');
 
             if (string.IsNullOrWhiteSpace(appName))
             {
-                throw new ArgumentException("App name is not defined.");
+                throw new ArgumentException("App name is not defined.", nameof(AppName));
             }
 
             if (!string.IsNullOrWhiteSpace(assetCDN))
             {
                 if (!Uri.IsWellFormedUriString(assetCDN, UriKind.Absolute))
                 {
-                    throw new ArgumentException("Asset CDN URL must be absolute if specified.");
+                    throw new ArgumentException("Asset CDN URL must be absolute if specified.", nameof(AssetCDN));
                 }
 
                 contentCDN = contentCDN.TrimEnd('/', ' ');
@@ -305,7 +306,7 @@ namespace Squidex.ClientLibrary
             {
                 if (!Uri.IsWellFormedUriString(contentCDN, UriKind.Absolute))
                 {
-                    throw new ArgumentException("Content CDN URL must be absolute if specified.");
+                    throw new ArgumentException("Content CDN URL must be absolute if specified.", nameof(ContentCDN));
                 }
 
                 contentCDN = contentCDN.TrimEnd('/', ' ');
@@ -330,12 +331,12 @@ namespace Squidex.ClientLibrary
             {
                 if (string.IsNullOrWhiteSpace(clientId))
                 {
-                    throw new ArgumentException("Client id is not defined.");
+                    throw new ArgumentException("Client id is not defined.", nameof(ClientId));
                 }
 
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
-                    throw new ArgumentException("Client secret is not defined.");
+                    throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
                 }
 
                 var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
@@ -346,6 +347,7 @@ namespace Squidex.ClientLibrary
             }
 
             isFrozen = true;
+#pragma warning restore MA0015 // Specify the parameter name in ArgumentException
         }
     }
 }

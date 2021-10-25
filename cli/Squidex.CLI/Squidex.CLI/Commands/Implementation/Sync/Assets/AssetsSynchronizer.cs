@@ -45,45 +45,50 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 FilePathProvider = asset => asset.Id.GetBlobPath()
             };
 
-            var assets = new List<AssetModel>();
-            var assetBatch = 0;
-
-            async Task SaveAsync()
+            try
             {
-                var model = new AssetsModel
+                var assets = new List<AssetModel>();
+                var assetBatch = 0;
+
+                async Task SaveAsync()
                 {
-                    Assets = assets
-                };
+                    var model = new AssetsModel
+                    {
+                        Assets = assets
+                    };
 
-                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
-                {
-                    await sync.WriteWithSchema(new FilePath("assets", $"{assetBatch}.json"), model, Ref);
-                });
-            }
-
-            var tree = new FolderTree(session);
-
-            await session.Assets.GetAllAsync(session.App, async asset =>
-            {
-                assets.Add(await asset.ToModelAsync(tree));
-
-                if (assets.Count > 50)
-                {
-                    await SaveAsync();
-
-                    assets.Clear();
-                    assetBatch++;
+                    await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
+                    {
+                        await sync.WriteWithSchema(new FilePath("assets", $"{assetBatch}.json"), model, Ref);
+                    });
                 }
 
-                await downloadPipeline.DownloadAsync(asset);
-            });
+                var tree = new FolderTree(session);
 
-            if (assets.Count > 0)
-            {
-                await SaveAsync();
+                await session.Assets.GetAllAsync(session.App, async asset =>
+                {
+                    assets.Add(await asset.ToModelAsync(tree));
+
+                    if (assets.Count > 50)
+                    {
+                        await SaveAsync();
+
+                        assets.Clear();
+                        assetBatch++;
+                    }
+
+                    await downloadPipeline.DownloadAsync(asset);
+                });
+
+                if (assets.Count > 0)
+                {
+                    await SaveAsync();
+                }
             }
-
-            await downloadPipeline.CompleteAsync();
+            finally
+            {
+                await downloadPipeline.CompleteAsync();
+            }
         }
 
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
@@ -103,8 +108,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         FilePathProvider = asset => asset.Id.GetBlobPath()
                     };
 
-                    await uploader.UploadAsync(model.Assets);
-                    await uploader.CompleteAsync();
+                    try
+                    {
+                        foreach (var asset in model.Assets)
+                        {
+                            await uploader.UploadAsync(asset);
+                        }
+                    }
+                    finally
+                    {
+                        await uploader.CompleteAsync();
+                    }
 
                     var request = new BulkUpdateAssetsDto();
 

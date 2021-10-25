@@ -30,9 +30,9 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
         public IEnumerable<object> GetValues(DynamicContent entity)
         {
-            foreach (var field in mapping)
+            foreach (var (_, path, _) in mapping)
             {
-                var value = GetValue(entity, field.Path);
+                var value = GetValue(entity, path);
 
                 switch (value)
                 {
@@ -46,7 +46,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
                 if (value is string text)
                 {
-                    yield return text.Replace("\n", "\\n");
+                    yield return text.Replace("\n", "\\n", StringComparison.Ordinal);
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             {
                 if (current is JObject obj)
                 {
-                    if (obj.TryGetValue(key, out var temp))
+                    if (obj.TryGetValue(key, StringComparison.Ordinal, out var temp))
                     {
                         current = temp;
                     }

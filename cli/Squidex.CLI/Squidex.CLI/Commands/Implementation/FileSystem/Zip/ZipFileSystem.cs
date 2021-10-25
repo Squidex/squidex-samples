@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
         {
             string relativePath = GetRelativePath(path);
 
-            return new ZipFile(zipArchive, relativePath, path.Elements.Last(), FullName);
+            return new ZipFile(zipArchive, relativePath, path.Elements[^1], FullName);
         }
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)

@@ -13,7 +13,7 @@ namespace Squidex.CLI.Commands.Implementation
 
         void StepFailed(string reason);
 
-        void StepSuccess();
+        void StepSuccess(string details = null);
 
         void StepSkipped(string reason);
 

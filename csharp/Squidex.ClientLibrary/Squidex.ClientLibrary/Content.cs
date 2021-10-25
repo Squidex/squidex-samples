@@ -111,9 +111,9 @@ namespace Squidex.ClientLibrary
 
                 return (hrefParts[0], hrefParts[1]);
             }
-            catch
+            catch (Exception ex)
             {
-                throw new InvalidOperationException($"Link {self.Href} is malformed.");
+                throw new InvalidOperationException($"Link {self.Href} is malformed.", ex);
             }
         }
     }

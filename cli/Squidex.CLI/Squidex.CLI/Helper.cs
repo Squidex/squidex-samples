@@ -40,14 +40,12 @@ namespace Squidex.CLI
             return source ?? Enumerable.Empty<T>();
         }
 
-        public static Task WriteJsonAsync<T>(this Stream stream, T value)
+        public static async Task WriteJsonAsync<T>(this Stream stream, T value)
         {
-            using (var streamWriter = new StreamWriter(stream))
+            await using (var streamWriter = new StreamWriter(stream))
             {
                 Serializer.Serialize(streamWriter, value);
             }
-
-            return Task.CompletedTask;
         }
 
         public static async Task WriteJsonToFileAsync<T>(T value, string path)

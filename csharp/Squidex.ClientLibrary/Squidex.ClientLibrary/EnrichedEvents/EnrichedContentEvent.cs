@@ -86,14 +86,7 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// <returns>EnrichedContentEvent instance where Data and DataOld have type T.</returns>
         public EnrichedContentEvent<T> ToTyped<T>()
         {
-            var contentType = typeof(T);
-
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            var typedEvent = typeof(EnrichedContentEvent<>).MakeGenericType(contentType);
+            var typedEvent = typeof(EnrichedContentEvent<>).MakeGenericType(typeof(T));
 
             var obj = (EnrichedContentEvent<T>)Activator.CreateInstance(typedEvent);
 
@@ -104,12 +97,12 @@ namespace Squidex.ClientLibrary.EnrichedEvents
 
             if (Data != null)
             {
-                obj.Data = (T)Data.ToObject(contentType);
+                obj.Data = (T)Data.ToObject(typeof(T));
             }
 
             if (DataOld != null)
             {
-                obj.DataOld = (T)DataOld.ToObject(contentType);
+                obj.DataOld = (T)DataOld.ToObject(typeof(T));
             }
 
             return obj;

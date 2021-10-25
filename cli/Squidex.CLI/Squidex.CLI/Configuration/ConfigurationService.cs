@@ -131,7 +131,7 @@ namespace Squidex.CLI.Configuration
             sessionApp = entry;
         }
 
-        public ISession StartSession(bool emulate)
+        public ISession StartSession(bool emulate = false)
         {
             if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
             {

@@ -117,7 +117,7 @@ namespace Squidex.ClientLibrary.Management
                 return null;
             }
 
-            var discriminator = jObject.GetValue(DiscriminatorName).Value<string>();
+            var discriminator = jObject.GetValue(DiscriminatorName, StringComparison.Ordinal).Value<string>();
 
             var subtype = GetObjectSubtype(objectType, discriminator);
 

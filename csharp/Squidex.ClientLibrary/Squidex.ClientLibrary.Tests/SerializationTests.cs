@@ -51,7 +51,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("2012-11-10T09:08:07Z", serialized);
+            Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("2012-11-10T09:08:07Z", serialized);
+            Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("2012-11-10T09:08:07Z", serialized);
+            Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("2012-11-10T09:08:07Z", serialized);
+            Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("2010-12-29T13:32:27Z", serialized);
+            Assert.Contains("2010-12-29T13:32:27Z", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -124,7 +124,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"doNotScript\": false", serialized);
+            Assert.Contains("\"doNotScript\": false", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"type\": \"ChangeStatus\"", serialized);
+            Assert.Contains("\"type\": \"ChangeStatus\"", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"iv\": \"hello\"", serialized);
+            Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"Property1\": {}", serialized);
+            Assert.Contains("\"Property1\": {}", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -206,7 +206,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"value\": \"hello\"", serialized);
+            Assert.Contains("\"value\": \"hello\"", serialized, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace Squidex.ClientLibrary.Tests
 
             var serialized = source.ToJson();
 
-            Assert.Contains("\"Value\": \"hello\"", serialized);
+            Assert.Contains("\"Value\": \"hello\"", serialized, StringComparison.Ordinal);
         }
     }
 }

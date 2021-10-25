@@ -32,7 +32,7 @@ namespace Squidex.CLI.Tests
                         MaxValue = maxValue
                     });
 
-            var dates = values.Select(x => (DateTime)x);
+            var dates = values.Cast<DateTime>();
 
             var min = dates.Min();
             var max = dates.Max();
@@ -58,7 +58,7 @@ namespace Squidex.CLI.Tests
                         MaxValue = maxValue
                     });
 
-            var dates = values.Select(x => (DateTime)x);
+            var dates = values.Cast<DateTime>();
 
             var min = dates.Min();
             var max = dates.Max();
@@ -84,7 +84,7 @@ namespace Squidex.CLI.Tests
                         MaxValue = null
                     });
 
-            var dates = values.Select(x => (DateTime)x);
+            var dates = values.Cast<DateTime>();
 
             var min = dates.Min();
             var max = dates.Max();
@@ -108,7 +108,7 @@ namespace Squidex.CLI.Tests
                         Editor = DateTimeFieldEditor.DateTime
                     });
 
-            var dates = values.Select(x => (DateTime)x);
+            var dates = values.Cast<DateTime>();
 
             var min = dates.Min();
             var max = dates.Max();
@@ -129,7 +129,7 @@ namespace Squidex.CLI.Tests
                 CreateManyScalars(
                     new DateTimeFieldPropertiesDto());
 
-            var dates = values.Select(x => (DateTime)x);
+            var dates = values.Cast<DateTime>();
 
             var min = dates.Min();
             var max = dates.Max();
@@ -195,7 +195,7 @@ namespace Squidex.CLI.Tests
                         MaxValue = 550
                     });
 
-            var numbers = values.Select(x => (double)x);
+            var numbers = values.Cast<double>();
 
             var min = numbers.Min();
             var max = numbers.Max();
@@ -214,7 +214,7 @@ namespace Squidex.CLI.Tests
                         MaxValue = 550
                     });
 
-            var numbers = values.Select(x => (double)x);
+            var numbers = values.Cast<double>();
 
             var min = numbers.Min();
             var max = numbers.Max();
@@ -233,7 +233,7 @@ namespace Squidex.CLI.Tests
                         MinValue = 120
                     });
 
-            var numbers = values.Select(x => (double)x);
+            var numbers = values.Cast<double>();
 
             var min = numbers.Min();
             var max = numbers.Max();
@@ -249,7 +249,7 @@ namespace Squidex.CLI.Tests
                 CreateManyScalars(
                     new NumberFieldPropertiesDto());
 
-            var numbers = values.Select(x => (double)x);
+            var numbers = values.Cast<double>();
 
             var min = numbers.Min();
             var max = numbers.Max();
@@ -366,7 +366,7 @@ namespace Squidex.CLI.Tests
                         Editor = StringFieldEditor.Color
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.True(strings.All(x => x.StartsWith("#", StringComparison.OrdinalIgnoreCase) && x.Length == 7));
         }
@@ -381,7 +381,7 @@ namespace Squidex.CLI.Tests
                         MaxLength = 20
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.Equal(new[] { 20 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
@@ -396,7 +396,7 @@ namespace Squidex.CLI.Tests
                         MaxLength = 2
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.Equal(new[] { 2 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
@@ -411,7 +411,7 @@ namespace Squidex.CLI.Tests
                         Editor = StringFieldEditor.Input
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.Equal(new[] { 100 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
@@ -426,7 +426,7 @@ namespace Squidex.CLI.Tests
                         Editor = StringFieldEditor.Markdown
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.Equal(new[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
@@ -441,7 +441,7 @@ namespace Squidex.CLI.Tests
                         Editor = StringFieldEditor.Markdown
                     });
 
-            var strings = values.Select(x => (string)x);
+            var strings = values.Cast<string>();
 
             Assert.Equal(new[] { 1000 }, strings.Select(x => x.Length).Distinct().ToArray());
         }
@@ -458,7 +458,7 @@ namespace Squidex.CLI.Tests
                         Editor = StringFieldEditor.Slug
                     });
 
-            var strings = values.Select(x => (string)x).Distinct();
+            var strings = values.Cast<string>().Distinct();
 
             Assert.Equal(new[] { "lorem-ipsum-dolorxxx" }, strings);
         }

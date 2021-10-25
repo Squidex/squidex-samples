@@ -46,9 +46,16 @@ namespace Squidex.CLI.Commands.Implementation
             Console.Write(message);
         }
 
-        public void StepSuccess()
+        public void StepSuccess(string details = null)
         {
-            Console.WriteLine("succeeded.");
+            if (!string.IsNullOrWhiteSpace(details))
+            {
+                Console.WriteLine($"succeeded ({details}).");
+            }
+            else
+            {
+                Console.WriteLine("succeeded.");
+            }
         }
 
         public void StepSkipped(string reason)

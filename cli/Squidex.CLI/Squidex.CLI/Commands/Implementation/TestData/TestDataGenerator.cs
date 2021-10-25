@@ -183,7 +183,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
                         if (stringField.Editor == StringFieldEditor.Slug)
                         {
-                            result = slugify.GenerateSlug(result).Replace(".", "x");
+                            result = slugify.GenerateSlug(result).Replace(".", "x", StringComparison.Ordinal);
                         }
 
                         return result;
