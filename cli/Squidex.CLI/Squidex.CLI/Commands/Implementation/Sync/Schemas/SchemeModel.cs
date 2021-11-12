@@ -9,14 +9,8 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public sealed class SchemeModel
+    public sealed class SchemeModel : SchemaCreateModel
     {
-        public string Name { get; set; }
-
-        public bool IsSingleton { get; set; }
-
-        public SchemaType SchemaType { get; set; }
-
         public SynchronizeSchemaDto Schema { get; set; }
     }
 }

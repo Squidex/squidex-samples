@@ -17,7 +17,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         {
             var isSingleton = model.IsSingleton;
 
-            var type = model.Type;
+            var type = model.SchemaType;
 
             if (model.IsSingleton && type == SchemaType.Default)
             {
