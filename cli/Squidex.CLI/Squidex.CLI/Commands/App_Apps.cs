@@ -35,7 +35,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var apps = await session.Apps.GetAppsAsync();
 
@@ -59,9 +59,9 @@ namespace Squidex.CLI.Commands
             [Command(Name = "create", Description = "Creates a squidex app.")]
             public async Task Create(CreateArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
-                var name = arguments.Name;
+                var name = arguments.App;
 
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -79,7 +79,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ListArguments : IArgumentModel
+            public sealed class ListArguments : AppArguments
             {
                 [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
                 public bool Table { get; set; }
@@ -90,11 +90,8 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class CreateArguments : IArgumentModel
+            public sealed class CreateArguments : AppArguments
             {
-                [Operand(Name = "name", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
-                public string Name { get; set; }
-
                 public sealed class Validator : AbstractValidator<CreateArguments>
                 {
                 }

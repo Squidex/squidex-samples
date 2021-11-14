@@ -41,7 +41,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var schemas = await session.Schemas.GetSchemasAsync(session.App);
 
@@ -65,7 +65,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var schema = await session.Schemas.GetSchemaAsync(session.App, arguments.Name);
 
@@ -86,7 +86,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var schemaText = string.Empty;
                 var schemaName = arguments.Name;
@@ -167,7 +167,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ListArguments : IArgumentModel
+            public sealed class ListArguments : AppArguments
             {
                 [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
                 public bool Table { get; set; }
@@ -178,7 +178,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class GetArguments : IArgumentModel
+            public sealed class GetArguments : AppArguments
             {
                 [Operand(Name = "name", Description = "The name of the schema.")]
                 public string Name { get; set; }
@@ -196,7 +196,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class SyncArguments : IArgumentModel
+            public sealed class SyncArguments : AppArguments
             {
                 [Operand(Name = "file", Description = "The file with the schema json.")]
                 public string File { get; set; }

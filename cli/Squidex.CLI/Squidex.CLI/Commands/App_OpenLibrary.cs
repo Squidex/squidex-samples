@@ -36,9 +36,9 @@ namespace Squidex.CLI.Commands
             }
 
             [Command(Name = "generate", Description = "Generate the necessary schemas.")]
-            public async Task New()
+            public async Task New(NewArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 await synchronizer.ImportAsync("assembly://Squidex.CLI.Commands.Implementation.OpenLibrary.Structure", new SyncOptions
                 {
@@ -55,7 +55,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "authors", Description = "Import the authors.")]
             public async Task Authors(ImportArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 using (var stream = new FileStream(arguments.File, FileMode.Open))
                 {
@@ -68,7 +68,15 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ImportArguments : IArgumentModel
+            public sealed class NewArguments : AppArguments
+            {
+                public sealed class Validator : AbstractValidator<NewArguments>
+                {
+                }
+            }
+
+            [Validator(typeof(Validator))]
+            public sealed class ImportArguments : AppArguments
             {
                 [Operand(Name = "file", Description = "The data dump file.")]
                 public string File { get; set; }

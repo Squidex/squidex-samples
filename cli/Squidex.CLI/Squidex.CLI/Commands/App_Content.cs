@@ -45,7 +45,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "test-data", Description = "Generates test data.")]
             public async Task TestData(TestDataArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var taskForSchema = session.Schemas.GetSchemaAsync(session.App, arguments.Schema);
                 var taskForLanguages = session.Apps.GetLanguagesAsync(session.App);
@@ -88,7 +88,7 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Import(ImportArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 if (arguments.Format == Format.JSON)
                 {
@@ -141,7 +141,7 @@ namespace Squidex.CLI.Commands
 ")]
             public async Task Export(ExportArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 string OpenFile(string extension)
                 {
@@ -291,7 +291,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ImportArguments : IImportSettings, IArgumentModel
+            public sealed class ImportArguments : AppArguments, IImportSettings
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
@@ -328,7 +328,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ExportArguments : IExportSettings, IArgumentModel
+            public sealed class ExportArguments : AppArguments, IExportSettings
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
@@ -379,7 +379,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class TestDataArguments : IImportSettings, IArgumentModel
+            public sealed class TestDataArguments : AppArguments, IImportSettings
             {
                 [Operand(Name = "schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }

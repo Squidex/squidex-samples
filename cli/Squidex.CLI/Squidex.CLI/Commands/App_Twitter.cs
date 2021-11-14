@@ -88,7 +88,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class AuthArguments : IArgumentModel
+            public sealed class AuthArguments : AppArguments
             {
                 [Option(LongName = "clientId")]
                 public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
@@ -107,7 +107,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class TokenArguments : IArgumentModel
+            public sealed class TokenArguments : AppArguments
             {
                 [Operand(Name = "pin", Description = "The pin from the auth request.")]
                 public string PinCode { get; set; }

@@ -43,7 +43,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 var selectedSynchronizers = GetSynchronizers(options.Targets);
                 var selectedCount = selectedSynchronizers.Count;
 
-                WriteSummary(fs, selectedSynchronizers);
+                WriteSummary(fs, session, "->", selectedSynchronizers);
 
                 var sync = new SyncService(fs);
 
@@ -76,7 +76,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 var selectedSynchronizers = GetSynchronizers(options.Targets);
                 var selectedCount = selectedSynchronizers.Count;
 
-                WriteSummary(fs, selectedSynchronizers);
+                WriteSummary(fs, session, "<-", selectedSynchronizers);
 
                 var sync = new SyncService(fs);
 
@@ -96,9 +96,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        private void WriteSummary(IFileSystem fs, List<ISynchronizer> selectedSynchronizers)
+        private void WriteSummary(IFileSystem fs, ISession session, string direction, List<ISynchronizer> selectedSynchronizers)
         {
-            log.WriteLine("Synchronizing from {0}", fs.FullName);
+            log.WriteLine("Synchronizing app:'{0}' {1} {2}", session.App, direction, fs.FullName);
             log.WriteLine();
             log.WriteLine("Executing the following steps");
 

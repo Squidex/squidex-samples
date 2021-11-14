@@ -216,21 +216,36 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
         {
             if (properties is ReferencesFieldPropertiesDto references)
             {
-                if (references.SchemaIds != null && references.SchemaIds.Any())
+                references.SchemaIds = MapReferences(references.SchemaIds, map);
+            }
+            else if (properties is ComponentFieldPropertiesDto component)
+            {
+                component.SchemaIds = MapReferences(component.SchemaIds, map);
+            }
+            else if (properties is ComponentsFieldPropertiesDto components)
+            {
+                components.SchemaIds = MapReferences(components.SchemaIds, map);
+            }
+        }
+
+        private static List<string> MapReferences(List<string> ids, Dictionary<string, string> map)
+        {
+            if (ids == null || ids.Count == 0)
+            {
+                return ids;
+            }
+
+            var result = new List<string>();
+
+            foreach (var id in ids)
+            {
+                if (map.TryGetValue(id, out var target))
                 {
-                    var names = new List<string>();
-
-                    foreach (var id in references.SchemaIds)
-                    {
-                        if (map.TryGetValue(id, out var target))
-                        {
-                            names.Add(target);
-                        }
-                    }
-
-                    references.SchemaIds = names;
+                    result.Add(target);
                 }
             }
+
+            return result;
         }
     }
 }

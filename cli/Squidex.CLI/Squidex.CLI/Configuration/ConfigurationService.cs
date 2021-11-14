@@ -20,7 +20,6 @@ namespace Squidex.CLI.Configuration
         private const string CloudUrl = "https://cloud.squidex.io";
         private readonly JsonSerializer jsonSerializer = new JsonSerializer();
         private readonly Configuration configuration;
-        private string sessionApp;
 
         public ConfigurationService()
         {
@@ -126,14 +125,9 @@ namespace Squidex.CLI.Configuration
             Save();
         }
 
-        public void UseAppInSession(string entry)
+        public ISession StartSession(string appName, bool emulate = false)
         {
-            sessionApp = entry;
-        }
-
-        public ISession StartSession(bool emulate = false)
-        {
-            if (!string.IsNullOrWhiteSpace(sessionApp) && configuration.Apps.TryGetValue(sessionApp, out var app))
+            if (!string.IsNullOrWhiteSpace(appName) && configuration.Apps.TryGetValue(appName, out var app))
             {
                 var options = CreateOptions(app, emulate);
 

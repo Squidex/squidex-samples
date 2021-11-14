@@ -21,8 +21,6 @@ namespace Squidex.CLI.Configuration
 
         void UseApp(string entry);
 
-        void UseAppInSession(string entry);
-
-        ISession StartSession(bool emulate = false);
+        ISession StartSession(string app, bool emulate = false);
     }
 }

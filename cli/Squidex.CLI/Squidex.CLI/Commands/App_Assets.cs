@@ -42,7 +42,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "import", Description = "Import all files from the source folder.")]
             public async Task Import(ImportArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var assets = session.Assets;
 
@@ -120,7 +120,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "export", Description = "Export all files to the source folder.")]
             public async Task Export(ImportArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var assets = session.Assets;
 
@@ -173,7 +173,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ImportArguments : IArgumentModel
+            public sealed class ImportArguments : AppArguments
             {
                 [Operand(Name = "folder", Description = "The source folder.")]
                 public string Path { get; set; }
@@ -194,7 +194,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class ExportArguments : IArgumentModel
+            public sealed class ExportArguments : AppArguments
             {
                 [Operand(Name = "folder", Description = "The source folder.")]
                 public string Path { get; set; }

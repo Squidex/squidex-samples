@@ -38,7 +38,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 var backupStarted = DateTime.UtcNow.AddMinutes(-5);
 
@@ -97,7 +97,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class CreateArguments : IArgumentModel
+            public sealed class CreateArguments: AppArguments
             {
                 [Operand(Name = "file", Description = "The target file.")]
                 public string File { get; set; }

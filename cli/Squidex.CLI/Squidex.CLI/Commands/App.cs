@@ -26,5 +26,11 @@ namespace Squidex.CLI.Commands
 
             log.WriteLine($"Squidex CLI v{version}, API Compatibility >= 4.X");
         }
+
+        public abstract class AppArguments : IArgumentModel
+        {
+            [Option(LongName = "app", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
+            public string App { get; set; }
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "out", Description = "Exports the app to a folder")]
             public async Task Out(OutArguments arguments)
             {
-                var session = configuration.StartSession();
+                var session = configuration.StartSession(arguments.App);
 
                 await synchronizer.ExportAsync(arguments.Folder, arguments.ToOptions(), session);
 
@@ -54,7 +54,7 @@ namespace Squidex.CLI.Commands
             [Command(Name = "in", Description = "Imports the app from a folder")]
             public async Task In(InArguments arguments)
             {
-                var session = configuration.StartSession(arguments.Emulate);
+                var session = configuration.StartSession(arguments.App, arguments.Emulate);
 
                 await synchronizer.ImportAsync(arguments.Folder, arguments.ToOptions(), session);
 
@@ -71,7 +71,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class NewArgument : IArgumentModel
+            public sealed class NewArgument : AppArguments
             {
                 [Operand(Name = "folder", Description = "The target folder to create the templates.")]
                 public string Folder { get; set; }
@@ -86,7 +86,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class InArguments : IArgumentModel
+            public sealed class InArguments : AppArguments
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
@@ -118,7 +118,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class OutArguments : IArgumentModel
+            public sealed class OutArguments : AppArguments
             {
                 [Operand(Name = "folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
