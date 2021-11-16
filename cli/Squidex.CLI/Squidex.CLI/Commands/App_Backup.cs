@@ -53,7 +53,7 @@ namespace Squidex.CLI.Commands
                     while (!tcs.Token.IsCancellationRequested)
                     {
                         var backups = await session.Backups.GetBackupsAsync(session.App, tcs.Token);
-                        var backup = backups.Items.FirstOrDefault(x => x.Started >= backupStarted);
+                        var backup = backups.Items.Find(x => x.Started >= backupStarted);
 
                         if (backup?.Stopped != null)
                         {
@@ -97,7 +97,7 @@ namespace Squidex.CLI.Commands
             }
 
             [Validator(typeof(Validator))]
-            public sealed class CreateArguments: AppArguments
+            public sealed class CreateArguments : AppArguments
             {
                 [Operand(Name = "file", Description = "The target file.")]
                 public string File { get; set; }

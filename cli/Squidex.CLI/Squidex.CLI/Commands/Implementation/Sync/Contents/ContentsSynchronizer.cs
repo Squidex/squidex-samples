@@ -40,6 +40,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
             var context = QueryContext.Default.Unpublished().IgnoreFallback();
 
@@ -65,6 +66,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 await client.GetAllAsync(async content =>
                 {
+                    content.MapComponents(schemaMap);
+
                     contents.Add(content.ToModel(schema.Name));
 
                     if (contents.Count > 50)
@@ -90,6 +93,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                     .Select(x => (x, sync.Read<ContentsModel>(x, log)));
 
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
 
             foreach (var (file, model) in models)
             {
@@ -97,7 +101,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 {
                     model.Clear(options.Languages);
 
-                    var client = session.Contents(model.Contents.First().Schema);
+                    foreach (var content in model.Contents)
+                    {
+                        content.MapComponents(schemaMap);
+                    }
+
+                    var client = session.Contents(model.Contents[0].Schema);
 
                     var request = new BulkUpdate
                     {
@@ -115,7 +124,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     foreach (var content in model.Contents)
                     {
-                        var result = results.FirstOrDefault(x => x.JobIndex == contentIndex);
+                        var result = results.Find(x => x.JobIndex == contentIndex);
 
                         log.StepStart($"Upserting #{contentIndex}");
 

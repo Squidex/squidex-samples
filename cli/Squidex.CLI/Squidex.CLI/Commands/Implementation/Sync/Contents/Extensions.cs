@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -20,7 +21,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             var id = model.Id;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            var singleton = schemas.Items.FirstOrDefault(x => x.Name == model.Schema && x.IsSingleton);
+            var singleton = schemas.Items.Find(x => x.Name == model.Schema && x.IsSingleton);
 #pragma warning restore CS0618 // Type or member is obsolete
             if (singleton != null)
             {
@@ -46,6 +47,52 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 Status = content.Status,
                 Schema = schema
             };
+        }
+
+        public static void MapComponents(this DynamicContent content, Dictionary<string, string> map)
+        {
+            MapComponents(content.Data, map);
+        }
+
+        public static void MapComponents(this ContentModel content, Dictionary<string, string> map)
+        {
+            MapComponents(content.Data, map);
+        }
+
+        private static void MapComponents(this DynamicData data, Dictionary<string, string> map)
+        {
+            static void Map(JToken token, Dictionary<string, string> map)
+            {
+                if (token is JObject obj)
+                {
+                    foreach (var value in obj.Values())
+                    {
+                        Map(value, map);
+                    }
+
+                    if (!obj.TryGetValue(Component.Discriminator, StringComparison.Ordinal, out var schemaId))
+                    {
+                        return;
+                    }
+
+                    if (schemaId.Type == JTokenType.String && map.TryGetValue(schemaId.Value<string>(), out var target))
+                    {
+                        obj[Component.Discriminator] = target;
+                    }
+                }
+                else if (token is JArray array)
+                {
+                    foreach (var value in array)
+                    {
+                        Map(value, map);
+                    }
+                }
+            }
+
+            foreach (var field in data.Values)
+            {
+                Map(field, map);
+            }
         }
 
         public static void Clear(this ContentsModel model, string[] languages)

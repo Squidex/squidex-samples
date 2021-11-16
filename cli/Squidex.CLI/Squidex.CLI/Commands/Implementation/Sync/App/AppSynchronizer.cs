@@ -143,7 +143,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (clientId, _) in model.Clients)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
+                var existing = current.Items.Find(x => x.Id == clientId);
 
                 if (existing != null)
                 {
@@ -160,7 +160,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (clientId, value) in model.Clients)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Id == clientId);
+                var existing = current.Items.Find(x => x.Id == clientId);
 
                 if (existing == null || value.JsonEquals(existing))
                 {
@@ -198,7 +198,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (isoCode, _) in model.Languages)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
+                var existing = current.Items.Find(x => x.Iso2Code == isoCode);
 
                 if (existing != null)
                 {
@@ -215,7 +215,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (isoCode, value) in model.Languages)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Iso2Code == isoCode);
+                var existing = current.Items.Find(x => x.Iso2Code == isoCode);
 
                 if (existing == null || value.JsonEquals(existing))
                 {
@@ -256,7 +256,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (roleName, _) in model.Roles)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
+                var existing = current.Items.Find(x => x.Name == roleName);
 
                 if (existing != null)
                 {
@@ -273,7 +273,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             foreach (var (roleName, value) in model.Roles)
             {
-                var existing = current.Items.FirstOrDefault(x => x.Name == roleName);
+                var existing = current.Items.Find(x => x.Name == roleName);
 
                 if (existing == null || value.JsonEquals(existing))
                 {

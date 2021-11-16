@@ -116,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
 
                     var created = await session.Apps.PostWorkflowAsync(session.App, request);
 
-                    workflowsByName[workflow.Name] = created.Items.FirstOrDefault(x => x.Name == workflow.Name);
+                    workflowsByName[workflow.Name] = created.Items.Find(x => x.Name == workflow.Name);
                 });
             }
 

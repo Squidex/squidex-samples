@@ -52,7 +52,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 {
                     var details = await session.Schemas.GetSchemaAsync(session.App, schema.Name);
 
-                    var model = new SchemeModel
+                    var model = new SchemaModel
                     {
                         Name = schema.Name,
                         Schema = sync.Convert<SynchronizeSchemaDto>(details),
@@ -60,7 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                         IsSingleton = details.IsSingleton
                     };
 
-                    MapReferences(model.Schema, schemaMap);
+                    model.Schema.MapReferences(schemaMap);
 
                     await sync.WriteWithSchema(new FilePath($"schemas", $"{schema.Name}.json"), model, Ref);
                 });
@@ -117,12 +117,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
             var models =
                 GetSchemaFiles(sync.FileSystem)
-                    .Select(x => sync.Read<SchemeModel>(x, log))
+                    .Select(x => sync.Read<SchemaModel>(x, log))
                     .ToList();
 
             foreach (var model in models)
             {
-                MapReferences(model.Schema, schemaMap);
+                model.Schema.MapReferences(schemaMap);
 
                 var version = schemasByName[model.Name].Version;
 
@@ -158,9 +158,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
         public async Task GenerateSchemaAsync(ISyncService sync)
         {
-            await sync.WriteJsonSchemaAsync<SchemeModel>(new FilePath("schema.json"));
+            await sync.WriteJsonSchemaAsync<SchemaModel>(new FilePath("schema.json"));
 
-            var sample = new SchemeModel
+            var sample = new SchemaModel
             {
                 Name = "my-schema",
                 Schema = new SynchronizeSchemaDto
@@ -186,66 +186,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             };
 
             await sync.WriteWithSchema(new FilePath("schemas", "__schema.json"), sample, Ref);
-        }
-
-        private static void MapReferences(SynchronizeSchemaDto schema, Dictionary<string, string> map)
-        {
-            if (schema.Fields != null)
-            {
-                foreach (var field in schema.Fields)
-                {
-                    MapReferences(field, map);
-                }
-            }
-        }
-
-        private static void MapReferences(UpsertSchemaFieldDto field, Dictionary<string, string> map)
-        {
-            MapReferences(field.Properties, map);
-
-            if (field.Nested != null)
-            {
-                foreach (var nested in field.Nested)
-                {
-                    MapReferences(nested.Properties, map);
-                }
-            }
-        }
-
-        private static void MapReferences(FieldPropertiesDto properties, Dictionary<string, string> map)
-        {
-            if (properties is ReferencesFieldPropertiesDto references)
-            {
-                references.SchemaIds = MapReferences(references.SchemaIds, map);
-            }
-            else if (properties is ComponentFieldPropertiesDto component)
-            {
-                component.SchemaIds = MapReferences(component.SchemaIds, map);
-            }
-            else if (properties is ComponentsFieldPropertiesDto components)
-            {
-                components.SchemaIds = MapReferences(components.SchemaIds, map);
-            }
-        }
-
-        private static List<string> MapReferences(List<string> ids, Dictionary<string, string> map)
-        {
-            if (ids == null || ids.Count == 0)
-            {
-                return ids;
-            }
-
-            var result = new List<string>();
-
-            foreach (var id in ids)
-            {
-                if (map.TryGetValue(id, out var target))
-                {
-                    result.Add(target);
-                }
-            }
-
-            return result;
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
 
             if (sb.Length == 0)
             {
-                return Words[0].Substring(0, maxCharacters);
+                return Words[0][..maxCharacters];
             }
 
             while (sb.Length < maxCharacters)

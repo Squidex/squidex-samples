@@ -9,7 +9,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public sealed class SchemeModel : SchemaCreateModel
+    public sealed class SchemaModel : SchemaCreateModel
     {
         public SynchronizeSchemaDto Schema { get; set; }
     }

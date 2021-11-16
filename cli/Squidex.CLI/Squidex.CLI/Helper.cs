@@ -81,7 +81,9 @@ namespace Squidex.CLI
             }
             else
             {
-                return value.Substring(0, maxLength - 3) + "...";
+                var length = maxLength - 3;
+
+                return value[..maxLength] + "...";
             }
         }
     }

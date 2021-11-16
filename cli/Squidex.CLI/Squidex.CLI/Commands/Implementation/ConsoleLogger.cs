@@ -37,7 +37,9 @@ namespace Squidex.CLI.Commands.Implementation
         {
             if (message.Length > MaxActionLength - 3)
             {
-                message = message.Substring(0, MaxActionLength - 3);
+                var length = MaxActionLength - 3;
+
+                message = message[..length];
             }
 
             message += "...";
