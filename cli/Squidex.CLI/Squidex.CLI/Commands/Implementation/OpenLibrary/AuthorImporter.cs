@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 

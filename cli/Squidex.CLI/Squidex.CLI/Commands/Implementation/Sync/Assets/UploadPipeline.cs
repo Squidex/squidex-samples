@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
@@ -71,14 +70,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                         var result = await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
 
-                        if (string.Equals(asset.FileHash, result.FileHash, StringComparison.Ordinal))
-                        {
-                            log.ProcessSkipped(process, "Same hash.");
-                        }
-                        else
-                        {
-                            log.ProcessCompleted(process);
-                        }
+                        log.ProcessCompleted(process);
                     }
                 }
                 catch (Exception ex)
@@ -108,7 +100,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public Task CompleteAsync()
         {
-            pipelineEnd.Complete();
+            pipelineStart.Complete();
 
             return pipelineEnd.Completion;
         }

@@ -6,8 +6,6 @@
 // ==========================================================================
 
 using System;
-using System.IO;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
@@ -111,7 +109,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public Task CompleteAsync()
         {
-            pipelineEnd.Complete();
+            pipelineStart.Complete();
 
             return pipelineEnd.Completion;
         }

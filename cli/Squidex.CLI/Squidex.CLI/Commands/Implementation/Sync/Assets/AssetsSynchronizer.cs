@@ -99,6 +99,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
             var tree = new FolderTree(session);
 
+            var batchIndex = 0;
+
             foreach (var (_, model) in models)
             {
                 if (model?.Assets?.Count > 0)
@@ -140,7 +142,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));
                         var result2 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2) + 1);
 
-                        log.StepStart($"Upserting #{assetIndex}");
+                        log.StepStart($"Upserting #{batchIndex}/{assetIndex}");
 
                         if (result1?.Error != null)
                         {
@@ -162,6 +164,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         assetIndex++;
                     }
                 }
+
+                batchIndex++;
             }
         }
 
