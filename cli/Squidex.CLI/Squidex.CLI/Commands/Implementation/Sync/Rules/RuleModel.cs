@@ -8,7 +8,6 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Rules
@@ -33,25 +32,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
             {
                 Action = new DynamicRuleAction(JObject.FromObject(value));
             }
-        }
-
-        public UpdateExtendableRuleDto ToUpdate()
-        {
-            return new UpdateExtendableRuleDto
-            {
-                Action = Action,
-                Trigger = Trigger,
-                Name = Name
-            };
-        }
-
-        public CreateExtendableRuleDto ToCreate()
-        {
-            return new CreateExtendableRuleDto
-            {
-                Action = Action,
-                Trigger = Trigger
-            };
         }
     }
 }

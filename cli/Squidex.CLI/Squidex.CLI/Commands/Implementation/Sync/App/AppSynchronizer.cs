@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
@@ -44,11 +45,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
                 foreach (var client in clients.Items)
                 {
-                    model.Clients[client.Name] = new AppClientModel
-                    {
-                        Name = client.Name,
-                        Role = client.Role
-                    };
+                    model.Clients[client.Name] = client.ToModel();
                 }
             });
 
@@ -60,12 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
                 foreach (var language in languages.Items)
                 {
-                    model.Languages[language.Iso2Code] = new UpdateLanguageDto
-                    {
-                        Fallback = language.Fallback,
-                        IsMaster = language.IsMaster,
-                        IsOptional = language.IsOptional
-                    };
+                    model.Languages[language.Iso2Code] = language.ToModel();
                 }
             });
 
@@ -77,10 +69,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
                 foreach (var role in roles.Items)
                 {
-                    model.Roles[role.Name] = new AppRoleModel
-                    {
-                        Permissions = role.Permissions
-                    };
+                    model.Roles[role.Name] = role.ToModel();
                 }
             });
 
@@ -128,7 +117,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 {
                     var generatedClientId = $"{session.App}:{client.Id}";
 
-                    if (model.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId))
+                    if (model.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId, StringComparison.Ordinal))
                     {
                         continue;
                     }
@@ -157,18 +146,23 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (clientId, value) in model.Clients)
+            foreach (var (clientId, client) in model.Clients)
             {
                 var existing = current.Items.Find(x => x.Id == clientId);
 
-                if (existing == null || value.JsonEquals(existing))
+                if (existing == null || client.JsonEquals(existing))
+                {
+                    continue;
+                }
+
+                if (!options.UpdateCurrentClient && session.ClientId.Equals(clientId, StringComparison.Ordinal))
                 {
                     continue;
                 }
 
                 await log.DoSafeAsync($"Client '{clientId}' updating", async () =>
                 {
-                    var request = new UpdateClientDto { Role = value.Role };
+                    var request = client.ToUpdate();
 
                     await session.Apps.PutClientAsync(session.App, clientId, request);
                 });
@@ -212,20 +206,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (isoCode, value) in model.Languages)
+            foreach (var (isoCode, language) in model.Languages)
             {
                 var existing = current.Items.Find(x => x.Iso2Code == isoCode);
 
-                if (existing == null || value.JsonEquals(existing))
+                if (existing == null || language.JsonEquals(existing))
                 {
                     continue;
                 }
 
                 await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
                 {
-                    var request = value;
-
-                    await session.Apps.PutLanguageAsync(session.App, isoCode, request);
+                    await session.Apps.PutLanguageAsync(session.App, isoCode, language);
                 });
             }
         }
@@ -270,18 +262,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 });
             }
 
-            foreach (var (roleName, value) in model.Roles)
+            foreach (var (roleName, role) in model.Roles)
             {
                 var existing = current.Items.Find(x => x.Name == roleName);
 
-                if (existing == null || value.JsonEquals(existing))
+                if (existing == null || role.JsonEquals(existing))
                 {
                     continue;
                 }
 
                 await log.DoSafeAsync($"Role '{roleName}' updating", async () =>
                 {
-                    var request = new UpdateRoleDto { Permissions = value.Permissions };
+                    var request = role.ToUpdate();
 
                     await session.Apps.PutRoleAsync(session.App, roleName, request);
                 });

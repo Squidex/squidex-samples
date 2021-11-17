@@ -128,8 +128,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     {
                         var parentId = await tree.GetIdAsync(asset.FolderPath);
 
-                        request.Jobs.Add(asset.ToMoveJob(parentId));
-                        request.Jobs.Add(asset.ToAnnotateJob());
+                        request.Jobs.Add(asset.ToMove(parentId));
+                        request.Jobs.Add(asset.ToAnnotate());
                     }
 
                     var assetIndex = 0;

@@ -16,7 +16,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public static class Extensions
     {
-        public static BulkUpdateJob ToJob(this ContentModel model, SchemasDto schemas)
+        public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas)
         {
             var id = model.Id;
 

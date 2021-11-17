@@ -129,7 +129,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         {
             await using (var stream = file.OpenWrite())
             {
-                using (var textWriter = new StreamWriter(stream))
+                await using (var textWriter = new StreamWriter(stream))
                 {
                     var jsonSchema = GetSchema<T>();
                     var jsonSchemaType = jsonSchemaGeneratorSettings.SchemaType;
@@ -140,7 +140,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                         JsonSchema.CreateJsonSerializerContractResolver(jsonSchemaType),
                         Formatting.Indented);
 
-                    textWriter.Write(json);
+                    await textWriter.WriteAsync(json);
                 }
             }
         }

@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
         {
             var relativePath = GetRelativePath(path);
 
-            return new EmbeddedFile(assembly, path.Elements.Last(), relativePath, path.ToString());
+            return new EmbeddedFile(assembly, path.Elements[^1], relativePath, path.ToString());
         }
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)

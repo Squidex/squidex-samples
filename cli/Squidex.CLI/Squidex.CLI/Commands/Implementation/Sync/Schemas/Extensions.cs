@@ -14,7 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
     public static class Extensions
     {
-        public static CreateSchemaDto ToRequest(this SchemaCreateModel model)
+        public static CreateSchemaDto ToCreate(this SchemaCreateModel model)
         {
             var isSingleton = model.IsSingleton;
 

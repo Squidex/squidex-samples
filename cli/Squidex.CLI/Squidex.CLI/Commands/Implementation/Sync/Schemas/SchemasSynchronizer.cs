@@ -107,7 +107,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
                 await log.DoSafeAsync($"Schema {model.Name} creating", async () =>
                 {
-                    var created = await session.Schemas.PostSchemaAsync(session.App, model.ToRequest());
+                    var created = await session.Schemas.PostSchemaAsync(session.App, model.ToCreate());
 
                     schemasByName[model.Name] = created;
                 });

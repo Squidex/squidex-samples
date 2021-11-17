@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands
             {
                 var session = configuration.StartSession(arguments.App);
 
-                using (var stream = new FileStream(arguments.File, FileMode.Open))
+                await using (var stream = new FileStream(arguments.File, FileMode.Open))
                 {
                     var importer = new AuthorImporter(session);
 

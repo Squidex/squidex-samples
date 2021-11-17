@@ -74,30 +74,31 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
-        public static BulkUpdateAssetsJobDto ToMoveJob(this AssetModel model, string parentId)
+        public static BulkUpdateAssetsJobDto ToMove(this AssetModel model, string parentId)
         {
-            return new BulkUpdateAssetsJobDto
-            {
-                Id = model.Id,
-                Type = BulkUpdateAssetType.Move,
-                ParentId = parentId
-            };
+            var bulkJob = model.ToJob(BulkUpdateAssetType.Move);
+
+            bulkJob.ParentId = parentId;
+
+            return bulkJob;
         }
 
-        public static BulkUpdateAssetsJobDto ToAnnotateJob(this AssetModel model)
+        public static BulkUpdateAssetsJobDto ToAnnotate(this AssetModel model)
         {
-            return new BulkUpdateAssetsJobDto
-            {
-                Id = model.Id,
-                Type = BulkUpdateAssetType.Annotate,
-                FileName = model.FileName,
-                ParentId = null,
-                Permanent = false,
-                IsProtected = model.IsProtected,
-                Metadata = model.Metadata,
-                Slug = model.Slug,
-                Tags = model.Tags
-            };
+            var bulkJob = model.ToJob(BulkUpdateAssetType.Annotate);
+
+            bulkJob.FileName = model.FileName;
+            bulkJob.Metadata = model.Metadata;
+            bulkJob.IsProtected = model.IsProtected;
+            bulkJob.Slug = model.Slug;
+            bulkJob.Tags = model.Tags;
+
+            return bulkJob;
+        }
+
+        private static BulkUpdateAssetsJobDto ToJob(this AssetModel model, BulkUpdateAssetType type)
+        {
+            return new BulkUpdateAssetsJobDto { Id = model.Id, Type = type };
         }
 
         public static async Task<AssetModel> ToModelAsync(this AssetDto asset, FolderTree folders)

@@ -94,18 +94,31 @@ namespace Squidex.CLI.Commands
                 [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
                 public string[] Targets { get; set; }
 
+                [Option(ShortName = "l", LongName = "language", Description = "The content language to synchronize.")]
+                public string[] Languages { get; set; }
+
                 [Option(LongName = "delete", Description = "Use this flag to also delete entities.")]
                 public bool Delete { get; set; }
 
                 [Option(LongName = "recreate", Description = "Use this flag to also recreate entities.")]
                 public bool Recreate { get; set; }
 
+                [Option(LongName = "update-current-client", Description = "Also update the client that is used during the sync process.")]
+                public bool UpdateCurrentClient { get; set; }
+
                 [Option(LongName = "emulate", Description = "Use this flag to not make any updates and to emulate the changes.")]
                 public bool Emulate { get; set; }
 
                 public SyncOptions ToOptions()
                 {
-                    return new SyncOptions { Delete = Delete, Recreate = Recreate, Targets = Targets };
+                    return new SyncOptions
+                    {
+                        Delete = Delete,
+                        Recreate = Recreate,
+                        Languages = Languages,
+                        Targets = Targets,
+                        UpdateCurrentClient = UpdateCurrentClient
+                    };
                 }
 
                 public sealed class Validator : AbstractValidator<InArguments>

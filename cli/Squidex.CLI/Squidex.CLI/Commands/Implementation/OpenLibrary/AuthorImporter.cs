@@ -42,27 +42,27 @@ namespace Squidex.CLI.Commands.Implementation.OpenLibrary
 
                 var json = JObject.Parse(x.Json);
 
-                if (json.TryGetValue("name", out var name))
+                if (json.TryGetValue("name", StringComparison.Ordinal, out var name))
                 {
                     data.Name = GetString(name);
                 }
 
-                if (json.TryGetValue("birth_date", out var birthdate))
+                if (json.TryGetValue("birth_date", StringComparison.Ordinal, out var birthdate))
                 {
                     data.Birthdate = GetString(birthdate);
                 }
 
-                if (json.TryGetValue("bio", out var bio))
+                if (json.TryGetValue("bio", StringComparison.Ordinal, out var bio))
                 {
                     data.Bio = GetString(bio);
                 }
 
-                if (json.TryGetValue("personal_name", out var personalName))
+                if (json.TryGetValue("personal_name", StringComparison.Ordinal, out var personalName))
                 {
                     data.PersonalName = GetString(personalName);
                 }
 
-                if (json.TryGetValue("wikipedia", out var wikipedia))
+                if (json.TryGetValue("wikipedia", StringComparison.Ordinal, out var wikipedia))
                 {
                     data.Wikipedia = GetString(wikipedia);
                 }
