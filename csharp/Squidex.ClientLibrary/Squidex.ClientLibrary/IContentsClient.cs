@@ -324,7 +324,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<TEntity> GetAsync(string id, int version, QueryContext context = null, CancellationToken ct = default);
+        Task<TData> GetDataAsync(string id, int version, QueryContext context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query content items by an optional query.

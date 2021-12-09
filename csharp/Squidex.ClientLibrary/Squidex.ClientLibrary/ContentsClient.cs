@@ -160,11 +160,11 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> GetAsync(string id, int version, QueryContext context = null, CancellationToken ct = default)
+        public Task<TData> GetDataAsync(string id, int version, QueryContext context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/{version}", true, context), null, context, ct);
+            return RequestJsonAsync<TData>(HttpMethod.Get, BuildSchemaUrl($"{id}/{version}", true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
