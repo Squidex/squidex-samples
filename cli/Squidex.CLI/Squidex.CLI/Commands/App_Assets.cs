@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
-using FluentValidation.Attributes;
 using HeyRed.Mime;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.FileSystem;
@@ -24,8 +23,8 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [Command(Name = "assets", Description = "Manages assets.")]
-        [SubCommand]
+        [Command("assets", Description = "Manages assets.")]
+        [Subcommand]
         public sealed class Assets
         {
             private readonly IConfigurationService configuration;
@@ -38,7 +37,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "import", Description = "Import all files from the source folder.")]
+            [Command("import", Description = "Import all files from the source folder.")]
             public async Task Import(ImportArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -116,7 +115,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "export", Description = "Export all files to the source folder.")]
+            [Command("export", Description = "Export all files to the source folder.")]
             public async Task Export(ImportArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -171,16 +170,15 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ImportArguments : AppArguments
             {
-                [Operand(Name = "folder", Description = "The source folder.")]
+                [Operand("folder", Description = "The source folder.")]
                 public string Path { get; set; }
 
-                [Option(ShortName = "t", LongName = "target", Description = "Path to the target folder.")]
-                public string TargetFolder { get; set; }
+                [Option('t', "target", Description = "Path to the target folder.")]
+                public string? TargetFolder { get; set; }
 
-                [Option(ShortName = "d", LongName = "duplicate", Description = "Duplicate the asset.")]
+                [Option('d', "duplicate", Description = "Duplicate the asset.")]
                 public bool Duplicate { get; set; }
 
                 public sealed class Validator : AbstractValidator<ImportArguments>
@@ -192,14 +190,13 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ExportArguments : AppArguments
             {
-                [Operand(Name = "folder", Description = "The source folder.")]
+                [Operand("folder", Description = "The source folder.")]
                 public string Path { get; set; }
 
-                [Option(ShortName = "t", LongName = "target", Description = "Path to the target folder.")]
-                public string SourceFolder { get; set; }
+                [Option('t', "target", Description = "Path to the target folder.")]
+                public string? SourceFolder { get; set; }
 
                 public sealed class Validator : AbstractValidator<ExportArguments>
                 {

@@ -54,9 +54,15 @@ namespace Squidex.CLI
             try
             {
                 var appRunner =
-                    new AppRunner<App>()
-                        .UseMicrosoftDependencyInjection(serviceProvider)
-                        .UseFluentValidation(true);
+                    new AppRunner<App>(new AppSettings
+                    {
+                        Arguments = new ArgumentAppSettings
+                        {
+                            SkipArityValidation = true
+                        }
+                    })
+                    .UseMicrosoftDependencyInjection(serviceProvider)
+                    .UseFluentValidation(true);
 
                 return appRunner.Run(args);
             }

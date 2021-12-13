@@ -11,30 +11,30 @@
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PackAsTool>true</PackAsTool>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <ToolCommandName>sq</ToolCommandName>
-    <Version>7.25</Version>
+    <Version>8.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Commands\Implementation\OpenLibrary\Structure\schemas\author.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandDotNet" Version="4.1.13" />
-    <PackageReference Include="CommandDotNet.FluentValidation" Version="3.0.1" />
+    <PackageReference Include="CommandDotNet" Version="6.0.1" />
+    <PackageReference Include="CommandDotNet.FluentValidation" Version="5.0.1" />
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
-    <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="3.0.0" />
+    <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
-    <PackageReference Include="CsvHelper" Version="27.1.1" />
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.673">
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.680">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NJsonSchema" Version="10.5.1" />
+    <PackageReference Include="NJsonSchema" Version="10.6.4" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" PrivateAssets="all" />
     <PackageReference Include="Slugify.Core" Version="3.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="5.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />

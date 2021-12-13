@@ -8,7 +8,6 @@
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Configuration;
@@ -17,8 +16,8 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [Command(Name = "sync", Description = "Synchronizes apps.")]
-        [SubCommand]
+        [Command("sync", Description = "Synchronizes apps.")]
+        [Subcommand]
         public sealed class Sync
         {
             private readonly IConfigurationService configuration;
@@ -33,7 +32,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "new", Description = "Creates a new folder with sample files how to create an app from json files.")]
+            [Command("new", Description = "Creates a new folder with sample files how to create an app from json files.")]
             public async Task New(NewArgument arguments)
             {
                 await synchronizer.GenerateTemplateAsync(arguments.Folder);
@@ -41,7 +40,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Folder generated.");
             }
 
-            [Command(Name = "out", Description = "Exports the app to a folder")]
+            [Command("out", Description = "Exports the app to a folder")]
             public async Task Out(OutArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -51,7 +50,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Synchronization completed.");
             }
 
-            [Command(Name = "in", Description = "Imports the app from a folder")]
+            [Command("in", Description = "Imports the app from a folder")]
             public async Task In(InArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App, arguments.Emulate);
@@ -61,7 +60,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Synchronization completed.");
             }
 
-            [Command(Name = "targets", Description = "List all targets")]
+            [Command("targets", Description = "List all targets")]
             public void Targets()
             {
                 foreach (var target in synchronizer.GetTargets())
@@ -70,10 +69,9 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class NewArgument : AppArguments
             {
-                [Operand(Name = "folder", Description = "The target folder to create the templates.")]
+                [Operand("folder", Description = "The target folder to create the templates.")]
                 public string Folder { get; set; }
 
                 public sealed class Validator : AbstractValidator<NewArgument>
@@ -85,28 +83,27 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class InArguments : AppArguments
             {
-                [Operand(Name = "folder", Description = "The target folder to synchronize.")]
+                [Operand("folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
+                [Option('t', "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
                 public string[] Targets { get; set; }
 
-                [Option(ShortName = "l", LongName = "language", Description = "The content language to synchronize.")]
+                [Option("language", Description = "The content language to synchronize.")]
                 public string[] Languages { get; set; }
 
-                [Option(LongName = "delete", Description = "Use this flag to also delete entities.")]
+                [Option("delete", Description = "Use this flag to also delete entities.")]
                 public bool Delete { get; set; }
 
-                [Option(LongName = "recreate", Description = "Use this flag to also recreate entities.")]
+                [Option("recreate", Description = "Use this flag to also recreate entities.")]
                 public bool Recreate { get; set; }
 
-                [Option(LongName = "update-current-client", Description = "Also update the client that is used during the sync process.")]
+                [Option("update-current-client", Description = "Also update the client that is used during the sync process.")]
                 public bool UpdateCurrentClient { get; set; }
 
-                [Option(LongName = "emulate", Description = "Use this flag to not make any updates and to emulate the changes.")]
+                [Option("emulate", Description = "Use this flag to not make any updates and to emulate the changes.")]
                 public bool Emulate { get; set; }
 
                 public SyncOptions ToOptions()
@@ -130,13 +127,12 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class OutArguments : AppArguments
             {
-                [Operand(Name = "folder", Description = "The target folder to synchronize.")]
+                [Operand("folder", Description = "The target folder to synchronize.")]
                 public string Folder { get; set; }
 
-                [Option(ShortName = "t", LongName = "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules, contents.")]
+                [Option('t', "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules, contents.")]
                 public string[] Targets { get; set; }
 
                 public SyncOptions ToOptions()

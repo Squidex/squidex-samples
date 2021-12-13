@@ -15,7 +15,6 @@ using CommandDotNet;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.CLI.Commands.Implementation.TestData;
@@ -28,8 +27,8 @@ namespace Squidex.CLI.Commands
     {
         private const string JsonSeparator = "-----------------";
 
-        [Command(Name = "content", Description = "Manage contents.")]
-        [SubCommand]
+        [Command("content", Description = "Manage contents.")]
+        [Subcommand]
         public sealed class Content
         {
             private readonly IConfigurationService configuration;
@@ -42,7 +41,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "test-data", Description = "Generates test data.")]
+            [Command("test-data", Description = "Generates test data.")]
             public async Task TestData(TestDataArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -79,7 +78,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "import", Description = "Import the content to a schema.",
+            [Command("import", Description = "Import the content to a schema.",
                 ExtendedHelpText =
 @"Use the following format to define fields from the CSV/JSON file:
     - name (for invariant fields)
@@ -125,7 +124,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "export", Description = "Export the content for a schema.",
+            [Command("export", Description = "Export the content for a schema.",
                 ExtendedHelpText =
 @"Use the following format to define fields for CSV:
     - id
@@ -290,25 +289,27 @@ namespace Squidex.CLI.Commands
                 JSON_Separated
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ImportArguments : AppArguments, IImportSettings
             {
-                [Operand(Name = "schema", Description = "The name of the schema.")]
+                [Operand("schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Operand(Name = "file", Description = "The path to the file.")]
+                [Operand("file", Description = "The path to the file.")]
                 public string File { get; set; }
 
-                [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
+                [Option('u', "unpublished", Description = "Import unpublished content.")]
                 public bool Unpublished { get; set; }
 
-                [Option(LongName = "fields", Description = "Comma separated list of fields to import.")]
+                [Option("fields", Description = "Comma separated list of fields to import.")]
                 public string Fields { get; set; }
 
-                [Option(LongName = "delimiter", Description = "The csv delimiter.")]
+                [Option("delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
 
-                [Option(LongName = "format", Description = "Defines the input format.")]
+                [Option("key", Description = "The key field to use.")]
+                public string KeyField { get; set; }
+
+                [Option("format", Description = "Defines the input format.")]
                 public Format Format { get; set; }
 
                 public sealed class Validator : AbstractValidator<ImportArguments>
@@ -327,40 +328,39 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ExportArguments : AppArguments, IExportSettings
             {
-                [Operand(Name = "schema", Description = "The name of the schema.")]
+                [Operand("schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Option(LongName = "filter", Description = "Optional filter.")]
+                [Option("filter", Description = "Optional filter.")]
                 public string Filter { get; set; }
 
-                [Option(LongName = "text", Description = "Optional full text query.")]
+                [Option("text", Description = "Optional full text query.")]
                 public string FullText { get; set; }
 
-                [Option(LongName = "order", Description = "Optional ordering.")]
+                [Option("order", Description = "Optional ordering.")]
                 public string OrderBy { get; set; }
 
-                [Option(LongName = "output", Description = "Optional file or folder name. Default: Schema name.")]
+                [Option("output", Description = "Optional file or folder name. Default: Schema name.")]
                 public string Output { get; set; }
 
-                [Option(LongName = "delimiter", Description = "The csv delimiter.")]
+                [Option("delimiter", Description = "The csv delimiter.")]
                 public string Delimiter { get; set; } = ";";
 
-                [Option(LongName = "unpublished", ShortName = "u", Description = "Export unpublished content.")]
+                [Option('u', "unpublished", Description = "Export unpublished content.")]
                 public bool Unpublished { get; set; }
 
-                [Option(LongName = "multiple", ShortName = "m", Description = "Creates one file per content.")]
+                [Option('m', "multiple", Description = "Creates one file per content.")]
                 public bool FilePerContent { get; set; }
 
-                [Option(LongName = "fields", Description = "Comma separated list of fields. CSV only.")]
+                [Option("fields", Description = "Comma separated list of fields. CSV only.")]
                 public string Fields { get; set; }
 
-                [Option(LongName = "full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
+                [Option("full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
                 public bool FullEntities { get; set; }
 
-                [Option(LongName = "format", Description = "Defines the output format.")]
+                [Option("format", Description = "Defines the output format.")]
                 public Format Format { get; set; }
 
                 public sealed class Validator : AbstractValidator<ExportArguments>
@@ -378,20 +378,21 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class TestDataArguments : AppArguments, IImportSettings
             {
-                [Operand(Name = "schema", Description = "The name of the schema.")]
+                [Operand("schema", Description = "The name of the schema.")]
                 public string Schema { get; set; }
 
-                [Option(LongName = "unpublished", ShortName = "u", Description = "Import unpublished content.")]
+                [Option('u', "unpublished", Description = "Import unpublished content.")]
                 public bool Unpublished { get; set; }
 
-                [Option(LongName = "count", ShortName = "c", Description = "The number of items.")]
+                [Option('c', "count", Description = "The number of items.")]
                 public int Count { get; set; } = 10;
 
-                [Option(LongName = "file", Description = "The optional path to the file.")]
+                [Option("file", Description = "The optional path to the file.")]
                 public string File { get; set; }
+
+                string IImportSettings.KeyField => null;
 
                 public sealed class Validator : AbstractValidator<TestDataArguments>
                 {

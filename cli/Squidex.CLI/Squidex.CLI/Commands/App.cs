@@ -19,7 +19,7 @@ namespace Squidex.CLI.Commands
             this.log = log;
         }
 
-        [Command(Name = "info", Description = "Shows information about the CLI.")]
+        [Command("info", Description = "Shows information about the CLI.")]
         public void Info()
         {
             var version = typeof(App).Assembly.GetName().Version;
@@ -29,7 +29,7 @@ namespace Squidex.CLI.Commands
 
         public abstract class AppArguments : IArgumentModel
         {
-            [Option(LongName = "app", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
+            [Option("app", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
             public string App { get; set; }
         }
     }

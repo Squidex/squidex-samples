@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using CoreTweet;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [Command(Name = "twitter", Description = "Manage twitter.")]
-        [SubCommand]
+        [Command("twitter", Description = "Manage twitter.")]
+        [Subcommand]
         public sealed class Twitter
         {
             private readonly ILogger log;
@@ -28,7 +27,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "auth", Description = "Starts the authentication.")]
+            [Command("auth", Description = "Starts the authentication.")]
             public async Task Auth(AuthArguments arguments)
             {
                 var session = await OAuth.AuthorizeAsync(arguments.ClientId, arguments.ClientSecret);
@@ -43,7 +42,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
             }
 
-            [Command(Name = "token", Description = "Create an access token and secret.")]
+            [Command("token", Description = "Create an access token and secret.")]
             public async Task Token(TokenArguments arguments)
             {
                 var requestToken = ReadToken(arguments.RequestToken, ".twitterToken", nameof(arguments.RequestToken));
@@ -87,13 +86,12 @@ namespace Squidex.CLI.Commands
                 return requestToken;
             }
 
-            [Validator(typeof(Validator))]
             public sealed class AuthArguments : AppArguments
             {
-                [Option(LongName = "clientId")]
+                [Option("clientId")]
                 public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
 
-                [Option(LongName = "clientSecret")]
+                [Option("clientSecret")]
                 public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
                 public sealed class Validator : AbstractValidator<AuthArguments>
@@ -106,22 +104,21 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class TokenArguments : AppArguments
             {
-                [Operand(Name = "pin", Description = "The pin from the auth request.")]
+                [Operand("pin", Description = "The pin from the auth request.")]
                 public string PinCode { get; set; }
 
-                [Option(LongName = "clientId")]
+                [Option("clientId")]
                 public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
 
-                [Option(LongName = "clientSecret")]
+                [Option("clientSecret")]
                 public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
-                [Option(LongName = "token")]
+                [Option("token")]
                 public string RequestToken { get; set; }
 
-                [Option(LongName = "secret")]
+                [Option("secret")]
                 public string RequestTokenSecret { get; set; }
 
                 public sealed class Validator : AbstractValidator<TokenArguments>

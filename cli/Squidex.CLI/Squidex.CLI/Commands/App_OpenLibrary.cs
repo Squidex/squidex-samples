@@ -9,7 +9,6 @@ using System.IO;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.OpenLibrary;
 using Squidex.CLI.Commands.Implementation.Sync;
@@ -19,8 +18,8 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [Command(Name = "openlib", Description = "Openlibrary example.")]
-        [SubCommand]
+        [Command("openlib", Description = "Openlibrary example.")]
+        [Subcommand]
         public sealed class OpenLibrary
         {
             private readonly IConfigurationService configuration;
@@ -35,7 +34,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "generate", Description = "Generate the necessary schemas.")]
+            [Command("generate", Description = "Generate the necessary schemas.")]
             public async Task New(NewArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -52,7 +51,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Schemas generated.");
             }
 
-            [Command(Name = "authors", Description = "Import the authors.")]
+            [Command("authors", Description = "Import the authors.")]
             public async Task Authors(ImportArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -67,18 +66,13 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Authors imports.");
             }
 
-            [Validator(typeof(Validator))]
             public sealed class NewArguments : AppArguments
             {
-                public sealed class Validator : AbstractValidator<NewArguments>
-                {
-                }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ImportArguments : AppArguments
             {
-                [Operand(Name = "file", Description = "The data dump file.")]
+                [Operand("file", Description = "The data dump file.")]
                 public string File { get; set; }
 
                 public sealed class Validator : AbstractValidator<ImportArguments>

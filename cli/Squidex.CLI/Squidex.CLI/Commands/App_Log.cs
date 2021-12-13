@@ -14,7 +14,6 @@ using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
-using FluentValidation.Attributes;
 
 #pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
@@ -22,11 +21,11 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [Command(Name = "log", Description = "Analyze request log.")]
-        [SubCommand]
+        [Command("log", Description = "Analyze request log.")]
+        [Subcommand]
         public sealed class Log
         {
-            [Command(Name = "analyze", Description = "Analyzes request log files.")]
+            [Command("analyze", Description = "Analyzes request log files.")]
             public static void Analyze(AnalyzeArguments arguments)
             {
                 using (var reader = new StreamReader(arguments.File))
@@ -99,10 +98,9 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class AnalyzeArguments : IArgumentModel
             {
-                [Operand(Name = "file", Description = "The source file.")]
+                [Operand("file", Description = "The source file.")]
                 public string File { get; set; }
 
                 public sealed class Validator : AbstractValidator<AnalyzeArguments>

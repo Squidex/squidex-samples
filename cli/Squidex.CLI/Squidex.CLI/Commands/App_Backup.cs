@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
@@ -20,8 +19,8 @@ namespace Squidex.CLI.Commands
 {
     public sealed partial class App
     {
-        [Command(Name = "backup", Description = "Manage backups.")]
-        [SubCommand]
+        [Command("backup", Description = "Manage backups.")]
+        [Subcommand]
         public sealed class Backup
         {
             private readonly IConfigurationService configuration;
@@ -34,7 +33,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "create", Description = "Create and download an backup.")]
+            [Command("create", Description = "Create and download an backup.")]
             public async Task Create(CreateArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -95,16 +94,15 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class CreateArguments : AppArguments
             {
-                [Operand(Name = "file", Description = "The target file.")]
+                [Operand("file", Description = "The target file.")]
                 public string File { get; set; }
 
-                [Option(LongName = "timeout", Description = "The timeout to wait for the backup in minutes.")]
+                [Option("timeout", Description = "The timeout to wait for the backup in minutes.")]
                 public int Timeout { get; set; } = 30;
 
-                [Option(LongName = "deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed")]
+                [Option("deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed")]
                 public bool DeleteAfterDownload { get; set; }
 
                 public sealed class Validator : AbstractValidator<CreateArguments>

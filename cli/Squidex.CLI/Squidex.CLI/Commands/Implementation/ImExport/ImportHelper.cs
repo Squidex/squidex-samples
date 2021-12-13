@@ -15,6 +15,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Newtonsoft.Json;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport
 {
@@ -28,11 +29,66 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             using (var logLine = log.WriteSameLine())
             {
-                foreach (var data in datas)
-                {
-                    await contents.CreateAsync(data, !setting.Unpublished);
+                var keyField = setting.KeyField;
 
-                    totalWritten++;
+                var update = new BulkUpdate
+                {
+                    Jobs = new List<BulkUpdateJob>(),
+                    DoNotScript = false,
+                    DoNotValidate = false,
+                    Publish = !setting.Unpublished
+                };
+
+                const string op = "eq";
+
+                foreach (var batch in datas.Batch(50))
+                {
+                    update.Jobs.Clear();
+
+                    foreach (var data in batch)
+                    {
+                        var job = new BulkUpdateJob
+                        {
+                            Data = data,
+                        };
+
+                        if (!string.IsNullOrWhiteSpace(setting.KeyField))
+                        {
+                            if (!data.TryGetValue(keyField, out var temp) || !temp.TryGetValue("iv", out var value))
+                            {
+                                throw new InvalidOperationException($"Cannot find key '{keyField}' in data.");
+                            }
+
+                            job.Query = new
+                            {
+                                filter = new
+                                {
+                                    path = $"data.{keyField}.iv",
+                                    op,
+                                    value,
+                                }
+                            };
+
+                            job.Type = BulkUpdateType.Upsert;
+                        }
+                        else
+                        {
+                            job.Type = BulkUpdateType.Create;
+                        }
+
+                        update.Jobs.Add(job);
+                    }
+
+                    var result = await contents.BulkUpdateAsync(update);
+
+                    var error = result.Find(x => x.Error != null)?.Error;
+
+                    if (error != null)
+                    {
+                        throw new SquidexManagementException<ErrorDto>(error.Message, error.StatusCode, null, null, error, null);
+                    }
+
+                    totalWritten += update.Jobs.Count;
 
                     logLine.WriteLine("> Imported: {0}.", totalWritten);
                 }

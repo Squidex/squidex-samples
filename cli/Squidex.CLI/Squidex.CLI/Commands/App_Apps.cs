@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
@@ -18,8 +17,8 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [Command(Name = "apps", Description = "Manages apps.")]
-        [SubCommand]
+        [Command("apps", Description = "Manages apps.")]
+        [Subcommand]
         public sealed class Apps
         {
             private readonly IConfigurationService configuration;
@@ -32,7 +31,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "list", Description = "List all schemas.")]
+            [Command("list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -56,7 +55,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "create", Description = "Creates a squidex app.")]
+            [Command("create", Description = "Creates a squidex app.")]
             public async Task Create(CreateArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -78,10 +77,9 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> App created.");
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ListArguments : AppArguments
             {
-                [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
+                [Option('t', "table", Description = "Output as table")]
                 public bool Table { get; set; }
 
                 public sealed class Validator : AbstractValidator<ListArguments>
@@ -89,7 +87,6 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class CreateArguments : AppArguments
             {
                 public sealed class Validator : AbstractValidator<CreateArguments>

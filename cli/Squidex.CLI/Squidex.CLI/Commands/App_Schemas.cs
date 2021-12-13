@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;
-using FluentValidation.Attributes;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Models;
@@ -24,8 +23,8 @@ namespace Squidex.CLI.Commands
 {
     public partial class App
     {
-        [Command(Name = "schemas", Description = "Manage schemas.")]
-        [SubCommand]
+        [Command("schemas", Description = "Manage schemas.")]
+        [Subcommand]
         public sealed class Schemas
         {
             private readonly IConfigurationService configuration;
@@ -38,7 +37,7 @@ namespace Squidex.CLI.Commands
                 this.log = log;
             }
 
-            [Command(Name = "list", Description = "List all schemas.")]
+            [Command("list", Description = "List all schemas.")]
             public async Task List(ListArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -62,7 +61,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "get", Description = "Get a schema by name.")]
+            [Command("get", Description = "Get a schema by name.")]
             public async Task Get(GetArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -83,7 +82,7 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Command(Name = "sync", Description = "Sync the schema.")]
+            [Command("sync", Description = "Sync the schema.")]
             public async Task Sync(SyncArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -166,10 +165,9 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class ListArguments : AppArguments
             {
-                [Option(LongName = "table", ShortName = "t", Description = "Output as table")]
+                [Option('t', "table", Description = "Output as table")]
                 public bool Table { get; set; }
 
                 public sealed class Validator : AbstractValidator<ListArguments>
@@ -177,13 +175,12 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class GetArguments : AppArguments
             {
-                [Operand(Name = "name", Description = "The name of the schema.")]
+                [Operand("name", Description = "The name of the schema.")]
                 public string Name { get; set; }
 
-                [Option(LongName = "with-refs", ShortName = "r", Description = "Includes the names of the referenced schemas.")]
+                [Option('r', "with-refs", Description = "Includes the names of the referenced schemas.")]
                 public bool WithReferencedNames { get; set; }
 
                 public sealed class Validator : AbstractValidator<GetArguments>
@@ -195,22 +192,21 @@ namespace Squidex.CLI.Commands
                 }
             }
 
-            [Validator(typeof(Validator))]
             public sealed class SyncArguments : AppArguments
             {
-                [Operand(Name = "file", Description = "The file with the schema json.")]
+                [Operand("file", Description = "The file with the schema json.")]
                 public string File { get; set; }
 
-                [Option(LongName = "name", Description = "The new schema name.")]
+                [Option("name", Description = "The new schema name.")]
                 public string Name { get; set; }
 
-                [Option(LongName = "no-delete", Description = "Do not delete fields.")]
+                [Option("no-delete", Description = "Do not delete fields.")]
                 public bool NoFieldDeletion { get; set; }
 
-                [Option(LongName = "no-recreate", Description = "Do not recreate fields.")]
+                [Option("no-recreate", Description = "Do not recreate fields.")]
                 public bool NoFieldRecreation { get; set; }
 
-                [Option(LongName = "no-ref-fix", Description = "Do not fix referenced.")]
+                [Option("no-ref-fix", Description = "Do not fix referenced.")]
                 public bool NoRefFix { get; set; }
 
                 public sealed class Validator : AbstractValidator<SyncArguments>
