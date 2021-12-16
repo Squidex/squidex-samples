@@ -26,7 +26,7 @@ namespace Squidex.ClientLibrary.Utils
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is DateTime dateTime && dateTime.Kind != DateTimeKind.Utc)
             {

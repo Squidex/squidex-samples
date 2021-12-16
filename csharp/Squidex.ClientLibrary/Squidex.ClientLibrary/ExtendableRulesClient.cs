@@ -79,7 +79,7 @@ namespace Squidex.ClientLibrary
             return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}/"), ct: ct);
         }
 
-        private string BuildUrl(string path = null)
+        private string BuildUrl(string? path = null)
         {
             return $"apps/{ApplicationName}/rules/{path}";
         }

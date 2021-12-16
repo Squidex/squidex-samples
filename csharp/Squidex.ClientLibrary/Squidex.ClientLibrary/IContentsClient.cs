@@ -284,7 +284,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is null.</exception>
         [Obsolete("Use GetAllAsync with callback first.")]
-        Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default);
+        Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets all content items in batches.
@@ -297,7 +297,7 @@ namespace Squidex.ClientLibrary
         /// The task for completion.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="callback"/> is null.</exception>
-        Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext context = null, CancellationToken ct = default);
+        Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets a content item by ID.
@@ -310,7 +310,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default);
+        Task<TEntity> GetAsync(string id, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets a content item by ID and version.
@@ -324,7 +324,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<TData> GetDataAsync(string id, int version, QueryContext context = null, CancellationToken ct = default);
+        Task<TData> GetDataAsync(string id, int version, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query content items by an optional query.
@@ -335,7 +335,7 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// The matching content items.
         /// </returns>
-        Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query all contents items that reference the content item with the specified ID.
@@ -349,7 +349,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query all contents items that reference the specified content item.
@@ -362,7 +362,7 @@ namespace Squidex.ClientLibrary
         /// The matching content items.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query all references of the content item with the specified ID.
@@ -376,7 +376,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Query all references of the specified content item.
@@ -389,7 +389,7 @@ namespace Squidex.ClientLibrary
         /// The matching content items.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Gets content items by ids across all schemas.
@@ -406,7 +406,7 @@ namespace Squidex.ClientLibrary
         /// Even though this method is part of the content client that is created for a specific schemas, it can return content items
         /// across all schemas in your App.
         /// </remarks>
-        Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext context = null, CancellationToken ct = default);
+        Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Executes a GrapQL query as HTTP POST method.
@@ -420,7 +420,7 @@ namespace Squidex.ClientLibrary
         /// The result of the query.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
-        Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
+        Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Executes multiple GrapQL queries as HTTP POST method.
@@ -434,7 +434,7 @@ namespace Squidex.ClientLibrary
         /// The result of the query.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="requests"/> is null.</exception>
-        Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext context = null, CancellationToken ct = default);
+        Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext? context = null, CancellationToken ct = default);
 
         /// <summary>
         /// Executes a GrapQL query as HTTP GET method.
@@ -448,6 +448,6 @@ namespace Squidex.ClientLibrary
         /// The result of the query.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
-        Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default);
+        Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext? context = null, CancellationToken ct = default);
     }
 }

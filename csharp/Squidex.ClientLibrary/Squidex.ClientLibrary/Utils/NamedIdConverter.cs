@@ -14,37 +14,31 @@ namespace Squidex.ClientLibrary.Utils
     /// Convert comma separated string to NamedId
     /// Example of input: "00000000-0000-0000-0000-000000000000,name".
     /// </summary>
-    public class NamedIdConverter : JsonConverter
+    public class NamedIdConverter : JsonConverter<NamedId>
     {
         /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(NamedId);
-        }
-
-        /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override NamedId? ReadJson(JsonReader reader, Type objectType, NamedId? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
                 return null;
             }
 
-            var s = ((string)reader.Value).Split(',');
+            var s = ((string)reader.Value!).Split(',');
 
-            return new NamedId
-            {
-                Id = s[0],
-                Name = s[1]
-            };
+            return new NamedId { Id = s[0], Name = s[1] };
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, NamedId? value, JsonSerializer serializer)
         {
-            var namedId = (NamedId)value;
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
-            serializer.Serialize(writer, $"{namedId.Id},{namedId.Name}");
+            serializer.Serialize(writer, $"{value.Id},{value.Name}");
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Squidex.ClientLibrary
     public sealed class InvariantConverter : JsonConverter
     {
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
             writer.WritePropertyName("iv");
@@ -28,7 +28,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
@@ -42,7 +42,7 @@ namespace Squidex.ClientLibrary
                 // empty object
                 return null;
             }
-            else if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
+            else if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value?.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
             {
                 throw new JsonSerializationException("Property must have a invariant language property.");
             }

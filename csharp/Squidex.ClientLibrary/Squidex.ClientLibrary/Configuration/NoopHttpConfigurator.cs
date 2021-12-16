@@ -37,13 +37,13 @@ namespace Squidex.ClientLibrary.Configuration
         }
 
         /// <inheritdoc/>
-        public HttpClient CreateHttpClient(HttpMessageHandler messageHandler)
+        public HttpClient? CreateHttpClient(HttpMessageHandler messageHandler)
         {
             return null;
         }
 
         /// <inheritdoc/>
-        public HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner)
+        public HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner)
         {
             return inner;
         }

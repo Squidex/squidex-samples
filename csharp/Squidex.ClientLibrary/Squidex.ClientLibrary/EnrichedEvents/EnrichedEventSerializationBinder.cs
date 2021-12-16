@@ -22,24 +22,25 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// </summary>
         public IList<Type> EnrichedEventTypes { get; set; } = new List<Type>
         {
-          typeof(EnrichedCommentEvent),
-          typeof(EnrichedContentEvent),
-          typeof(EnrichedManualEvent),
-          typeof(EnrichedAssetEvent),
-          typeof(EnrichedSchemaEvent),
-          typeof(EnrichedUsageExceededEvent)
+            typeof(EnrichedCommentEvent),
+            typeof(EnrichedContentEvent),
+            typeof(EnrichedManualEvent),
+            typeof(EnrichedAssetEvent),
+            typeof(EnrichedSchemaEvent),
+            typeof(EnrichedUsageExceededEvent)
         };
 
         /// <inheritdoc/>
-        public Type BindToType(string assemblyName, string typeName)
+        public Type BindToType(string? assemblyName, string typeName)
         {
-            return EnrichedEventTypes.SingleOrDefault(t => t.Name == typeName);
+            return EnrichedEventTypes.Single(t => t.Name == typeName);
         }
 
         /// <inheritdoc/>
-        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        public void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
         {
             assemblyName = null;
+
             typeName = serializedType.Name;
         }
     }

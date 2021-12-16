@@ -48,13 +48,13 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext context = null, CancellationToken ct = default)
+        public Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext? context = null, CancellationToken ct = default)
         {
             return GetAllAsync(callback, batchSize, context, ct);
         }
 
         /// <inheritdoc/>
-        public async Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext context = null, CancellationToken ct = default)
+        public async Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.Between(batchSize, 10, 10_000, nameof(batchSize));
             Guard.NotNull(callback, nameof(callback));
@@ -91,7 +91,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext context = null, CancellationToken ct = default)
+        public async Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(requests, nameof(requests));
 
@@ -101,7 +101,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
+        public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
 
@@ -118,7 +118,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext context = null, CancellationToken ct = default)
+        public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
 
@@ -133,7 +133,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(ids, nameof(ids));
             Guard.NotNullOrEmpty(ids, nameof(ids));
@@ -144,7 +144,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;
 
@@ -152,7 +152,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<TEntity> GetAsync(string id, QueryContext context = null, CancellationToken ct = default)
+        public Task<TEntity> GetAsync(string id, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -160,7 +160,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<TData> GetDataAsync(string id, int version, QueryContext context = null, CancellationToken ct = default)
+        public Task<TData> GetDataAsync(string id, int version, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -168,7 +168,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(TEntity entity, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
@@ -176,7 +176,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetReferencingAsync(string id, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -186,7 +186,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(TEntity entity, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
@@ -194,7 +194,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery query = null, QueryContext context = null, CancellationToken ct = default)
+        public Task<ContentsResult<TEntity, TData>> GetReferencesAsync(string id, ContentQuery? query = null, QueryContext? context = null, CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
@@ -360,7 +360,7 @@ namespace Squidex.ClientLibrary
             await DeleteAsync(entity.Id, permanent, checkReferrers, ct);
         }
 
-        private string BuildSchemaUrl(string path, bool query, QueryContext context = null)
+        private string BuildSchemaUrl(string path, bool query, QueryContext? context = null)
         {
             if (ShouldUseCDN(query, context))
             {
@@ -372,7 +372,7 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        private string BuildAppUrl(string path, bool query, QueryContext context = null)
+        private string BuildAppUrl(string path, bool query, QueryContext? context = null)
         {
             if (ShouldUseCDN(query, context))
             {
@@ -392,6 +392,13 @@ namespace Squidex.ClientLibrary
 
             foreach (var kvp in parameters)
             {
+                var value = kvp.Value;
+
+                if (value == null)
+                {
+                    continue;
+                }
+
                 if (queryBuilder.Length > 0)
                 {
                     queryBuilder.Append('&');
@@ -403,13 +410,13 @@ namespace Squidex.ClientLibrary
 
                 queryBuilder.Append(kvp.Key);
                 queryBuilder.Append('=');
-                queryBuilder.Append(Uri.EscapeUriString(kvp.Value.ToString()));
+                queryBuilder.Append(Uri.EscapeDataString(value.ToString()));
             }
 
             return queryBuilder.ToString();
         }
 
-        private bool ShouldUseCDN(bool query, QueryContext context)
+        private bool ShouldUseCDN(bool query, QueryContext? context)
         {
             return query && !string.IsNullOrWhiteSpace(Options.ContentCDN) && context?.IsNotUsingCDN != true;
         }

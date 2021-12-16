@@ -39,17 +39,16 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// <returns>
         /// The enriched event.
         /// </returns>
-        public static EnrichedEventEnvelope DeserializeEnvelope(string json, JsonSerializerSettings settings = null)
+        public static EnrichedEventEnvelope DeserializeEnvelope(string json, JsonSerializerSettings? settings = null)
         {
             if (settings == null)
             {
                 settings = new JsonSerializerSettings();
             }
 
-            settings.TypeNameHandling = TypeNameHandling.Objects;
             settings.SerializationBinder = new EnrichedEventSerializationBinder();
 
-            return JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json, settings);
+            return JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json, settings)!;
         }
     }
 }

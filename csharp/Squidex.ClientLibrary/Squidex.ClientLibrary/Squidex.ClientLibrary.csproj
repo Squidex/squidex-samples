@@ -4,7 +4,8 @@
     <Company>Squidex UG (haftungsbeschränkt)</Company>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <Copyright>MIT</Copyright>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>10.0</LangVersion>
+	<Nullable>enable</Nullable>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

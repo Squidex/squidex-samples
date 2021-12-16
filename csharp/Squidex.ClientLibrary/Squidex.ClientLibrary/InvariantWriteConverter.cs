@@ -18,7 +18,7 @@ namespace Squidex.ClientLibrary
     public sealed class InvariantWriteConverter : JsonConverter
     {
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
             writer.WritePropertyName("iv");
@@ -29,7 +29,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             return serializer.Deserialize(reader, objectType);
         }

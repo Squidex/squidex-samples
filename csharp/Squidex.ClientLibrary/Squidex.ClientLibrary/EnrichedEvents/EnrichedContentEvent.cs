@@ -72,7 +72,7 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// <summary>
         /// Data payload (previous).
         /// </summary>
-        public JObject DataOld { get; set; }
+        public JObject? DataOld { get; set; }
 
         /// <summary>
         /// Status of the content.
@@ -88,7 +88,7 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         {
             var typedEvent = typeof(EnrichedContentEvent<>).MakeGenericType(typeof(T));
 
-            var obj = (EnrichedContentEvent<T>)Activator.CreateInstance(typedEvent);
+            var obj = (EnrichedContentEvent<T>)Activator.CreateInstance(typedEvent)!;
 
             foreach (var property in typeof(EnrichedContentEvent).GetProperties().Where(prop => prop.CanWrite))
             {
@@ -97,12 +97,12 @@ namespace Squidex.ClientLibrary.EnrichedEvents
 
             if (Data != null)
             {
-                obj.Data = (T)Data.ToObject(typeof(T));
+                obj.Data = (T)Data.ToObject(typeof(T))!;
             }
 
             if (DataOld != null)
             {
-                obj.DataOld = (T)DataOld.ToObject(typeof(T));
+                obj.DataOld = (T)DataOld.ToObject(typeof(T))!;
             }
 
             return obj;

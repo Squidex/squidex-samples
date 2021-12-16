@@ -36,7 +36,7 @@ namespace Squidex.ClientLibrary
         protected SquidexGraphQlException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            Errors = (List<GraphQlError>)info.GetValue("Errors", typeof(List<GraphQlError>));
+            Errors = (List<GraphQlError>)info.GetValue("Errors", typeof(List<GraphQlError>))!;
         }
 
         /// <inheritdoc/>

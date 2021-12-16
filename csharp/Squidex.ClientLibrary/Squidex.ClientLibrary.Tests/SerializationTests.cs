@@ -171,9 +171,9 @@ namespace Squidex.ClientLibrary.Tests
         {
             var json = "{ 'value': { 'iv': 'hello'} }";
 
-            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
 
-            Assert.Equal("hello", res.Value);
+            Assert.Equal("hello", result?.Value);
         }
 
         [Fact]
@@ -181,9 +181,9 @@ namespace Squidex.ClientLibrary.Tests
         {
             var json = "{ 'value': null }";
 
-            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
 
-            Assert.Null(res.Value);
+            Assert.Null(result?.Value);
         }
 
         [Fact]
@@ -191,9 +191,9 @@ namespace Squidex.ClientLibrary.Tests
         {
             var json = "{ 'value': {} }";
 
-            var res = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
+            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
 
-            Assert.Null(res.Value);
+            Assert.Null(result?.Value);
         }
 
         [Fact]

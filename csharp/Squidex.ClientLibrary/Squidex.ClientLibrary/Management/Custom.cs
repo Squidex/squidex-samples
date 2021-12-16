@@ -137,12 +137,12 @@ namespace Squidex.ClientLibrary.Management
         /// </value>
         public string ParentId { get; set; }
 
-        internal string ToQueryJson()
+        internal string? ToQueryJson()
         {
             return Query?.ToJson();
         }
 
-        internal string ToIdString()
+        internal string? ToIdString()
         {
             return Ids == null ? null : string.Join(",", Ids);
         }
@@ -165,7 +165,7 @@ namespace Squidex.ClientLibrary.Management
         /// Asset created.
         /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default);
+        Task<AssetDto> PostAssetAsync(string app, string? parentId = null, string? id = null, bool? duplicate = null, FileInfo? file = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Replace asset content.
@@ -186,7 +186,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, CancellationToken cancellationToken = default);
+        Task<AssetsDto> GetAssetsAsync(string app, AssetQuery? query = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get assets.
@@ -213,7 +213,7 @@ namespace Squidex.ClientLibrary.Management
         /// Assets returned.
         /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery query = null, int batchSize = 200, CancellationToken cancellationToken = default);
+        Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200, CancellationToken cancellationToken = default);
     }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -221,11 +221,11 @@ namespace Squidex.ClientLibrary.Management
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <inheritdoc />
-        public Task<AssetDto> PostAssetAsync(string app, string parentId = null, string id = null, bool? duplicate = null, FileInfo file = null, CancellationToken cancellationToken = default)
+        public Task<AssetDto> PostAssetAsync(string app, string? parentId = null, string? id = null, bool? duplicate = null, FileInfo? file = null, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(file, nameof(file));
 
-            return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)), cancellationToken);
+            return PostAssetAsync(app, parentId, id, duplicate, new FileParameter(file!.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name)), cancellationToken);
         }
 
         /// <inheritdoc />
@@ -237,7 +237,7 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc />
-        public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery query = null, CancellationToken cancellationToken = default)
+        public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery? query = null, CancellationToken cancellationToken = default)
         {
             return GetAssetsAsync(app, query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
         }
@@ -249,7 +249,7 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc />
-        public async Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery query = null, int batchSize = 200, CancellationToken cancellationToken = default)
+        public async Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200, CancellationToken cancellationToken = default)
         {
             Guard.Between(batchSize, 10, 10_000, nameof(batchSize));
             Guard.NotNull(callback, nameof(callback));

@@ -1,4 +1,4 @@
-// ==========================================================================
+﻿// ==========================================================================
 //  Squidex Headless CMS
 // ==========================================================================
 //  Copyright (c) Squidex UG (haftungsbeschraenkt)
@@ -42,7 +42,7 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// THe URL to the image.
         /// </returns>
-        string GenerateImageUrl(string id);
+        string? GenerateImageUrl(string? id);
 
         /// <summary>
         /// Generates the URL to the image with the first specified ID.
@@ -51,7 +51,7 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// THe URL to the image.
         /// </returns>
-        string GenerateImageUrl(IEnumerable<string> id);
+        string? GenerateImageUrl(IEnumerable<string>? id);
 
         /// <summary>
         /// Creates a client instance to query and manage app configuration.

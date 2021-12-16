@@ -54,7 +54,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 
             Assert.True(envelope.Payload is EnrichedContentEvent);
 
-            var contentEvent = envelope.Payload as EnrichedContentEvent;
+            var contentEvent = (EnrichedContentEvent)envelope.Payload;
 
             Assert.Equal("SchemaUpdated", contentEvent.Name);
             Assert.Equal("testapp", contentEvent.App.Name);
@@ -99,12 +99,12 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 
             Assert.True(envelope.Payload is EnrichedCommentEvent);
 
-            var contentEvent = envelope.Payload as EnrichedCommentEvent;
+            var commentEvent = (EnrichedCommentEvent)envelope.Payload;
 
-            Assert.Equal("@user@test.com testmessage", contentEvent.Text);
-            Assert.Equal("UserMentioned", contentEvent.Name);
-            Assert.Equal("testapp", contentEvent.App.Name);
-            Assert.Equal("601c2cbafa4e669f214c0438", contentEvent.Actor.Id);
+            Assert.Equal("@user@test.com testmessage", commentEvent.Text);
+            Assert.Equal("UserMentioned", commentEvent.Name);
+            Assert.Equal("testapp", commentEvent.App.Name);
+            Assert.Equal("601c2cbafa4e669f214c0438", commentEvent.Actor.Id);
         }
 
         public static string JsonEnrichedAssetEvent { get; } = @"{
@@ -140,19 +140,19 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
 
             Assert.True(envelope.Payload is EnrichedAssetEvent);
 
-            var contentEvent = envelope.Payload as EnrichedAssetEvent;
+            var assetEvent = (EnrichedAssetEvent)envelope.Payload;
 
-            Assert.Equal("AssetCreatedFromSnapshot", contentEvent.Name);
-            Assert.Equal("testapp", contentEvent.App.Name);
-            Assert.Equal("6025a698a825d86becf541fe", contentEvent.Actor.Id);
-            Assert.Equal("c5dc4403-713d-4ebd-9a8f-a17efdba924e", contentEvent.Id);
-            Assert.Equal(447021, contentEvent.FileSize);
-            Assert.Equal("name.pdf", contentEvent.FileName);
-            Assert.Equal("application/pdf", contentEvent.MimeType);
-            Assert.Equal("6025a698a825d86becf541fe", contentEvent.LastModifiedBy.Id);
-            Assert.Equal("subject", contentEvent.LastModifiedBy.Type);
-            Assert.Equal("6025a698a825d86becf541fe", contentEvent.CreatedBy.Id);
-            Assert.Equal("subject", contentEvent.CreatedBy.Type);
+            Assert.Equal("AssetCreatedFromSnapshot", assetEvent.Name);
+            Assert.Equal("testapp", assetEvent.App.Name);
+            Assert.Equal("6025a698a825d86becf541fe", assetEvent.Actor.Id);
+            Assert.Equal("c5dc4403-713d-4ebd-9a8f-a17efdba924e", assetEvent.Id);
+            Assert.Equal(447021, assetEvent.FileSize);
+            Assert.Equal("name.pdf", assetEvent.FileName);
+            Assert.Equal("application/pdf", assetEvent.MimeType);
+            Assert.Equal("6025a698a825d86becf541fe", assetEvent.LastModifiedBy.Id);
+            Assert.Equal("subject", assetEvent.LastModifiedBy.Type);
+            Assert.Equal("6025a698a825d86becf541fe", assetEvent.CreatedBy.Id);
+            Assert.Equal("subject", assetEvent.CreatedBy.Type);
         }
     }
 

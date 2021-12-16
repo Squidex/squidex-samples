@@ -53,15 +53,15 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             try
             {
                 isWriting = true;
 
-                var jObject = JObject.FromObject(value, serializer);
+                var jObject = JObject.FromObject(value!, serializer);
 
-                jObject.AddFirst(new JProperty(DiscriminatorName, GetSubtypeDiscriminator(value.GetType())));
+                jObject.AddFirst(new JProperty(DiscriminatorName, GetSubtypeDiscriminator(value!.GetType())));
 
                 writer.WriteToken(jObject.CreateReader());
             }
@@ -108,7 +108,7 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             var jObject = serializer.Deserialize<JObject>(reader);
 
@@ -117,7 +117,7 @@ namespace Squidex.ClientLibrary.Management
                 return null;
             }
 
-            var discriminator = jObject.GetValue(DiscriminatorName, StringComparison.Ordinal).Value<string>();
+            var discriminator = jObject.GetValue(DiscriminatorName, StringComparison.Ordinal)!.Value<string>()!;
 
             var subtype = GetObjectSubtype(objectType, discriminator);
 

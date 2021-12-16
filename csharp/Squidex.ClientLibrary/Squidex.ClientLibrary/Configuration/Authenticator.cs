@@ -73,7 +73,7 @@ namespace Squidex.ClientLibrary.Configuration
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var jsonToken = JToken.Parse(jsonString);
 
-                return jsonToken["access_token"].ToString();
+                return jsonToken["access_token"]!.ToString();
             }
         }
     }

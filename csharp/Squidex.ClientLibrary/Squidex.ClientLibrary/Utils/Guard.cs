@@ -16,7 +16,7 @@ namespace Squidex.ClientLibrary.Utils
     {
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNull(object target, string parameterName)
+        public static void NotNull(object? target, string parameterName)
         {
             if (target == null)
             {
@@ -26,7 +26,7 @@ namespace Squidex.ClientLibrary.Utils
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty(string target, string parameterName)
+        public static void NotNullOrEmpty(string? target, string parameterName)
         {
             NotNull(target, parameterName);
 
@@ -38,11 +38,11 @@ namespace Squidex.ClientLibrary.Utils
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty<TType>(IReadOnlyCollection<TType> enumerable, string parameterName)
+        public static void NotNullOrEmpty<TType>(IReadOnlyCollection<TType>? enumerable, string parameterName)
         {
             NotNull(enumerable, parameterName);
 
-            if (enumerable.Count == 0)
+            if (enumerable?.Count == 0)
             {
                 throw new ArgumentException("Collection does not contain an item.", parameterName);
             }

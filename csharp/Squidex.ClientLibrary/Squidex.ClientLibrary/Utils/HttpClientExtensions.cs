@@ -66,7 +66,7 @@ namespace Squidex.ClientLibrary.Utils
             return json;
         }
 
-        public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
+        public static async Task<T?> ReadAsJsonAsync<T>(this HttpContent content)
         {
             using (var stream = await content.ReadAsStreamAsync())
             {

@@ -24,7 +24,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <returns>
         /// The HTTP client.
         /// </returns>
-        HttpClient CreateHttpClient(HttpMessageHandler messageHandler);
+        HttpClient? CreateHttpClient(HttpMessageHandler messageHandler);
 
         /// <summary>
         /// Creates the HTTP message handler from the inner handler.
@@ -33,6 +33,6 @@ namespace Squidex.ClientLibrary.Configuration
         /// <returns>
         /// The HTTP message handler.
         /// </returns>
-        HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner);
+        HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner);
     }
 }

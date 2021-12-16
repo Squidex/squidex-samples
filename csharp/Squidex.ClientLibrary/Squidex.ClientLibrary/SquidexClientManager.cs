@@ -44,7 +44,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public string GenerateImageUrl(string id)
+        public string? GenerateImageUrl(string? id)
         {
             if (id == null)
             {
@@ -60,7 +60,7 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public string GenerateImageUrl(IEnumerable<string> id)
+        public string? GenerateImageUrl(IEnumerable<string>? id)
         {
             return GenerateImageUrl(id?.FirstOrDefault());
         }
