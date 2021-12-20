@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.IO;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -15,6 +16,10 @@ namespace Squidex.CLI.Commands.Implementation
         string App { get; }
 
         string ClientId { get; }
+
+        string ClientSecret { get; }
+
+        DirectoryInfo WorkingDirectory { get; }
 
         IAppsClient Apps { get; }
 

@@ -48,7 +48,7 @@ namespace Squidex.CLI.Commands.Implementation
             Console.Write(message);
         }
 
-        public void StepSuccess(string details = null)
+        public void StepSuccess(string? details = null)
         {
             if (!string.IsNullOrWhiteSpace(details))
             {
@@ -80,7 +80,7 @@ namespace Squidex.CLI.Commands.Implementation
             Console.WriteLine(message);
         }
 
-        public void WriteLine(string message, params object[] args)
+        public void WriteLine(string message, params object?[] args)
         {
             Console.WriteLine(message, args);
         }

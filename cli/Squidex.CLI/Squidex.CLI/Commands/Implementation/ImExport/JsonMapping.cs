@@ -15,7 +15,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
     {
         private static readonly Regex FormatRegex = new Regex("(?<Lhs>[^\\/=]*)(=(?<Rhs>[^\\/]*))?(\\/(?<Format>.*))?", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        public static JsonMapping ForJson2Csv(string fields)
+        public static JsonMapping ForJson2Csv(string? fields)
         {
             fields ??= string.Empty;
 
@@ -68,7 +68,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             return result;
         }
 
-        public static JsonMapping ForCsv2Json(string fields)
+        public static JsonMapping ForCsv2Json(string? fields)
         {
             fields ??= string.Empty;
 

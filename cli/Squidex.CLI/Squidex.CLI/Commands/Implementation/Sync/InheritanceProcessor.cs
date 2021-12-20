@@ -32,7 +32,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        private static string GetDiscriminator(Type type)
+        private static string? GetDiscriminator(Type type)
         {
             var attribute = type.GetCustomAttribute<JsonConverterAttribute>();
 

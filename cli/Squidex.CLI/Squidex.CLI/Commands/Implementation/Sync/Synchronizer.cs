@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.CLI.Configuration;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -18,7 +19,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
         private readonly ILogger log;
         private readonly IEnumerable<ISynchronizer> synchronizers;
 
-        public Synchronizer(IEnumerable<ISynchronizer> synchronizers, ILogger log)
+        public Synchronizer(IEnumerable<ISynchronizer> synchronizers,  ILogger log)
         {
             this.synchronizers = synchronizers;
 
@@ -32,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public async Task ExportAsync(string path, SyncOptions options, ISession session)
         {
-            using (var fs = FileSystems.Create(path))
+            using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
             {
                 if (!fs.CanWrite)
                 {
@@ -71,7 +72,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public async Task ImportAsync(string path, SyncOptions options, ISession session)
         {
-            using (var fs = FileSystems.Create(path))
+            using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
             {
                 var selectedSynchronizers = GetSynchronizers(options.Targets);
                 var selectedCount = selectedSynchronizers.Count;
@@ -110,9 +111,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             });
         }
 
-        public async Task GenerateTemplateAsync(string path)
+        public async Task GenerateTemplateAsync(string path, ISession session)
         {
-            using (var fs = FileSystems.Create(path))
+            using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
             {
                 if (!fs.CanWrite)
                 {
@@ -129,7 +130,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        private List<ISynchronizer> GetSynchronizers(string[] targets = null)
+        private List<ISynchronizer> GetSynchronizers(string[]? targets = null)
         {
             var selected = synchronizers;
 

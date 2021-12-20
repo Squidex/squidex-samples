@@ -106,7 +106,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                 throw new JsonException($"Error reading file {file.FullName}");
             }
 
-            return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings);
+            return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings)!;
         }
 
         public async Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
@@ -145,7 +145,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        public void Write<T>(T value, Stream stream, string schemaRef = null) where T : class
+        public void Write<T>(T value, Stream stream, string? schemaRef = null) where T : class
         {
             using (var textWriter = new StreamWriter(stream))
             {
@@ -200,7 +200,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
             using (var reader = new StreamReader(memoryStream))
             {
-                return (T)jsonSerializer.Deserialize(reader, typeof(T));
+                return (T)jsonSerializer.Deserialize(reader, typeof(T))!;
             }
         }
     }

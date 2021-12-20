@@ -52,9 +52,9 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
                             Data = data,
                         };
 
-                        if (!string.IsNullOrWhiteSpace(setting.KeyField))
+                        if (!string.IsNullOrWhiteSpace(keyField))
                         {
-                            if (!data.TryGetValue(keyField, out var temp) || !temp.TryGetValue("iv", out var value))
+                            if (!data.TryGetValue(keyField, out var temp) || !temp.TryGetValue("iv", StringComparison.Ordinal, out var value))
                             {
                                 throw new InvalidOperationException($"Cannot find key '{keyField}' in data.");
                             }
@@ -136,7 +136,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             using (var streamReader = new StreamReader(stream))
             {
-                string line;
+                string? line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     if (line.Equals(separator, StringComparison.OrdinalIgnoreCase))

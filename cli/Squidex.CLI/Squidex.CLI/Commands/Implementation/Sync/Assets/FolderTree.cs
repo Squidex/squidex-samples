@@ -28,7 +28,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             this.session = session;
         }
 
-        public async Task<string> GetPathAsync(string id)
+        public async Task<string?> GetPathAsync(string? id)
         {
             if (string.IsNullOrWhiteSpace(id) || id == RootId)
             {
@@ -45,7 +45,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return folder.Path;
         }
 
-        public async Task<string> GetIdAsync(string path)
+        public async Task<string?> GetIdAsync(string? path)
         {
             if (path == null || path.Equals(".", StringComparison.OrdinalIgnoreCase))
             {

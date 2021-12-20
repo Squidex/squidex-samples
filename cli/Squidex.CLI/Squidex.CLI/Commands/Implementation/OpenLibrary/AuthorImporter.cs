@@ -165,7 +165,7 @@ namespace Squidex.CLI.Commands.Implementation.OpenLibrary
             Console.WriteLine();
         }
 
-        private static string GetString(JToken value)
+        private static string? GetString(JToken value)
         {
             switch (value.Type)
             {

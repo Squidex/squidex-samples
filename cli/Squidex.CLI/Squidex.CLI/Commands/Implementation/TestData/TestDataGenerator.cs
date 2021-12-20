@@ -25,6 +25,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
         public TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
         {
             this.schema = schema;
+
             this.languages = languages;
         }
 
@@ -58,7 +59,7 @@ namespace Squidex.CLI.Commands.Implementation.TestData
             return data;
         }
 
-        private JToken GenerateValue(FieldDto field)
+        private JToken? GenerateValue(FieldDto field)
         {
             switch (field.Properties)
             {

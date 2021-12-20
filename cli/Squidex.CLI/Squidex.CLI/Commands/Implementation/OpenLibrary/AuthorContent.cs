@@ -17,18 +17,18 @@ namespace Squidex.CLI.Commands.Implementation.OpenLibrary
     public sealed class AuthorData
     {
         [JsonConverter(typeof(InvariantConverter))]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string PersonalName { get; set; }
+        public string? PersonalName { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string Bio { get; set; }
+        public string? Bio { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string Birthdate { get; set; }
+        public string? Birthdate { get; set; }
 
         [JsonConverter(typeof(InvariantConverter))]
-        public string Wikipedia { get; set; }
+        public string? Wikipedia { get; set; }
     }
 }

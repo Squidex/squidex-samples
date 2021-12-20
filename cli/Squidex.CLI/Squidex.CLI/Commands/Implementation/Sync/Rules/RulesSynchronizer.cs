@@ -198,7 +198,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
         {
             foreach (var schema in dto.Schemas)
             {
-                if (!schemaMap.TryGetValue(schema.SchemaId, out var found))
+                if (!schemaMap.TryGetValue(schema.SchemaId!, out var found))
                 {
                     log.WriteLine($"Schema {schema.SchemaId} not found.");
                 }

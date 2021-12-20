@@ -57,7 +57,9 @@ namespace Squidex.CLI.Commands
 
                 if (arguments.Count > 0)
                 {
+#pragma warning disable MA0042 // Do not use blocking calls in an async method
                     var generator = new TestDataGenerator(taskForSchema.Result, taskForLanguages.Result);
+#pragma warning restore MA0042 // Do not use blocking calls in an async method
 
                     for (var i = 0; i < arguments.Count; i++)
                     {
@@ -161,19 +163,19 @@ namespace Squidex.CLI.Commands
 
                 if (arguments.Format == Format.JSON && arguments.FilePerContent)
                 {
-                    var folder = arguments.Output;
+                    var folderName = arguments.Output;
 
-                    if (string.IsNullOrWhiteSpace(folder))
+                    if (string.IsNullOrWhiteSpace(folderName))
                     {
-                        folder = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
+                        folderName = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
                     }
 
-                    Directory.CreateDirectory(folder);
+                    var folder = Directory.CreateDirectory(folderName);
 
                     await session.ExportAsync(arguments, log, async entity =>
                     {
                         var fileName = $"{arguments.Schema}_{entity.Id}.json";
-                        var filePath = Path.Combine(folder, fileName);
+                        var filePath = folder.GetFile(fileName).FullName;
 
                         if (arguments.FullEntities)
                         {
@@ -392,7 +394,7 @@ namespace Squidex.CLI.Commands
                 [Option("file", Description = "The optional path to the file.")]
                 public string File { get; set; }
 
-                string IImportSettings.KeyField => null;
+                string? IImportSettings.KeyField => null;
 
                 public sealed class Validator : AbstractValidator<TestDataArguments>
                 {

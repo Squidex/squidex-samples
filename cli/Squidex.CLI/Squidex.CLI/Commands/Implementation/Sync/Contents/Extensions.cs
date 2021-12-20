@@ -75,7 +75,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         return;
                     }
 
-                    if (schemaId.Type == JTokenType.String && map.TryGetValue(schemaId.Value<string>(), out var target))
+                    if (schemaId.Type == JTokenType.String && map.TryGetValue(schemaId!.Value<string>()!, out var target))
                     {
                         obj[Component.Discriminator] = target;
                     }

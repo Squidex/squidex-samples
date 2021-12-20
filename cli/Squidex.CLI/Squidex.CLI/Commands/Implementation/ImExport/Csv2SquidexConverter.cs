@@ -18,7 +18,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
     {
         private readonly JsonMapping mapping;
 
-        public Csv2SquidexConverter(string fields)
+        public Csv2SquidexConverter(string? fields)
         {
             mapping = JsonMapping.ForCsv2Json(fields);
         }

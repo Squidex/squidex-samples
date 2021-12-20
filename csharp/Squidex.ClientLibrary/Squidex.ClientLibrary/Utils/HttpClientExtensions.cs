@@ -68,6 +68,18 @@ namespace Squidex.ClientLibrary.Utils
 
         public static async Task<T?> ReadAsJsonAsync<T>(this HttpContent content)
         {
+#if NET5_0_OR_GREATER
+            await using (var stream = await content.ReadAsStreamAsync())
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    using (var jsonReader = new JsonTextReader(reader))
+                    {
+                        return Serializer.Deserialize<T>(jsonReader);
+                    }
+                }
+            }
+#else
             using (var stream = await content.ReadAsStreamAsync())
             {
                 using (var reader = new StreamReader(stream))
@@ -78,6 +90,7 @@ namespace Squidex.ClientLibrary.Utils
                     }
                 }
             }
+#endif
         }
     }
 }

@@ -35,7 +35,9 @@ namespace Squidex.CLI.Commands
             [Command("new", Description = "Creates a new folder with sample files how to create an app from json files.")]
             public async Task New(NewArgument arguments)
             {
-                await synchronizer.GenerateTemplateAsync(arguments.Folder);
+                var session = configuration.StartSession(arguments.App);
+
+                await synchronizer.GenerateTemplateAsync(arguments.Folder, session);
 
                 log.WriteLine("> Folder generated.");
             }

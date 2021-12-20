@@ -26,17 +26,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return new FilePath("assets", "files", $"{id}.blob");
         }
 
-        public static string GetFileHash(this IFile file, AssetDto asset)
+        public static string? GetFileHash(this IFile file, AssetDto asset)
         {
             return GetFileHash(file, asset.FileName);
         }
 
-        public static string GetFileHash(this IFile file)
+        public static string? GetFileHash(this IFile file)
         {
             return GetFileHash(file, file.Name);
         }
 
-        public static string GetFileHash(this IFile file, string fileName)
+        public static string? GetFileHash(this IFile file, string fileName)
         {
             if (file == null)
             {
@@ -74,7 +74,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
-        public static BulkUpdateAssetsJobDto ToMove(this AssetModel model, string parentId)
+        public static BulkUpdateAssetsJobDto ToMove(this AssetModel model, string? parentId)
         {
             var bulkJob = model.ToJob(BulkUpdateAssetType.Move);
 

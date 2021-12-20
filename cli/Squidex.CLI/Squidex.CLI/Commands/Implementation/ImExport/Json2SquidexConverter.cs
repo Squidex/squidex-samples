@@ -17,7 +17,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
         private readonly JsonMapping mapping;
         private readonly JsonSerializer jsonSerializer = new JsonSerializer();
 
-        public Json2SquidexConverter(string fields = null)
+        public Json2SquidexConverter(string? fields = null)
         {
             if (fields != null)
             {
@@ -49,11 +49,16 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
             var data = new DynamicData();
 
+            if (item == null)
+            {
+                return data;
+            }
+
             if (mapping != null)
             {
                 foreach (var (name, path, _) in mapping)
                 {
-                    if (item.TryGetValue(name, out var value))
+                    if (item != null && item.TryGetValue(name, out var value))
                     {
                         try
                         {

@@ -11,7 +11,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
     {
         string Schema { get; }
 
-        string KeyField { get; }
+        string? KeyField { get; }
 
         bool Unpublished { get; }
     }

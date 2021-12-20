@@ -118,7 +118,7 @@ namespace Squidex.CLI.Commands
                     throw new CLIException("Schema name cannot be empty.");
                 }
 
-                SchemaDto targetSchema;
+                SchemaDto? targetSchema;
                 try
                 {
                     targetSchema = await session.Schemas.GetSchemaAsync(session.App, schemaName);

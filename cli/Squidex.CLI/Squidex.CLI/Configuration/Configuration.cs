@@ -13,6 +13,6 @@ namespace Squidex.CLI.Configuration
     {
         public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
 
-        public string CurrentApp { get; set; }
+        public string? CurrentApp { get; set; }
     }
 }

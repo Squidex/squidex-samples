@@ -23,12 +23,12 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             get { return mapping.Select(x => x.Name); }
         }
 
-        public Squidex2CsvConverter(string fields)
+        public Squidex2CsvConverter(string? fields)
         {
             mapping = JsonMapping.ForJson2Csv(fields);
         }
 
-        public IEnumerable<object> GetValues(DynamicContent entity)
+        public IEnumerable<object?> GetValues(DynamicContent entity)
         {
             foreach (var (_, path, _) in mapping)
             {
@@ -55,7 +55,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
             }
         }
 
-        private static object GetValue(object current, JsonPath path)
+        private static object? GetValue(object? current, JsonPath path)
         {
             foreach (var (key, index) in path)
             {

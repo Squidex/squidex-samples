@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Models
         {
             try
             {
-                var imported = JsonConvert.DeserializeObject<SchemaWithRefs<T>>(json);
+                var imported = JsonConvert.DeserializeObject<SchemaWithRefs<T>>(json)!;
 
                 if (imported.Schema != null && imported.ReferencedSchemas != null)
                 {
@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Models
 
         private static SchemaWithRefs<T> ParseDirectly(string json)
         {
-            var schema = JsonConvert.DeserializeObject<T>(json);
+            var schema = JsonConvert.DeserializeObject<T>(json)!;
 
             return new SchemaWithRefs<T>(schema);
         }

@@ -474,7 +474,7 @@ namespace Squidex.CLI.Tests
 
             Assert.NotNull(obj);
             Assert.Single(obj);
-            Assert.True(obj.ContainsKey("value"));
+            Assert.True(obj?.ContainsKey("value"));
         }
 
         [Fact]
@@ -487,9 +487,9 @@ namespace Squidex.CLI.Tests
             var obj = values as JObject;
 
             Assert.NotNull(obj);
-            Assert.Equal(2, obj.Count);
-            Assert.True(obj.ContainsKey("latitude"));
-            Assert.True(obj.ContainsKey("longitude"));
+            Assert.Equal(2, obj?.Count);
+            Assert.True(obj?.ContainsKey("latitude"));
+            Assert.True(obj?.ContainsKey("longitude"));
         }
 
         private static HashSet<List<string>> CreateManyStringTags(FieldPropertiesDto field)
@@ -498,15 +498,15 @@ namespace Squidex.CLI.Tests
 
             for (var i = 0; i < 1000; i++)
             {
-                values.Add(CreateValue(field).ToObject<List<string>>());
+                values.Add(CreateValue(field)!.ToObject<List<string>>()!);
             }
 
             return values;
         }
 
-        private static HashSet<object> CreateManyScalars(FieldPropertiesDto field)
+        private static HashSet<object?> CreateManyScalars(FieldPropertiesDto field)
         {
-            var values = new HashSet<object>();
+            var values = new HashSet<object?>();
 
             for (var i = 0; i < 1000; i++)
             {
@@ -516,14 +516,14 @@ namespace Squidex.CLI.Tests
             return values;
         }
 
-        private static object CreateScalar(FieldPropertiesDto field)
+        private static object? CreateScalar(FieldPropertiesDto field)
         {
             var value = CreateValue(field);
 
             return (value as JValue)?.Value;
         }
 
-        private static JToken CreateValue(FieldPropertiesDto field)
+        private static JToken? CreateValue(FieldPropertiesDto field)
         {
             var schema = new SchemaDto
             {
@@ -538,7 +538,7 @@ namespace Squidex.CLI.Tests
                 }
             };
 
-            var sut = new TestDataGenerator(schema, null);
+            var sut = new TestDataGenerator(schema, null!);
 
             var data = sut.GenerateTestData();
 

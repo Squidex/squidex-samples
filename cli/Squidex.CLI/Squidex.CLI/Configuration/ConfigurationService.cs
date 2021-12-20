@@ -20,17 +20,49 @@ namespace Squidex.CLI.Configuration
         private const string CloudUrl = "https://cloud.squidex.io";
         private readonly JsonSerializer jsonSerializer = new JsonSerializer();
         private readonly Configuration configuration;
+        private readonly FileInfo configurationFile;
+
+        public DirectoryInfo WorkingDirectory => configurationFile.Directory!;
 
         public ConfigurationService()
         {
-            configuration = LoadConfiguration();
+            (configuration, configurationFile) = LoadConfiguration();
         }
 
-        private Configuration LoadConfiguration()
+        private (Configuration, FileInfo) LoadConfiguration()
         {
+            DirectoryInfo? workingDirectory = null;
+
+            var folderPath = Environment.GetEnvironmentVariable("SQCLI_FOLDER");
+
+            if (!string.IsNullOrWhiteSpace(folderPath))
+            {
+                if (Directory.Exists(folderPath))
+                {
+                    workingDirectory = new DirectoryInfo(folderPath);
+                }
+            }
+
+            if (workingDirectory == null)
+            {
+                var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+                if (Directory.Exists(userFolder))
+                {
+                    workingDirectory = Directory.CreateDirectory(Path.Combine(userFolder, ".sqcli"));
+                }
+            }
+
+            if (workingDirectory == null)
+            {
+                workingDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
+            }
+
+            var file = workingDirectory.GetFile(".configuration");
+
             try
             {
-                var file = new FileInfo(".configuration");
+                var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
                 using (var stream = file.OpenRead())
                 {
@@ -40,6 +72,11 @@ namespace Squidex.CLI.Configuration
                         {
                             var result = jsonSerializer.Deserialize<Configuration>(jsonReader);
 
+                            if (result == null)
+                            {
+                                return (new Configuration(), file);
+                            }
+
                             foreach (var (key, config) in result.Apps)
                             {
                                 if (string.IsNullOrWhiteSpace(config.Name))
@@ -48,14 +85,14 @@ namespace Squidex.CLI.Configuration
                                 }
                             }
 
-                            return result;
+                            return (result, file);
                         }
                     }
                 }
             }
             catch
             {
-                return new Configuration();
+                return (new Configuration(), file);
             }
         }
 
@@ -63,7 +100,9 @@ namespace Squidex.CLI.Configuration
         {
             try
             {
-                File.WriteAllText(".configuration", JsonConvert.SerializeObject(configuration));
+                var fullPath = configurationFile.FullName;
+
+                File.WriteAllText(fullPath, JsonConvert.SerializeObject(configuration));
             }
             catch (Exception ex)
             {
@@ -131,14 +170,14 @@ namespace Squidex.CLI.Configuration
             {
                 var options = CreateOptions(app, emulate);
 
-                return new Session(app.Name, new SquidexClientManager(options));
+                return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
             }
 
             if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
             {
                 var options = CreateOptions(app, emulate);
 
-                return new Session(app.Name, new SquidexClientManager(options));
+                return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
             }
 
             throw new CLIException("Cannot find valid configuration.");

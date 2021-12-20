@@ -72,7 +72,7 @@ namespace Squidex.ClientLibrary.Management
         /// <remarks>
         /// If this option is provided all other properties are ignored.
         /// </remarks>
-        public List<string> Ids { get; set; }
+        public List<string>? Ids { get; set; }
 
         /// <summary>
         /// Gets or sets the JSON query.
@@ -83,7 +83,7 @@ namespace Squidex.ClientLibrary.Management
         /// <remarks>
         /// Do not use this property in combination with OData properties.
         /// </remarks>
-        public object Query { get; set; }
+        public object? Query { get; set; }
 
         /// <summary>
         /// Gets or sets the OData argument to define the number of assets to retrieve (<code>$top</code>).
@@ -116,7 +116,7 @@ namespace Squidex.ClientLibrary.Management
         /// <remarks>
         /// Do not use this property in combination with <see cref="Query"/> property.
         /// </remarks>
-        public string OrderBy { get; set; }
+        public string? OrderBy { get; set; }
 
         /// <summary>
         /// Gets or sets the OData filter argument (<code>$filter</code>).
@@ -127,7 +127,7 @@ namespace Squidex.ClientLibrary.Management
         /// <remarks>
         /// Do not use this property in combination with <see cref="Query"/> property.
         /// </remarks>
-        public string Filter { get; set; }
+        public string? Filter { get; set; }
 
         /// <summary>
         /// Gets or sets the optional folder ID.
@@ -135,7 +135,7 @@ namespace Squidex.ClientLibrary.Management
         /// <value>
         /// The parent optional folder ID.
         /// </value>
-        public string ParentId { get; set; }
+        public string? ParentId { get; set; }
 
         internal string? ToQueryJson()
         {

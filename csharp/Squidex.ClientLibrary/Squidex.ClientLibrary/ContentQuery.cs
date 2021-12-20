@@ -27,7 +27,7 @@ namespace Squidex.ClientLibrary
         /// <remarks>
         /// If this option is provided all other properties are ignored.
         /// </remarks>
-        public HashSet<string> Ids { get; set; }
+        public HashSet<string>? Ids { get; set; }
 
         /// <summary>
         /// Gets or sets the JSON query.
@@ -38,7 +38,7 @@ namespace Squidex.ClientLibrary
         /// <remarks>
         /// Do not use this property in combination with OData properties.
         /// </remarks>
-        public object JsonQuery { get; set; }
+        public object? JsonQuery { get; set; }
 
         /// <summary>
         /// Gets or sets the OData argument to define the number of content items to retrieve (<code>$top</code>).
@@ -71,7 +71,7 @@ namespace Squidex.ClientLibrary
         /// <remarks>
         /// Do not use this property in combination with <see cref="JsonQuery"/> property.
         /// </remarks>
-        public string OrderBy { get; set; }
+        public string? OrderBy { get; set; }
 
         /// <summary>
         /// Gets or sets the OData filter argument (<code>$filter</code>).
@@ -82,7 +82,7 @@ namespace Squidex.ClientLibrary
         /// <remarks>
         /// Do not use this property in combination with <see cref="JsonQuery"/> property.
         /// </remarks>
-        public string Filter { get; set; }
+        public string? Filter { get; set; }
 
         /// <summary>
         /// Gets or sets the OData argument to define number of full text search (<code>$search</code>).
@@ -90,7 +90,7 @@ namespace Squidex.ClientLibrary
         /// <value>
         /// The full text query.
         /// </value>
-        public string Search { get; set; }
+        public string? Search { get; set; }
 
         internal string ToQuery(bool supportsSearch)
         {

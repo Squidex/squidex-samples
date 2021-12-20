@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem
 {
@@ -17,6 +18,8 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
         bool CanWrite => true;
 
         bool CanAccessInParallel => false;
+
+        Task OpenAsync();
 
         IFile GetFile(FilePath path);
 

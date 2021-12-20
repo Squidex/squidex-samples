@@ -14,7 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
     {
         private readonly ZipArchive archive;
         private readonly string archivePath;
-        private ZipArchiveEntry entry;
+        private ZipArchiveEntry? entry;
 
         public string FullName { get; }
 
@@ -38,7 +38,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 
         public void Delete()
         {
-            entry.Delete();
+            entry?.Delete();
         }
 
         public Stream OpenRead()

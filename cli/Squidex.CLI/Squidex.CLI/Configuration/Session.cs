@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Collections.Generic;
+using System.IO;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
@@ -24,61 +25,48 @@ namespace Squidex.CLI.Configuration
 
         public string App { get; }
 
+        public DirectoryInfo WorkingDirectory { get; }
+
         public IAppsClient Apps
         {
-            get
-            {
-                apps ??= apps = clientManager.CreateAppsClient();
-
-                return apps;
-            }
+            get => apps ??= clientManager.CreateAppsClient();
         }
 
         public IAssetsClient Assets
         {
-            get
-            {
-                assets ??= assets = clientManager.CreateAssetsClient();
-
-                return assets;
-            }
+            get => assets ??= clientManager.CreateAssetsClient();
         }
 
         public IBackupsClient Backups
         {
-            get
-            {
-                backups ??= backups = clientManager.CreateBackupsClient();
-
-                return backups;
-            }
+            get => backups ??= clientManager.CreateBackupsClient();
         }
 
         public IExtendableRulesClient Rules
         {
-            get
-            {
-                rules ??= rules = clientManager.CreateExtendableRulesClient();
-
-                return rules;
-            }
+            get => rules ??= clientManager.CreateExtendableRulesClient();
         }
 
         public ISchemasClient Schemas
         {
-            get
-            {
-                schemas ??= schemas = clientManager.CreateSchemasClient();
-
-                return schemas;
-            }
+            get => schemas ??= clientManager.CreateSchemasClient();
         }
 
-        public string ClientId => clientManager.Options.ClientId;
+        public string ClientId
+        {
+            get => clientManager.Options.ClientId;
+        }
 
-        public Session(string app, SquidexClientManager clientManager)
+        public string ClientSecret
+        {
+            get => clientManager.Options.ClientSecret;
+        }
+
+        public Session(string app, DirectoryInfo workingDirectory, SquidexClientManager clientManager)
         {
             App = app;
+
+            WorkingDirectory = workingDirectory;
 
             this.clientManager = clientManager;
         }

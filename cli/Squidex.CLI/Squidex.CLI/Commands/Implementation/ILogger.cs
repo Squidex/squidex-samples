@@ -13,7 +13,7 @@ namespace Squidex.CLI.Commands.Implementation
 
         void StepFailed(string reason);
 
-        void StepSuccess(string details = null);
+        void StepSuccess(string? details = null);
 
         void StepSkipped(string reason);
 
@@ -21,7 +21,7 @@ namespace Squidex.CLI.Commands.Implementation
 
         void WriteLine(string message);
 
-        void WriteLine(string message, params object[] args);
+        void WriteLine(string message, params object?[] args);
 
         ILogLine WriteSameLine();
     }

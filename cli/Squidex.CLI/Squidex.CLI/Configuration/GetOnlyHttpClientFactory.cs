@@ -12,12 +12,12 @@ namespace Squidex.CLI.Configuration
 {
     public sealed class GetOnlyHttpClientFactory : IHttpClientFactory
     {
-        public HttpClient CreateHttpClient(HttpMessageHandler messageHandler)
+        public HttpClient? CreateHttpClient(HttpMessageHandler messageHandler)
         {
             return new GetOnlyHttpClient(messageHandler);
         }
 
-        public HttpMessageHandler CreateHttpMessageHandler(HttpMessageHandler inner)
+        public HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner)
         {
             return null;
         }

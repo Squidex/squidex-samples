@@ -44,7 +44,7 @@ namespace Squidex.CLI.Commands
 
                 log.WriteLine("Backup started, waiting for completion...");
 
-                BackupJobDto foundBackup = null;
+                BackupJobDto? foundBackup = null;
 
                 using (var tcs = new CancellationTokenSource(TimeSpan.FromMinutes(arguments.Timeout)))
                 {

@@ -68,7 +68,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private static List<string> MapReferences(List<string> ids, Dictionary<string, string> map)
+        private static List<string>? MapReferences(List<string> ids, Dictionary<string, string> map)
         {
             if (ids == null || ids.Count == 0)
             {

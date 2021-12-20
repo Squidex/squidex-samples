@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
 {
@@ -27,6 +28,11 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
             zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);
 
             this.fileInfo = fileInfo;
+        }
+
+        public Task OpenAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public IFile GetFile(FilePath path)

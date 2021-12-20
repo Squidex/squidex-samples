@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 {
@@ -18,9 +19,16 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 
         public string FullName => directory.FullName;
 
+        public bool Readonly { get; init; }
+
         public DefaultFileSystem(DirectoryInfo directory)
         {
             this.directory = directory;
+        }
+
+        public Task OpenAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public IFile GetFile(FilePath path)
@@ -29,7 +37,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
 
             var relativePath = Path.GetRelativePath(directory.FullName, fullPath);
 
-            return new DefaultFile(new FileInfo(fullPath), relativePath);
+            return new DefaultFile(new FileInfo(fullPath), relativePath)
+            {
+                Readonly = Readonly
+            };
         }
 
         public IEnumerable<IFile> GetFiles(FilePath path, string extension)
@@ -46,7 +57,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
                     {
                         var relativePath = Path.GetRelativePath(directory.FullName, fileInfo.FullName);
 
-                        yield return new DefaultFile(fileInfo, relativePath);
+                        yield return new DefaultFile(fileInfo, relativePath)
+                        {
+                            Readonly = Readonly
+                        };
                     }
                 }
             }

@@ -152,7 +152,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         {
                             log.StepFailed(result2.Error.ToString());
                         }
-                        else if (result1?.Id != null && result2.Id != null)
+                        else if (result1?.Id != null && result2?.Id != null)
                         {
                             log.StepSuccess();
                         }

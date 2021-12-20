@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 {
@@ -27,6 +28,11 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
             this.assemblyPath = assemblyPath;
 
             FullName = $"{assembly.FullName}/{assemblyPath}";
+        }
+
+        public Task OpenAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public IFile GetFile(FilePath path)

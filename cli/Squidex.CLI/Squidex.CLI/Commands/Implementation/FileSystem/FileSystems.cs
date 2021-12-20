@@ -7,8 +7,10 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem.Default;
 using Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
+using Squidex.CLI.Commands.Implementation.FileSystem.Git;
 using Squidex.CLI.Commands.Implementation.FileSystem.Zip;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem
@@ -17,26 +19,76 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
     {
         private const string AssemblyPrefix = "assembly://";
 
-        public static IFileSystem Create(string path)
+        public static async Task<IFileSystem> CreateAsync(string path, DirectoryInfo workingDirectory)
         {
-            if (path.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
-            {
-                var file = new FileInfo(path);
+            IFileSystem? fileSystem = null;
 
-                Directory.CreateDirectory(file.Directory.FullName);
-
-                return new ZipFileSystem(file);
-            }
-            else if (path.StartsWith(AssemblyPrefix, StringComparison.OrdinalIgnoreCase))
+            if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
             {
-                return new EmbeddedFileSystem(typeof(FileSystems).Assembly, path[AssemblyPrefix.Length..]);
+                switch (uri.Scheme)
+                {
+                    case "https" when uri.LocalPath.EndsWith(".git", StringComparison.Ordinal):
+                        var query = uri.ParseQueryString();
+
+                        query.TryGetValue("folder", out var folder);
+
+                        fileSystem = new GitFileSystem(uri.ToString(), folder, query.ContainsKey("ski-pull"), workingDirectory);
+                        break;
+                    case "file":
+                        fileSystem = OpenFolder(uri.LocalPath);
+                        break;
+                    case "assembly":
+                        fileSystem = OpenAssembly(uri.LocalPath.Replace('/', '.'));
+                        break;
+                }
             }
             else
             {
-                var directory = Directory.CreateDirectory(path);
-
-                return new DefaultFileSystem(directory);
+                if (path.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+                {
+                    fileSystem = OpenZip(path);
+                }
+                else if (path.StartsWith(AssemblyPrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    fileSystem = OpenAssembly(path[AssemblyPrefix.Length..]);
+                }
+                else
+                {
+                    fileSystem = OpenFolder(path);
+                }
             }
+
+            if (fileSystem == null)
+            {
+                throw new InvalidOperationException($"Cannot open file system at {path}.");
+            }
+
+            await fileSystem.OpenAsync();
+
+            return fileSystem;
+        }
+
+        private static IFileSystem OpenAssembly(string path)
+        {
+            var cleanedPath = path.Replace('/', '.');
+
+            return new EmbeddedFileSystem(typeof(FileSystems).Assembly, cleanedPath);
+        }
+
+        private static IFileSystem OpenFolder(string path)
+        {
+            var directory = Directory.CreateDirectory(path);
+
+            return new DefaultFileSystem(directory);
+        }
+
+        private static IFileSystem OpenZip(string path)
+        {
+            var file = new FileInfo(path);
+
+            Directory.CreateDirectory(file.Directory!.FullName);
+
+            return new ZipFileSystem(file);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Squidex.CLI.Commands
 
                 var assets = session.Assets;
 
-                using (var fs = FileSystems.Create(arguments.Path))
+                using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
                 {
                     var folderTree = new FolderTree(session);
 
@@ -122,7 +122,7 @@ namespace Squidex.CLI.Commands
 
                 var assets = session.Assets;
 
-                using (var fs = FileSystems.Create(arguments.Path))
+                using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
                 {
                     var folderTree = new FolderTree(session);
                     var folderNames = new HashSet<string>();
@@ -143,7 +143,7 @@ namespace Squidex.CLI.Commands
 
                             if (!folderNames.Add(assetPath))
                             {
-                                assetPath = Path.Combine(assetFolder, $"{asset.Id}_{asset.FileName}");
+                                assetPath = Path.Combine(assetFolder!, $"{asset.Id}_{asset.FileName}");
                             }
 
                             return FilePath.Create(assetPath);
@@ -176,7 +176,7 @@ namespace Squidex.CLI.Commands
                 public string Path { get; set; }
 
                 [Option('t', "target", Description = "Path to the target folder.")]
-                public string? TargetFolder { get; set; }
+                public string TargetFolder { get; set; }
 
                 [Option('d', "duplicate", Description = "Duplicate the asset.")]
                 public bool Duplicate { get; set; }
@@ -196,7 +196,7 @@ namespace Squidex.CLI.Commands
                 public string Path { get; set; }
 
                 [Option('t', "target", Description = "Path to the target folder.")]
-                public string? SourceFolder { get; set; }
+                public string SourceFolder { get; set; }
 
                 public sealed class Validator : AbstractValidator<ExportArguments>
                 {
