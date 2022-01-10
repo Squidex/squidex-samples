@@ -26,7 +26,8 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// The rules.
         /// </returns>
-        Task<ExtendableRules> GetRulesAsync(CancellationToken ct = default);
+        Task<ExtendableRules> GetRulesAsync(
+             CancellationToken ct = default);
 
         /// <summary>
         /// Creates a new rule.
@@ -37,7 +38,8 @@ namespace Squidex.ClientLibrary
         /// The created rule.
         /// </returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="request"/> is null.</exception>
-        Task<ExtendableRuleDto> CreateRuleAsync(CreateExtendableRuleDto request, CancellationToken ct = default);
+        Task<ExtendableRuleDto> CreateRuleAsync(CreateExtendableRuleDto request,
+             CancellationToken ct = default);
 
         /// <summary>
         /// Updates the rule with the specified ID.
@@ -51,7 +53,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException"><paramref name="request"/> is null.</exception>
         /// <exception cref="System.ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<ExtendableRuleDto> UpdateRuleAsync(string id, UpdateExtendableRuleDto request, CancellationToken ct = default);
+        Task<ExtendableRuleDto> UpdateRuleAsync(string id, UpdateExtendableRuleDto request,
+             CancellationToken ct = default);
 
         /// <summary>
         /// Enables the rule with the specified ID.
@@ -63,7 +66,8 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="System.ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<ExtendableRuleDto> EnableRuleAsync(string id, CancellationToken ct = default);
+        Task<ExtendableRuleDto> EnableRuleAsync(string id,
+             CancellationToken ct = default);
 
         /// <summary>
         /// Disables the rule with the specified ID.
@@ -75,7 +79,8 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="System.ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task<ExtendableRuleDto> DisableRuleAsync(string id, CancellationToken ct = default);
+        Task<ExtendableRuleDto> DisableRuleAsync(string id,
+             CancellationToken ct = default);
 
         /// <summary>
         /// Deletes the rule with the specified ID.
@@ -87,6 +92,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="System.ArgumentException"><paramref name="id"/> is empty.</exception>
-        Task DeleteRuleAsync(string id, CancellationToken ct = default);
+        Task DeleteRuleAsync(string id,
+             CancellationToken ct = default);
     }
 }

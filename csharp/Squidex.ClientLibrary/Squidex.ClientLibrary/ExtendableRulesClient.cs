@@ -33,50 +33,56 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task<ExtendableRules> GetRulesAsync(CancellationToken ct = default)
+        public Task<ExtendableRules> GetRulesAsync(
+             CancellationToken ct = default)
         {
-            return RequestJsonAsync<ExtendableRules>(HttpMethod.Get, BuildUrl(), ct: ct);
+            return RequestJsonAsync<ExtendableRules>(HttpMethod.Get, BuildUrl(), null, null, ct);
         }
 
         /// <inheritdoc/>
-        public Task<ExtendableRuleDto> CreateRuleAsync(CreateExtendableRuleDto request, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> CreateRuleAsync(CreateExtendableRuleDto request,
+             CancellationToken ct = default)
         {
             Guard.NotNull(request, nameof(request));
 
-            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Post, BuildUrl(), request.ToContent(), ct: ct);
+            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Post, BuildUrl(), request.ToContent(), null, ct);
         }
 
         /// <inheritdoc/>
-        public Task<ExtendableRuleDto> UpdateRuleAsync(string id, UpdateExtendableRuleDto request, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> UpdateRuleAsync(string id, UpdateExtendableRuleDto request,
+             CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(request, nameof(request));
 
-            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(), ct: ct);
+            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(), null, ct);
         }
 
         /// <inheritdoc/>
-        public Task<ExtendableRuleDto> EnableRuleAsync(string id, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> EnableRuleAsync(string id,
+             CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/enable"), ct: ct);
+            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/enable"), null, null, ct);
         }
 
         /// <inheritdoc/>
-        public Task<ExtendableRuleDto> DisableRuleAsync(string id, CancellationToken ct = default)
+        public Task<ExtendableRuleDto> DisableRuleAsync(string id,
+             CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/disable"), ct: ct);
+            return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/disable"), null, null, ct);
         }
 
         /// <inheritdoc/>
-        public Task DeleteRuleAsync(string id, CancellationToken ct = default)
+        public Task DeleteRuleAsync(string id,
+             CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}/"), ct: ct);
+            return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}/"), null, null, ct);
         }
 
         private string BuildUrl(string? path = null)
