@@ -172,7 +172,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
             foreach (var rule in current.Items)
             {
-                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
                 {
                     MapSchemas(contentTrigger, map);
                 }
@@ -187,7 +187,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 
             foreach (var newRule in models)
             {
-                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
+                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
                 {
                     MapSchemas(contentTrigger, map);
                 }

@@ -15,7 +15,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <ToolCommandName>sq</ToolCommandName>
-    <Version>8.0</Version>
+    <Version>8.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Commands\Implementation\OpenLibrary\Structure\schemas\author.json" />

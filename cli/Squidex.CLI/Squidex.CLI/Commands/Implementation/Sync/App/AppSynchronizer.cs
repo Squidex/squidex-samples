@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
@@ -67,7 +68,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
                 model.Roles = new Dictionary<string, AppRoleModel>();
 
-                foreach (var role in roles.Items)
+                foreach (var role in roles.Items.Where(x => !x.IsDefaultRole))
                 {
                     model.Roles[role.Name] = role.ToModel();
                 }
@@ -266,7 +267,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 var existing = current.Items.Find(x => x.Name == roleName);
 
-                if (existing == null || role.JsonEquals(existing))
+                if (existing == null || existing.IsDefaultRole || role.JsonEquals(existing))
                 {
                     continue;
                 }
