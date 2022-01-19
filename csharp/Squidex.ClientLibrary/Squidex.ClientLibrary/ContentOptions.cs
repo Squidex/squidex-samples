@@ -44,6 +44,14 @@ namespace Squidex.ClientLibrary
         /// If set to <c>true</c> the content will be published.
         /// </summary>
         public bool Publish { get; set; }
+
+        /// <summary>
+        /// A option where <see cref="Publish"/> is true.
+        /// </summary>
+        public static readonly ContentCreateOptions AsPublish = new ContentCreateOptions
+        {
+            Publish = true
+        };
     }
 
     /// <summary>
@@ -55,6 +63,14 @@ namespace Squidex.ClientLibrary
         /// If set to <c>true</c> the content will be published.
         /// </summary>
         public bool Publish { get; set; }
+
+        /// <summary>
+        /// A option where <see cref="Publish"/> is true.
+        /// </summary>
+        public static readonly ContentUpsertOptions AsPublish = new ContentUpsertOptions
+        {
+            Publish = true
+        };
     }
 
     /// <summary>
@@ -71,6 +87,14 @@ namespace Squidex.ClientLibrary
         /// True to check referrers of this content.
         /// </summary>
         public bool CheckReferrers { get; set; }
+
+        /// <summary>
+        /// A option where <see cref="Permanent"/> is true.
+        /// </summary>
+        public static readonly ContentDeleteOptions AsPermanent = new ContentDeleteOptions
+        {
+            Permanent = true
+        };
     }
 
     /// <summary>
