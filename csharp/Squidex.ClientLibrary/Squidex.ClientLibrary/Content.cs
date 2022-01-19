@@ -21,18 +21,6 @@ namespace Squidex.ClientLibrary
         private string status = string.Empty;
 
         /// <summary>
-        /// Gets or sets a value indicating whether this content item is pending.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this content item is pending; otherwise, <c>false</c>.
-        /// </value>
-        /// <remarks>
-        /// This property is not supported anymore. A content item is pending when the <see cref="NewStatus"/> property is not null.
-        /// </remarks>
-        [Obsolete("Use NewStatus")]
-        public bool IsPending { get; set; }
-
-        /// <summary>
         /// The new status when this content item has an unpublished, new version.
         /// </summary>
         /// <value>

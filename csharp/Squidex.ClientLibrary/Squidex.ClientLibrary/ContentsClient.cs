@@ -48,13 +48,6 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext? context = null,
-             CancellationToken ct = default)
-        {
-            return GetAllAsync(callback, batchSize, context, ct);
-        }
-
-        /// <inheritdoc/>
         public async Task GetAllAsync(Func<TEntity, Task> callback, int batchSize = 200, QueryContext? context = null,
              CancellationToken ct = default)
         {
@@ -217,36 +210,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> CreateAsync(TData data, bool publish = false,
-             CancellationToken ct = default)
-        {
-            return CreateAsync(data, new ContentCreateOptions { Publish = publish }, null, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> CreateAsync(TData data, string id, bool publish = false,
-             CancellationToken ct = default)
-        {
-            return CreateAsync(data, new ContentCreateOptions { Publish = publish, Id = id }, null, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> CreateAsync(TData data, ContentCreateOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(data, nameof(data));
 
             return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"?publish={options.Publish}&id={options.Id ?? string.Empty}", false), data.ToContent(), context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> CreateDraftAsync(string id,
-             CancellationToken ct = default)
-        {
-            return CreateDraftAsync(id, default, null, ct);
         }
 
         /// <inheritdoc/>
@@ -259,49 +228,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> CreateDraftAsync(TEntity entity,
-             CancellationToken ct = default)
-        {
-            return CreateDraftAsync(entity, default, null, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> CreateDraftAsync(TEntity entity, ContentCreateDraftOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
             return CreateDraftAsync(entity.Id, default, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext and status request.")]
-        public Task<TEntity> ChangeStatusAsync(string id, string status,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(id, nameof(id));
-            Guard.NotNull(status, nameof(status));
-
-            return ChangeStatusAsync(id, new ChangeStatus { Status = status }, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext and status request.")]
-        public Task<TEntity> ChangeStatusAsync(TEntity entity, string status,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(entity, nameof(entity));
-
-            return ChangeStatusAsync(entity.Id, new ChangeStatus { Status = status }, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> ChangeStatusAsync(string id, ChangeStatus request,
-             CancellationToken ct = default)
-        {
-            return ChangeStatusAsync(id, request, null, ct);
         }
 
         /// <inheritdoc/>
@@ -315,28 +247,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus status,
-             CancellationToken ct = default)
-        {
-            return ChangeStatusAsync(entity, status, null, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus status, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
             return ChangeStatusAsync(entity.Id, status, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> PatchAsync<TPatch>(string id, TPatch patch,
-             CancellationToken ct = default)
-        {
-            return PatchAsync(id, patch, default, null, ct);
         }
 
         /// <inheritdoc/>
@@ -350,28 +266,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch,
-             CancellationToken ct = default)
-        {
-            return PatchAsync(entity, patch, default, null, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, ContentPatchOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
             return PatchAsync(entity.Id, patch, options, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> UpsertAsync(string id, TData data, bool publish = false,
-             CancellationToken ct = default)
-        {
-            return UpsertAsync(id, data, new ContentUpsertOptions { Publish = publish }, null, ct);
         }
 
         /// <inheritdoc/>
@@ -385,28 +285,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> UpsertAsync(TEntity entity, bool publish = false,
-             CancellationToken ct = default)
-        {
-            return UpsertAsync(entity.Id, entity.Data, publish, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> UpsertAsync(TEntity entity, ContentUpsertOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
             return UpsertAsync(entity.Id, entity.Data, options, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> UpdateAsync(string id, TData data,
-             CancellationToken ct = default)
-        {
-            return UpdateAsync(id, data, default, null, ct);
         }
 
         /// <inheritdoc/>
@@ -420,30 +304,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> UpdateAsync(TEntity entity,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(entity, nameof(entity));
-
-            return UpdateAsync(entity.Id, entity.Data, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> UpdateAsync(TEntity entity, ContentUpdateOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNull(entity, nameof(entity));
 
             return UpdateAsync(entity.Id, entity.Data, default, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with Options.")]
-        public Task DeleteAsync(string id, bool permanent = false, bool checkReferrers = false,
-             CancellationToken ct = default)
-        {
-            return DeleteAsync(id, new ContentDeleteOptions { Permanent = permanent, CheckReferrers = checkReferrers }, ct);
         }
 
         /// <inheritdoc/>
@@ -456,14 +322,6 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with Options.")]
-        public Task DeleteAsync(TEntity entity, bool permanent = false, bool checkReferrers = false,
-             CancellationToken ct = default)
-        {
-            return DeleteAsync(entity, new ContentDeleteOptions { Permanent = permanent, CheckReferrers = checkReferrers }, ct);
-        }
-
-        /// <inheritdoc/>
         public async Task DeleteAsync(TEntity entity, ContentDeleteOptions options = default,
              CancellationToken ct = default)
         {
@@ -473,28 +331,12 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> DeleteDraftAsync(string id,
-             CancellationToken ct = default)
-        {
-            return DeleteDraftAsync(id, default, null, ct);
-        }
-
-        /// <inheritdoc/>
         public Task<TEntity> DeleteDraftAsync(string id, ContentDeleteDraftOptions options = default, QueryContext? context = null,
              CancellationToken ct = default)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
             return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildSchemaUrl($"{id}/draft", false), null, context, ct);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use overload with QueryContext.")]
-        public Task<TEntity> DeleteDraftAsync(TEntity entity,
-             CancellationToken ct = default)
-        {
-            return DeleteDraftAsync(entity, default, null, ct);
         }
 
         /// <inheritdoc/>

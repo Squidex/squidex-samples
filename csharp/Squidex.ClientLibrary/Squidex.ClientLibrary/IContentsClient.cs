@@ -31,35 +31,6 @@ namespace Squidex.ClientLibrary
         /// Creates a new content item from a data object.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <param name="publish">if set to <c>true</c> the content will be published.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The created content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> CreateAsync(TData data, bool publish = false,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Creates a new content item from a data object with a custom ID.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <param name="id">The optional custom ID for the content item.</param>
-        /// <param name="publish">if set to <c>true</c> the content will be published.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The created content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> CreateAsync(TData data, string id, bool publish = false,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Creates a new content item from a data object.
-        /// </summary>
-        /// <param name="data">The data.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -68,20 +39,6 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
         Task<TEntity> CreateAsync(TData data, ContentCreateOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Creates a new draft version for the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> CreateDraftAsync(string id,
              CancellationToken ct = default);
 
         /// <summary>
@@ -103,19 +60,6 @@ namespace Squidex.ClientLibrary
         /// Creates a new draft version for the specified content item.
         /// </summary>
         /// <param name="entity">The content item.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> CreateDraftAsync(TEntity entity,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Creates a new draft version for the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -124,55 +68,6 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         Task<TEntity> CreateDraftAsync(TEntity entity, ContentCreateDraftOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Change the status of the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to change. Cannot be null or empty.</param>
-        /// <param name="status">The new status of the content item.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="status"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        /// <exception cref="ArgumentException"><paramref name="status"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext and status request.")]
-        Task<TEntity> ChangeStatusAsync(string id, string status,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Change the status of the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to change.</param>
-        /// <param name="status">The new status of the content item.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="status"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="status"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext and status request.")]
-        Task<TEntity> ChangeStatusAsync(TEntity entity, string status,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Change the status of the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to change. Cannot be null or empty.</param>
-        /// <param name="request">The status request.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> ChangeStatusAsync(string id, ChangeStatus request,
              CancellationToken ct = default);
 
         /// <summary>
@@ -196,21 +91,6 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="entity">The content item to change.</param>
         /// <param name="request">The status request.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus request,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Change the status of the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to change.</param>
-        /// <param name="request">The status request.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
@@ -219,23 +99,6 @@ namespace Squidex.ClientLibrary
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="request"/> is null.</exception>
         Task<TEntity> ChangeStatusAsync(TEntity entity, ChangeStatus request, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Patch the data of the content item with the specified ID.
-        /// </summary>
-        /// <typeparam name="TPatch">The partial data to update.</typeparam>
-        /// <param name="id">The ID of the content item to patch. Cannot be null or empty.</param>
-        /// <param name="patch">The partial data.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="patch"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> PatchAsync<TPatch>(string id, TPatch patch,
              CancellationToken ct = default);
 
         /// <summary>
@@ -262,22 +125,6 @@ namespace Squidex.ClientLibrary
         /// <typeparam name="TPatch">The partial data to update.</typeparam>
         /// <param name="entity">The content item to patch.</param>
         /// <param name="patch">The partial data.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="patch"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Patch the data of the specified content item.
-        /// </summary>
-        /// <typeparam name="TPatch">The partial data to update.</typeparam>
-        /// <param name="entity">The content item to patch.</param>
-        /// <param name="patch">The partial data.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -287,23 +134,6 @@ namespace Squidex.ClientLibrary
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="patch"/> is null.</exception>
         Task<TEntity> PatchAsync<TPatch>(TEntity entity, TPatch patch, ContentPatchOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Updates or creates the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to update or create. Cannot be null or empty.</param>
-        /// <param name="data">The full data.</param>
-        /// <param name="publish">if set to <c>true</c> the content will be published.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated or created content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> UpsertAsync(string id, TData data, bool publish = false,
              CancellationToken ct = default);
 
         /// <summary>
@@ -327,20 +157,6 @@ namespace Squidex.ClientLibrary
         /// Updates or creates the specified content item.
         /// </summary>
         /// <param name="entity">The content item to update or create.</param>
-        /// <param name="publish">if set to <c>true</c> the content will be published.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated or created content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> UpsertAsync(TEntity entity, bool publish = false,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Updates or creates the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to update or create.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -349,22 +165,6 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         Task<TEntity> UpsertAsync(TEntity entity, ContentUpsertOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Updates the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to update. Cannot be null or empty.</param>
-        /// <param name="data">The full data.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="data"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> UpdateAsync(string id, TData data,
              CancellationToken ct = default);
 
         /// <summary>
@@ -388,19 +188,6 @@ namespace Squidex.ClientLibrary
         /// Updates the specified content item.
         /// </summary>
         /// <param name="entity">The content item to update.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The updated content item.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> UpdateAsync(TEntity entity,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Updates the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to update.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -409,22 +196,6 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         Task<TEntity> UpdateAsync(TEntity entity, ContentUpdateOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Deletes the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to delete. Cannot be null or empty.</param>
-        /// <param name="permanent">True to delete the content permanently.</param>
-        /// <param name="checkReferrers">True to check for referrers.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The task for completion.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with Options.")]
-        Task DeleteAsync(string id, bool permanent = false, bool checkReferrers = false,
              CancellationToken ct = default);
 
         /// <summary>
@@ -445,21 +216,6 @@ namespace Squidex.ClientLibrary
         /// Deletes the specified content item.
         /// </summary>
         /// <param name="entity">The content item to delete.</param>
-        /// <param name="permanent">True to delete the content permanently.</param>
-        /// <param name="checkReferrers">True to check for referrers.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The task for completion.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        [Obsolete("Use overload with Options.")]
-        Task DeleteAsync(TEntity entity, bool permanent = false, bool checkReferrers = false,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Deletes the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to delete.</param>
         /// <param name="options">The additional options.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>
@@ -467,20 +223,6 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
         Task DeleteAsync(TEntity entity, ContentDeleteOptions options = default,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Deletes the draft version of the content item with the specified ID.
-        /// </summary>
-        /// <param name="id">The ID of the content item to update. Cannot be null or empty.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The task for completion.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> DeleteDraftAsync(string id,
              CancellationToken ct = default);
 
         /// <summary>
@@ -496,19 +238,6 @@ namespace Squidex.ClientLibrary
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
         Task<TEntity> DeleteDraftAsync(string id, ContentDeleteDraftOptions options = default, QueryContext? context = null,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Deletes the draft version of the specified content item.
-        /// </summary>
-        /// <param name="entity">The content item to update.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The task for completion.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
-        [Obsolete("Use overload with QueryContext.")]
-        Task<TEntity> DeleteDraftAsync(TEntity entity,
              CancellationToken ct = default);
 
         /// <summary>
@@ -534,21 +263,6 @@ namespace Squidex.ClientLibrary
         /// The result of the bulk update.
         /// </returns>
         Task<List<BulkResult>> BulkUpdateAsync(BulkUpdate update,
-             CancellationToken ct = default);
-
-        /// <summary>
-        /// Gets all content items in batches.
-        /// </summary>
-        /// <param name="batchSize">Size of each batch.</param>
-        /// <param name="callback">The callbac that is invoked for each content item..</param>
-        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
-        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The task for completion.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="callback"/> is null.</exception>
-        [Obsolete("Use GetAllAsync with callback first.")]
-        Task GetAllAsync(int batchSize, Func<TEntity, Task> callback, QueryContext? context = null,
              CancellationToken ct = default);
 
         /// <summary>
