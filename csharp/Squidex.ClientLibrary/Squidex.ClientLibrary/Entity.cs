@@ -62,5 +62,10 @@ namespace Squidex.ClientLibrary
         /// The version as integer. Zero for just created items.
         /// </value>
         public int Version { get; set; }
+
+        /// <summary>
+        /// The token that can be used for inline editing.
+        /// </summary>
+        public string? EditToken { get; set; }
     }
 }

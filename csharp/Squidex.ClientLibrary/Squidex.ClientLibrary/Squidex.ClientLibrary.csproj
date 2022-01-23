@@ -11,7 +11,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>8.0.1</Version>
+    <Version>8.1.0</Version>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>

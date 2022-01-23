@@ -83,7 +83,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<ResourcesDto> GetUserResourcesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("");
+            urlBuilder_.Append("api");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -162,7 +162,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> GetUsersAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("users?");
+            urlBuilder_.Append("api/users?");
             if (query != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("query") + "=").Append(System.Uri.EscapeDataString(ConvertToString(query, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -249,7 +249,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("users/{id}");
+            urlBuilder_.Append("api/users/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -338,7 +338,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("users/{id}/picture");
+            urlBuilder_.Append("api/users/{id}/picture");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -573,7 +573,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/translations");
+            urlBuilder_.Append("api/apps/{app}/translations");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -827,7 +827,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/usages/log");
+            urlBuilder_.Append("api/apps/{app}/usages/log");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -924,7 +924,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("toDate");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/usages/calls/{fromDate}/{toDate}");
+            urlBuilder_.Append("api/apps/{app}/usages/calls/{fromDate}/{toDate}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1025,7 +1025,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/usages/storage/today");
+            urlBuilder_.Append("api/apps/{app}/usages/storage/today");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -1122,7 +1122,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("toDate");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/usages/storage/{fromDate}/{toDate}");
+            urlBuilder_.Append("api/apps/{app}/usages/storage/{fromDate}/{toDate}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
@@ -1368,7 +1368,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/search?");
+            urlBuilder_.Append("api/apps/{app}/search?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (query != null)
             {
@@ -1889,7 +1889,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -2014,7 +2014,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2136,7 +2136,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/ui");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/ui");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -2247,7 +2247,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/ordering");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/ordering");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -2362,7 +2362,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/ordering");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/ordering");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2478,7 +2478,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2590,7 +2590,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2707,7 +2707,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2824,7 +2824,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -2934,7 +2934,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}/lock");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}/lock");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3048,7 +3048,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/lock");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/lock");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3159,7 +3159,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}/hide");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}/hide");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3273,7 +3273,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/hide");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/hide");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3384,7 +3384,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}/show");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}/show");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3498,7 +3498,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/show");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/show");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3609,7 +3609,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}/enable");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}/enable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3723,7 +3723,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/enable");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/enable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3834,7 +3834,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{id}/disable");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{id}/disable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
@@ -3948,7 +3948,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/disable");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/fields/{parentId}/nested/{id}/disable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -4051,7 +4051,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas");
+            urlBuilder_.Append("api/apps/{app}/schemas");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -4144,7 +4144,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas");
+            urlBuilder_.Append("api/apps/{app}/schemas");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -4254,7 +4254,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("schema");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4352,7 +4352,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4459,7 +4459,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("schema");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4551,7 +4551,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/sync");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/sync");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4662,7 +4662,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/category");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/category");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4773,7 +4773,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/preview-urls");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/preview-urls");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4884,7 +4884,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/scripts");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/scripts");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -4995,7 +4995,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/rules");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/rules");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -5102,7 +5102,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("schema");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/publish");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/publish");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -5197,7 +5197,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("schema");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/schemas/{schema}/unpublish");
+            urlBuilder_.Append("api/apps/{app}/schemas/{schema}/unpublish");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -5560,7 +5560,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, RuleElementDto>> GetActionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("rules/actions");
+            urlBuilder_.Append("api/rules/actions");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -5642,7 +5642,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules");
+            urlBuilder_.Append("api/apps/{app}/rules");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -5735,7 +5735,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules");
+            urlBuilder_.Append("api/apps/{app}/rules");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -5837,7 +5837,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/run");
+            urlBuilder_.Append("api/apps/{app}/rules/run");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -5922,7 +5922,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6029,7 +6029,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6117,7 +6117,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/enable");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/enable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6212,7 +6212,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/disable");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/disable");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6307,7 +6307,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/trigger");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/trigger");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6397,7 +6397,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/run?");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/run?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (fromSnapshots != null)
@@ -6485,7 +6485,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/events");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/events");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6567,7 +6567,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/{id}/simulate");
+            urlBuilder_.Append("api/apps/{app}/rules/{id}/simulate");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6660,7 +6660,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/events?");
+            urlBuilder_.Append("api/apps/{app}/rules/events?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (ruleId != null)
             {
@@ -6762,7 +6762,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/events");
+            urlBuilder_.Append("api/apps/{app}/rules/events");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -6843,7 +6843,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/events/{id}");
+            urlBuilder_.Append("api/apps/{app}/rules/events/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -6932,7 +6932,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/rules/events/{id}");
+            urlBuilder_.Append("api/apps/{app}/rules/events/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -7012,7 +7012,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("rules/eventtypes");
+            urlBuilder_.Append("api/rules/eventtypes");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -7094,7 +7094,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("type");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("rules/eventtypes/{type}");
+            urlBuilder_.Append("api/rules/eventtypes/{type}");
             urlBuilder_.Replace("{type}", System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -7334,7 +7334,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/plans");
+            urlBuilder_.Append("api/apps/{app}/plans");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -7427,7 +7427,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/plan");
+            urlBuilder_.Append("api/apps/{app}/plan");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -7680,7 +7680,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("info");
+            urlBuilder_.Append("api/info");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -7758,7 +7758,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task GetPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("ping");
+            urlBuilder_.Append("api/ping");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -7834,7 +7834,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("ping/{app}");
+            urlBuilder_.Append("api/ping/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -8051,7 +8051,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<FeaturesDto> GetNewsAsync(int? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("news/features?");
+            urlBuilder_.Append("api/news/features?");
             if (version != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("version") + "=").Append(System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -8276,7 +8276,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LanguageDto>> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("languages");
+            urlBuilder_.Append("api/languages");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -8503,7 +8503,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/history?");
+            urlBuilder_.Append("api/apps/{app}/history?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (channel != null)
             {
@@ -8782,7 +8782,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("resource");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/watching/{resource}");
+            urlBuilder_.Append("api/apps/{app}/watching/{resource}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{resource}", System.Uri.EscapeDataString(ConvertToString(resource, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -8877,7 +8877,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("commentsId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/comments/{commentsId}?");
+            urlBuilder_.Append("api/apps/{app}/comments/{commentsId}?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
             if (version != null)
@@ -8980,7 +8980,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/comments/{commentsId}");
+            urlBuilder_.Append("api/apps/{app}/comments/{commentsId}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -9095,7 +9095,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/comments/{commentsId}/{commentId}");
+            urlBuilder_.Append("api/apps/{app}/comments/{commentsId}/{commentId}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -9201,7 +9201,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("commentId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/comments/{commentsId}/{commentId}");
+            urlBuilder_.Append("api/apps/{app}/comments/{commentsId}/{commentId}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
@@ -9439,7 +9439,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("userId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("users/{userId}/notifications?");
+            urlBuilder_.Append("api/users/{userId}/notifications?");
             urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
             if (version != null)
             {
@@ -9531,7 +9531,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("commentId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("users/{userId}/notifications/{commentId}");
+            urlBuilder_.Append("api/users/{userId}/notifications/{commentId}");
             urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -9798,7 +9798,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/backups/{id}");
+            urlBuilder_.Append("api/apps/{app}/backups/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -9890,7 +9890,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/backups/{id}");
+            urlBuilder_.Append("api/apps/{app}/backups/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -9974,7 +9974,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/backups");
+            urlBuilder_.Append("api/apps/{app}/backups");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -10063,7 +10063,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/backups");
+            urlBuilder_.Append("api/apps/{app}/backups");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -10153,7 +10153,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/restore");
+            urlBuilder_.Append("api/apps/restore");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -10235,7 +10235,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/restore");
+            urlBuilder_.Append("api/apps/restore");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -10515,16 +10515,12 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of contents to take.</param>
-        /// <param name="skip">Optional number of contents to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
@@ -10667,7 +10663,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("more");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("assets/{app}/{idOrSlug}/{more}?");
+            urlBuilder_.Append("api/assets/{app}/{idOrSlug}/{more}?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{idOrSlug}", System.Uri.EscapeDataString(ConvertToString(idOrSlug, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{more}", System.Uri.EscapeDataString(ConvertToString(more, System.Globalization.CultureInfo.InvariantCulture)));
@@ -10823,7 +10819,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("assets/{id}?");
+            urlBuilder_.Append("api/assets/{id}?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (version != null)
             {
@@ -10965,7 +10961,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/folders?");
+            urlBuilder_.Append("api/apps/{app}/assets/folders?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null)
             {
@@ -11067,7 +11063,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/folders");
+            urlBuilder_.Append("api/apps/{app}/assets/folders");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -11177,7 +11173,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/folders/{id}");
+            urlBuilder_.Append("api/apps/{app}/assets/folders/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -11284,7 +11280,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/folders/{id}");
+            urlBuilder_.Append("api/apps/{app}/assets/folders/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -11376,7 +11372,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/folders/{id}/parent");
+            urlBuilder_.Append("api/apps/{app}/assets/folders/{id}/parent");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -11479,7 +11475,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/tags");
+            urlBuilder_.Append("api/apps/{app}/assets/tags");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -11576,7 +11572,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/tags/{name}");
+            urlBuilder_.Append("api/apps/{app}/assets/tags/{name}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -11661,39 +11657,19 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
-        /// <param name="top">Optional number of contents to take.</param>
-        /// <param name="skip">Optional number of contents to skip.</param>
-        /// <param name="orderby">Optional OData order definition.</param>
-        /// <param name="filter">Optional OData filter.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets?");
+            urlBuilder_.Append("api/apps/{app}/assets?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            if (top != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$top") + "=").Append(System.Uri.EscapeDataString(ConvertToString(top, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (skip != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (orderby != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
-            if (filter != null)
-            {
-                urlBuilder_.Append(System.Uri.EscapeDataString("$filter") + "=").Append(System.Uri.EscapeDataString(ConvertToString(filter, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            }
             if (parentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -11797,7 +11773,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets?");
+            urlBuilder_.Append("api/apps/{app}/assets?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null)
             {
@@ -11936,7 +11912,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("query");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/query");
+            urlBuilder_.Append("api/apps/{app}/assets/query");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -12032,7 +12008,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -12128,7 +12104,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}?");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null)
@@ -12268,7 +12244,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -12377,7 +12353,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}?");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (checkReferrers != null)
@@ -12474,7 +12450,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/bulk");
+            urlBuilder_.Append("api/apps/{app}/assets/bulk");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -12580,7 +12556,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}/content");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}/content");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -12711,7 +12687,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/{id}/parent");
+            urlBuilder_.Append("api/apps/{app}/assets/{id}/parent");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -13201,7 +13177,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/scripts");
+            urlBuilder_.Append("api/apps/{app}/assets/scripts");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13294,7 +13270,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/assets/scripts");
+            urlBuilder_.Append("api/apps/{app}/assets/scripts");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13396,7 +13372,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/clients");
+            urlBuilder_.Append("api/apps/{app}/clients");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13489,7 +13465,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/clients");
+            urlBuilder_.Append("api/apps/{app}/clients");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13599,7 +13575,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/clients/{id}");
+            urlBuilder_.Append("api/apps/{app}/clients/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -13706,7 +13682,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/clients/{id}");
+            urlBuilder_.Append("api/apps/{app}/clients/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -13796,7 +13772,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/contributors");
+            urlBuilder_.Append("api/apps/{app}/contributors");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13889,7 +13865,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/contributors");
+            urlBuilder_.Append("api/apps/{app}/contributors");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -13991,7 +13967,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/contributors/me");
+            urlBuilder_.Append("api/apps/{app}/contributors/me");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14084,7 +14060,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/contributors/{id}");
+            urlBuilder_.Append("api/apps/{app}/contributors/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -14174,7 +14150,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/image");
+            urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14261,7 +14237,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/image");
+            urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14373,7 +14349,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/image");
+            urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14462,7 +14438,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/languages");
+            urlBuilder_.Append("api/apps/{app}/languages");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14555,7 +14531,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/languages");
+            urlBuilder_.Append("api/apps/{app}/languages");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14665,7 +14641,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/languages/{language}");
+            urlBuilder_.Append("api/apps/{app}/languages/{language}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -14772,7 +14748,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("language");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/languages/{language}");
+            urlBuilder_.Append("api/apps/{app}/languages/{language}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -14872,7 +14848,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/roles");
+            urlBuilder_.Append("api/apps/{app}/roles");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -14965,7 +14941,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/roles");
+            urlBuilder_.Append("api/apps/{app}/roles");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15067,7 +15043,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/roles/permissions");
+            urlBuilder_.Append("api/apps/{app}/roles/permissions");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15164,7 +15140,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/roles/{roleName}");
+            urlBuilder_.Append("api/apps/{app}/roles/{roleName}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -15271,7 +15247,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("roleName");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/roles/{roleName}");
+            urlBuilder_.Append("api/apps/{app}/roles/{roleName}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -15367,7 +15343,7 @@ namespace Squidex.ClientLibrary.Management
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetAppsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps");
+            urlBuilder_.Append("api/apps");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -15449,7 +15425,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps");
+            urlBuilder_.Append("api/apps");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -15554,7 +15530,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}");
+            urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15647,7 +15623,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}");
+            urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15749,7 +15725,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}");
+            urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15832,7 +15808,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/settings");
+            urlBuilder_.Append("api/apps/{app}/settings");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -15925,7 +15901,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/settings");
+            urlBuilder_.Append("api/apps/{app}/settings");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -16027,7 +16003,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("app");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/workflows");
+            urlBuilder_.Append("api/apps/{app}/workflows");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -16120,7 +16096,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/workflows");
+            urlBuilder_.Append("api/apps/{app}/workflows");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -16230,7 +16206,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("request");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/workflows/{id}");
+            urlBuilder_.Append("api/apps/{app}/workflows/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -16337,7 +16313,7 @@ namespace Squidex.ClientLibrary.Management
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("apps/{app}/workflows/{id}");
+            urlBuilder_.Append("api/apps/{app}/workflows/{id}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
@@ -16771,6 +16747,10 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>The color of the new status.</summary>
         [Newtonsoft.Json.JsonProperty("newStatusColor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string NewStatusColor { get; set; }
+
+        /// <summary>The UI token.</summary>
+        [Newtonsoft.Json.JsonProperty("editToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditToken { get; set; }
 
         /// <summary>The scheduled status.</summary>
         [Newtonsoft.Json.JsonProperty("scheduleJob", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -19644,6 +19624,10 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("metadataText", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string MetadataText { get; set; }
+
+        /// <summary>The UI token.</summary>
+        [Newtonsoft.Json.JsonProperty("editToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditToken { get; set; }
 
         /// <summary>The asset metadata.</summary>
         [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

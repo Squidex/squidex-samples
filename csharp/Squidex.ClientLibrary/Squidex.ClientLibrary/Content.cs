@@ -94,10 +94,9 @@ namespace Squidex.ClientLibrary
                 var index = self.Href.IndexOf(LinkStart, StringComparison.Ordinal);
 
                 var href = self.Href.Substring(index + LinkStart.Length);
+                var hrefp = href.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
-                var hrefParts = href.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-
-                return (hrefParts[0], hrefParts[1]);
+                return (hrefp[0], hrefp[1]);
             }
             catch (Exception ex)
             {
