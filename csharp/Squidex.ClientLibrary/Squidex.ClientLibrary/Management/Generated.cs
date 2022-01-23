@@ -10515,12 +10515,16 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="top">Optional number of contents to take.</param>
+        /// <param name="skip">Optional number of contents to skip.</param>
+        /// <param name="orderby">Optional OData order definition.</param>
+        /// <param name="filter">Optional OData filter.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Upload a new asset.</summary>
@@ -11657,12 +11661,16 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get assets.</summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="top">Optional number of contents to take.</param>
+        /// <param name="skip">Optional number of contents to skip.</param>
+        /// <param name="orderby">Optional OData order definition.</param>
+        /// <param name="filter">Optional OData filter.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string app, double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -11670,6 +11678,22 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/{app}/assets?");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+            if (top != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$top") + "=").Append(System.Uri.EscapeDataString(ConvertToString(top, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (skip != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$skip") + "=").Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderby != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (filter != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$filter") + "=").Append(System.Uri.EscapeDataString(ConvertToString(filter, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             if (parentId != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
