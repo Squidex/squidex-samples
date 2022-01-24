@@ -68,7 +68,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IAppsClient CreateAppsClient()
         {
-            return new AppsClient(CreateHttpClient())
+            return new AppsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -77,7 +77,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IAssetsClient CreateAssetsClient()
         {
-            return new AssetsClient(CreateHttpClient())
+            return new AssetsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -86,7 +86,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IBackupsClient CreateBackupsClient()
         {
-            return new BackupsClient(CreateHttpClient())
+            return new BackupsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -95,7 +95,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public ICommentsClient CreateCommentsClient()
         {
-            return new CommentsClient(CreateHttpClient())
+            return new CommentsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -104,7 +104,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IHistoryClient CreateHistoryClient()
         {
-            return new HistoryClient(CreateHttpClient())
+            return new HistoryClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -113,7 +113,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public ILanguagesClient CreateLanguagesClient()
         {
-            return new LanguagesClient(CreateHttpClient())
+            return new LanguagesClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -122,7 +122,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IPingClient CreatePingClient()
         {
-            return new PingClient(CreateHttpClient())
+            return new PingClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -131,7 +131,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IPlansClient CreatePlansClient()
         {
-            return new PlansClient(CreateHttpClient())
+            return new PlansClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -140,7 +140,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IRulesClient CreateRulesClient()
         {
-            return new RulesClient(CreateHttpClient())
+            return new RulesClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -149,7 +149,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public ISchemasClient CreateSchemasClient()
         {
-            return new SchemasClient(CreateHttpClient())
+            return new SchemasClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -158,7 +158,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IStatisticsClient CreateStatisticsClient()
         {
-            return new StatisticsClient(CreateHttpClient())
+            return new StatisticsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -167,7 +167,7 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IUsersClient CreateUsersClient()
         {
-            return new UsersClient(CreateHttpClient())
+            return new UsersClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -176,25 +176,30 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IExtendableRulesClient CreateExtendableRulesClient()
         {
-            return new ExtendableRulesClient(Options, CreateHttpClient());
+            return new ExtendableRulesClient(Options, CreateHttpClient(false));
         }
 
         /// <inheritdoc/>
         public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
         {
-            return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient());
+            return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient(true));
         }
 
         /// <inheritdoc/>
         public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
         {
-            return new ContentsClient<DynamicContent, DynamicData>(Options, schemaName, CreateHttpClient());
+            return new ContentsClient<DynamicContent, DynamicData>(Options, schemaName, CreateHttpClient(true));
         }
 
         /// <inheritdoc/>
-        public HttpClient CreateHttpClient()
+        public HttpClient CreateHttpClient(bool appendApi = true)
         {
-            var url = new Uri(new Uri(Options.Url, UriKind.Absolute), "/api/");
+            var url = new Uri(Options.Url, UriKind.Absolute);
+
+            if (appendApi)
+            {
+                url = new Uri(url, "/api/");
+            }
 
             var messageHandler = CreateHttpMessageHandler();
 

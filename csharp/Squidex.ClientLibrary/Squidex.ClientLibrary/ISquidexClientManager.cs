@@ -227,12 +227,13 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Creates a <see cref="HttpClient"/> to make all kind of authorized requests.
         /// </summary>
+        /// <param name="appendApi">Append the api path.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
-        HttpClient CreateHttpClient();
+        HttpClient CreateHttpClient(bool appendApi = true);
     }
 }
