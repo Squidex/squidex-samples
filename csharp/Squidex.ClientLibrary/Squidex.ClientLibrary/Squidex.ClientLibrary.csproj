@@ -2,18 +2,19 @@
   <PropertyGroup>
     <Authors>sebastianstehle</Authors>
     <Company>Squidex UG (haftungsbeschränkt)</Company>
-    <Description>ClientLibrary for Squidex Headless CMS</Description>
     <Copyright>MIT</Copyright>
+    <Description>ClientLibrary for Squidex Headless CMS</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>10.0</LangVersion>
 	<Nullable>enable</Nullable>
-    <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>8.2.0</Version>
+    <PackageTags>Squidex HeadlessCMS</PackageTags>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <Version>8.3.0</Version>
   </PropertyGroup>
+	
   <ItemGroup>
     <PackageReference Include="Meziantou.Analyzer" Version="1.0.694">
       <PrivateAssets>all</PrivateAssets>
