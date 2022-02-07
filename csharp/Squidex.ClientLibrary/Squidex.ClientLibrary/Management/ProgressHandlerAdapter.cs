@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Squidex.Assets;
@@ -49,7 +50,7 @@ namespace Squidex.ClientLibrary.Management
 
             if (asset == null)
             {
-                var exception = new SquidexManagementException("Failed to parse asset.", 0, string.Empty, NullHeaders, null);
+                var exception = new SquidexManagementException("Response was null which was not expected.", 0, string.Empty, NullHeaders, null);
 
                 await inner.OnFailedAsync(new AssetUploadExceptionEvent(@event.FileId, exception), ct);
                 return;
@@ -82,32 +83,32 @@ namespace Squidex.ClientLibrary.Management
 
                     if (errorDto == null)
                     {
-                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, null);
+                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
                     }
 
-                    return new SquidexManagementException<ErrorDto>("Asset request not valid.", status, text, NullHeaders, errorDto, null);
+                    return new SquidexManagementException<ErrorDto>("Asset request not valid.", status, text, NullHeaders, errorDto, exception);
                 case 413:
                     (errorDto, text) = await client.ReadObjectResponseCoreAsync<ErrorDto>(response, NullHeaders, ct);
 
                     if (errorDto == null)
                     {
-                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, null);
+                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
                     }
 
-                    return new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status, text, NullHeaders, errorDto, null);
+                    return new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status, text, NullHeaders, errorDto, exception);
                 case 500:
                     (errorDto, text) = await client.ReadObjectResponseCoreAsync<ErrorDto>(response, NullHeaders, ct);
 
                     if (errorDto == null)
                     {
-                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, null);
+                        return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
                     }
 
-                    return new SquidexManagementException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, null);
+                    return new SquidexManagementException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, exception);
                 case 404:
-                    return new SquidexManagementException("App not found.", status, string.Empty, NullHeaders, null);
+                    return new SquidexManagementException("App not found.", status, string.Empty, NullHeaders, exception);
                 default:
-                    return new SquidexManagementException($"The HTTP status code of the response was not expected ({status}).", status, string.Empty, NullHeaders, null);
+                    return new SquidexManagementException($"Exception with unexpected status ({status}): {exception.Message}.", status, string.Empty, NullHeaders, exception);
             }
         }
     }
