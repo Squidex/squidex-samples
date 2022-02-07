@@ -20,6 +20,31 @@ namespace Squidex.ClientLibrary.Management
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         /// <summary>
+        /// Gets the upload progress.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="fileId">The file id of the upload.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The upload progress in bytes.
+        /// </returns>
+        Task<long> GetUploadProgressAsync(string app, string fileId,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets the upload progress.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
+        /// <param name="id">The id of the asset.</param>
+        /// <param name="fileId">The file id of the upload.</param>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The upload progress in bytes.
+        /// </returns>
+        Task<long> GetUploadProgressAsync(string app, string id, string fileId,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Upload a new asset using tus protocol.
         /// </summary>
         /// <param name="app">The name of the app.</param>
@@ -101,6 +126,28 @@ namespace Squidex.ClientLibrary.Management
             var result = await ReadObjectResponseAsync<T>(response, headers, cancellationToken);
 
             return (result.Object, result.Text);
+        }
+
+        /// <inheritdoc />
+        public Task<long> GetUploadProgressAsync(string app, string fileId,
+            CancellationToken cancellationToken = default)
+        {
+            Guard.NotNull(fileId, nameof(fileId));
+
+            var url = $"api/apps/{app}/assets/tus/";
+
+            return _httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<long> GetUploadProgressAsync(string app, string id, string fileId,
+            CancellationToken cancellationToken = default)
+        {
+            Guard.NotNull(fileId, nameof(fileId));
+
+            var url = $"api/apps/{app}/assets/{id}/content/tus";
+
+            return _httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
         }
 
         /// <inheritdoc />
