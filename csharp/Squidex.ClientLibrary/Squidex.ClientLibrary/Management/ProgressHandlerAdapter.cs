@@ -34,6 +34,14 @@ namespace Squidex.ClientLibrary.Management
             return inner.OnProgressAsync(assetEvent, ct);
         }
 
+        public Task OnCreatedAsync(UploadCreatedEvent @event,
+            CancellationToken ct)
+        {
+            var assetEvent = new AssetUploadCreatedEvent(@event.FileId);
+
+            return inner.OnCreatedAsync(assetEvent, ct);
+        }
+
         public async Task OnCompletedAsync(UploadCompletedEvent @event,
             CancellationToken ct)
         {

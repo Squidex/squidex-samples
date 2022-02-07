@@ -70,6 +70,21 @@ namespace Squidex.ClientLibrary.Management
     }
 
     /// <summary>
+    /// Contains information about a success creation of an upload.
+    /// </summary>
+    public sealed class AssetUploadCreatedEvent : AssetUploadEvent
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssetUploadCreatedEvent"/> class.
+        /// </summary>
+        /// <param name="fileId">The file id that can be used to resume an upload.</param>
+        public AssetUploadCreatedEvent(string fileId)
+            : base(fileId)
+        {
+        }
+    }
+
+    /// <summary>
     /// Contains information about a success upload process.
     /// </summary>
     public sealed class AssetUploadCompletedEvent : AssetUploadEvent
@@ -208,6 +223,17 @@ namespace Squidex.ClientLibrary.Management
             CancellationToken ct);
 
         /// <summary>
+        /// Invoked when the upload progress has been started with a new file id.
+        /// </summary>
+        /// <param name="event">The event containing all the data.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The task for completion.
+        /// </returns>
+        Task OnCreatedAsync(AssetUploadCreatedEvent @event,
+            CancellationToken ct);
+
+        /// <summary>
         /// Invoked when asset has been uploaded successfully.
         /// </summary>
         /// <param name="event">The event containing all the data.</param>
@@ -243,6 +269,11 @@ namespace Squidex.ClientLibrary.Management
         public Func<AssetUploadProgressEvent, CancellationToken, Task>? OnProgressAsync { get; set; }
 
         /// <summary>
+        /// Gets or sets a delegate that is when the upload progress has been started with a new file id.
+        /// </summary>
+        public Func<AssetUploadCreatedEvent, CancellationToken, Task>? OnCreatedAsync { get; set; }
+
+        /// <summary>
         /// Gets or sets a delegate that is when when asset has been uploaded successfully.
         /// </summary>
         public Func<AssetUploadCompletedEvent, CancellationToken, Task>? OnCompletedAsync { get; set; }
@@ -256,6 +287,17 @@ namespace Squidex.ClientLibrary.Management
             CancellationToken ct)
         {
             var handler = OnProgressAsync;
+
+            if (handler != null)
+            {
+                await handler(@event, ct);
+            }
+        }
+
+        async Task IAssetProgressHandler.OnCreatedAsync(AssetUploadCreatedEvent @event,
+            CancellationToken ct)
+        {
+            var handler = OnCreatedAsync;
 
             if (handler != null)
             {
