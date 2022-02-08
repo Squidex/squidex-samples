@@ -32,19 +32,6 @@ namespace Squidex.ClientLibrary.Management
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets the upload progress.
-        /// </summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the asset.</param>
-        /// <param name="fileId">The file id of the upload.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// The upload progress in bytes.
-        /// </returns>
-        Task<long> GetUploadProgressAsync(string app, string id, string fileId,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Upload a new asset using tus protocol.
         /// </summary>
         /// <param name="app">The name of the app.</param>
@@ -55,22 +42,7 @@ namespace Squidex.ClientLibrary.Management
         /// Task for completion.
         /// </returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task UploadNewAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
-            CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Replace asset content using tus protocol.
-        /// </summary>
-        /// <param name="app">The name of the app.</param>
-        /// <param name="id">The id of the asset.</param>
-        /// <param name="file">The file to upload.</param>
-        /// <param name="options">Optional arguments.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>
-        /// Task for completion.
-        /// </returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        Task UploadExistingAssetAsync(string app, string id, FileParameter file, AssetUploadOptions options = default,
+        Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
             CancellationToken cancellationToken = default);
 
         /// <summary>Get assets.</summary>
@@ -140,34 +112,12 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc />
-        public Task<long> GetUploadProgressAsync(string app, string id, string fileId,
-            CancellationToken cancellationToken = default)
-        {
-            Guard.NotNull(fileId, nameof(fileId));
-
-            var url = $"api/apps/{app}/assets/{id}/content/tus";
-
-            return _httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public Task UploadNewAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
+        public Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
             CancellationToken cancellationToken = default)
         {
             Guard.NotNull(file, nameof(file));
 
             var url = $"api/apps/{app}/assets/tus";
-
-            return _httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(file, this), cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public Task UploadExistingAssetAsync(string app, string id, FileParameter file, AssetUploadOptions options = default,
-            CancellationToken cancellationToken = default)
-        {
-            Guard.NotNull(file, nameof(file));
-
-            var url = $"api/apps/{app}/assets/{id}/content/tus";
 
             return _httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(file, this), cancellationToken);
         }
