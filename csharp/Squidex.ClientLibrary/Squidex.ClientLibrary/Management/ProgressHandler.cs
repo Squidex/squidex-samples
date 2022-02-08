@@ -176,25 +176,26 @@ namespace Squidex.ClientLibrary.Management
                 FileId = FileId
             };
 
-            var headers = new Dictionary<string, string>
-            {
-                ["fileName"] = file.FileName,
-                ["fileType"] = file.ContentType
-            };
+            var metadata = new Dictionary<string, string>();
 
             if (!string.IsNullOrWhiteSpace(Id))
             {
-                headers["id"] = Id!;
+                metadata[nameof(Id)] = Id!;
             }
 
             if (!string.IsNullOrWhiteSpace(ParentId))
             {
-                headers["parentId"] = ParentId!;
+                metadata[nameof(ParentId)] = ParentId!;
             }
 
             if (Duplicate != null)
             {
-                headers["duplicate"] = Duplicate.Value.ToString();
+                metadata[nameof(Duplicate)] = Duplicate.Value.ToString();
+            }
+
+            if (metadata.Count > 0)
+            {
+                result.Metadata = metadata;
             }
 
             if (ProgressHandler != null)
