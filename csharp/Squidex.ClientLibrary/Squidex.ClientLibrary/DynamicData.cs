@@ -17,7 +17,7 @@ namespace Squidex.ClientLibrary
     /// Use this type when you have a dynamic structure for your content or if you query content items across many schemas.
     /// </remarks>
     [KeepCasing]
-    public sealed class DynamicData : Dictionary<string, JObject>
+    public sealed class DynamicData : Dictionary<string, JToken>
     {
     }
 }
