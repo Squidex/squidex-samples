@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using HeyRed.Mime;
 using Squidex.Assets;
 using Squidex.ClientLibrary.Utils;

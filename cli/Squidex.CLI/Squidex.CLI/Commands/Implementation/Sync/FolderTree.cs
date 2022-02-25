@@ -5,12 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Assets
+namespace Squidex.CLI.Commands.Implementation.Sync
 {
     public sealed class FolderTree
     {
@@ -30,22 +27,29 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public async Task<string?> GetPathAsync(string? id)
         {
-            if (string.IsNullOrWhiteSpace(id) || id == RootId)
+            var node = await GetByIdAsync(id);
+
+            return node?.Path;
+        }
+
+        public async Task<string?> GetIdAsync(string? path)
+        {
+            var node = await GetByPathAsync(path);
+
+            return node?.Id;
+        }
+
+        public async Task<FolderNode?> GetByIdAsync(string? id, bool needsChildren = false)
+        {
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return null;
             }
 
-            if (nodes.TryGetValue(id, out var current))
-            {
-                return current.Path;
-            }
-
-            var folder = await QueryAsync(id, false);
-
-            return folder.Path;
+            return await QueryAsync(id, needsChildren);
         }
 
-        public async Task<string?> GetIdAsync(string? path)
+        public async Task<FolderNode?> GetByPathAsync(string? path)
         {
             if (path == null || path.Equals(".", StringComparison.OrdinalIgnoreCase))
             {
@@ -82,7 +86,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 current = await AddFolderAsync(current, name);
             }
 
-            return current.Id;
+            return current;
         }
 
         private async Task<FolderNode> AddFolderAsync(FolderNode current, string name)

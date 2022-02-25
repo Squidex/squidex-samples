@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
-using System.Net.Http;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary
@@ -205,7 +203,7 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// The created client.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
@@ -218,7 +216,7 @@ namespace Squidex.ClientLibrary
         /// <returns>
         /// The created client.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>

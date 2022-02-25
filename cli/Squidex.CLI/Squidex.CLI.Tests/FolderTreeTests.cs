@@ -5,13 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using FakeItEasy;
 using Squidex.CLI.Commands.Implementation;
-using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.ClientLibrary.Management;
 using Xunit;
 

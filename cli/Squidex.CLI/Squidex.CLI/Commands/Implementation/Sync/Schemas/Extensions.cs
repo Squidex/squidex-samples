@@ -5,10 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary.Management;
-
-#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
@@ -16,63 +14,102 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
     {
         public static CreateSchemaDto ToCreate(this SchemaCreateModel model)
         {
-            var isSingleton = model.IsSingleton;
+            var result = SimpleMapper.Map(model, new CreateSchemaDto());
 
-            var type = model.SchemaType;
-
-            if (model.IsSingleton && type == SchemaType.Default)
+            if (model.IsSingleton && model.SchemaType == SchemaType.Default)
             {
-                type = SchemaType.Singleton;
+                result.Type = SchemaType.Singleton;
+            }
+            else
+            {
+                result.Type = model.SchemaType;
             }
 
-            return new CreateSchemaDto { Name = model.Name, IsSingleton = isSingleton, Type = type };
+            return result;
         }
 
-        public static void MapReferences(this SynchronizeSchemaDto schema, Dictionary<string, string> map)
+        public static async Task MapFoldersAsync(this SynchronizeSchemaDto schema, FolderTree folders, bool fromId)
         {
-            if (schema.Fields != null)
+            foreach (var field in schema.Fields ?? Enumerable.Empty<UpsertSchemaFieldDto>())
             {
-                foreach (var field in schema.Fields)
-                {
-                    MapReferences(field, map);
-                }
+                await field.MapFoldersAsync(folders, fromId);
             }
         }
 
-        public static void MapReferences(this UpsertSchemaFieldDto field, Dictionary<string, string> map)
+        public static async Task MapFoldersAsync(this UpsertSchemaFieldDto field, FolderTree folders, bool fromId)
         {
-            MapReferences(field.Properties, map);
+            await MapFoldersAsync(field.Properties, folders, fromId);
 
-            if (field.Nested != null)
+            foreach (var nested in field.Nested ?? Enumerable.Empty<UpsertSchemaNestedFieldDto>())
             {
-                foreach (var nested in field.Nested)
-                {
-                    MapReferences(nested.Properties, map);
-                }
+                await MapFoldersAsync(nested.Properties, folders, fromId);
             }
         }
 
-        private static void MapReferences(FieldPropertiesDto properties, Dictionary<string, string> map)
+        private static async Task MapFoldersAsync(FieldPropertiesDto properties, FolderTree folders, bool fromId)
         {
-            if (properties is ReferencesFieldPropertiesDto references)
+            switch (properties)
             {
-                references.SchemaIds = MapReferences(references.SchemaIds, map);
-            }
-            else if (properties is ComponentFieldPropertiesDto component)
-            {
-                component.SchemaIds = MapReferences(component.SchemaIds, map);
-            }
-            else if (properties is ComponentsFieldPropertiesDto components)
-            {
-                components.SchemaIds = MapReferences(components.SchemaIds, map);
+                case AssetsFieldPropertiesDto assets:
+                    assets.FolderId = await MapFoldersAsync(assets.FolderId, folders, fromId);
+                    break;
+                case StringFieldPropertiesDto strings:
+                    strings.FolderId = await MapFoldersAsync(strings.FolderId, folders, fromId);
+                    break;
             }
         }
 
-        private static List<string>? MapReferences(List<string> ids, Dictionary<string, string> map)
+        private static Task<string?> MapFoldersAsync(string? folderId, FolderTree folders, bool fromId)
+        {
+            if (fromId)
+            {
+                return folders.GetPathAsync(folderId);
+            }
+            else
+            {
+                return folders.GetIdAsync(folderId);
+            }
+        }
+
+        public static async Task MapReferencesAsync(this SynchronizeSchemaDto schema, Dictionary<string, string> map)
+        {
+            foreach (var field in schema.Fields ?? Enumerable.Empty<UpsertSchemaFieldDto>())
+            {
+                await MapReferencesAsync(field, map);
+            }
+        }
+
+        public static async Task MapReferencesAsync(this UpsertSchemaFieldDto field, Dictionary<string, string> map)
+        {
+            await MapReferencesAsync(field.Properties, map);
+
+            foreach (var nested in field.Nested ?? Enumerable.Empty<UpsertSchemaNestedFieldDto>())
+            {
+                await MapReferencesAsync(nested.Properties, map);
+            }
+        }
+
+        private static async Task MapReferencesAsync(FieldPropertiesDto properties, Dictionary<string, string> map)
+        {
+            switch (properties)
+            {
+                case ReferencesFieldPropertiesDto references:
+                    references.SchemaIds = await MapReferencesAsync(references.SchemaIds, map);
+                    break;
+                case ComponentFieldPropertiesDto component:
+                    component.SchemaIds = await MapReferencesAsync(component.SchemaIds, map);
+                    break;
+                case ComponentsFieldPropertiesDto components:
+                    components.SchemaIds = await MapReferencesAsync(components.SchemaIds, map);
+                    break;
+            }
+        }
+
+        private static Task<List<string>?> MapReferencesAsync(List<string>? ids, Dictionary<string, string> map)
         {
             if (ids == null || ids.Count == 0)
             {
-                return ids;
+                return Task.FromResult(ids);
             }
 
             var result = new List<string>();
@@ -85,7 +122,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 }
             }
 
-            return result;
+            return Task.FromResult<List<string>?>(result);
         }
     }
 }

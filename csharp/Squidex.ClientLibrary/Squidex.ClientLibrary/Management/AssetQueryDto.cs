@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
 using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable SA1629 // Documentation text should end with a period

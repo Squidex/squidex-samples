@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using CommandDotNet;
 using ConsoleTables;
 using FluentValidation;

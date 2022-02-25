@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
     [AttributeUsage(AttributeTargets.All)]

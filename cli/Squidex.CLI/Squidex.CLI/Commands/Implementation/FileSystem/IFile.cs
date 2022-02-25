@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
-
 namespace Squidex.CLI.Commands.Implementation.FileSystem
 {
     public interface IFile

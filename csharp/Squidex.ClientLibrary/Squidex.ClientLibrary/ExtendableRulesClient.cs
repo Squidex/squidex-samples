@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
@@ -25,8 +22,8 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
         /// <param name="httpClient">The HTTP client. Cannot be null.</param>
-        /// <exception cref="System.ArgumentNullException"><paramref name="options"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
         public ExtendableRulesClient(SquidexOptions options, HttpClient httpClient)
             : base(options, httpClient)
         {
@@ -87,7 +84,7 @@ namespace Squidex.ClientLibrary
 
         private string BuildUrl(string? path = null)
         {
-            return $"apps/{ApplicationName}/rules/{path}";
+            return $"api/apps/{ApplicationName}/rules/{path}";
         }
     }
 }

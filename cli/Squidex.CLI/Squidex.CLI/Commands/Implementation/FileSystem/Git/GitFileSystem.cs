@@ -5,10 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using LibGit2Sharp;
 using Squidex.CLI.Commands.Implementation.FileSystem.Default;
 using Squidex.Text;

@@ -7,11 +7,11 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Assets
+namespace Squidex.CLI.Commands.Implementation.Sync.AssertFolders
 {
-    public class AssetsModel
+    public sealed class AssetFoldersModel
     {
         [Required]
-        public List<AssetModel> Assets { get; set; }
+        public List<string> Paths { get; set; }
     }
 }

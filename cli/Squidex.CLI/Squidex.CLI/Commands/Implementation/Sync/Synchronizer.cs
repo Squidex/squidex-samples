@@ -5,12 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
-using Squidex.CLI.Configuration;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -46,7 +41,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
                 WriteSummary(fs, session, "->", selectedSynchronizers);
 
-                var sync = new SyncService(fs);
+                var sync = new SyncService(fs, session);
 
                 foreach (var synchronizer in selectedSynchronizers)
                 {
@@ -79,7 +74,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
                 WriteSummary(fs, session, "<-", selectedSynchronizers);
 
-                var sync = new SyncService(fs);
+                var sync = new SyncService(fs, session);
 
                 await selectedSynchronizers.Foreach(async (synchronizer, step) =>
                 {
@@ -121,7 +116,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
                     return;
                 }
 
-                var sync = new SyncService(fs);
+                var sync = new SyncService(fs, session);
 
                 foreach (var synchronizer in GetSynchronizers())
                 {

@@ -5,11 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
 {

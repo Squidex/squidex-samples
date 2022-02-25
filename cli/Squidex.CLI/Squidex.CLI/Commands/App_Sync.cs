@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
@@ -101,6 +100,9 @@ namespace Squidex.CLI.Commands
 
                 [Option("recreate", Description = "Use this flag to also recreate entities.")]
                 public bool Recreate { get; set; }
+
+                [Option("skip-assets", Description = "Use this flag to sync asset folders but not assets.")]
+                public bool SkipAssets { get; set; }
 
                 [Option("update-current-client", Description = "Also update the client that is used during the sync process.")]
                 public bool UpdateCurrentClient { get; set; }

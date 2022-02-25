@@ -1,10 +1,10 @@
 ﻿const isDevelopment = false;
 
 const CONFIG = {
-    url: 'https://cloud.squidex.io',
-    appName: 'sample-blog',
-    clientId: 'sample-blog:blog',
-    clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
+    url: 'http://localhost:3000',
+    appName: 'test',
+    clientId: 'test:default',
+    clientSecret: 'mxfw5ybj3mq6euycdzfaa5kxh4bd9ntzmtc81za9u5ox'
 };
 
 if (isDevelopment) {

@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
-using System.IO;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;

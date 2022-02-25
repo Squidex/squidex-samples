@@ -5,10 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -30,6 +26,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public IFileSystem FileSystem { get; }
 
+        public FolderTree Folders { get; }
+
         internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
         {
             protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
@@ -42,8 +40,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             }
         }
 
-        public SyncService(IFileSystem fileSystem)
+        public SyncService(IFileSystem fileSystem, ISession session)
         {
+            Folders = new FolderTree(session);
+
             jsonSerializerSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCaseExceptDictionaryKeysResolver()

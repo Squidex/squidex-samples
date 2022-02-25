@@ -5,10 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -18,35 +16,26 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
     {
         public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas)
         {
-            var id = model.Id;
+            var result = SimpleMapper.Map(model, new BulkUpdateJob());
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            var singleton = schemas.Items.Find(x => x.Name == model.Schema && x.IsSingleton);
+            var singleton = schemas.Items.Find(x => x.Name == model.Schema && (x.IsSingleton || x.Type == SchemaType.Singleton));
 #pragma warning restore CS0618 // Type or member is obsolete
             if (singleton != null)
             {
-                id = singleton.Id;
+                result.Id = singleton.Id;
             }
 
-            return new BulkUpdateJob
-            {
-                Id = id,
-                Data = model.Data,
-                Schema = model.Schema,
-                Status = model.Status,
-                Type = BulkUpdateType.Upsert
-            };
+            return result;
         }
 
         public static ContentModel ToModel(this DynamicContent content, string schema)
         {
-            return new ContentModel
-            {
-                Id = content.Id,
-                Data = content.Data,
-                Status = content.Status,
-                Schema = schema
-            };
+            var result = SimpleMapper.Map(content, new ContentModel());
+
+            result.Schema = schema;
+
+            return result;
         }
 
         public static void MapComponents(this DynamicContent content, Dictionary<string, string> map)
@@ -105,7 +94,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                 foreach (var content in model.Contents)
                 {
-                    foreach (var field in content.Data.Values)
+                    foreach (var field in content.Data.Values.OfType<JObject>())
                     {
                         foreach (var language in field.Children<JProperty>().Select(x => x.Name))
                         {

@@ -5,10 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
@@ -63,11 +59,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                     });
                 }
 
-                var tree = new FolderTree(session);
-
                 await session.Assets.GetAllAsync(session.App, async asset =>
                 {
-                    assets.Add(await asset.ToModelAsync(tree));
+                    var model = asset.ToModel();
+
+                    model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
+
+                    assets.Add(model);
 
                     if (assets.Count > 50)
                     {
@@ -97,8 +95,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 GetFiles(sync.FileSystem)
                     .Select(x => (x, sync.Read<AssetsModel>(x, log)));
 
-            var tree = new FolderTree(session);
-
             var batchIndex = 0;
 
             foreach (var (_, model) in models)
@@ -126,7 +122,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
                     foreach (var asset in model.Assets)
                     {
-                        var parentId = await tree.GetIdAsync(asset.FolderPath);
+                        var parentId = await sync.Folders.GetIdAsync(asset.FolderPath);
 
                         request.Jobs.Add(asset.ToMove(parentId));
                         request.Jobs.Add(asset.ToAnnotate());

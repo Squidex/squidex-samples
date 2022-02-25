@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;

@@ -5,15 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -54,7 +51,7 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
                         if (!string.IsNullOrWhiteSpace(keyField))
                         {
-                            if (!data.TryGetValue(keyField, out var temp) || !temp.TryGetValue("iv", StringComparison.Ordinal, out var value))
+                            if (!data.TryGetValue(keyField, out var temp) || temp is not JObject obj || !obj.TryGetValue("iv", StringComparison.Ordinal, out var value))
                             {
                                 throw new InvalidOperationException($"Cannot find key '{keyField}' in data.");
                             }

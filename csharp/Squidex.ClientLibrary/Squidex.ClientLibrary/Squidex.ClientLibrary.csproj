@@ -5,6 +5,7 @@
     <Copyright>MIT</Copyright>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>10.0</LangVersion>
 	<Nullable>enable</Nullable>
     <PackageIcon>logo-squared.png</PackageIcon>

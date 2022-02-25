@@ -5,10 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
@@ -267,7 +263,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             {
                 var existing = current.Items.Find(x => x.Name == roleName);
 
-                if (existing == null || existing.IsDefaultRole || role.JsonEquals(existing))
+                if (existing == null || existing.IsDefaultRole)
                 {
                     continue;
                 }

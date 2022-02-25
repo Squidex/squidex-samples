@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem.Default;
 using Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
 using Squidex.CLI.Commands.Implementation.FileSystem.Git;

@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync

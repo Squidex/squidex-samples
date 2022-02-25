@@ -5,14 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Squidex.CLI.Commands.Implementation
@@ -31,16 +26,6 @@ namespace Squidex.CLI.Commands.Implementation
             var rhsJson = JsonConvert.SerializeObject(rhs);
 
             return lhsJson == rhsJson;
-        }
-
-        public static bool SetEquals(this IEnumerable<string> lhs, IEnumerable<string> rhs)
-        {
-            if (rhs == null)
-            {
-                return false;
-            }
-
-            return new HashSet<string>(lhs).SetEquals(rhs);
         }
 
         public static bool HasDistinctNames<T>(this ICollection<T> source, Func<T, string> selector)

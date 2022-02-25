@@ -5,16 +5,12 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using CommandDotNet;
 using FluentValidation;
 using HeyRed.Mime;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
@@ -46,7 +42,7 @@ namespace Squidex.CLI.Commands
 
                 using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
                 {
-                    var folderTree = new FolderTree(session);
+                    var folders = new FolderTree(session);
 
                     var assetQuery = new AssetQuery();
 
@@ -59,7 +55,7 @@ namespace Squidex.CLI.Commands
                             targetFolder = Path.Combine(arguments.TargetFolder, targetFolder);
                         }
 
-                        assetQuery.ParentId = await folderTree.GetIdAsync(targetFolder);
+                        assetQuery.ParentId = await folders.GetIdAsync(targetFolder);
                         assetQuery.Filter = $"fileName eq '{file.Name}'";
 
                         var existings = await assets.GetAssetsAsync(session.App, assetQuery);

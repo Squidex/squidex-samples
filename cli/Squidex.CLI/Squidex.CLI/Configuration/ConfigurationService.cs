@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;

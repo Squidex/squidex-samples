@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using System.IO.Compression;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip

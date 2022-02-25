@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
@@ -13,6 +12,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
     public interface ISyncService
     {
         IFileSystem FileSystem { get; }
+
+        FolderTree Folders { get; }
 
         T Convert<T>(object value);
 

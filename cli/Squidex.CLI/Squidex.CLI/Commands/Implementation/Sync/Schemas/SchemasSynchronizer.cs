@@ -5,10 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
@@ -60,7 +56,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                         IsSingleton = details.IsSingleton
                     };
 
-                    model.Schema.MapReferences(schemaMap);
+                    await model.Schema.MapReferencesAsync(schemaMap);
+                    await model.Schema.MapFoldersAsync(sync.Folders, true);
 
                     await sync.WriteWithSchema(new FilePath($"schemas", $"{schema.Name}.json"), model, Ref);
                 });
@@ -122,7 +119,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 
             foreach (var model in models)
             {
-                model.Schema.MapReferences(schemaMap);
+                await model.Schema.MapReferencesAsync(schemaMap);
+                await model.Schema.MapFoldersAsync(sync.Folders, false);
 
                 var version = schemasByName[model.Name].Version;
 

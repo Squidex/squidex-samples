@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Rules
@@ -14,12 +14,12 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
     {
         public static UpdateExtendableRuleDto ToUpdate(this RuleModel model)
         {
-            return new UpdateExtendableRuleDto { Action = model.Action, Trigger = model.Trigger, Name = model.Name };
+            return SimpleMapper.Map(model, new UpdateExtendableRuleDto());
         }
 
         public static CreateExtendableRuleDto ToCreate(this RuleModel model)
         {
-            return new CreateExtendableRuleDto { Action = model.Action, Trigger = model.Trigger };
+            return SimpleMapper.Map(model, new CreateExtendableRuleDto());
         }
     }
 }

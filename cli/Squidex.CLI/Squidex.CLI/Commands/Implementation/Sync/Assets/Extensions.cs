@@ -5,11 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.IO;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -87,11 +85,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
         {
             var bulkJob = model.ToJob(BulkUpdateAssetType.Annotate);
 
-            bulkJob.FileName = model.FileName;
-            bulkJob.Metadata = model.Metadata;
-            bulkJob.IsProtected = model.IsProtected;
-            bulkJob.Slug = model.Slug;
-            bulkJob.Tags = model.Tags;
+            SimpleMapper.Map(bulkJob, model);
 
             return bulkJob;
         }
@@ -101,20 +95,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             return new BulkUpdateAssetsJobDto { Id = model.Id, Type = type };
         }
 
-        public static async Task<AssetModel> ToModelAsync(this AssetDto asset, FolderTree folders)
+        public static AssetModel ToModel(this AssetDto asset)
         {
-            return new AssetModel
-            {
-                Id = asset.Id,
-                Metadata = asset.Metadata,
-                MimeType = asset.MimeType,
-                Slug = asset.Slug,
-                FileName = asset.FileName,
-                FileHash = asset.FileHash,
-                FolderPath = await folders.GetPathAsync(asset.ParentId),
-                Tags = asset.Tags,
-                IsProtected = asset.IsProtected
-            };
+            return SimpleMapper.Map(asset, new AssetModel());
         }
     }
 }

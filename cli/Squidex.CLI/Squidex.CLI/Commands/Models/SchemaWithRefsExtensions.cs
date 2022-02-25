@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Collections.Generic;
-using System.Linq;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Models
@@ -25,24 +23,18 @@ namespace Squidex.CLI.Commands.Models
                 }
             }
 
-            if (target.Schema.Fields != null)
+            foreach (var field in target.Schema.Fields.OrEmpty())
             {
-                foreach (var field in target.Schema.Fields)
+                if (field.Properties is ReferencesFieldPropertiesDto reference)
                 {
-                    if (field.Properties is ReferencesFieldPropertiesDto reference)
-                    {
-                        Handle(reference);
-                    }
+                    Handle(reference);
+                }
 
-                    if (field.Nested != null)
+                foreach (var nested in field.Nested.OrEmpty())
+                {
+                    if (nested.Properties is ReferencesFieldPropertiesDto nestedReference)
                     {
-                        foreach (var nested in field.Nested)
-                        {
-                            if (nested.Properties is ReferencesFieldPropertiesDto nestedReference)
-                            {
-                                Handle(nestedReference);
-                            }
-                        }
+                        Handle(nestedReference);
                     }
                 }
             }
@@ -79,24 +71,18 @@ namespace Squidex.CLI.Commands.Models
                 }
             }
 
-            if (target.Schema.Fields != null)
+            foreach (var field in target.Schema.Fields.OrEmpty())
             {
-                foreach (var field in target.Schema.Fields)
+                if (field.Properties is ReferencesFieldPropertiesDto reference)
                 {
-                    if (field.Properties is ReferencesFieldPropertiesDto reference)
-                    {
-                        Handle(reference);
-                    }
+                    Handle(reference);
+                }
 
-                    if (field.Nested != null)
+                foreach (var nested in field.Nested.OrEmpty())
+                {
+                    if (nested.Properties is ReferencesFieldPropertiesDto nestedReference)
                     {
-                        foreach (var nested in field.Nested)
-                        {
-                            if (nested.Properties is ReferencesFieldPropertiesDto nestedReference)
-                            {
-                                Handle(nestedReference);
-                            }
-                        }
+                        Handle(nestedReference);
                     }
                 }
             }

@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
