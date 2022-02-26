@@ -7,6 +7,7 @@
 
 using FakeItEasy;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.ClientLibrary.Management;
 using Xunit;
 

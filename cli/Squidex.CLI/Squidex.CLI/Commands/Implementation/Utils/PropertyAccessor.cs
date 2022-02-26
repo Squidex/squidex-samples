@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands.Implementation.Utils
 
         private readonly IPropertyAccessor internalAccessor;
 
-        public PropertyAccessor(Type targetType, PropertyInfo propertyInfo)
+        public PropertyAccessor(PropertyInfo propertyInfo)
         {
             var type = typeof(PropertyWrapper<,>).MakeGenericType(propertyInfo.DeclaringType!, propertyInfo.PropertyType);
 

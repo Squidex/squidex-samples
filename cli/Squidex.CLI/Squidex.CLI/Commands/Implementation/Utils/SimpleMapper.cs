@@ -161,14 +161,14 @@ namespace Squidex.CLI.Commands.Implementation.Utils
                     if (sourceType == targetType)
                     {
                         Mappers.Add(new PropertyMapper(
-                            new PropertyAccessor(sourceClassType, sourceProperty),
-                            new PropertyAccessor(targetClassType, targetProperty)));
+                            new PropertyAccessor(sourceProperty),
+                            new PropertyAccessor(targetProperty)));
                     }
                     else if (targetType == typeof(string))
                     {
                         Mappers.Add(new StringConversionPropertyMapper(
-                            new PropertyAccessor(sourceClassType, sourceProperty),
-                            new PropertyAccessor(targetClassType, targetProperty)));
+                            new PropertyAccessor(sourceProperty),
+                            new PropertyAccessor(targetProperty)));
                     }
                     else
                     {
@@ -177,15 +177,15 @@ namespace Squidex.CLI.Commands.Implementation.Utils
                         if (converter.CanConvertFrom(sourceType))
                         {
                             Mappers.Add(new TypeConverterPropertyMapper(
-                                new PropertyAccessor(sourceClassType, sourceProperty),
-                                new PropertyAccessor(targetClassType, targetProperty),
+                                new PropertyAccessor(sourceProperty),
+                                new PropertyAccessor(targetProperty),
                                 converter));
                         }
                         else if (sourceType.Implements<IConvertible>() || targetType.Implements<IConvertible>())
                         {
                             Mappers.Add(new ConversionPropertyMapper(
-                                new PropertyAccessor(sourceClassType, sourceProperty),
-                                new PropertyAccessor(targetClassType, targetProperty),
+                                new PropertyAccessor(sourceProperty),
+                                new PropertyAccessor(targetProperty),
                                 targetType));
                         }
                     }

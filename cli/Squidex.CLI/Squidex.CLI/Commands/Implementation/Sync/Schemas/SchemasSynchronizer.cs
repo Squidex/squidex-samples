@@ -122,17 +122,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                 await model.Schema.MapReferencesAsync(schemaMap);
                 await model.Schema.MapFoldersAsync(sync.Folders, false);
 
+                model.Schema.NoFieldDeletion |= !options.Delete;
+                model.Schema.NoFieldRecreation |= !options.Recreate;
+
                 var version = schemasByName[model.Name].Version;
-
-                if (!options.Delete)
-                {
-                    model.Schema.NoFieldRecreation = true;
-                }
-
-                if (!options.Recreate)
-                {
-                    model.Schema.NoFieldRecreation = true;
-                }
 
                 await log.DoVersionedAsync($"Schema {model.Name} updating", version, async () =>
                 {
