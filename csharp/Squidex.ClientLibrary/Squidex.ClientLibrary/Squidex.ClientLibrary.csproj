@@ -6,14 +6,14 @@
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>10.0</LangVersion>
+	<LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
     <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <Version>8.9.0</Version>
+    <Version>8.10.0</Version>
   </PropertyGroup>
 	
   <ItemGroup>
