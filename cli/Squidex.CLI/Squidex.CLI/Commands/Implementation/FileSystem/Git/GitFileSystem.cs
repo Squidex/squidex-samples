@@ -82,10 +82,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Git
 
             if (!string.IsNullOrWhiteSpace(gitFolder))
             {
-                repositoriesFolder = repositoriesFolder.GetDirectory(gitFolder);
+                repositoryFolder = repositoryFolder.GetDirectory(gitFolder);
             }
 
-            inner = new DefaultFileSystem(repositoriesFolder)
+            inner = new DefaultFileSystem(repositoryFolder)
             {
                 Readonly = true
             };

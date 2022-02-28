@@ -24,12 +24,14 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem
             {
                 switch (uri.Scheme)
                 {
-                    case "https" when uri.LocalPath.EndsWith(".git", StringComparison.Ordinal):
+                    case "https" when uri.LocalPath.TrimEnd('/').EndsWith(".git", StringComparison.Ordinal):
                         var query = uri.ParseQueryString();
 
                         query.TryGetValue("folder", out var folder);
 
-                        fileSystem = new GitFileSystem(uri.ToString(), folder, query.ContainsKey("ski-pull"), workingDirectory);
+                        var repositoryUrl = $"{uri.Scheme}://{uri.Host}/{uri.LocalPath.TrimEnd('/')}";
+
+                        fileSystem = new GitFileSystem(repositoryUrl, folder, query.ContainsKey("skip-pull"), workingDirectory);
                         break;
                     case "file":
                         fileSystem = OpenFolder(uri.LocalPath);

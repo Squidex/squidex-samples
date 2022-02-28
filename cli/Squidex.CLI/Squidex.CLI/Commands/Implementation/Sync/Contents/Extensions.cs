@@ -26,6 +26,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 result.Id = singleton.Id;
             }
 
+            result.Data = model.Data;
+
             return result;
         }
 
