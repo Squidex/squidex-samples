@@ -73,6 +73,56 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             await sync.WriteWithSchema(new FilePath("app.json"), model, Ref);
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
+
+            if (!appFile.Exists)
+            {
+                return Task.CompletedTask;
+            }
+
+            var model = sync.Read<AppModel>(appFile, log);
+
+            if (model.Clients.Count > 0)
+            {
+                var rows = model.Clients.Select(x => new object[] { x.Key, x.Value.Name, x.Value.Role }).OrderBy(x => x[0]).ToArray();
+
+                writer.H3("Clients");
+                writer.Paragraph($"{rows.Length} client(s).");
+                writer.Table(new[] { "Name", "Label", "Role" }, rows);
+            }
+
+            if (model.Roles.Count > 0)
+            {
+                var rows = model.Roles.Select(x => new object[] { x.Key, x.Value.Permissions.Count }).OrderBy(x => x[0]).ToArray();
+
+                writer.H3("Roles");
+                writer.Paragraph($"{rows.Length} role(s).");
+                writer.Table(new[] { "Name", "Permissions" }, rows);
+            }
+
+            if (model.Contributors.Count > 0)
+            {
+                var rows = model.Contributors.Select(x => new object[] { x.Key, x.Value.Role }).OrderBy(x => x[0]).ToArray();
+
+                writer.H3("Contributors");
+                writer.Paragraph($"{rows.Length} contributor(s).");
+                writer.Table(new[] { "Id", "Role" }, rows);
+            }
+
+            if (model.Languages.Count > 0)
+            {
+                var rows = model.Languages.Select(x => new object[] { x.Key, x.Value.IsMaster == true ? "y" : "n" }).OrderBy(x => x[0]).ToArray();
+
+                writer.H3("Languages");
+                writer.Paragraph($"{rows.Length} language(s).");
+                writer.Table(new[] { "Code", "Master" }, rows);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));

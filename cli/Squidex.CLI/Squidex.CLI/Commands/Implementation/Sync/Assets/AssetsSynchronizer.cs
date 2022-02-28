@@ -89,6 +89,17 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
             }
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var models =
+                GetFiles(sync.FileSystem)
+                    .Select(x => (x, sync.Read<AssetsModel>(x, log)));
+
+            writer.Paragraph($"{models.SelectMany(x => x.Item2.Assets).Count()} asset(s).");
+
+            return Task.CompletedTask;
+        }
+
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =

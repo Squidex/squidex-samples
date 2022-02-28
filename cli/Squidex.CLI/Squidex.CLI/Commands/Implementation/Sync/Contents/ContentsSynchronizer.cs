@@ -82,6 +82,28 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             }
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var models =
+                GetFiles(sync.FileSystem)
+                    .Select(x => (x, sync.Read<ContentsModel>(x, log)));
+
+            writer.Paragraph($"{models.SelectMany(x => x.Item2.Contents).Count()} content(s).");
+
+            var rows =
+                models
+                    .SelectMany(x => x.Item2.Contents).GroupBy(x => x.Schema)
+                    .Select(x => new object[] { x.Key, x.Count() }).OrderBy(x => x[0])
+                    .ToArray();
+
+            if (rows.Length > 0)
+            {
+                writer.Table(new[] { "Schema", "Counts" }, rows);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =

@@ -91,7 +91,9 @@ namespace Squidex.ClientLibrary
             {
                 var index = self.Href.IndexOf(LinkStart, StringComparison.Ordinal);
 
+#pragma warning disable IDE0057 // Use range operator
                 var href = self.Href.Substring(index + LinkStart.Length);
+#pragma warning restore IDE0057 // Use range operator
                 var hrefp = href.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                 return (hrefp[0], hrefp[1]);

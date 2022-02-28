@@ -26,6 +26,52 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return GetSynchronizers().Select(x => x.Name);
         }
 
+        public async Task Describe(string path, ISession session)
+        {
+            using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
+            {
+                if (!fs.CanWrite)
+                {
+                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    return;
+                }
+
+                var sync = new SyncService(fs, session);
+
+                var readme = fs.GetFile(new FilePath("README.md"));
+
+                await using (var file = readme.OpenWrite())
+                {
+                    await using (var textWriter = new StreamWriter(file))
+                    {
+                        var markdown = new MarkdownWriter(textWriter);
+
+                        markdown.H1($"Export {DateTime.UtcNow}");
+
+                        markdown.Paragraph("--- Describe your export here ---");
+                        markdown.Paragraph("Usage");
+
+                        markdown.Code(
+                            "// Add a config to your app.",
+                            "sq config add <APP> <CLIENT_ID> <CLIENT_SECRET>",
+                            string.Empty,
+                            "// Switch to your app.",
+                            "sq config use <APP>",
+                            string.Empty,
+                            "// Import this folder",
+                            "sq sync in <PATH_TO_THIS_FOLDER");
+
+                        foreach (var synchronizer in synchronizers)
+                        {
+                            markdown.H2(synchronizer.Name);
+
+                            await synchronizer.DescribeAsync(sync, markdown);
+                        }
+                    }
+                }
+            }
+        }
+
         public async Task ExportAsync(string path, SyncOptions options, ISession session)
         {
             using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))

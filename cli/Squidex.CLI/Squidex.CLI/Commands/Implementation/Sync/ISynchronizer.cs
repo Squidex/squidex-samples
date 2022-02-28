@@ -17,6 +17,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         Task CleanupAsync(IFileSystem fs);
 
+        Task DescribeAsync(ISyncService sync, MarkdownWriter writer);
+
         Task ExportAsync(ISyncService sync, SyncOptions options, ISession session);
 
         Task ImportAsync(ISyncService sync, SyncOptions options, ISession session);

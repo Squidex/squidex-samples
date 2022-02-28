@@ -36,6 +36,25 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             return Task.CompletedTask;
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var models =
+                GetSchemaFiles(sync.FileSystem)
+                    .Select(x => sync.Read<SchemaModel>(x, log))
+                    .ToList();
+
+            writer.Paragraph($"{models.Count} schema(s).");
+
+            if (models.Count > 0)
+            {
+                var rows = models.Select(x => new object[] { x.Name, x.SchemaType.ToString(), x.Schema.Fields.Count }).OrderBy(x => x[0]).ToArray();
+
+                writer.Table(new[] { "Schema", "Type", "Fields" }, rows);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var current = await session.Schemas.GetSchemasAsync(session.App);

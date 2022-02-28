@@ -52,6 +52,25 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
             });
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var models =
+                GetFiles(sync.FileSystem)
+                    .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
+                    .ToList();
+
+            writer.Paragraph($"{models.Count} workflow(s).");
+
+            if (models.Count > 0)
+            {
+                var rows = models.Select(x => new object[] { x.Name, string.Join(", ", x.Steps.Select(y => y.Key)), x.Initial }).OrderBy(x => x[0]).ToArray();
+
+                writer.Table(new[] { "Name", "Steps", "Initial" }, rows);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =

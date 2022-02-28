@@ -48,6 +48,11 @@ namespace Squidex.CLI.Commands
 
                 await synchronizer.ExportAsync(arguments.Folder, arguments.ToOptions(), session);
 
+                if (arguments.Describe)
+                {
+                    await synchronizer.Describe(arguments.Folder, session);
+                }
+
                 log.WriteLine("> Synchronization completed.");
             }
 
@@ -59,6 +64,16 @@ namespace Squidex.CLI.Commands
                 await synchronizer.ImportAsync(arguments.Folder, arguments.ToOptions(), session);
 
                 log.WriteLine("> Synchronization completed.");
+            }
+
+            [Command("describe", Description = "Describe the synced folder.")]
+            public async Task Describe(DescribeArguments arguments)
+            {
+                var session = configuration.StartSession(arguments.App, false);
+
+                await synchronizer.Describe(arguments.Folder, session);
+
+                log.WriteLine("> Describing completed.");
             }
 
             [Command("targets", Description = "List all targets")]
@@ -139,12 +154,29 @@ namespace Squidex.CLI.Commands
                 [Option('t', "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules, contents.")]
                 public string[] Targets { get; set; }
 
+                [Option("describe", Description = "Create a README.md file.")]
+                public bool Describe { get; set; }
+
                 public SyncOptions ToOptions()
                 {
                     return new SyncOptions { Targets = Targets };
                 }
 
                 public sealed class Validator : AbstractValidator<OutArguments>
+                {
+                    public Validator()
+                    {
+                        RuleFor(x => x.Folder).NotEmpty();
+                    }
+                }
+            }
+
+            public sealed class DescribeArguments : AppArguments
+            {
+                [Operand("folder", Description = "The target folder to describe.")]
+                public string Folder { get; set; }
+
+                public sealed class Validator : AbstractValidator<DescribeArguments>
                 {
                     public Validator()
                     {

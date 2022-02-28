@@ -60,6 +60,18 @@ namespace Squidex.CLI.Commands.Implementation.Sync.AssertFolders
             await sync.WriteWithSchema(new FilePath("assetFolders/assetFolders.json"), model, Ref);
         }
 
+        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        {
+            var models =
+                GetFiles(sync.FileSystem)
+                    .Select(x => sync.Read<AssetFoldersModel>(x, log))
+                    .ToList();
+
+            writer.Paragraph($"{models.SelectMany(x => x.Paths).Distinct().Count()} asset folder(s).");
+
+            return Task.CompletedTask;
+        }
+
         public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
         {
             var models =
