@@ -1,24 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName Condition="'$(PackDotnetTool)'!='1'">sq</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <OutputType>Exe</OutputType>
-    <PackAsTool>true</PackAsTool>
+	<RootNamespace>Squidex.CLI</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <ToolCommandName>sq</ToolCommandName>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Commands\Implementation\OpenLibrary\Structure\schemas\author.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommandDotNet" Version="6.0.5" />
-    <PackageReference Include="CommandDotNet.FluentValidation" Version="5.0.1" />
-    <PackageReference Include="ConsoleTables" Version="2.4.2" />
-    <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1" />
-    <PackageReference Include="CoreTweet" Version="1.0.0.483" />
     <PackageReference Include="CsvHelper" Version="27.2.1" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="Meziantou.Analyzer" Version="1.0.695">
@@ -34,13 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />
-    <ProjectReference Include="..\Squidex.CLI.Core\Squidex.CLI.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Commands\Implementation\OpenLibrary\Structure\schemas\author.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="logo-squared.png" Pack="true" PackagePath="\" />

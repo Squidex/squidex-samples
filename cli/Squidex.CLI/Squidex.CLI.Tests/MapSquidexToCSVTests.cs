@@ -11,7 +11,7 @@ using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.ClientLibrary;
 using Xunit;
 
-namespace Squidex.CLI.Tests
+namespace Squidex.CLI
 {
     public class MapSquidexToCSVTests
     {

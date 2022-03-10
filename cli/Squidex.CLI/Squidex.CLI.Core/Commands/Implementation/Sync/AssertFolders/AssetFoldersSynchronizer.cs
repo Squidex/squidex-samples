@@ -9,7 +9,7 @@ using Squidex.CLI.Commands.Implementation.FileSystem;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.AssertFolders
 {
-    internal class AssetFoldersSynchronizer : ISynchronizer
+    public sealed class AssetFoldersSynchronizer : ISynchronizer
     {
         private const string Ref = "../__json/assetFolders";
         private readonly ILogger log;

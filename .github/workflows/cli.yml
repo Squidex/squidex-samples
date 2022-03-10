@@ -61,6 +61,16 @@ jobs:
         cd cli/Squidex.CLI/Squidex.CLI/bin/Release
         dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --skip-duplicate -k ${{ secrets.nuget }} --no-symbols 1 
 
+    - name: pack core
+      run: |
+        cd cli/Squidex.CLI.Core/Squidex.CLI.Core
+        dotnet pack -c Release
+
+    - name: push core to nuget.org
+      run: |
+        cd cli/Squidex.CLI.Core/Squidex.CLI.Core/bin/Release
+        dotnet nuget push **/*.nupkg --source 'https://api.nuget.org/v3/index.json' --skip-duplicate -k ${{ secrets.nuget }} --no-symbols 1 
+
     - name: create dir
       run: |
         mkdir cli/Squidex.CLI/Squidex.CLI/bin/Release/out

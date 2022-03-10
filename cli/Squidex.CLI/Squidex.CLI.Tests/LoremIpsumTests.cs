@@ -8,7 +8,7 @@
 using Squidex.CLI.Commands.Implementation.TestData;
 using Xunit;
 
-namespace Squidex.CLI.Tests
+namespace Squidex.CLI
 {
     public class LoremIpsumTests
     {

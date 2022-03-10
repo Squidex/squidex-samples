@@ -11,7 +11,7 @@ using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.ClientLibrary.Management;
 using Xunit;
 
-namespace Squidex.CLI.Tests
+namespace Squidex.CLI
 {
     public class FolderTreeTests
     {

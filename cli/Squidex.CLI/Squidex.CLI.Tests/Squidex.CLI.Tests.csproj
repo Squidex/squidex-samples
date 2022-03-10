@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-	<Nullable>enable</Nullable>
 	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<RootNamespace>Squidex.CLI</RootNamespace>
+	<TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="7.3.0" />
@@ -24,6 +25,6 @@
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Squidex.CLI\Squidex.CLI.csproj" />
+    <ProjectReference Include="..\Squidex.CLI.Core\Squidex.CLI.Core.csproj" />
   </ItemGroup>
 </Project>
