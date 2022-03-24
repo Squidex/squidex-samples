@@ -6,8 +6,8 @@
 	<TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="FakeItEasy" Version="7.3.0" />
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.695">
+    <PackageReference Include="FakeItEasy" Version="7.3.1" />
+    <PackageReference Include="Meziantou.Analyzer" Version="1.0.697">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

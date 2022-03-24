@@ -65,7 +65,7 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Git
 
             if (repositoryFolder.Exists)
             {
-                if (skipPull)
+                if (!skipPull)
                 {
                     using (var repository = new Repository(repositoryFolder.FullName))
                     {
