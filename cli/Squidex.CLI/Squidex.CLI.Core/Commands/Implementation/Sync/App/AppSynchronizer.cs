@@ -70,6 +70,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                 }
             });
 
+            await log.DoSafeAsync("Exporting asset scripts", async () =>
+            {
+                var assetScripts = await session.Apps.GetAssetScriptsAsync(session.App);
+
+                model.AssetScripts = assetScripts.ToModel();
+            });
+
             await sync.WriteWithSchema(new FilePath("app.json"), model, Ref);
         }
 
@@ -139,6 +146,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             await SynchronizeRolesAsync(model, options, session);
             await SynchronizeContributorsAsync(model, session);
             await SynchronizeLanguagesAsync(model, options, session);
+            await SynchronizeAssetScriptsAsync(model, session);
         }
 
         private async Task SynchronizeContributorsAsync(AppModel model, ISession session)
@@ -327,6 +335,21 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
             }
         }
 
+        private async Task SynchronizeAssetScriptsAsync(AppModel model, ISession session)
+        {
+            if (model.AssetScripts == null)
+            {
+                return;
+            }
+
+            await log.DoSafeAsync("Asset scripts updating", async () =>
+            {
+                var request = model.AssetScripts?.ToUpdate() ?? new UpdateAssetScriptsDto();
+
+                await session.Apps.PutAssetScriptsAsync(session.App, request);
+            });
+        }
+
         public async Task GenerateSchemaAsync(ISyncService sync)
         {
             await sync.WriteJsonSchemaAsync<AppModel>(new FilePath("app.json"));
@@ -363,7 +386,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
                     {
                         Role = "Owner"
                     }
-                }
+                },
+                AssetScripts = new AssetScriptsModel()
             };
 
             await sync.WriteWithSchema(new FilePath("__app.json"), sample, Ref);

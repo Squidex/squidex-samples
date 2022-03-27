@@ -14,6 +14,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         [Required]
         public string Role { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 }

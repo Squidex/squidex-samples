@@ -36,5 +36,15 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         {
             return SimpleMapper.Map(language, new UpdateLanguageDto());
         }
+
+        public static UpdateAssetScriptsDto ToUpdate(this AssetScriptsModel model)
+        {
+            return SimpleMapper.Map(model, new UpdateAssetScriptsDto());
+        }
+
+        public static AssetScriptsModel ToModel(this AssetScriptsDto model)
+        {
+            return SimpleMapper.Map(model, new AssetScriptsModel());
+        }
     }
 }

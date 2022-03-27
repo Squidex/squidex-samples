@@ -23,5 +23,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
         [Required]
         public Dictionary<string, AppContributorModel> Contributors { get; set; }
+
+        public AssetScriptsModel? AssetScripts { get; set; }
     }
 }

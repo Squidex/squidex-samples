@@ -18,8 +18,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         [Required]
         public DynamicData Data { get; set; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string Status { get; set; }
+        public string? Status { get; set; }
     }
 }

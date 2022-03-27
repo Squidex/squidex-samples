@@ -14,6 +14,6 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
         [Required]
         public List<string> Permissions { get; set; }
 
-        public Dictionary<string, object> Properties { get; set; }
+        public Dictionary<string, object>? Properties { get; set; }
     }
 }
