@@ -151,6 +151,17 @@ namespace Squidex.ClientLibrary
         IRulesClient CreateRulesClient();
 
         /// <summary>
+        /// Creates a client instance to query templates.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        ITemplatesClient CreateTemplatesClient();
+
+        /// <summary>
         /// Creates a client instance to query and manage schemas.
         /// </summary>
         /// <returns>

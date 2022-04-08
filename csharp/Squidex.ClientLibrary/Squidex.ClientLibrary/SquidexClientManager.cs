@@ -161,6 +161,15 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
+        public ITemplatesClient CreateTemplatesClient()
+        {
+            return new TemplatesClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
         public IUsersClient CreateUsersClient()
         {
             return new UsersClient(CreateHttpClient(false))
