@@ -44,15 +44,14 @@ namespace Squidex.CLI.Commands
             public async Task Token(TokenArguments arguments)
             {
                 var requestToken = ReadToken(arguments.RequestToken, ".twitterToken", nameof(arguments.RequestToken));
-
-                var requestTokenSecret = ReadToken(arguments.RequestTokenSecret, ".twitterSecret", nameof(arguments.RequestTokenSecret));
+                var requestSecret = ReadToken(arguments.RequestTokenSecret, ".twitterSecret", nameof(arguments.RequestTokenSecret));
 
                 var session = new OAuth.OAuthSession
                 {
                     ConsumerKey = arguments.ClientId,
                     ConsumerSecret = arguments.ClientSecret,
                     RequestToken = requestToken,
-                    RequestTokenSecret = requestTokenSecret
+                    RequestTokenSecret = requestSecret
                 };
 
                 var tokens = await session.GetTokensAsync(arguments.PinCode);
