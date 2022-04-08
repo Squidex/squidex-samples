@@ -20,7 +20,7 @@
     <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
     <PackageReference Include="CsvHelper" Version="27.2.1" />
-    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0182" />
     <PackageReference Include="Meziantou.Analyzer" Version="1.0.697">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
