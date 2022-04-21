@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.Extensions.Caching.Memory;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.Configuration
@@ -16,29 +15,20 @@ namespace Squidex.ClientLibrary.Configuration
     /// <seealso cref="IAuthenticator" />
     public class CachingAuthenticator : IAuthenticator
     {
-        private readonly IMemoryCache cache;
         private readonly IAuthenticator authenticator;
-        private readonly string cacheKey;
+        private DateTimeOffset cacheExpires;
+        private string? cacheEntry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachingAuthenticator"/> class with the cache key,
         /// the memory cache and inner authenticator that does the actual work.
         /// </summary>
-        /// <param name="cacheKey">The cache key. Cannot be null or empty.</param>
-        /// <param name="cache">The memory cache. Cannot be null.</param>
         /// <param name="authenticator">The inner authenticator that does the actual work.  Cannot be null.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="cacheKey"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="cache"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="authenticator"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="cacheKey"/> is empty.</exception>
-        public CachingAuthenticator(string cacheKey, IMemoryCache cache, IAuthenticator authenticator)
+        public CachingAuthenticator(IAuthenticator authenticator)
         {
-            Guard.NotNull(cacheKey, nameof(cacheKey));
-            Guard.NotNull(cache, nameof(cache));
             Guard.NotNull(authenticator, nameof(authenticator));
 
-            this.cacheKey = cacheKey;
-            this.cache = cache;
             this.authenticator = authenticator;
         }
 
@@ -71,9 +61,14 @@ namespace Squidex.ClientLibrary.Configuration
         /// <returns>
         /// The JWT bearer token or null if not found in the cache.
         /// </returns>
-        protected string GetFromCache()
+        protected string? GetFromCache()
         {
-            return cache.Get<string>(cacheKey);
+            if (cacheExpires < DateTimeOffset.UtcNow)
+            {
+                RemoveFromCache();
+            }
+
+            return cacheEntry;
         }
 
         /// <summary>
@@ -81,7 +76,8 @@ namespace Squidex.ClientLibrary.Configuration
         /// </summary>
         protected void RemoveFromCache()
         {
-            cache.Remove(cacheKey);
+            cacheExpires = default;
+            cacheEntry = default;
         }
 
         /// <summary>
@@ -91,7 +87,8 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="expires">The date and time when the token will expire..</param>
         protected void SetToCache(string token, DateTimeOffset expires)
         {
-            cache.Set(cacheKey, token, expires);
+            cacheExpires = expires;
+            cacheEntry = token;
         }
     }
 }

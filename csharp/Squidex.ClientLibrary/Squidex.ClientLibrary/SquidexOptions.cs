@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.ClientLibrary
@@ -338,11 +336,9 @@ namespace Squidex.ClientLibrary
                     throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
                 }
 
-                var cache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
-
                 var squidexAuthenticator = new Authenticator(this);
 
-                authenticator = new CachingAuthenticator($"TOKEN_{Url}", cache, squidexAuthenticator);
+                authenticator = new CachingAuthenticator(squidexAuthenticator);
             }
 
             isFrozen = true;

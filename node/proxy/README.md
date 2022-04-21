@@ -27,9 +27,9 @@ The proxy forwards the request using the path and query string to a Squidex inst
 
 When a request returns `HTTP 200` it is cached in redis for 10 minutes and then delivered the next time. The cache key is calculated from all custom Squidex headers (that usually start with `X-`), the path and query string.
 
-Furthermore Squidex returns a list of surrogate keys. These are all keys, such as content ID that are part of the result.
+Furthermore Squidex returns a list of surrogate keys. These are all keys, such as content ID that form the result.
 
-For each surrogate key this proxy maintains a list of Redis with all cached URLs where the content ID is part of.
+For each surrogate key this proxy maintains a list in Redis with all cached URLs where the content ID is part of.
 
 When a content item has been changed you can make a request to 
 
