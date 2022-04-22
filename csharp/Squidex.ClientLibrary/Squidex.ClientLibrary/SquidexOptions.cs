@@ -283,6 +283,7 @@ namespace Squidex.ClientLibrary
             }
 
             url = url.TrimEnd('/', ' ');
+            url += "/";
 
             if (string.IsNullOrWhiteSpace(appName))
             {
