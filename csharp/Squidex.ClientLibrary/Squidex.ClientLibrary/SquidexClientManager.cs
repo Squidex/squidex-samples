@@ -52,7 +52,7 @@ namespace Squidex.ClientLibrary
                 return $"{Options.AssetCDN}/{id}";
             }
 
-            return $"{Options.Url}/api/assets/{id}";
+            return $"{Options.Url}api/assets/{id}";
         }
 
         /// <inheritdoc/>
@@ -212,7 +212,10 @@ namespace Squidex.ClientLibrary
                 Options.ClientFactory.CreateHttpClient(messageHandler) ??
                     new HttpClient(messageHandler, false);
 
+            // Apply this setting afterwards, to override the value from the client factory.
             httpClient.BaseAddress = url;
+
+            // Also override timeout when create from factory.
             httpClient.Timeout = Options.HttpClientTimeout;
 
             Options.Configurator.Configure(httpClient);

@@ -39,6 +39,10 @@ namespace Squidex.ClientLibrary.Configuration
                 options.ClientFactory.CreateHttpClient(handler) ??
                 new HttpClient(handler, false);
 
+            // Apply this setting afterwards, to override the value from the client factory.
+            httpClient.BaseAddress = new Uri(options.Url);
+
+            // Also override timeout when create from factory.
             httpClient.Timeout = options.HttpClientTimeout;
 
             options.Configurator.Configure(httpClient);
@@ -55,7 +59,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
-            var url = $"{options.Url}/identity-server/connect/token";
+            var url = "/identity-server/connect/token";
 
             var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
             var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
