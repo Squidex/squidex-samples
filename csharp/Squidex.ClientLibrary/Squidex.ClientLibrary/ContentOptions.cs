@@ -63,11 +63,24 @@ namespace Squidex.ClientLibrary
         public bool Publish { get; set; }
 
         /// <summary>
+        /// Makes the update as patch.
+        /// </summary>
+        public bool Patch { get; set; }
+
+        /// <summary>
         /// A option where <see cref="Publish"/> is true.
         /// </summary>
         public static readonly ContentUpsertOptions AsPublish = new ContentUpsertOptions
         {
             Publish = true
+        };
+
+        /// <summary>
+        /// A option where <see cref="Patch"/> is true.
+        /// </summary>
+        public static readonly ContentUpsertOptions AsPatch = new ContentUpsertOptions
+        {
+            Patch = true
         };
     }
 

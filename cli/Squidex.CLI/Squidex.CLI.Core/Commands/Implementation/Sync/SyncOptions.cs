@@ -17,6 +17,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public bool Recreate { get; set; }
 
+        public bool PatchContent { get; set; }
+
         public bool UpdateCurrentClient { get; set; }
     }
 }

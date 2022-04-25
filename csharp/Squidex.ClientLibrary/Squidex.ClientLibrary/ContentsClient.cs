@@ -276,7 +276,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}?publish={options.Publish}", false), data.ToContent(), context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}?publish={options.Publish}&patch={options.Patch}", false), data.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>

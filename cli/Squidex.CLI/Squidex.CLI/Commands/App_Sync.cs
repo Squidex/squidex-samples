@@ -9,6 +9,7 @@ using CommandDotNet;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 
 namespace Squidex.CLI.Commands
@@ -113,6 +114,9 @@ namespace Squidex.CLI.Commands
                 [Option("delete", Description = "Use this flag to also delete entities.")]
                 public bool Delete { get; set; }
 
+                [Option("patch-content", Description = "Make content updates as patch.")]
+                public bool PatchContent { get; set; }
+
                 [Option("recreate", Description = "Use this flag to also recreate entities.")]
                 public bool Recreate { get; set; }
 
@@ -127,14 +131,7 @@ namespace Squidex.CLI.Commands
 
                 public SyncOptions ToOptions()
                 {
-                    return new SyncOptions
-                    {
-                        Delete = Delete,
-                        Recreate = Recreate,
-                        Languages = Languages,
-                        Targets = Targets,
-                        UpdateCurrentClient = UpdateCurrentClient
-                    };
+                    return SimpleMapper.Map(this, new SyncOptions());
                 }
 
                 public sealed class Validator : AbstractValidator<InArguments>

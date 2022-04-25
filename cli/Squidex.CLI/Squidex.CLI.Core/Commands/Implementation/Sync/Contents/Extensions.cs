@@ -14,9 +14,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public static class Extensions
     {
-        public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas)
+        public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas, bool patch)
         {
-            var result = SimpleMapper.Map(model, new BulkUpdateJob());
+            var result = SimpleMapper.Map(model, new BulkUpdateJob { Patch = patch });
 
 #pragma warning disable CS0618 // Type or member is obsolete
             var singleton = schemas.Items.Find(x => x.Name == model.Schema && (x.IsSingleton || x.Type == SchemaType.Singleton));
