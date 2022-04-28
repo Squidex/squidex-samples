@@ -93,7 +93,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.App
 
             if (model.Clients.Count > 0)
             {
-                var rows = model.Clients.Select(x => new object[] { x.Key, x.Value.Name, x.Value.Role }).OrderBy(x => x[0]).ToArray();
+                var rows = model.Clients.Select(x => new object?[] { x.Key, x.Value.Name, x.Value.Role }).OrderBy(x => x[0]).ToArray();
 
                 writer.H3("Clients");
                 writer.Paragraph($"{rows.Length} client(s).");

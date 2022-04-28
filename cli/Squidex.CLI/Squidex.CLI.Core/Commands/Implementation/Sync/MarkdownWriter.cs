@@ -114,7 +114,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             return this;
         }
 
-        public MarkdownWriter Table(object[] header, object[][] rows)
+        public MarkdownWriter Table(object[] header, object?[][] rows)
         {
             var allRows = Enumerable.Repeat(header, 1).Union(rows);
 
