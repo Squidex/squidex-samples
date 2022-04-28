@@ -59,7 +59,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
-            var url = "/identity-server/connect/token";
+            var url = "identity-server/connect/token";
 
             var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
             var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");

@@ -36,7 +36,7 @@ namespace Squidex.ClientLibrary
         /// Gets or sets the rule action as dynamic object.
         /// </summary>
         /// <value>
-        /// The rule action as dynamic object..
+        /// The rule action as dynamic object.
         /// </value>
         public JObject Action { get; set; }
 

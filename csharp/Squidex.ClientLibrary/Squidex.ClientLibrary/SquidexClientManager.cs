@@ -203,7 +203,7 @@ namespace Squidex.ClientLibrary
 
             if (appendApi)
             {
-                url = new Uri(url, "/api/");
+                url = new Uri(url, "api/");
             }
 
             var messageHandler = CreateHttpMessageHandler();

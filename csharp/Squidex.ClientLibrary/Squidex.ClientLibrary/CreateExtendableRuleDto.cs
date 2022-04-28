@@ -19,7 +19,7 @@ namespace Squidex.ClientLibrary
         /// Gets or sets the optional name of the rule.
         /// </summary>
         /// <value>
-        /// The optional name of the rule..
+        /// The optional name of the rule.
         /// </value>
         public string Name { get; set; }
 

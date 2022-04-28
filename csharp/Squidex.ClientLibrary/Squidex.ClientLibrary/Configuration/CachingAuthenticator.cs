@@ -84,7 +84,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// Sets to the current JWT bearer token.
         /// </summary>
         /// <param name="token">The JWT bearer token.</param>
-        /// <param name="expires">The date and time when the token will expire..</param>
+        /// <param name="expires">The date and time when the token will expire.</param>
         protected void SetToCache(string token, DateTimeOffset expires)
         {
             cacheExpires = expires;
