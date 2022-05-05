@@ -87,7 +87,10 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
                     totalWritten += update.Jobs.Count;
 
-                    logLine.WriteLine("> Imported: {0}.", totalWritten);
+                    if (logLine.CanWriteToSameLine)
+                    {
+                        logLine.WriteLine("> Imported: {0}.", totalWritten);
+                    }
                 }
             }
 

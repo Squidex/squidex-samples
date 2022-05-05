@@ -53,7 +53,10 @@ namespace Squidex.CLI.Commands.Implementation.ImExport
 
                             await handler(entity);
 
-                            logLine.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                            if (logLine.CanWriteToSameLine)
+                            {
+                                logLine.WriteLine("> Exported: {0} of {1}.", totalRead, total);
+                            }
                         }
                     }
 

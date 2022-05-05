@@ -9,6 +9,8 @@ namespace Squidex.CLI.Commands.Implementation
 {
     public interface ILogLine : IDisposable
     {
+        bool CanWriteToSameLine { get; }
+
         void WriteLine(string message, params object[] args);
     }
 }

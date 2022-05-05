@@ -15,9 +15,18 @@ namespace Squidex.CLI.Commands.Implementation
         {
             private readonly int consoleTop;
 
+            public bool CanWriteToSameLine => consoleTop >= 0;
+
             public ConsoleLine()
             {
-                consoleTop = Console.CursorTop;
+                try
+                {
+                    consoleTop = Console.CursorTop;
+                }
+                catch
+                {
+                    consoleTop = -1;
+                }
             }
 
             public void Dispose()
@@ -27,7 +36,11 @@ namespace Squidex.CLI.Commands.Implementation
             public void WriteLine(string message, params object[] args)
             {
                 Console.WriteLine(message, args);
-                Console.SetCursorPosition(0, consoleTop);
+
+                if (consoleTop >= 0)
+                {
+                    Console.SetCursorPosition(0, consoleTop);
+                }
             }
         }
 
