@@ -98,7 +98,7 @@ namespace Squidex.CLI.Commands
                 [Option("timeout", Description = "The timeout to wait for the backup in minutes.")]
                 public int Timeout { get; set; } = 30;
 
-                [Option("deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed")]
+                [Option("deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed.")]
                 public bool DeleteAfterDownload { get; set; }
 
                 public sealed class Validator : AbstractValidator<CreateArguments>

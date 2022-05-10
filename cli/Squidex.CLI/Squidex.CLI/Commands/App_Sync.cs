@@ -42,7 +42,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Folder generated.");
             }
 
-            [Command("out", Description = "Exports the app to a folder")]
+            [Command("out", Description = "Exports the app to a folder.")]
             public async Task Out(OutArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App);
@@ -57,7 +57,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Synchronization completed.");
             }
 
-            [Command("in", Description = "Imports the app from a folder")]
+            [Command("in", Description = "Imports the app from a folder.")]
             public async Task In(InArguments arguments)
             {
                 var session = configuration.StartSession(arguments.App, arguments.Emulate);
@@ -77,7 +77,7 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> Describing completed.");
             }
 
-            [Command("targets", Description = "List all targets")]
+            [Command("targets", Description = "List all targets.")]
             public void Targets()
             {
                 foreach (var target in synchronizer.GetTargets())

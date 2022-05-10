@@ -71,7 +71,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
                     schema.AdditionalPropertiesSchema = new JsonSchema
                     {
-                        Description = "Any"
+                        Description = "Any."
                     };
                 }));
 

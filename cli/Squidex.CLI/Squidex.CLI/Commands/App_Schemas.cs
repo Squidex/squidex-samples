@@ -164,7 +164,7 @@ namespace Squidex.CLI.Commands
 
             public sealed class ListArguments : AppArguments
             {
-                [Option('t', "table", Description = "Output as table")]
+                [Option('t', "table", Description = "Output as table.")]
                 public bool Table { get; set; }
 
                 public sealed class Validator : AbstractValidator<ListArguments>

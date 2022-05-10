@@ -76,9 +76,31 @@ namespace Squidex.CLI.Commands
                 log.WriteLine("> App created.");
             }
 
+            [Command("delete", Description = "Delete the app.")]
+            public async Task Delete(DeleteArguments arguments)
+            {
+                var session = configuration.StartSession(arguments.App);
+
+                var name = arguments.App;
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = session.App;
+                }
+
+                if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
+                {
+                    throw new CLIException("Confirmed app name does not match.");
+                }
+
+                await session.Apps.DeleteAppAsync(name);
+
+                log.WriteLine("> App deleted.");
+            }
+
             public sealed class ListArguments : AppArguments
             {
-                [Option('t', "table", Description = "Output as table")]
+                [Option('t', "table", Description = "Output as table.")]
                 public bool Table { get; set; }
 
                 public sealed class Validator : AbstractValidator<ListArguments>
@@ -89,6 +111,16 @@ namespace Squidex.CLI.Commands
             public sealed class CreateArguments : AppArguments
             {
                 public sealed class Validator : AbstractValidator<CreateArguments>
+                {
+                }
+            }
+
+            public sealed class DeleteArguments : AppArguments
+            {
+                [Option("confirm", Description = "Confirm the name of the app.")]
+                public string Confirm { get; set; }
+
+                public sealed class Validator : AbstractValidator<DeleteArguments>
                 {
                 }
             }
