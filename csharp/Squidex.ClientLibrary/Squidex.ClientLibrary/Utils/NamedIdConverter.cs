@@ -10,11 +10,25 @@ using Newtonsoft.Json;
 namespace Squidex.ClientLibrary.Utils
 {
     /// <summary>
-    /// Convert comma separated string to NamedId
-    /// Example of input: "00000000-0000-0000-0000-000000000000,name".
+    /// Convert comma separated string to NamedId.
     /// </summary>
+    /// <remarks>
+    /// Example of input: "00000000-0000-0000-0000-000000000000,name".
+    /// </remarks>
     public class NamedIdConverter : JsonConverter<NamedId>
     {
+        /// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, NamedId? value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
+            serializer.Serialize(writer, $"{value.Id},{value.Name}");
+        }
+
         /// <inheritdoc />
         public override NamedId? ReadJson(JsonReader reader, Type objectType, NamedId? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
@@ -26,18 +40,6 @@ namespace Squidex.ClientLibrary.Utils
             var s = ((string)reader.Value!).Split(',');
 
             return new NamedId { Id = s[0], Name = s[1] };
-        }
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, NamedId? value, JsonSerializer serializer)
-        {
-            if (value == null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            serializer.Serialize(writer, $"{value.Id},{value.Name}");
         }
     }
 }

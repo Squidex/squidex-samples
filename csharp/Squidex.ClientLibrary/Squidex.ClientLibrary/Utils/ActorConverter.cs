@@ -16,6 +16,18 @@ namespace Squidex.ClientLibrary.Utils
     public class ActorConverter : JsonConverter<Actor>
     {
         /// <inheritdoc />
+        public override void WriteJson(JsonWriter writer, Actor? value, JsonSerializer serializer)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
+            serializer.Serialize(writer, $"{value.Type}:{value.Id}");
+        }
+
+        /// <inheritdoc />
         public override Actor? ReadJson(JsonReader reader, Type objectType, Actor? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
@@ -26,18 +38,6 @@ namespace Squidex.ClientLibrary.Utils
             var s = ((string)reader.Value!).Split(':');
 
             return new Actor { Id = s[1], Type = s[0] };
-        }
-
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, Actor? value, JsonSerializer serializer)
-        {
-            if (value == null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            serializer.Serialize(writer, $"{value.Type}:{value.Id}");
         }
     }
 }

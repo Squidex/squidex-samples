@@ -24,7 +24,7 @@ namespace Squidex.ClientLibrary.Utils
         {
             SerializerSettings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                ContractResolver = new JsonNullContractResolver()
             };
 
             SerializerSettings.Converters.Add(new StringEnumConverter());
@@ -59,6 +59,13 @@ namespace Squidex.ClientLibrary.Utils
         public static string ToJson<T>(this T value)
         {
             var json = JsonConvert.SerializeObject(value, Formatting.Indented, SerializerSettings);
+
+            return json;
+        }
+
+        public static T FromJson<T>(this string value)
+        {
+            var json = JsonConvert.DeserializeObject<T>(value, SerializerSettings)!;
 
             return json;
         }

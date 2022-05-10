@@ -14,28 +14,27 @@ namespace Squidex.ClientLibrary.Tests
 {
     public class SerializationTests
     {
-        public sealed class MyClass<T>
+        public sealed record MyClass<T>
         {
             [JsonConverter(typeof(InvariantConverter))]
             public T Value { get; set; }
         }
 
-        public sealed class MyCamelClass<T>
+        public sealed record MyWriteClass<T>
+        {
+            [JsonConverter(typeof(InvariantWriteConverter))]
+            public T Value { get; set; }
+        }
+
+        public sealed record MyCamelClass<T>
         {
             public T Value { get; set; }
         }
 
         [KeepCasing]
-        public sealed class MyPascalClass<T>
+        public sealed record MyPascalClass<T>
         {
             public T Value { get; set; }
-        }
-
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
-
-        public SerializationTests()
-        {
-            settings.Converters.Add(new InvariantConverter());
         }
 
         [Fact]
@@ -153,6 +152,48 @@ namespace Squidex.ClientLibrary.Tests
         }
 
         [Fact]
+        public void Should_serialize_invariant_jsonnull()
+        {
+            var source = new MyClass<JsonNull<string?>>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public void Should_serialize_write_invariant_jsonull()
+        {
+            var source = new MyWriteClass<JsonNull<string?>>
+            {
+                Value = "hello"
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public void Should_serialize_localized_jsonnull()
+        {
+            var source = new
+            {
+                value = new
+                {
+                    en = new JsonNull<string?>("hello")
+                }
+            };
+
+            var serialized = source.ToJson();
+
+            Assert.Contains("\"en\": \"hello\"", serialized, StringComparison.Ordinal);
+        }
+
+        [Fact]
         public void Should_serialize_dynamic_properties_with_original_casing()
         {
             var source = new DynamicData
@@ -163,36 +204,6 @@ namespace Squidex.ClientLibrary.Tests
             var serialized = source.ToJson();
 
             Assert.Contains("\"Property1\": {}", serialized, StringComparison.Ordinal);
-        }
-
-        [Fact]
-        public void Should_deserialize_invariant()
-        {
-            var json = "{ 'value': { 'iv': 'hello'} }";
-
-            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
-
-            Assert.Equal("hello", result?.Value);
-        }
-
-        [Fact]
-        public void Should_deserialize_invariant_null_value()
-        {
-            var json = "{ 'value': null }";
-
-            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
-
-            Assert.Null(result?.Value);
-        }
-
-        [Fact]
-        public void Should_deserialize_invariant_empty_value()
-        {
-            var json = "{ 'value': {} }";
-
-            var result = JsonConvert.DeserializeObject<MyClass<string>>(json, settings);
-
-            Assert.Null(result?.Value);
         }
 
         [Fact]
@@ -219,6 +230,76 @@ namespace Squidex.ClientLibrary.Tests
             var serialized = source.ToJson();
 
             Assert.Contains("\"Value\": \"hello\"", serialized, StringComparison.Ordinal);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant()
+        {
+            var json = "{ 'value': { 'iv': 'hello'} }";
+
+            var result = json.FromJson<MyClass<string>>();
+
+            Assert.Equal("hello", result?.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_null_value()
+        {
+            var json = "{ 'value': null }";
+
+            var result = json.FromJson<MyClass<string>>();
+
+            Assert.Null(result?.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_empty_value()
+        {
+            var json = "{ 'value': {} }";
+
+            var result = json.FromJson<MyClass<string>>();
+
+            Assert.Null(result?.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_jsonnull()
+        {
+            var json = "{ 'value': { 'iv': 'hello'} }";
+
+            var result = json.FromJson<MyClass<JsonNull<string>>>();
+
+            Assert.Equal("hello", result?.Value.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_jsonnull_ull_value()
+        {
+            var json = "{ 'value': null }";
+
+            var result = json.FromJson<MyClass<JsonNull<string>>>();
+
+            Assert.Null(result?.Value.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_invariant_jsonnull_empty_value()
+        {
+            var json = "{ 'value': {} }";
+
+            var result = json.FromJson<MyClass<JsonNull<string>>>();
+
+            Assert.Null(result?.Value.Value);
+        }
+
+        [Fact]
+        public void Should_deserialize_localized_jsonnull()
+        {
+            var json = "{ 'value': { 'en': 'hello'} }";
+
+            var result = json.FromJson<MyCamelClass<Dictionary<string, JsonNull<string>>>>();
+
+            Assert.Equal("hello", result?.Value["en"].Value);
         }
     }
 }
