@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Newtonsoft.Json;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
 {
@@ -31,13 +32,13 @@ namespace Squidex.ClientLibrary.EnrichedEvents
 
         /// <summary>
         /// Utils to deserialize an Envelope.
-        /// It uses TypeNameHandling = TypeNameHandling.Objects and SerializationBinder = new EnrichedEventSerializationBinder().
         /// </summary>
         /// <param name="json">The string to be deserialized.</param>
         /// <param name="settings">Custom JsonSerializerSettings settings. TypeNameHandling and SerializationBinder will be overwritten.</param>
         /// <returns>
         /// The enriched event.
         /// </returns>
+        [Obsolete("Use FromJson instead.")]
         public static EnrichedEventEnvelope DeserializeEnvelope(string json, JsonSerializerSettings? settings = null)
         {
             if (settings == null)
@@ -46,8 +47,21 @@ namespace Squidex.ClientLibrary.EnrichedEvents
             }
 
             settings.SerializationBinder = new EnrichedEventSerializationBinder();
+            settings.TypeNameHandling = TypeNameHandling.Auto;
 
             return JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json, settings)!;
+        }
+
+        /// <summary>
+        /// Utils to deserialize an Envelope.
+        /// </summary>
+        /// <param name="json">The string to be deserialized.</param>
+        /// <returns>
+        /// The enriched event.
+        /// </returns>
+        public static EnrichedEventEnvelope FromJson(string json)
+        {
+            return HttpClientExtensions.FromJsonWithTypes<EnrichedEventEnvelope>(json);
         }
     }
 }

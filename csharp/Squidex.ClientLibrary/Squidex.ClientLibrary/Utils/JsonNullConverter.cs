@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Squidex.ClientLibrary.Utils
 {
     /// <summary>
-    /// Convert JsonNull to its actual value.
+    /// A JSON converter for <see cref="JsonNull{T}"/> instances.
     /// </summary>
     /// <typeparam name="T">The wrapped type.</typeparam>
     public class JsonNullConverter<T> : JsonConverter<JsonNull<T>>

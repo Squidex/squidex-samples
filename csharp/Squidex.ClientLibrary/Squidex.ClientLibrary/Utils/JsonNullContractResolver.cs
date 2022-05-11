@@ -5,31 +5,18 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Reflection;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    internal class JsonNullContractResolver : CamelCasePropertyNamesContractResolver
+    /// <summary>
+    /// a custom contract resolver that registeres the necessary converters.
+    /// </summary>
+    public class JsonNullContractResolver : CamelCasePropertyNamesContractResolver
     {
-        /*
-        protected override JsonContract CreateContract(Type objectType)
-        {
-            var contract = base.CreateContract(objectType);
-
-            if (contract.UnderlyingType.IsGenericType && contract.UnderlyingType.GetGenericTypeDefinition() == typeof(JsonNull<>))
-            {
-                var converterType = typeof(JsonNullConverter<>).MakeGenericType(contract.UnderlyingType.GetGenericArguments()[0]);
-                var converterObj = Activator.CreateInstance(converterType) as JsonConverter;
-
-                contract.Converter = converterObj;
-            }
-
-            return contract;
-        }
-        */
-
+        /// <inheritdoc/>
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             var property = base.CreateProperty(member, memberSerialization);
@@ -58,6 +45,7 @@ namespace Squidex.ClientLibrary.Utils
             return property;
         }
 
+        /// <inheritdoc/>
         protected override JsonConverter? ResolveContractConverter(Type objectType)
         {
             if (objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(JsonNull<>))

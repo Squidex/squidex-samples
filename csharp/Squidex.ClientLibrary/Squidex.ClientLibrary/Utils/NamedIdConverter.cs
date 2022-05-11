@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Squidex.ClientLibrary.Utils
 {
     /// <summary>
-    /// Convert comma separated string to NamedId.
+    /// A JSON converter to for <see cref="NamedId"/> instances.
     /// </summary>
     /// <remarks>
     /// Example of input: "00000000-0000-0000-0000-000000000000,name".

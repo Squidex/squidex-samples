@@ -10,9 +10,11 @@ using Newtonsoft.Json;
 namespace Squidex.ClientLibrary.Utils
 {
     /// <summary>
-    /// Convert actor string
-    /// Example of input: "subject:123456789".
+    /// A JSON converter for <see cref="Actor"/> instances.
     /// </summary>
+    /// <remarks>
+    /// Example of input: "subject:123456789".
+    /// </remarks>
     public class ActorConverter : JsonConverter<Actor>
     {
         /// <inheritdoc />

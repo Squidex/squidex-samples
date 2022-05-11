@@ -49,7 +49,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
         [Fact]
         public void Should_deserialize_EnrichedContentEvent()
         {
-            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedContentEvent);
+            var envelope = EnrichedEventEnvelope.FromJson(JsonEnrichedContentEvent);
 
             Assert.True(envelope.Payload is EnrichedContentEvent);
 
@@ -94,7 +94,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
         [Fact]
         public void Should_deserialize_EnrichedCommentEvent()
         {
-            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedCommentEvent);
+            var envelope = EnrichedEventEnvelope.FromJson(JsonEnrichedCommentEvent);
 
             Assert.True(envelope.Payload is EnrichedCommentEvent);
 
@@ -135,7 +135,7 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents
         [Fact]
         public void Should_deserialize_EnrichedAssetEvent()
         {
-            var envelope = EnrichedEventEnvelope.DeserializeEnvelope(JsonEnrichedAssetEvent);
+            var envelope = EnrichedEventEnvelope.FromJson(JsonEnrichedAssetEvent);
 
             Assert.True(envelope.Payload is EnrichedAssetEvent);
 

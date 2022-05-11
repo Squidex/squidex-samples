@@ -9,7 +9,11 @@ using Newtonsoft.Json;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    internal sealed class JsonNullInvariantWriteConverter<T> : JsonNullConverter<T>
+    /// <summary>
+    /// A JSON converter for <see cref="JsonNull{T}"/> instances and invariant fiels (write only).
+    /// </summary>
+    /// <typeparam name="T">The wrapped type.</typeparam>
+    public sealed class JsonNullInvariantWriteConverter<T> : JsonNullConverter<T>
     {
         /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, JsonNull<T> value, JsonSerializer serializer)

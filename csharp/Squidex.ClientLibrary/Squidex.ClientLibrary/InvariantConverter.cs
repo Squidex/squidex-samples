@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Squidex.ClientLibrary
 {
     /// <summary>
-    /// A custom JSON converter for invariant fields to convert nested invariant values to flat values.
+    /// A JSON converter to for invariant fields to convert nested invariant values to flat values.
     /// </summary>
     /// <seealso cref="JsonConverter" />
     public sealed class InvariantConverter : JsonConverter
