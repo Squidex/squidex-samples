@@ -26,7 +26,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public IFileSystem FileSystem { get; }
 
-        public FolderTree Folders { get; }
+        public AssetFolderTree Folders { get; }
 
         internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
         {
@@ -42,7 +42,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
 
         public SyncService(IFileSystem fileSystem, ISession session)
         {
-            Folders = new FolderTree(session);
+            Folders = new AssetFolderTree(session.Assets, session.App);
 
             jsonSerializerSettings = new JsonSerializerSettings
             {

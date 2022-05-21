@@ -5,15 +5,15 @@
     <Copyright>MIT</Copyright>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<ImplicitUsings>enable</ImplicitUsings>
-	<LangVersion>latest</LangVersion>
-	<Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <LangVersion>latest</LangVersion>
+	  <Nullable>enable</Nullable>
     <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <Version>8.20.0</Version>
+    <Version>8.21.0</Version>
   </PropertyGroup>
 	
   <ItemGroup>

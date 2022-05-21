@@ -61,7 +61,7 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// </returns>
         public static EnrichedEventEnvelope FromJson(string json)
         {
-            return HttpClientExtensions.FromJsonWithTypes<EnrichedEventEnvelope>(json);
+            return json.FromJsonWithTypes<EnrichedEventEnvelope>();
         }
     }
 }

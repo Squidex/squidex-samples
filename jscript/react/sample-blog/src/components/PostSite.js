@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-
 import { Post } from './Post.js';
 import { getPost } from './../service';
 
@@ -13,7 +12,7 @@ export const PostSite = () => {
         async function fetchData() {
             try {
                 const result = await getPost(id);
-        
+
                 setPost(result);
             } catch (ex) {
                 setPost(null);
@@ -28,6 +27,6 @@ export const PostSite = () => {
     } else if (post === null) {
         return <div>Post not found.</div>
     } else {
-        return <div>Loading post...</div>
+        return <div>Loading Post...</div>
     }
 }

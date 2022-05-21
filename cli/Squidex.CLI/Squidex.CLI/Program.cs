@@ -13,7 +13,7 @@ using Squidex.CLI.Commands;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Sync.App;
-using Squidex.CLI.Commands.Implementation.Sync.AssertFolders;
+using Squidex.CLI.Commands.Implementation.Sync.AssetFolders;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Commands.Implementation.Sync.Contents;
 using Squidex.CLI.Commands.Implementation.Sync.Rules;

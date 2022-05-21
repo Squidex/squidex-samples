@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
@@ -13,7 +14,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
     {
         IFileSystem FileSystem { get; }
 
-        FolderTree Folders { get; }
+        AssetFolderTree Folders { get; }
 
         T Convert<T>(object value);
 

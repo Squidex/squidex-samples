@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation.Utils;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
@@ -28,7 +29,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             return result;
         }
 
-        public static async Task MapFoldersAsync(this SynchronizeSchemaDto schema, FolderTree folders, bool fromId)
+        public static async Task MapFoldersAsync(this SynchronizeSchemaDto schema, AssetFolderTree folders, bool fromId)
         {
             foreach (var field in schema.Fields ?? Enumerable.Empty<UpsertSchemaFieldDto>())
             {
@@ -36,7 +37,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        public static async Task MapFoldersAsync(this UpsertSchemaFieldDto field, FolderTree folders, bool fromId)
+        public static async Task MapFoldersAsync(this UpsertSchemaFieldDto field, AssetFolderTree folders, bool fromId)
         {
             await MapFoldersAsync(field.Properties, folders, fromId);
 
@@ -46,7 +47,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private static async Task MapFoldersAsync(FieldPropertiesDto properties, FolderTree folders, bool fromId)
+        private static async Task MapFoldersAsync(FieldPropertiesDto properties, AssetFolderTree folders, bool fromId)
         {
             switch (properties)
             {
@@ -59,7 +60,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
             }
         }
 
-        private static Task<string?> MapFoldersAsync(string? folderId, FolderTree folders, bool fromId)
+        private static Task<string?> MapFoldersAsync(string? folderId, AssetFolderTree folders, bool fromId)
         {
             if (fromId)
             {
@@ -101,6 +102,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
                     break;
                 case ComponentsFieldPropertiesDto components:
                     components.SchemaIds = await MapReferencesAsync(components.SchemaIds, map);
+                    break;
+                case StringFieldPropertiesDto @string:
+                    @string.SchemaIds = await MapReferencesAsync(@string.SchemaIds, map);
                     break;
             }
         }

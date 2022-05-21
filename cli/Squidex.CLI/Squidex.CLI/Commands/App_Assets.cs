@@ -13,6 +13,7 @@ using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands
@@ -42,7 +43,7 @@ namespace Squidex.CLI.Commands
 
                 using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
                 {
-                    var folders = new FolderTree(session);
+                    var folders = new AssetFolderTree(session.Assets, session.App);
 
                     var assetQuery = new AssetQuery();
 
@@ -120,7 +121,7 @@ namespace Squidex.CLI.Commands
 
                 using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
                 {
-                    var folderTree = new FolderTree(session);
+                    var folderTree = new AssetFolderTree(session.Assets, session.App);
                     var folderNames = new HashSet<string>();
 
                     var parentId = await folderTree.GetIdAsync(arguments.TargetFolder);

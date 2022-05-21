@@ -7,6 +7,7 @@
 
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
@@ -22,7 +23,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
         {
-            var tree = new FolderTree(session);
+            var tree = new AssetFolderTree(session.Assets, session.App);
 
             var fileNameStep = new TransformBlock<AssetModel, (AssetModel, FilePath)>(async asset =>
             {

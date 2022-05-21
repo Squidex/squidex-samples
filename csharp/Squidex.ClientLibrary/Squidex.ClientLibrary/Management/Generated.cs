@@ -5986,10 +5986,20 @@ namespace Squidex.ClientLibrary.Management
         /// Simulate a rule.
         /// </summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="request">The rule to simulate.</param>
+        /// <returns>Rule simulated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulatePOSTAsync(string app, CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Simulate a rule.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateGETAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -7104,10 +7114,108 @@ namespace Squidex.ClientLibrary.Management
         /// Simulate a rule.
         /// </summary>
         /// <param name="app">The name of the app.</param>
+        /// <param name="request">The rule to simulate.</param>
+        /// <returns>Rule simulated.</returns>
+        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulatePOSTAsync(string app, CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (app == null)
+                throw new System.ArgumentNullException("app");
+
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/apps/{app}/rules/simulate");
+            urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<SimulatedRuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Simulate a rule.
+        /// </summary>
+        /// <param name="app">The name of the app.</param>
         /// <param name="id">The id of the rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateGETAsync(string app, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (app == null)
                 throw new System.ArgumentNullException("app");
@@ -17877,7 +17985,7 @@ namespace Squidex.ClientLibrary.Management
         public string Label { get; set; }
 
         /// <summary>
-        /// Hints to describe the schema.
+        /// Hints to describe the field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(1000)]
@@ -18542,10 +18650,22 @@ namespace Squidex.ClientLibrary.Management
         public System.Collections.Generic.List<string> AllowedValues { get; set; }
 
         /// <summary>
+        /// The allowed schema ids that can be embedded.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SchemaIds { get; set; }
+
+        /// <summary>
         /// Indicates if the field value must be unique. Ignored for nested fields and localized fields.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("isUnique", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool IsUnique { get; set; }
+
+        /// <summary>
+        /// Indicates that other content items or references are embedded.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isEmbeddable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsEmbeddable { get; set; }
 
         /// <summary>
         /// Indicates that the inline editor is enabled for this field.
@@ -19028,6 +19148,12 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("schema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Schema { get; set; }
+
+        /// <summary>
+        /// Makes the update as patch.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("patch", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Patch { get; set; }
 
         /// <summary>
         /// True to delete the content permanently.
@@ -20531,6 +20657,13 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class SimulatedRuleEventDto
     {
+        /// <summary>
+        /// The unique event id.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("eventId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Guid EventId { get; set; }
+
         /// <summary>
         /// The name of the event.
         /// </summary>
@@ -22465,6 +22598,12 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Color { get; set; }
+
+        /// <summary>
+        /// True if the content should be validated when moving to this step.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("validate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool Validate { get; set; }
 
         /// <summary>
         /// Indicates if updates should not be allowed.

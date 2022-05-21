@@ -1,18 +1,6 @@
 import React from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Redirect,
-    Route,
-    Link
-  } from 'react-router-dom';
-  
-import {
-    PageSite, 
-    PostSite, 
-    PostsSite,
-    TopNav
-} from './components';
+import { BrowserRouter as Router, Switch, Redirect, Route, Link } from 'react-router-dom';
+import { PageSite, PostSite, PostsSite, TopNav } from './components';
 
 function App() {
     return (
