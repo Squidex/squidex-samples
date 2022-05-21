@@ -60,6 +60,11 @@ namespace Squidex.CLI.Configuration
             get => clientManager.Options.ClientSecret;
         }
 
+        public string Url
+        {
+            get => clientManager.Options.Url;
+        }
+
         public Session(string app, DirectoryInfo workingDirectory, SquidexClientManager clientManager)
         {
             App = app;

@@ -51,7 +51,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                 {
                     var model = new ContentsModel
                     {
-                        Contents = contents
+                        Contents = contents,
+                        SourceApp = session.App,
+                        SourceUrl = session.Url
                     };
 
                     return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
@@ -113,16 +115,13 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             var schemas = await session.Schemas.GetSchemasAsync(session.App);
             var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
 
+            var mapper = new Extensions.Mapper(session.Url, session.App, options.Languages);
+
             foreach (var (file, model) in models)
             {
                 if (model?.Contents?.Count > 0)
                 {
-                    model.Clear(options.Languages);
-
-                    foreach (var content in model.Contents)
-                    {
-                        content.MapComponents(schemaMap);
-                    }
+                    mapper.Map(model);
 
                     var client = session.Contents(model.Contents[0].Schema);
 

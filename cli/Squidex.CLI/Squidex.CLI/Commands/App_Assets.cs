@@ -10,7 +10,6 @@ using FluentValidation;
 using HeyRed.Mime;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.FileSystem;
-using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;

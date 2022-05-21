@@ -18,6 +18,8 @@ namespace Squidex.CLI.Commands.Implementation
 
         string ClientSecret { get; }
 
+        string Url { get; }
+
         DirectoryInfo WorkingDirectory { get; }
 
         IAppsClient Apps { get; }

@@ -13,5 +13,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
     {
         [Required]
         public List<ContentModel> Contents { get; set; }
+
+        public string? SourceApp { get; set; }
+
+        public string? SourceUrl { get; set; }
     }
 }
