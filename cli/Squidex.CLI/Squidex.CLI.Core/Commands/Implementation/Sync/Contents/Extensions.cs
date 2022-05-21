@@ -53,20 +53,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
         public sealed class Mapper
         {
             private readonly string url;
-            private readonly string pathToAssets;
-            private readonly string pathToContent;
+            private readonly string urlToAssets;
+            private readonly string urlToContent;
             private readonly HashSet<string>? languages;
-            private string? sourceUrl;
             private string? sourceApp;
-            private string? sourcePathToAssets;
-            private string? sourcePathToContent;
+            private string? sourceUrl;
+            private string? sourceUrlToAssets;
+            private string? sourceUrlToContent;
 
             public Mapper(string url, string app, string[]? languages)
             {
                 this.url = url.TrimEnd('/');
 
-                pathToAssets = $"api/assets/{app}/";
-                pathToContent = $"api/content/{app}/";
+                urlToAssets = $"{this.url}/api/assets/{app}/";
+                urlToContent = $"{this.url}/api/content/{app}/";
 
                 this.languages = languages?.ToHashSet();
             }
@@ -86,8 +86,8 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 
                     if (sourceApp != null)
                     {
-                        sourcePathToAssets = $"api/assets/{sourceApp}/";
-                        sourcePathToContent = $"api/content/{sourceApp}/";
+                        sourceUrlToAssets = $"{sourceUrl}/api/assets/{sourceApp}/";
+                        sourceUrlToContent = $"{sourceUrl}/api/content/{sourceApp}/";
                     }
                 }
 
@@ -113,19 +113,19 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         return value;
                     }
 
+                    if (sourceUrlToAssets != null)
+                    {
+                        value = value?.Replace(sourceUrlToAssets, urlToAssets, StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    if (sourceUrlToContent != null)
+                    {
+                        value = value?.Replace(sourceUrlToContent, urlToContent, StringComparison.OrdinalIgnoreCase);
+                    }
+
                     if (sourceUrl != null)
                     {
                         value = value?.Replace(sourceUrl, url, StringComparison.OrdinalIgnoreCase);
-                    }
-
-                    if (sourcePathToAssets != null)
-                    {
-                        value = value?.Replace(sourcePathToAssets, pathToAssets, StringComparison.OrdinalIgnoreCase);
-                    }
-
-                    if (sourcePathToContent != null)
-                    {
-                        value = value?.Replace(sourcePathToContent, pathToContent, StringComparison.OrdinalIgnoreCase);
                     }
 
                     return value;
