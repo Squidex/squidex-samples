@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Sample.Blog.Models
 {
@@ -21,6 +22,8 @@ namespace Sample.Blog.Models
         public ApiClient(IOptions<SquidexOptions> appOptions)
         {
             var options = appOptions.Value;
+
+            options.Configurator = AcceptAllCertificatesConfigurator.Instance;
 
             var clientManager =
                 new SquidexClientManager(options);

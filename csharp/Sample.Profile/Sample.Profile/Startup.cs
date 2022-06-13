@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Configuration;
 
 namespace Sample.Profile
 {
@@ -29,7 +30,13 @@ namespace Sample.Profile
             services.Configure<SquidexOptions>(Configuration.GetSection("app"));
 
             services.AddSingleton(c =>
-                new SquidexClientManager(c.GetRequiredService<IOptions<SquidexOptions>>().Value));
+            {
+                var options = c.GetRequiredService<IOptions<SquidexOptions>>().Value;
+
+                options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+
+                return new SquidexClientManager(options);
+            });
 
             services.AddMvc();
         }
