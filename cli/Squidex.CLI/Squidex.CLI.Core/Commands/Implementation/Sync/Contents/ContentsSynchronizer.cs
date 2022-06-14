@@ -131,7 +131,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
                         DoNotScript = true,
                         DoNotValidate = false,
                         DoNotValidateWorkflow = true,
-                        Jobs = model.Contents.Select(x => x.ToUpsert(schemas, options.PatchContent)).ToList()
+                        Jobs = model.Contents.Select(x => x.ToUpsert(schemas, options.ContentAction)).ToList()
                     };
 
                     var contentIdAssigned = false;

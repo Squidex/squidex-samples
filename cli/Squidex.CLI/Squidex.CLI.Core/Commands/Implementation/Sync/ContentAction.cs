@@ -7,18 +7,12 @@
 
 namespace Squidex.CLI.Commands.Implementation.Sync
 {
-    public sealed class SyncOptions
+    public enum ContentAction
     {
-        public string[] Targets { get; set; }
-
-        public string[] Languages { get; set; }
-
-        public ContentAction ContentAction { get; set; }
-
-        public bool Delete { get; set; }
-
-        public bool Recreate { get; set; }
-
-        public bool UpdateCurrentClient { get; set; }
+        Upsert,
+        UpsertPatch,
+        Create,
+        Update,
+        Patch
     }
 }

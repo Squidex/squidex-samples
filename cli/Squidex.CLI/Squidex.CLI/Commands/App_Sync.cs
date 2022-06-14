@@ -111,6 +111,9 @@ namespace Squidex.CLI.Commands
                 [Option("language", Description = "The content language to synchronize.")]
                 public string[] Languages { get; set; }
 
+                [Option("content-action", Description = "Defines how to handle content.")]
+                public ContentAction ContentAction { get; set; }
+
                 [Option("delete", Description = "Use this flag to also delete entities.")]
                 public bool Delete { get; set; }
 
@@ -131,7 +134,14 @@ namespace Squidex.CLI.Commands
 
                 public SyncOptions ToOptions()
                 {
-                    return SimpleMapper.Map(this, new SyncOptions());
+                    var result = SimpleMapper.Map(this, new SyncOptions());
+
+                    if (PatchContent)
+                    {
+                        result.ContentAction = ContentAction.UpsertPatch;
+                    }
+
+                    return result;
                 }
 
                 public sealed class Validator : AbstractValidator<InArguments>

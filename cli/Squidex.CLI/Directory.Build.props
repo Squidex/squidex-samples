@@ -8,6 +8,6 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
     <PackageTags>Squidex HeadlessCMS</PackageTags>
-    <Version>8.17</Version>
+    <Version>8.18</Version>
   </PropertyGroup>
 </Project>

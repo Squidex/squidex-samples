@@ -14,9 +14,9 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
     public static class Extensions
     {
-        public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas, bool patch)
+        public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas, ContentAction action)
         {
-            var result = SimpleMapper.Map(model, new BulkUpdateJob { Patch = patch });
+            var result = SimpleMapper.Map(model, new BulkUpdateJob());
 
 #pragma warning disable CS0618 // Type or member is obsolete
             var singleton = schemas.Items.Find(x => x.Name == model.Schema && (x.IsSingleton || x.Type == SchemaType.Singleton));
@@ -24,6 +24,22 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents
             if (singleton != null)
             {
                 result.Id = singleton.Id;
+            }
+
+            switch (action)
+            {
+                case ContentAction.UpsertPatch:
+                    result.Patch = true;
+                    break;
+                case ContentAction.Create:
+                    result.Type = BulkUpdateType.Create;
+                    break;
+                case ContentAction.Update:
+                    result.Type = BulkUpdateType.Update;
+                    break;
+                case ContentAction.Patch:
+                    result.Type = BulkUpdateType.Patch;
+                    break;
             }
 
             result.Data = model.Data;
