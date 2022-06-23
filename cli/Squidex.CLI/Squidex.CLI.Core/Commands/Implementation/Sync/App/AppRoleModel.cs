@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
-    public sealed class AppRoleModel
+    internal sealed class AppRoleModel
     {
         [Required]
         public List<string> Permissions { get; set; }

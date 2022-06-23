@@ -7,12 +7,13 @@
 
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
-    public sealed class UploadPipeline
+    internal sealed class UploadPipeline
     {
         private readonly ITargetBlock<AssetModel> pipelineStart;
         private readonly IDataflowBlock pipelineEnd;
@@ -87,10 +88,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                 BoundedCapacity = maxDegreeOfParallelism * 2
             });
 
-            fileNameStep.LinkTo(uploadStep, new DataflowLinkOptions
-            {
-                PropagateCompletion = true
-            });
+            fileNameStep.BidirectionalLinkTo(uploadStep);
 
             pipelineStart = fileNameStep;
             pipelineEnd = uploadStep;

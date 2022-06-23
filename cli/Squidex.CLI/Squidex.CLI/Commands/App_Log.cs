@@ -11,6 +11,7 @@ using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
+using Squidex.CLI.Commands.Implementation;
 
 #pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
@@ -22,8 +23,15 @@ namespace Squidex.CLI.Commands
         [Subcommand]
         public sealed class Log
         {
+            private readonly ILogger log;
+
+            public Log(ILogger log)
+            {
+                this.log = log;
+            }
+
             [Command("analyze", Description = "Analyzes request log files.")]
-            public static void Analyze(AnalyzeArguments arguments)
+            public void Analyze(AnalyzeArguments arguments)
             {
                 using (var reader = new StreamReader(arguments.File))
                 {
@@ -43,7 +51,7 @@ namespace Squidex.CLI.Commands
                             IsAsset = x.Key.StartsWith("GET /api/assets", StringComparison.OrdinalIgnoreCase)
                         }).ToList();
 
-                        Console.WriteLine("Most used requests:");
+                        log.WriteLine("Most used requests:");
 
                         var table = new ConsoleTable("Path", "Count");
 
@@ -54,9 +62,8 @@ namespace Squidex.CLI.Commands
 
                         table.Write();
 
-                        Console.WriteLine();
-
-                        Console.WriteLine("Most expensive requests:");
+                        log.WriteLine();
+                        log.WriteLine("Most expensive requests:");
 
                         table = new ConsoleTable("Path", "Costs");
 
@@ -67,9 +74,8 @@ namespace Squidex.CLI.Commands
 
                         table.Write();
 
-                        Console.WriteLine();
-
-                        Console.WriteLine("Slowest requests (without assets)");
+                        log.WriteLine();
+                        log.WriteLine("Slowest requests (without assets)");
 
                         table = new ConsoleTable("Path", "Average Response Time");
 
@@ -80,8 +86,8 @@ namespace Squidex.CLI.Commands
 
                         table.Write();
 
-                        Console.WriteLine();
-                        Console.WriteLine("Summary");
+                        log.WriteLine();
+                        log.WriteLine("Summary");
 
                         table = new ConsoleTable("Key", "Value");
 

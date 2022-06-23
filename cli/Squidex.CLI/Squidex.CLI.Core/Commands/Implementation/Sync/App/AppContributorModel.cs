@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
-    public sealed class AppContributorModel
+    internal sealed class AppContributorModel
     {
         [Required]
         public string Role { get; set; }

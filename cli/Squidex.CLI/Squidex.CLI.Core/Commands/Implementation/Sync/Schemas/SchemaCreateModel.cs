@@ -9,7 +9,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public class SchemaCreateModel
+    internal class SchemaCreateModel
     {
         public string Name { get; set; }
 

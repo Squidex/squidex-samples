@@ -11,7 +11,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Rules
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static UpdateExtendableRuleDto ToUpdate(this RuleModel model)
         {

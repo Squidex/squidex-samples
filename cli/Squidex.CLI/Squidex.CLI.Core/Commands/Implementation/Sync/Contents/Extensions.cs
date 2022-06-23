@@ -12,7 +12,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas, ContentAction action)
         {

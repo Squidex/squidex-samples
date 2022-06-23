@@ -10,7 +10,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
-    public sealed class AppModel
+    internal sealed class AppModel
     {
         [Required]
         public Dictionary<string, AppClientModel> Clients { get; set; }

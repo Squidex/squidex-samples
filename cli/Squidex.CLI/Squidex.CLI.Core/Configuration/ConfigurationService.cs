@@ -187,7 +187,8 @@ namespace Squidex.CLI.Configuration
                 AppName = app.Name,
                 ClientId = app.ClientId,
                 ClientSecret = app.ClientSecret,
-                Url = app.ServiceUrl
+                Url = app.ServiceUrl,
+                HttpClientTimeout = TimeSpan.FromHours(1)
             };
 
             if (app.IgnoreSelfSigned)

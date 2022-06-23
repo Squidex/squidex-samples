@@ -32,7 +32,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 if (!fs.CanWrite)
                 {
-                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    log.WriteLine("ERROR: Cannot write to the file system.");
                     return;
                 }
 
@@ -78,7 +78,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 if (!fs.CanWrite)
                 {
-                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    log.WriteLine("ERROR: Cannot write to the file system.");
                     return;
                 }
 
@@ -158,7 +158,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
             {
                 if (!fs.CanWrite)
                 {
-                    Console.WriteLine("ERROR: Cannot write to the file system.");
+                    log.WriteLine("ERROR: Cannot write to the file system.");
                     return;
                 }
 

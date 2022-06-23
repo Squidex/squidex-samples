@@ -10,7 +10,7 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class ContentModel
+    internal sealed class ContentModel
     {
         [Required]
         public string Schema { get; set; }

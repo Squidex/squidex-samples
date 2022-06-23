@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents
 {
-    public sealed class ContentsModel
+    internal sealed class ContentsModel
     {
         [Required]
         public List<ContentModel> Contents { get; set; }

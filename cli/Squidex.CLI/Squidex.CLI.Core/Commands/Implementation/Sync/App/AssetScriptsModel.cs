@@ -7,7 +7,7 @@
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
-    public sealed class AssetScriptsModel
+    internal sealed class AssetScriptsModel
     {
         public string? Create { get; set; }
 

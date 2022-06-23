@@ -11,6 +11,8 @@ namespace Squidex.CLI.Commands.Implementation
     {
         bool CanWriteToSameLine { get; }
 
+        void WriteLine(string message);
+
         void WriteLine(string message, params object[] args);
     }
 }

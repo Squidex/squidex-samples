@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Squidex.CLI.Commands.Implementation.Utils
 {
-    public static class ReflectionExtensions
+    internal static class ReflectionExtensions
     {
         public static PropertyInfo[] GetPublicProperties(this Type type)
         {

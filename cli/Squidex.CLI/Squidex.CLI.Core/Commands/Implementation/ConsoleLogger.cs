@@ -42,6 +42,16 @@ namespace Squidex.CLI.Commands.Implementation
                     Console.SetCursorPosition(0, consoleTop);
                 }
             }
+
+            public void WriteLine(string message)
+            {
+                Console.WriteLine(message);
+
+                if (consoleTop >= 0)
+                {
+                    Console.SetCursorPosition(0, consoleTop);
+                }
+            }
         }
 
         public void StepStart(string message)

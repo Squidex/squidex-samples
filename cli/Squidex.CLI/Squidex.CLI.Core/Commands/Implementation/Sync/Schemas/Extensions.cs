@@ -11,7 +11,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static CreateSchemaDto ToCreate(this SchemaCreateModel model)
         {

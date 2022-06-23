@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Squidex.CLI.Commands.Implementation.Utils
 {
-    public sealed class PropertyAccessor
+    internal sealed class PropertyAccessor
     {
         private interface IPropertyAccessor
         {

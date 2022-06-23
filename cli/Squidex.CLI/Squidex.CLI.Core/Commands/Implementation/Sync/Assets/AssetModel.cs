@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
-    public sealed class AssetModel
+    internal sealed class AssetModel
     {
         [Required]
         public string Id { get; set; }

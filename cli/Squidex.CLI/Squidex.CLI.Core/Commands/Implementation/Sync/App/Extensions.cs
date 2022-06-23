@@ -10,7 +10,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static AppRoleModel ToModel(this RoleDto role)
         {

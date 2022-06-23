@@ -12,7 +12,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 {
-    public static class Extensions
+    internal static class Extensions
     {
         public static IFile GetBlobFile(this IFileSystem fs, string id)
         {
@@ -26,50 +26,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
 
         public static string? GetFileHash(this IFile file, AssetDto asset)
         {
-            return GetFileHash(file, asset.FileName);
-        }
-
-        public static string? GetFileHash(this IFile file)
-        {
-            return GetFileHash(file, file.Name);
-        }
-
-        public static string? GetFileHash(this IFile file, string fileName)
-        {
-            if (file == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                using (var fileStream = file.OpenRead())
-                {
-                    var incrementalHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-
-                    var buffer = new byte[80000];
-                    var bytesRead = 0;
-
-                    while ((bytesRead = fileStream.Read(buffer)) > 0)
-                    {
-                        incrementalHash.AppendData(buffer, 0, bytesRead);
-                    }
-
-                    var fileHash = Convert.ToBase64String(incrementalHash.GetHashAndReset());
-
-                    var hash = $"{fileHash}{fileName}{fileStream.Length}".Sha256Base64();
-
-                    return hash;
-                }
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return null;
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
+            return file.GetFileHash(asset.FileName);
         }
 
         public static BulkUpdateAssetsJobDto ToMove(this AssetModel model, string? parentId)
