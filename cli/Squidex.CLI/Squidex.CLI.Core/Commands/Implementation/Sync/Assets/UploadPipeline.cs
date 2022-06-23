@@ -72,6 +72,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Assets
                         log.ProcessCompleted(process);
                     }
                 }
+                catch (FileNotFoundException)
+                {
+                    log.ProcessFailed(process, "File not found.");
+                }
                 catch (Exception ex)
                 {
                     log.ProcessFailed(process, ex);

@@ -33,7 +33,7 @@ namespace Squidex.CLI.Commands.Implementation
             }
             catch (Exception ex)
             {
-                HandleException(ex, log.StepFailed);
+                log.StepFailed(ex);
             }
             finally
             {
@@ -54,7 +54,7 @@ namespace Squidex.CLI.Commands.Implementation
             }
             catch (Exception ex)
             {
-                HandleException(ex, log.StepFailed);
+                log.StepFailed(ex);
             }
             finally
             {
@@ -68,7 +68,6 @@ namespace Squidex.CLI.Commands.Implementation
             try
             {
                 log.StepStart(process);
-
                 log.StepSkipped(reason);
             }
             finally
@@ -83,7 +82,6 @@ namespace Squidex.CLI.Commands.Implementation
             try
             {
                 log.StepStart(process);
-
                 log.StepSuccess();
             }
             finally
@@ -98,13 +96,31 @@ namespace Squidex.CLI.Commands.Implementation
             try
             {
                 log.StepStart(process);
-
-                HandleException(exception, log.StepFailed);
+                log.StepFailed(exception);
             }
             finally
             {
                 LockObject.Release();
             }
+        }
+
+        public static void ProcessFailed(this ILogger log, string process, string error)
+        {
+            LockObject.Wait();
+            try
+            {
+                log.StepStart(process);
+                log.StepFailed(error);
+            }
+            finally
+            {
+                LockObject.Release();
+            }
+        }
+
+        public static void StepFailed(this ILogger log, Exception ex)
+        {
+            HandleException(ex, log.StepFailed);
         }
 
         public static void HandleException(Exception ex, Action<string> error)
@@ -126,6 +142,12 @@ namespace Squidex.CLI.Commands.Implementation
                 case CLIException ex4:
                     {
                         error(ex4.Message);
+                        break;
+                    }
+
+                case FileNotFoundException ex5:
+                    {
+                        error(ex5.Message);
                         break;
                     }
 

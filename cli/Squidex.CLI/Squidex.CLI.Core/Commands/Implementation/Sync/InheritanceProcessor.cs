@@ -17,7 +17,7 @@ namespace Squidex.CLI.Commands.Implementation.Sync
     {
         public void Process(SchemaProcessorContext context)
         {
-            var discriminator = GetDiscriminator(context.Type);
+            var discriminator = GetDiscriminator(context.ContextualType);
 
             if (discriminator != null)
             {
