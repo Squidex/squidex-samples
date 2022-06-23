@@ -127,35 +127,29 @@ namespace Squidex.CLI.Commands.Implementation
         {
             switch (ex)
             {
-                case SquidexManagementException<ErrorDto> ex1:
-                    {
-                        error(ex1.Result.ToString());
-                        break;
-                    }
+                case SquidexManagementException<ErrorDto> typed:
+                    error(typed.Result.ToString());
+                    break;
 
-                case SquidexManagementException ex2:
-                    {
-                        error(ex2.Message);
-                        break;
-                    }
+                case SquidexManagementException typed:
+                    error(typed.Message);
+                    break;
 
-                case CLIException ex4:
-                    {
-                        error(ex4.Message);
-                        break;
-                    }
+                case CLIException typed:
+                    error(typed.Message);
+                    break;
 
-                case FileNotFoundException ex5:
-                    {
-                        error(ex5.Message);
-                        break;
-                    }
+                case IOException typed:
+                    error(typed.Message);
+                    break;
 
-                case { } ex3:
-                    {
-                        error(ex3.ToString());
-                        throw ex3;
-                    }
+                case OperationCanceledException typed:
+                    error(typed.Message);
+                    break;
+
+                case { } fallback:
+                    error(fallback.ToString());
+                    break;
             }
         }
     }
