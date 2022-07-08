@@ -99,7 +99,7 @@ namespace Squidex.ClientLibrary
 
             var query = BuildQuery(request);
 
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Get, BuildAppUrl("graphql", false, context) + query, null, context, ct);
+            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Get, BuildAppUrl("graphql", true, context) + query, null, context, ct);
 
             if (response.Errors?.Length > 0)
             {
