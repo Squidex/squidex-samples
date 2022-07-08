@@ -103,7 +103,7 @@ namespace Squidex.ClientLibrary
 
             if (response.Errors?.Length > 0)
             {
-                throw new SquidexGraphQlException(response.Errors);
+                throw new SquidexGraphQlException(response.Errors, 400);
             }
 
             return response.Data;
@@ -119,7 +119,7 @@ namespace Squidex.ClientLibrary
 
             if (response.Errors?.Length > 0)
             {
-                throw new SquidexGraphQlException(response.Errors);
+                throw new SquidexGraphQlException(response.Errors, 400);
             }
 
             return response.Data;

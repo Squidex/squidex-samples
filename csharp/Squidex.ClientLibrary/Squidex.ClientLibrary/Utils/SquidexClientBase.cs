@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net;
+using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary.Utils
 {
@@ -115,17 +115,21 @@ namespace Squidex.ClientLibrary.Utils
         {
             if (!response.IsSuccessStatusCode)
             {
-                if (response.StatusCode == HttpStatusCode.NotFound)
+                var statusCode = (int)response.StatusCode;
+
+                if (statusCode == 404)
                 {
-                    throw new SquidexException("The app, schema or entity does not exist.");
+                    throw new SquidexException("The app, schema or entity does not exist.", statusCode, null);
                 }
 
-                if ((int)response.StatusCode == 429)
+                if (statusCode == 429)
                 {
-                    throw new SquidexException("Too many requests, please upgrade your subscription.");
+                    throw new SquidexException("Too many requests, please upgrade your subscription.", statusCode, null);
                 }
 
                 var message = await response.Content.ReadAsStringAsync();
+
+                ErrorDto? details = null;
 
                 if (string.IsNullOrWhiteSpace(message))
                 {
@@ -133,10 +137,26 @@ namespace Squidex.ClientLibrary.Utils
                 }
                 else
                 {
-                    message = $"Squidex Request failed: {message}";
+                    try
+                    {
+                        details = message.FromJson<ErrorDto>();
+                    }
+                    catch
+                    {
+                        details = null;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(details?.Message))
+                    {
+                        message = $"Squidex Request failed: {details!.Message}";
+                    }
+                    else
+                    {
+                        message = $"Squidex Request failed: {message}";
+                    }
                 }
 
-                throw new SquidexException(message);
+                throw new SquidexException(message, statusCode, details);
             }
         }
 

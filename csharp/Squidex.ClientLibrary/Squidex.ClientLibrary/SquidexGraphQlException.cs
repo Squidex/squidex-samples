@@ -9,27 +9,47 @@ using System.Runtime.Serialization;
 using System.Text;
 using Squidex.ClientLibrary.Utils;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
 namespace Squidex.ClientLibrary
 {
+    /// <summary>
+    /// Exception for GraphQL errors.
+    /// </summary>
     [Serializable]
     public class SquidexGraphQlException : SquidexException
     {
+        /// <summary>
+        /// Provides the GraphQL error details.
+        /// </summary>
         public IReadOnlyCollection<GraphQlError> Errors { get; }
 
-        public SquidexGraphQlException(IReadOnlyCollection<GraphQlError> errors)
-            : base(FormatMessage(errors))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SquidexGraphQlException"/> class with the GraphQL error details.
+        /// </summary>
+        /// <param name="errors">The GraphQL errors.</param>
+        /// <param name="statusCode">The HTTP status code if available.</param>
+        public SquidexGraphQlException(IReadOnlyCollection<GraphQlError> errors, int statusCode)
+            : base(FormatMessage(errors), statusCode, null)
         {
             Errors = errors;
         }
 
-        public SquidexGraphQlException(IReadOnlyCollection<GraphQlError> errors, Exception inner)
-            : base(FormatMessage(errors), inner)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SquidexGraphQlException"/> class with the GraphQL error details and inner exception.
+        /// </summary>
+        /// <param name="errors">The GraphQL errors.</param>
+        /// <param name="statusCode">The HTTP status code if available.</param>
+        /// <param name="inner">The inner exception.</param>
+        public SquidexGraphQlException(IReadOnlyCollection<GraphQlError> errors, int statusCode, Exception inner)
+            : base(FormatMessage(errors), statusCode, null, inner)
         {
             Errors = errors;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SquidexGraphQlException"/> class with the serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="StreamingContext "/>  that contains contextual information about the source or destination.</param>
         protected SquidexGraphQlException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
