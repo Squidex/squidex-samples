@@ -181,19 +181,37 @@ namespace Squidex.ClientLibrary
         /// <inheritdoc/>
         public IExtendableRulesClient CreateExtendableRulesClient()
         {
-            return new ExtendableRulesClient(Options, CreateHttpClient(false));
+            return CreateExtendableRulesClient(Options.AppName);
+        }
+
+        /// <inheritdoc/>
+        public IExtendableRulesClient CreateExtendableRulesClient(string appName)
+        {
+            return new ExtendableRulesClient(Options, appName, CreateHttpClient(false));
         }
 
         /// <inheritdoc/>
         public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
         {
-            return new ContentsClient<TEntity, TData>(Options, schemaName, CreateHttpClient(true));
+            return CreateContentsClient<TEntity, TData>(Options.AppName, schemaName);
+        }
+
+        /// <inheritdoc/>
+        public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string appName, string schemaName) where TEntity : Content<TData> where TData : class, new()
+        {
+            return new ContentsClient<TEntity, TData>(Options, appName, schemaName, CreateHttpClient(true));
         }
 
         /// <inheritdoc/>
         public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
         {
-            return new ContentsClient<DynamicContent, DynamicData>(Options, schemaName, CreateHttpClient(true));
+            return CreateDynamicContentsClient(Options.AppName, schemaName);
+        }
+
+        /// <inheritdoc/>
+        public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName)
+        {
+            return new ContentsClient<DynamicContent, DynamicData>(Options, appName, schemaName, CreateHttpClient(true));
         }
 
         /// <inheritdoc/>

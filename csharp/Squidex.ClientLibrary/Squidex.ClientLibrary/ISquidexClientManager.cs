@@ -206,6 +206,19 @@ namespace Squidex.ClientLibrary
         IExtendableRulesClient CreateExtendableRulesClient();
 
         /// <summary>
+        /// Creates a client instance to query and manage untyped rules.
+        /// </summary>
+        /// <param name="appName">The name of the app. Cannot be null.</param>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IExtendableRulesClient CreateExtendableRulesClient(string appName);
+
+        /// <summary>
         /// Creates a client instance to query and manage contents for a schema.
         /// </summary>
         /// <typeparam name="TEntity">The type for the content entity.</typeparam>
@@ -221,6 +234,23 @@ namespace Squidex.ClientLibrary
         IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new();
 
         /// <summary>
+        /// Creates a client instance to query and manage contents for an app and schema.
+        /// </summary>
+        /// <typeparam name="TEntity">The type for the content entity.</typeparam>
+        /// <typeparam name="TData">The type that represents the data structure.</typeparam>
+        /// <param name="appName">The name of the app. Cannot be null.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string appName, string schemaName) where TEntity : Content<TData> where TData : class, new();
+
+        /// <summary>
         /// Creates a client instance to query and manage contents for a schema with dynamic data shape.
         /// </summary>
         /// <param name="schemaName">The name of the schema. Cannot be null.</param>
@@ -232,6 +262,21 @@ namespace Squidex.ClientLibrary
         /// Do not create new clients frequently.
         /// </remarks>
         IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName);
+
+        /// <summary>
+        /// Creates a client instance to query and manage contents for an app and schema with dynamic data shape.
+        /// </summary>
+        /// <param name="appName">The name of the app. Cannot be null.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName);
 
         /// <summary>
         /// Creates a <see cref="HttpClient"/> to make all kind of authorized requests.

@@ -15,6 +15,14 @@ namespace Squidex.ClientLibrary
     public interface IContentsClient<TEntity, TData> where TEntity : Content<TData> where TData : class, new()
     {
         /// <summary>
+        /// Gets the name of the app for which this client has been created.
+        /// </summary>
+        /// <value>
+        /// The name of the app for which this client has been created.
+        /// </value
+        string AppName { get; }
+
+        /// <summary>
         /// Gets the name of the schema for which this client has been created.
         /// </summary>
         /// <value>

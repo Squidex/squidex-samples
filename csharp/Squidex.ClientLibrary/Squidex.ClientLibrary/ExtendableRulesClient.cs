@@ -21,11 +21,14 @@ namespace Squidex.ClientLibrary
         /// with the name of the schema, the options from the <see cref="SquidexClientManager"/> and the HTTP client.
         /// </summary>
         /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
+        /// <param name="appName">Name of the app. Cannot be null or empty.</param>
         /// <param name="httpClient">The HTTP client. Cannot be null.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
-        public ExtendableRulesClient(SquidexOptions options, HttpClient httpClient)
-            : base(options, httpClient)
+        /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
+        public ExtendableRulesClient(SquidexOptions options, string appName, HttpClient httpClient)
+            : base(options, appName, httpClient)
         {
         }
 
@@ -84,7 +87,7 @@ namespace Squidex.ClientLibrary
 
         private string BuildUrl(string? path = null)
         {
-            return $"api/apps/{ApplicationName}/rules/{path}";
+            return $"api/apps/{AppName}/rules/{path}";
         }
     }
 }

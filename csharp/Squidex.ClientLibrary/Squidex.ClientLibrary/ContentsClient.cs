@@ -28,14 +28,17 @@ namespace Squidex.ClientLibrary
         /// with the name of the schema, the options from the <see cref="SquidexClientManager"/> and the HTTP client.
         /// </summary>
         /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
+        /// <param name="appName">Name of the app. Cannot be null or empty.</param>
         /// <param name="schemaName">Name of the schema. Cannot be null or empty.</param>
         /// <param name="httpClient">The HTTP client. Cannot be null.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
-        public ContentsClient(SquidexOptions options, string schemaName, HttpClient httpClient)
-            : base(options, httpClient)
+        public ContentsClient(SquidexOptions options, string appName, string schemaName, HttpClient httpClient)
+            : base(options, appName, httpClient)
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
@@ -356,11 +359,11 @@ namespace Squidex.ClientLibrary
         {
             if (ShouldUseCDN(query, context))
             {
-                return $"{Options.ContentCDN}/{ApplicationName}/{SchemaName}/{path}";
+                return $"{Options.ContentCDN}/{base.AppName}/{SchemaName}/{path}";
             }
             else
             {
-                return $"content/{ApplicationName}/{SchemaName}/{path}";
+                return $"content/{base.AppName}/{SchemaName}/{path}";
             }
         }
 
@@ -368,11 +371,11 @@ namespace Squidex.ClientLibrary
         {
             if (ShouldUseCDN(query, context))
             {
-                return $"{Options.ContentCDN}/{ApplicationName}/{path}";
+                return $"{Options.ContentCDN}/{base.AppName}/{path}";
             }
             else
             {
-                return $"content/{ApplicationName}/{path}";
+                return $"content/{base.AppName}/{path}";
             }
         }
 

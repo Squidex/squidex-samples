@@ -23,25 +23,26 @@ namespace Squidex.ClientLibrary.Utils
         /// <value>
         /// The name of the App.
         /// </value>
-        protected string ApplicationName
-        {
-            get { return Options.AppName; }
-        }
+        public string AppName { get; }
 
         /// <summary>
         /// Gets the options of the <see cref="SquidexClientManager"/>.
         /// </summary>
         /// <value>
-        /// The options of the <see cref="SquidexClientManager"/>..
+        /// The options of the <see cref="SquidexClientManager"/>.
         /// </value>
         public SquidexOptions Options { get; }
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected internal SquidexClientBase(SquidexOptions options, HttpClient httpClient)
+        protected internal SquidexClientBase(SquidexOptions options, string appName, HttpClient httpClient)
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             Guard.NotNull(options, nameof(options));
+            Guard.NotNullOrEmpty(appName, nameof(appName));
             Guard.NotNull(httpClient, nameof(httpClient));
+
+            // The app name can be different from the options app name.
+            AppName = appName;
 
             Options = options;
 
