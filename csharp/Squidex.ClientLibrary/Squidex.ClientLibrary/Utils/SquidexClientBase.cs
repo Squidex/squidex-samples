@@ -35,7 +35,6 @@ namespace Squidex.ClientLibrary.Utils
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected internal SquidexClientBase(SquidexOptions options, string appName, HttpClient httpClient)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             Guard.NotNull(options, nameof(options));
             Guard.NotNullOrEmpty(appName, nameof(appName));
@@ -49,9 +48,8 @@ namespace Squidex.ClientLibrary.Utils
             this.httpClient = httpClient;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected internal async Task RequestAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context, CancellationToken ct)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        protected internal async Task RequestAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context,
+            CancellationToken ct)
         {
             using (var request = BuildRequest(method, path, content, context))
             {
@@ -62,9 +60,8 @@ namespace Squidex.ClientLibrary.Utils
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected internal async Task<Stream> RequestStreamAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context, CancellationToken ct)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        protected internal async Task<Stream> RequestStreamAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context,
+            CancellationToken ct)
         {
             using (var request = BuildRequest(method, path, content, context))
             {
@@ -79,9 +76,8 @@ namespace Squidex.ClientLibrary.Utils
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected internal async Task<T> RequestJsonAsync<T>(HttpMethod method, string path, HttpContent? content, QueryContext? context, CancellationToken ct)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+        protected internal async Task<T> RequestJsonAsync<T>(HttpMethod method, string path, HttpContent? content, QueryContext? context,
+            CancellationToken ct)
         {
             using (var request = BuildRequest(method, path, content, context))
             {
@@ -94,9 +90,7 @@ namespace Squidex.ClientLibrary.Utils
             }
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected internal static HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent? content, QueryContext? context)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             var request = new HttpRequestMessage(method, path);
 
@@ -110,9 +104,7 @@ namespace Squidex.ClientLibrary.Utils
             return request;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected internal static async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             if (!response.IsSuccessStatusCode)
             {
@@ -160,6 +152,7 @@ namespace Squidex.ClientLibrary.Utils
                 throw new SquidexException(message, statusCode, details);
             }
         }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         /// <inheritdoc/>
         public void Dispose()

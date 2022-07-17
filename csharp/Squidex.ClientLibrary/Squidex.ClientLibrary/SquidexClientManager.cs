@@ -49,16 +49,49 @@ namespace Squidex.ClientLibrary
 
             if (!string.IsNullOrWhiteSpace(Options.AssetCDN))
             {
-                return $"{Options.AssetCDN}/{id}";
+                return GenerateUrl(Options.AssetCDN, id);
             }
 
-            return $"{Options.Url}api/assets/{id}";
+            return GenerateUrl(Options.Url, $"api/assets/{id}");
         }
 
         /// <inheritdoc/>
         public string? GenerateImageUrl(IEnumerable<string>? id)
         {
             return GenerateImageUrl(id?.FirstOrDefault());
+        }
+
+        /// <inheritdoc />
+        public string? GenerateUrl(string? relativeUrl)
+        {
+            return GenerateUrl(Options.Url, relativeUrl);
+        }
+
+        /// <inheritdoc />
+        public string? GenerateAssetCDNUrl(string relativeUrl)
+        {
+            return GenerateUrl(Options.AssetCDN, relativeUrl);
+        }
+
+        /// <inheritdoc />
+        public string? GenerateContentCDNUrl(string relativeUrl)
+        {
+            return GenerateUrl(Options.ContentCDN, relativeUrl);
+        }
+
+        private string? GenerateUrl(string baseUrl, string? relativeUrl)
+        {
+            if (relativeUrl == null)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(baseUrl))
+            {
+                throw new InvalidOperationException("URL is not configured.");
+            }
+
+            return $"{baseUrl}{relativeUrl.TrimStart('/')}";
         }
 
         /// <inheritdoc/>

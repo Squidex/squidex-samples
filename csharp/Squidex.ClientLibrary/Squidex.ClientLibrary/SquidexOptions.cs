@@ -282,8 +282,7 @@ namespace Squidex.ClientLibrary
                 throw new ArgumentException("URL must be a valid absolute URL.", nameof(Url));
             }
 
-            url = url.TrimEnd('/', ' ');
-            url += "/";
+            url = url.TrimEnd('/', ' ') + '/';
 
             if (string.IsNullOrWhiteSpace(appName))
             {
@@ -297,7 +296,7 @@ namespace Squidex.ClientLibrary
                     throw new ArgumentException("Asset CDN URL must be absolute if specified.", nameof(AssetCDN));
                 }
 
-                assetCDN = assetCDN.TrimEnd('/', ' ');
+                assetCDN = assetCDN.TrimEnd('/', ' ') + '/';
             }
 
             if (!string.IsNullOrWhiteSpace(contentCDN))
@@ -307,7 +306,7 @@ namespace Squidex.ClientLibrary
                     throw new ArgumentException("Content CDN URL must be absolute if specified.", nameof(ContentCDN));
                 }
 
-                contentCDN = contentCDN.TrimEnd('/', ' ');
+                contentCDN = contentCDN.TrimEnd('/', ' ') + '/';
             }
 
             if (configurator == null)

@@ -52,6 +52,35 @@ namespace Squidex.ClientLibrary
         string? GenerateImageUrl(IEnumerable<string>? id);
 
         /// <summary>
+        /// Generates an absolute URL.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <returns>
+        /// The absolute URL.
+        /// </returns>
+        string? GenerateUrl(string? relativeUrl);
+
+        /// <summary>
+        /// Generates an absolute URL for the asset CDN.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <exception cref="InvalidOperationException">Asset CDN not configured.</exception>
+        /// <returns>
+        /// The absolute URL.
+        /// </returns>
+        string? GenerateAssetCDNUrl(string relativeUrl);
+
+        /// <summary>
+        /// Generates an absolute URL for the content CDN.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <exception cref="InvalidOperationException">Content CDN not configured.</exception>
+        /// <returns>
+        /// The absolute URL.
+        /// </returns>
+        string? GenerateContentCDNUrl(string relativeUrl);
+
+        /// <summary>
         /// Creates a client instance to query and manage app configuration.
         /// </summary>
         /// <returns>

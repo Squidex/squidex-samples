@@ -359,11 +359,11 @@ namespace Squidex.ClientLibrary
         {
             if (ShouldUseCDN(query, context))
             {
-                return $"{Options.ContentCDN}/{base.AppName}/{SchemaName}/{path}";
+                return $"{Options.ContentCDN}{AppName}/{SchemaName}/{path}";
             }
             else
             {
-                return $"content/{base.AppName}/{SchemaName}/{path}";
+                return $"content/{AppName}/{SchemaName}/{path}";
             }
         }
 
@@ -371,11 +371,11 @@ namespace Squidex.ClientLibrary
         {
             if (ShouldUseCDN(query, context))
             {
-                return $"{Options.ContentCDN}/{base.AppName}/{path}";
+                return $"{Options.ContentCDN}{AppName}/{path}";
             }
             else
             {
-                return $"content/{base.AppName}/{path}";
+                return $"content/{AppName}/{path}";
             }
         }
 
