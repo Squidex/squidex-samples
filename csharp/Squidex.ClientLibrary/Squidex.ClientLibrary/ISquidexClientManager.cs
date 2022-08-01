@@ -125,6 +125,17 @@ namespace Squidex.ClientLibrary
         ICommentsClient CreateCommentsClient();
 
         /// <summary>
+        /// Creates a client instance to query diagnostics data.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IDiagnosticsClient CreateDiagnosticsClient();
+
+        /// <summary>
         /// Creates a client instance to query and manage histories.
         /// </summary>
         /// <returns>
@@ -180,17 +191,6 @@ namespace Squidex.ClientLibrary
         IRulesClient CreateRulesClient();
 
         /// <summary>
-        /// Creates a client instance to query templates.
-        /// </summary>
-        /// <returns>
-        /// The created client.
-        /// </returns>
-        /// <remarks>
-        /// Do not create new clients frequently.
-        /// </remarks>
-        ITemplatesClient CreateTemplatesClient();
-
-        /// <summary>
         /// Creates a client instance to query and manage schemas.
         /// </summary>
         /// <returns>
@@ -202,6 +202,17 @@ namespace Squidex.ClientLibrary
         ISchemasClient CreateSchemasClient();
 
         /// <summary>
+        /// Creates a client instance to make searches across content and records.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        ISearchClient CreateSearchClient();
+
+        /// <summary>
         /// Creates a client instance to query statistics.
         /// </summary>
         /// <returns>
@@ -211,6 +222,28 @@ namespace Squidex.ClientLibrary
         /// Do not create new clients frequently.
         /// </remarks>
         IStatisticsClient CreateStatisticsClient();
+
+        /// <summary>
+        /// Creates a client instance to query templates.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        ITemplatesClient CreateTemplatesClient();
+
+        /// <summary>
+        /// Creates a client instance to translate content.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        ITranslationsClient CreateTranslationsClient();
 
         /// <summary>
         /// Creates a client instance to query user information.

@@ -131,6 +131,15 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
+        public IDiagnosticsClient CreateDiagnosticsClient()
+        {
+            return new DiagnosticsClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
         public IHistoryClient CreateHistoryClient()
         {
             return new HistoryClient(CreateHttpClient(false))
@@ -185,6 +194,15 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
+        public ISearchClient CreateSearchClient()
+        {
+            return new SearchClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
         public IStatisticsClient CreateStatisticsClient()
         {
             return new StatisticsClient(CreateHttpClient(false))
@@ -197,6 +215,15 @@ namespace Squidex.ClientLibrary
         public ITemplatesClient CreateTemplatesClient()
         {
             return new TemplatesClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
+        public ITranslationsClient CreateTranslationsClient()
+        {
+            return new TranslationsClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
