@@ -19,7 +19,7 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <value>
         /// The name of the app for which this client has been created.
-        /// </value
+        /// </value>
         string AppName { get; }
 
         /// <summary>

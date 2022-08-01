@@ -97,7 +97,7 @@ namespace Squidex.ClientLibrary
                 info.AddValue(nameof(Details), Details, typeof(ErrorDto));
             }
 
-            base.GetObjectData(info, context); 
+            base.GetObjectData(info, context);
         }
     }
 }
