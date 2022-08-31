@@ -56,7 +56,7 @@ namespace Squidex.CLI.Commands
 
                 await using (var stream = new FileStream(arguments.File, FileMode.Open))
                 {
-                    var importer = new AuthorImporter(session);
+                    var importer = new AuthorImporter(session, log);
 
                     await importer.ImportAsync(stream);
                 }

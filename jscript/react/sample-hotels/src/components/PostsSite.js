@@ -1,9 +1,11 @@
 import React from 'react';
 import { Post } from './Post.js';
-import { getPosts } from './../service';
+import { getPosts, getPostsIds } from './../service';
+import { useRefresh } from './hooks.js';
 
 export const PostsSite = () => {
     const [posts, setPosts] = React.useState();
+    const needsUpdate = useRefresh(getPostsIds(posts));
 
     React.useEffect(() => {
         async function fetchData() {
@@ -13,7 +15,7 @@ export const PostsSite = () => {
         }
 
         fetchData();
-    }, []);
+    }, [needsUpdate]);
 
     if (!posts) {
         return <div>Loading Posts...</div>

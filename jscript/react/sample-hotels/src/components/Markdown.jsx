@@ -5,7 +5,8 @@ import { CONFIG } from './../service';
 
 const hotelsRegex = new RegExp(`${escapeRegExp(CONFIG.url)}\\/api/content\\/${escapeRegExp(CONFIG.appName)}\\/hotels/(?<id>[a-z0-9\\-]+)`);
 
-export const Markdown = ({ markdown, references }) => {
+export const 
+Markdown = ({ markdown, references }) => {
     return (
         <ReactMarkdown children={markdown} components={{
             a({ href, children }) {

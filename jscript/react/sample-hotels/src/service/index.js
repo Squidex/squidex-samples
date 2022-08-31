@@ -1,3 +1,5 @@
+import { createClient } from "graphql-ws";
+
 const DEV = true;
 
 export const CONFIG = !DEV ? {
@@ -7,9 +9,9 @@ export const CONFIG = !DEV ? {
     clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
 } : {
     url:  'https://localhost:5001',
-    appName: 'hotels',
-    clientId: 'hotels:default',
-    clientSecret: 'byvgsg5ssuvnubnjgvt7vo56jzndxxgggkoumir2jxyx'
+    appName: 'hotels3',
+    clientId: 'hotels3:default',
+    clientSecret: 'hevj7xpxuhk3ofoqb9lqa3d2oxctzrxctruic7tz124x'
 };
 
 function getBearerToken() {
@@ -50,6 +52,19 @@ const POST_FIELDS = `
             }
         }
     }`
+
+export async function buildSubscriptionClient() {
+    const token = await getBearerToken();
+
+    const url =
+        buildUrl(`api/content/${CONFIG.appName}/graphql?access_token=${token}`)
+            .replace('http://', 'ws://')
+            .replace('https://', 'wss://');
+
+    return createClient({
+        url
+    });
+}
 
 export async function getPost(id) {
     const query = `
@@ -211,6 +226,26 @@ function buildUrl(url) {
     }
 
     const result = `${CONFIG.url}/${url}`;
+
+    return result;
+}
+
+export function getPostsIds(posts) {
+    const result = [];
+
+    if (posts) {
+        for (const post of posts) {
+            if (post) {
+                result.push(post.id);
+            }
+
+            if (post.flatData.text.contents) {
+                for (const content of post.flatData.text.contents) {
+                    result.push(content.id);
+                }
+            }
+        }
+    }
 
     return result;
 }

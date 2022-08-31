@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Post } from './Post.js';
-import { getPost } from './../service';
+import { getPost, getPostsIds } from './../service';
+import { useRefresh } from './hooks.js';
 
 export const PostSite = () => {
     const { id } = useParams();
 
     const [post, setPost] = React.useState(undefined);
+    const needsUpdate = useRefresh(getPostsIds([post.id]));
 
     React.useEffect(() => {
         async function fetchData() {
@@ -20,7 +22,7 @@ export const PostSite = () => {
         }
 
         fetchData();
-    }, [id]);
+    }, [id, needsUpdate]);
 
     if (post) {
         return <Post post={post} />

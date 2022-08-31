@@ -1,9 +1,11 @@
 import React from 'react';
 import { Hotel } from './Hotel.js';
 import { getHotels } from './../service';
+import { useRefresh } from './hooks.js';
 
 export const HotelsSite = () => {
     const [hotels, setHotels] = React.useState();
+    const needsUpdate = useRefresh(hotels?.map(x => x.id));
 
     React.useEffect(() => {
         async function fetchData() {
@@ -13,7 +15,7 @@ export const HotelsSite = () => {
         }
 
         fetchData();
-    }, []);
+    }, [needsUpdate]);
 
     if (!hotels) {
         return <div>Loading Hotels...</div>

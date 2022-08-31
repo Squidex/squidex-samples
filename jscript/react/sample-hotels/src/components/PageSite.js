@@ -2,11 +2,13 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Page } from './Page.js';
 import { getPage } from './../service';
+import { useRefresh } from './hooks.js';
 
 export const PageSite = () => {
     const { slug } = useParams();
 
     const [page, setPage] = React.useState(undefined);
+    const needsUpdate = useRefresh([page?.id]);
 
     React.useEffect(() => {
         setPage(undefined);
@@ -22,7 +24,7 @@ export const PageSite = () => {
         }
 
         fetchData();
-    }, [slug]);
+    }, [needsUpdate, slug]);
 
     if (page) {
         return <Page page={page} />
