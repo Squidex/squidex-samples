@@ -79,7 +79,7 @@ namespace Squidex.ClientLibrary
             return GenerateUrl(Options.ContentCDN, relativeUrl);
         }
 
-        private string? GenerateUrl(string baseUrl, string? relativeUrl)
+        private static string? GenerateUrl(string baseUrl, string? relativeUrl)
         {
             if (relativeUrl == null)
             {
@@ -134,6 +134,15 @@ namespace Squidex.ClientLibrary
         public IDiagnosticsClient CreateDiagnosticsClient()
         {
             return new DiagnosticsClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
+        public IEventConsumersClient CreateEventConsumersClient()
+        {
+            return new EventConsumersClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };
@@ -233,6 +242,15 @@ namespace Squidex.ClientLibrary
         public IUsersClient CreateUsersClient()
         {
             return new UsersClient(CreateHttpClient(false))
+            {
+                ReadResponseAsString = Options.ReadResponseAsString
+            };
+        }
+
+        /// <inheritdoc/>
+        public IUserManagementClient CreateUserManagementClient()
+        {
+            return new UserManagementClient(CreateHttpClient(false))
             {
                 ReadResponseAsString = Options.ReadResponseAsString
             };

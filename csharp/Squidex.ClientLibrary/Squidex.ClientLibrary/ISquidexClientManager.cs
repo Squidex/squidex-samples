@@ -136,6 +136,17 @@ namespace Squidex.ClientLibrary
         IDiagnosticsClient CreateDiagnosticsClient();
 
         /// <summary>
+        /// Creates a client instance to query and manage event consumers.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IEventConsumersClient CreateEventConsumersClient();
+
+        /// <summary>
         /// Creates a client instance to query and manage histories.
         /// </summary>
         /// <returns>
@@ -255,6 +266,17 @@ namespace Squidex.ClientLibrary
         /// Do not create new clients frequently.
         /// </remarks>
         IUsersClient CreateUsersClient();
+
+        /// <summary>
+        /// Creates a client instance to query and manage users as administrator.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IUserManagementClient CreateUserManagementClient();
 
         /// <summary>
         /// Creates a client instance to query and manage untyped rules.
