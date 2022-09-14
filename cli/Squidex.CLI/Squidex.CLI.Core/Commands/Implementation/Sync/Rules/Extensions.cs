@@ -15,12 +15,20 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Rules
     {
         public static UpdateExtendableRuleDto ToUpdate(this RuleModel model)
         {
-            return SimpleMapper.Map(model, new UpdateExtendableRuleDto());
+            var result = SimpleMapper.Map(model, new UpdateExtendableRuleDto());
+
+            result.Action = model.Action;
+
+            return result;
         }
 
         public static CreateExtendableRuleDto ToCreate(this RuleModel model)
         {
-            return SimpleMapper.Map(model, new CreateExtendableRuleDto());
+            var result = SimpleMapper.Map(model, new CreateExtendableRuleDto());
+
+            result.Action = model.Action;
+
+            return result;
         }
 
         public static string TypeName(this RuleTriggerDto trigger)
