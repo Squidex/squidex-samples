@@ -235,6 +235,17 @@ namespace Squidex.ClientLibrary
         IStatisticsClient CreateStatisticsClient();
 
         /// <summary>
+        /// Creates a client instance to query and manage teams.
+        /// </summary>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        ITeamsClient CreateTeamsClient();
+
+        /// <summary>
         /// Creates a client instance to query templates.
         /// </summary>
         /// <returns>

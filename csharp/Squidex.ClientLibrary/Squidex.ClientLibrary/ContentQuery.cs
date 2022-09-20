@@ -128,7 +128,8 @@ namespace Squidex.ClientLibrary
 
                 queries.Add($"$search=\"{Search}\"");
             }
-            else if (!string.IsNullOrWhiteSpace(Filter))
+
+            if (!string.IsNullOrWhiteSpace(Filter))
             {
                 queries.Add($"$filter={Filter}");
             }
