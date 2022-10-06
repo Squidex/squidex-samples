@@ -27,7 +27,7 @@ namespace Squidex.ClientLibrary
         public static string CalculateSignature(string requestBody, string sharedSecret)
         {
             Guard.NotNull(requestBody, nameof(requestBody));
-            Guard.NotNull(requestBody, nameof(requestBody));
+            Guard.NotNull(sharedSecret, nameof(sharedSecret));
 
             return (requestBody + sharedSecret).ToSha256Base64();
         }
