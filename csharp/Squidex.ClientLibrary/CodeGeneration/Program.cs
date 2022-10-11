@@ -44,8 +44,10 @@ namespace CodeGeneration
             code = code.Replace(" = new RuleTriggerDto();", string.Empty);
             code = code.Replace(" = new RuleAction();", string.Empty);
 
-            // Fix the 
+            // Fix the wrong initialization of nested collections.
             code = code.Replace("new System.Collections.Generic.Dictionary<string, System.Collections.ObjectModel.Collection<CallsUsagePerDateDto>>();", "new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();");
+
+            // Fix the custom field names property.
             code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
 
             File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
