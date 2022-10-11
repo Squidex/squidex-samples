@@ -5,7 +5,6 @@
     <Copyright>MIT</Copyright>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <ImplicitUsings>enable</ImplicitUsings>
     <IncludeSymbols>true</IncludeSymbols>
 	  <LangVersion>latest</LangVersion>

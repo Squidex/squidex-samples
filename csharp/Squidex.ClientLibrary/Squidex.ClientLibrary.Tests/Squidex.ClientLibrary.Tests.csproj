@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Squidex.ClientLibrary.ServiceExtensions\Squidex.ClientLibrary.ServiceExtensions.csproj" />
     <ProjectReference Include="..\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />
   </ItemGroup>
 

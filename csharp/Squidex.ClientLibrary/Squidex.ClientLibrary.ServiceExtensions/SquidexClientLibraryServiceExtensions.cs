@@ -37,16 +37,19 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.Configure(configure);
             }
 
+            services.AddOptions<SquidexServiceOptions>()
+                .PostConfigure<IServiceProvider>((options, c) =>
+                {
+                    options.ClientProvider = new HttpClientProvider(c.GetRequiredService<IHttpClientFactory>(), ClientName);
+                });
+
+            services.AddSingleton<IValidateOptions<SquidexServiceOptions>,
+                  OptionsValidator>();
+
             AddSquidexHttpClient(services, null);
 
-            services.AddSingleton<ISquidexClientManager>(c =>
-            {
-                var options = c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
-
-                options.ClientProvider = new HttpClientProvider(c.GetRequiredService<IHttpClientFactory>(), ClientName);
-
-                return new SquidexClientManager(options);
-            });
+            services.AddSingleton<ISquidexClientManager>(
+                c => new SquidexClientManager(c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value);
 
             services.AddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateAppsClient());

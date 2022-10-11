@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	  <ImplicitUsings>enable</ImplicitUsings>
 	  <LangVersion>latest</LangVersion>
 	  <Nullable>enable</Nullable>

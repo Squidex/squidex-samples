@@ -296,8 +296,16 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        internal void CheckAndFreeze()
+        /// <summary>
+        /// Validates the options.
+        /// </summary>
+        public void CheckAndFreeze()
         {
+            if (isFrozen)
+            {
+                return;
+            }
+
 #pragma warning disable MA0015 // Specify the parameter name in ArgumentException
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
