@@ -23,6 +23,7 @@ namespace Squidex.ClientLibrary
         private bool readResponseAsString;
         private IAuthenticator authenticator;
         private IHttpConfigurator configurator;
+        private IHttpClientProvider clientProvider;
         private IHttpClientFactory clientFactory;
         private TimeSpan httpClientTimeout;
         private bool isFrozen;
@@ -242,6 +243,27 @@ namespace Squidex.ClientLibrary
                 ThrowIfFrozen();
 
                 clientFactory = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the client provider.
+        /// </summary>
+        /// <value>
+        /// The client factory.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+        public IHttpClientProvider ClientProvider
+        {
+            get
+            {
+                return clientProvider;
+            }
+            set
+            {
+                ThrowIfFrozen();
+
+                clientProvider = value;
             }
         }
 

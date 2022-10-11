@@ -7,6 +7,7 @@
 
 using System.Text;
 using Newtonsoft.Json.Linq;
+using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
@@ -30,15 +31,15 @@ namespace Squidex.ClientLibrary
         /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
         /// <param name="appName">Name of the app. Cannot be null or empty.</param>
         /// <param name="schemaName">Name of the schema. Cannot be null or empty.</param>
-        /// <param name="httpClient">The HTTP client. Cannot be null.</param>
+        /// <param name="httpClientProvider">The HTTP client provider. Cannot be null.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="httpClientProvider"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
         /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
-        public ContentsClient(SquidexOptions options, string appName, string schemaName, HttpClient httpClient)
-            : base(options, appName, httpClient)
+        public ContentsClient(SquidexOptions options, string appName, string schemaName, IHttpClientProvider httpClientProvider)
+            : base(options, appName, httpClientProvider)
         {
             Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
@@ -363,7 +364,7 @@ namespace Squidex.ClientLibrary
             }
             else
             {
-                return $"content/{AppName}/{SchemaName}/{path}";
+                return $"api/content/{AppName}/{SchemaName}/{path}";
             }
         }
 
@@ -375,7 +376,7 @@ namespace Squidex.ClientLibrary
             }
             else
             {
-                return $"content/{AppName}/{path}";
+                return $"api/content/{AppName}/{path}";
             }
         }
 

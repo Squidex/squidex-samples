@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary
@@ -22,13 +23,13 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
         /// <param name="appName">Name of the app. Cannot be null or empty.</param>
-        /// <param name="httpClient">The HTTP client. Cannot be null.</param>
+        /// <param name="httpClientProvider">The HTTP client provider. Cannot be null.</param>
         /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="httpClient"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="httpClientProvider"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
-        public ExtendableRulesClient(SquidexOptions options, string appName, HttpClient httpClient)
-            : base(options, appName, httpClient)
+        public ExtendableRulesClient(SquidexOptions options, string appName, IHttpClientProvider httpClientProvider)
+            : base(options, appName, httpClientProvider)
         {
         }
 
