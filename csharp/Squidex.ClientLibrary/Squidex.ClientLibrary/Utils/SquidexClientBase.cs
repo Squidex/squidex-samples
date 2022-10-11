@@ -44,6 +44,7 @@ namespace Squidex.ClientLibrary.Utils
             // The app name can be different from the options app name.
             AppName = appName;
 
+            // Just pass in the options to have direct access to them.
             Options = options;
 
             this.httpClientProvider = httpClientProvider;
@@ -81,7 +82,7 @@ namespace Squidex.ClientLibrary.Utils
 
                     await EnsureResponseIsValidAsync(response);
 #if NET5_0_OR_GREATER
-                return await response.Content.ReadAsStreamAsync(ct);
+                    return await response.Content.ReadAsStreamAsync(ct);
 #else
                     return await response.Content.ReadAsStreamAsync();
 #endif

@@ -144,7 +144,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -227,7 +226,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -325,7 +323,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -419,7 +416,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -523,7 +519,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -617,7 +612,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -718,7 +712,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -985,7 +978,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1070,7 +1062,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1154,7 +1145,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1244,7 +1234,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1277,7 +1266,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -1482,7 +1471,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1718,7 +1706,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/templates");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -1802,7 +1789,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2102,7 +2088,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2196,7 +2181,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2300,7 +2284,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2395,7 +2378,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2480,7 +2462,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2563,7 +2544,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2671,7 +2651,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -2765,7 +2744,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3076,7 +3054,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3176,7 +3153,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3286,7 +3262,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3386,7 +3361,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3476,7 +3450,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3576,7 +3549,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3686,7 +3658,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -3938,7 +3909,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -4518,7 +4488,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -4646,7 +4615,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -4769,7 +4737,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -4882,7 +4849,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5000,7 +4966,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5118,7 +5083,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5232,7 +5196,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5351,7 +5314,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5470,7 +5432,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5580,7 +5541,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5696,7 +5656,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5807,7 +5766,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -5923,7 +5881,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6034,7 +5991,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6150,7 +6106,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6261,7 +6216,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6377,7 +6331,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6488,7 +6441,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6604,7 +6556,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6705,7 +6656,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6799,7 +6749,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -6912,7 +6861,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7011,7 +6959,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7120,7 +7067,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7213,7 +7159,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7326,7 +7271,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7439,7 +7383,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7552,7 +7495,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7665,7 +7607,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7774,7 +7715,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -7870,7 +7810,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8278,7 +8217,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/rules/actions");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8362,7 +8300,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8456,7 +8393,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8560,7 +8496,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8647,7 +8582,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8756,7 +8690,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8845,7 +8778,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -8941,7 +8873,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9037,7 +8968,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9133,7 +9063,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9217,7 +9146,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9299,7 +9227,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9398,7 +9325,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9504,7 +9430,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9594,7 +9519,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9677,7 +9601,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9767,7 +9690,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9846,7 +9768,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/rules/eventtypes");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -9930,7 +9851,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{type}", System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10194,7 +10114,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10288,7 +10207,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10392,7 +10310,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10486,7 +10403,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10736,7 +10652,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/info");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10815,7 +10730,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/ping");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -10893,7 +10807,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -11117,7 +11030,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -11340,7 +11252,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/languages");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -11586,7 +11497,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -11682,7 +11592,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -11938,7 +11847,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/event-consumers");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12022,7 +11930,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12113,7 +12020,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12204,7 +12110,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12442,7 +12347,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/diagnostics/dump");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12521,7 +12425,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/diagnostics/gcdump");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12801,7 +12704,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{resource}", System.Uri.EscapeDataString(ConvertToString(resource, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -12902,7 +12804,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13001,7 +12902,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13119,7 +13019,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13227,7 +13126,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13473,7 +13371,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13562,7 +13459,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13853,7 +13749,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -13886,7 +13781,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -13946,7 +13841,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14041,7 +13935,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14074,7 +13967,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -14129,7 +14022,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14219,7 +14111,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14309,7 +14200,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/restore");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14392,7 +14282,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/restore");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14927,7 +14816,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -14960,7 +14848,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -15087,7 +14975,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15120,7 +15007,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -15186,7 +15073,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15280,7 +15166,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15393,7 +15278,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15502,7 +15386,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15595,7 +15478,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15699,7 +15581,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15798,7 +15679,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -15928,7 +15808,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16034,7 +15913,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16161,7 +16039,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16260,7 +16137,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16366,7 +16242,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16498,7 +16373,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16618,7 +16492,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Length--;
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16706,7 +16579,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16815,7 +16687,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -16947,7 +16818,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -17523,7 +17393,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -17617,7 +17486,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -17721,7 +17589,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -17815,7 +17682,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -17928,7 +17794,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18037,7 +17902,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18127,7 +17991,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18221,7 +18084,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18325,7 +18187,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18420,7 +18281,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18510,7 +18370,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18543,7 +18402,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -18598,7 +18457,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18711,7 +18569,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18801,7 +18658,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -18895,7 +18751,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19008,7 +18863,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19117,7 +18971,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19217,7 +19070,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19311,7 +19163,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19415,7 +19266,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19514,7 +19364,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19623,7 +19472,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19718,7 +19566,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19801,7 +19648,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps");
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19909,7 +19755,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -19993,7 +19838,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20087,7 +19931,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20191,7 +20034,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20279,7 +20121,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20383,7 +20224,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20477,7 +20317,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20581,7 +20420,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20675,7 +20513,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20788,7 +20625,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -20897,7 +20733,6 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
-            var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
@@ -24299,6 +24134,7 @@ namespace Squidex.ClientLibrary.Management
     [JsonInheritanceAttribute("SignalR", typeof(SignalRRuleActionDto))]
     [JsonInheritanceAttribute("Script", typeof(ScriptRuleActionDto))]
     [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
+    [JsonInheritanceAttribute("OpenSearch", typeof(OpenSearchRuleActionDto))]
     [JsonInheritanceAttribute("Notification", typeof(NotificationRuleActionDto))]
     [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
     [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
@@ -26619,6 +26455,49 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Url { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class OpenSearchRuleActionDto : RuleAction
+    {
+        /// <summary>
+        /// The url to the elastic search instance or cluster.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Host { get; set; }
+
+        /// <summary>
+        /// The name of the index.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexName { get; set; }
+
+        /// <summary>
+        /// The optional username.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+
+        /// <summary>
+        /// The optional password.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// The optional custom document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Document { get; set; }
+
+        /// <summary>
+        /// The condition when to delete the document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Delete { get; set; }
 
     }
 

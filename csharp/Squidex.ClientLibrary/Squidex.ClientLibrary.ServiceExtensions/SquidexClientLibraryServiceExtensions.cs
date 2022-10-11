@@ -143,7 +143,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (options.ConfigureHttpClientWithAuthenticator)
                 {
-                    AddSqquidexAuthenticatorAsAdditionalHandler(builder);
+                    AddSquidexAuthenticatorAsAdditionalHandler(builder);
                 }
             });
         }
@@ -152,7 +152,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Adds the Squidex authenticator as additional handler.
         /// </summary>
         /// <param name="builder">The builder to update.</param>
-        public static void AddSqquidexAuthenticatorAsAdditionalHandler(this HttpMessageHandlerBuilder builder)
+        public static void AddSquidexAuthenticatorAsAdditionalHandler(this HttpMessageHandlerBuilder builder)
         {
             var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
 

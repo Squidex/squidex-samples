@@ -30,7 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Squidex.ClientLibrary\Squidex.ClientLibrary.csproj" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <None Include="logo-squared.png" Pack="true" PackagePath="\" />
   </ItemGroup>
