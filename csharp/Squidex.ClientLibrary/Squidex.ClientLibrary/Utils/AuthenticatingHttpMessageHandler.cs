@@ -10,12 +10,22 @@ using System.Net.Http.Headers;
 
 namespace Squidex.ClientLibrary.Utils
 {
-    internal sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
+    /// <summary>
+    /// A custom message handler to handle authentication with Squidex.
+    /// </summary>
+    public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
     {
         private readonly IAuthenticator authenticator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticatingHttpMessageHandler"/> class with the authenticator.
+        /// </summary>
+        /// <param name="authenticator">The authenticator. Cannot be null.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="authenticator"/> is null.</exception>
         public AuthenticatingHttpMessageHandler(IAuthenticator authenticator)
         {
+            Guard.NotNull(authenticator, nameof(authenticator));
+
             this.authenticator = authenticator;
         }
 

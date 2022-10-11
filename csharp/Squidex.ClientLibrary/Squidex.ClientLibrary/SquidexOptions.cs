@@ -12,7 +12,7 @@ namespace Squidex.ClientLibrary
     /// <summary>
     /// The options to configure <see cref="SquidexClientManager"/>.
     /// </summary>
-    public sealed class SquidexOptions
+    public class SquidexOptions
     {
         private string url = "https://cloud.squidex.io";
         private string appName;
