@@ -1,0 +1,25 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Authors>sebastianstehle</Authors>
+    <Company>Squidex UG (haftungsbeschränkt)</Company>
+    <Copyright>MIT</Copyright>
+    <Description>ClientLibrary for Squidex Headless CMS</Description>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <ImplicitUsings>enable</ImplicitUsings>
+    <IncludeSymbols>true</IncludeSymbols>
+	  <LangVersion>latest</LangVersion>
+	  <Nullable>enable</Nullable>
+    <PackageIcon>logo-squared.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
+    <PackageTags>Squidex HeadlessCMS</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>10.0.0-beta1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup> 
+</Project>
