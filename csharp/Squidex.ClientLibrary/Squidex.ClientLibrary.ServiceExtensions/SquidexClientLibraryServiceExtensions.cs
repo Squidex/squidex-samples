@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.ServiceExtensions;
@@ -142,9 +143,31 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (options.ConfigureHttpClientWithAuthenticator)
                 {
-                    builder.AdditionalHandlers.Add(new AuthenticatingHttpMessageHandler(options.Authenticator));
+                    AddSqquidexAuthenticatorAsAdditionalHandler(builder);
                 }
             });
+        }
+
+        /// <summary>
+        /// Adds the Squidex authenticator as additional handler.
+        /// </summary>
+        /// <param name="builder">The builder to update.</param>
+        public static void AddSqquidexAuthenticatorAsAdditionalHandler(this HttpMessageHandlerBuilder builder)
+        {
+            var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
+
+            builder.AdditionalHandlers.Add(new AuthenticatingHttpMessageHandler(options.Authenticator));
+        }
+
+        /// <summary>
+        /// Sets the Squidex authenticator as primary handler.
+        /// </summary>
+        /// <param name="builder">The builder to update.</param>
+        public static void SetSquidexAuthenticatorAsPrimaryHandler(this HttpMessageHandlerBuilder builder)
+        {
+            var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
+
+            builder.PrimaryHandler = new AuthenticatingHttpMessageHandler(options.Authenticator);
         }
     }
 }
