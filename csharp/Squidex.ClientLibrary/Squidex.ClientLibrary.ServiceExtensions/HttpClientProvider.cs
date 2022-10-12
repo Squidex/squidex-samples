@@ -50,7 +50,6 @@ namespace Squidex.ClientLibrary.ServiceExtensions
         /// <inheritdoc />
         public void Return(HttpClient httpClient)
         {
-            httpClient.Dispose();
         }
     }
 }
