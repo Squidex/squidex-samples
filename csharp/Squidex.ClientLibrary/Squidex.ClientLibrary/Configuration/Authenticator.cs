@@ -19,7 +19,6 @@ namespace Squidex.ClientLibrary.Configuration
     /// <seealso cref="IAuthenticator" />
     public class Authenticator : IAuthenticator
     {
-        private readonly HttpClient httpClient;
         private readonly SquidexOptions options;
 
         /// <summary>
@@ -30,22 +29,6 @@ namespace Squidex.ClientLibrary.Configuration
         public Authenticator(SquidexOptions options)
         {
             Guard.NotNull(options, nameof(options));
-
-            var handler = new HttpClientHandler();
-
-            options.Configurator.Configure(handler);
-
-            httpClient =
-                options.ClientFactory.CreateHttpClient(handler) ??
-                new HttpClient(handler, false);
-
-            // Apply this setting afterwards, to override the value from the client factory.
-            httpClient.BaseAddress = new Uri(options.Url);
-
-            // Also override timeout when create from factory.
-            httpClient.Timeout = options.HttpClientTimeout;
-
-            options.Configurator.Configure(httpClient);
 
             this.options = options;
         }
@@ -59,22 +42,30 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public async Task<string> GetBearerTokenAsync()
         {
-            var url = "identity-server/connect/token";
-
-            var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
-            var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-            using (var response = await httpClient.PostAsync(url, bodyContent))
+            var httpClient = options.ClientProvider.Get();
+            try
             {
-                if (!response.IsSuccessStatusCode)
+                const string url = "identity-server/connect/token";
+
+                var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
+                var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                using (var response = await httpClient.PostAsync(url, bodyContent))
                 {
-                    throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+                    }
+
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var jsonToken = JToken.Parse(jsonString);
+
+                    return jsonToken["access_token"]!.ToString();
                 }
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var jsonToken = JToken.Parse(jsonString);
-
-                return jsonToken["access_token"]!.ToString();
+            }
+            finally
+            {
+                options.ClientProvider.Return(httpClient);
             }
         }
     }

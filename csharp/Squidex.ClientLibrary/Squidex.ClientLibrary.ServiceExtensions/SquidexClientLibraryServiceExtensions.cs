@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
 using Squidex.ClientLibrary;
@@ -43,75 +44,75 @@ namespace Microsoft.Extensions.DependencyInjection
                     options.ClientProvider = new HttpClientProvider(c.GetRequiredService<IHttpClientFactory>(), ClientName);
                 });
 
-            services.AddSingleton<IValidateOptions<SquidexServiceOptions>,
+            services.TryAddSingleton<IValidateOptions<SquidexServiceOptions>,
                   OptionsValidator>();
 
             AddSquidexHttpClient(services, null);
 
-            services.AddSingleton<ISquidexClientManager>(
-                c => new SquidexClientManager(c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value);
+            services.TryAddSingleton<ISquidexClientManager>(
+                c => new SquidexClientManager(c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value));
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateAppsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateAssetsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateBackupsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateCommentsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateDiagnosticsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateEventConsumersClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateExtendableRulesClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateCommentsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateHistoryClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateLanguagesClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreatePingClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreatePlansClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateRulesClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateSchemasClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateSearchClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateStatisticsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateTeamsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateTemplatesClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateTranslationsClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateUserManagementClient());
 
-            services.AddSingleton(
+            services.TryAddSingleton(
                 c => c.GetRequiredService<ISquidexClientManager>().CreateUsersClient());
 
             return services;
