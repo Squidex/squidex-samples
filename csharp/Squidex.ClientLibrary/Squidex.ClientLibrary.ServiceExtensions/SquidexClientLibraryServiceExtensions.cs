@@ -77,7 +77,6 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-
         /// <summary>
         /// Adds the Squidex client to the service collection.
         /// </summary>
