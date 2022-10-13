@@ -12,7 +12,7 @@ namespace Squidex.ClientLibrary
     /// <summary>
     /// The options to configure <see cref="SquidexClientManager"/>.
     /// </summary>
-    public sealed class SquidexOptions
+    public class SquidexOptions
     {
         private string url = "https://cloud.squidex.io";
         private string appName;
@@ -23,8 +23,10 @@ namespace Squidex.ClientLibrary
         private bool readResponseAsString;
         private IAuthenticator authenticator;
         private IHttpConfigurator configurator;
+        private IHttpClientProvider clientProvider;
         private IHttpClientFactory clientFactory;
         private TimeSpan httpClientTimeout;
+        private IReadOnlyDictionary<string, AppCredentials>? appCredentials;
         private bool isFrozen;
 
         /// <summary>
@@ -43,7 +45,6 @@ namespace Squidex.ClientLibrary
             {
                 return url;
             }
-
             set
             {
                 ThrowIfFrozen();
@@ -65,7 +66,6 @@ namespace Squidex.ClientLibrary
             {
                 return appName;
             }
-
             set
             {
                 ThrowIfFrozen();
@@ -246,6 +246,27 @@ namespace Squidex.ClientLibrary
         }
 
         /// <summary>
+        /// Gets or sets the client provider.
+        /// </summary>
+        /// <value>
+        /// The client factory.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+        public IHttpClientProvider ClientProvider
+        {
+            get
+            {
+                return clientProvider;
+            }
+            set
+            {
+                ThrowIfFrozen();
+
+                clientProvider = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the HTTP client timeout.
         /// </summary>
         /// <value>
@@ -266,6 +287,27 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets credentials for specific apps.
+        /// </summary>
+        /// <value>
+        /// The app credentials.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+        public IReadOnlyDictionary<string, AppCredentials>? AppCredentials
+        {
+            get
+            {
+                return appCredentials;
+            }
+            set
+            {
+                ThrowIfFrozen();
+
+                appCredentials = value;
+            }
+        }
+
         private void ThrowIfFrozen()
         {
             if (isFrozen)
@@ -274,8 +316,16 @@ namespace Squidex.ClientLibrary
             }
         }
 
-        internal void CheckAndFreeze()
+        /// <summary>
+        /// Validates the options.
+        /// </summary>
+        public void CheckAndFreeze()
         {
+            if (isFrozen)
+            {
+                return;
+            }
+
 #pragma warning disable MA0015 // Specify the parameter name in ArgumentException
             if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
@@ -334,6 +384,20 @@ namespace Squidex.ClientLibrary
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
                     throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
+                }
+
+                if (appCredentials != null)
+                {
+                    var newCredentials = new Dictionary<string, AppCredentials>(StringComparer.OrdinalIgnoreCase);
+
+                    foreach (var kvp in appCredentials)
+                    {
+                        kvp.Value.CheckAndFreeze();
+
+                        newCredentials[kvp.Key.ToLowerInvariant()] = kvp.Value;
+                    }
+
+                    appCredentials = newCredentials;
                 }
 
                 var squidexAuthenticator = new Authenticator(this);

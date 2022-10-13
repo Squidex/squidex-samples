@@ -20,7 +20,7 @@ jobs:
 
     - name: publish
       run: |
-        cd csharp/Squidex.ClientLibrary/Squidex.ClientLibrary
+        cd csharp/Squidex.ClientLibrary
         dotnet pack -c Release
 
     - name: pack

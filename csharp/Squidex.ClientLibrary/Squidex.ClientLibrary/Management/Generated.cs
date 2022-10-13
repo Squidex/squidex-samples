@@ -92,12 +92,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class UserManagementClient : IUserManagementClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UserManagementClient(System.Net.Http.HttpClient httpClient)
+        public UserManagementClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -143,12 +143,12 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -207,8 +207,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -227,13 +226,14 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/user-management");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -304,8 +304,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -325,12 +324,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -395,8 +394,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -420,13 +418,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -503,8 +502,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -524,12 +522,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -598,8 +596,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -619,12 +616,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management/{id}/lock");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -700,8 +697,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -721,12 +717,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/user-management/{id}/unlock");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -802,8 +798,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -954,12 +949,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class UsersClient : IUsersClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public UsersClient(System.Net.Http.HttpClient httpClient)
+        public UsersClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -989,12 +984,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1053,8 +1048,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1075,12 +1069,12 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1139,8 +1133,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1160,12 +1153,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/users/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1230,8 +1223,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1251,12 +1243,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/users/{id}/picture");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -1285,7 +1277,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -1319,8 +1311,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1446,12 +1437,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class TranslationsClient : ITranslationsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public TranslationsClient(System.Net.Http.HttpClient httpClient)
+        public TranslationsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -1490,13 +1481,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/translations");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -1557,8 +1551,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1691,12 +1684,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class TemplatesClient : ITemplatesClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public TemplatesClient(System.Net.Http.HttpClient httpClient)
+        public TemplatesClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -1726,12 +1719,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/templates");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1790,8 +1783,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -1811,12 +1803,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/templates/{name}");
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1881,8 +1873,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2072,12 +2063,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class TeamsClient : ITeamsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public TeamsClient(System.Net.Http.HttpClient httpClient)
+        public TeamsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -2112,12 +2103,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/contributors");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2182,8 +2173,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2207,13 +2197,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/contributors");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -2290,8 +2281,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2311,12 +2301,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/contributors/me");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2381,8 +2371,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2407,12 +2396,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2477,8 +2466,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2493,12 +2481,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/teams");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2557,8 +2545,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2577,13 +2564,14 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/teams");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -2664,8 +2652,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2685,12 +2672,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2755,8 +2742,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -2780,13 +2766,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -2863,8 +2850,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3051,12 +3037,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class StatisticsClient : IStatisticsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public StatisticsClient(System.Net.Http.HttpClient httpClient)
+        public StatisticsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -3091,12 +3077,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/usages/log");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3161,8 +3149,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3192,12 +3179,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3272,8 +3261,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3303,12 +3291,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3383,8 +3371,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3404,12 +3391,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/usages/storage/today");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3474,8 +3463,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3495,12 +3483,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/usages/storage/today");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3565,8 +3553,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3596,12 +3583,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3676,8 +3665,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3707,12 +3695,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(ConvertToString(fromDate, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(ConvertToString(toDate, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3787,8 +3775,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -3914,12 +3901,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class SearchClient : ISearchClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public SearchClient(System.Net.Http.HttpClient httpClient)
+        public SearchClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -3960,12 +3947,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -4030,8 +4019,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -4492,12 +4480,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class SchemasClient : ISchemasClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public SchemasClient(System.Net.Http.HttpClient httpClient)
+        public SchemasClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -4541,13 +4529,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -4634,8 +4625,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -4669,13 +4659,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -4762,8 +4755,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -4792,13 +4784,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -4875,8 +4870,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -4905,13 +4899,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -4988,8 +4985,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5023,13 +5019,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5106,8 +5105,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5141,13 +5139,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5224,8 +5225,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5255,12 +5255,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -5335,8 +5337,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5375,13 +5376,17 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5458,8 +5463,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5494,12 +5498,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -5574,8 +5580,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5605,12 +5610,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5686,8 +5693,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5722,12 +5728,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5803,8 +5811,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5834,12 +5841,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5915,8 +5924,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -5951,12 +5959,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6032,8 +6042,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6063,12 +6072,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6144,8 +6155,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6180,12 +6190,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6261,8 +6273,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6292,12 +6303,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6373,8 +6386,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6409,12 +6421,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6490,8 +6504,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6521,12 +6534,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6602,8 +6617,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6638,12 +6652,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{parentId}", System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6719,8 +6735,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6740,12 +6755,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/schemas");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -6810,8 +6827,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6835,13 +6851,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/schemas");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -6922,8 +6941,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -6948,12 +6966,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -7018,8 +7038,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7048,13 +7067,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7131,8 +7153,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7157,12 +7178,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -7221,8 +7244,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7251,13 +7273,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7334,8 +7359,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7364,13 +7388,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7447,8 +7474,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7477,13 +7503,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7560,8 +7589,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7590,13 +7618,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7673,8 +7704,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7703,13 +7733,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7786,8 +7819,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7812,12 +7844,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -7883,8 +7917,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -7909,12 +7942,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{schema}", System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -7980,8 +8015,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8283,12 +8317,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class RulesClient : IRulesClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public RulesClient(System.Net.Http.HttpClient httpClient)
+        public RulesClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -8318,12 +8352,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/rules/actions");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -8382,8 +8416,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8403,12 +8436,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/rules");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -8473,8 +8508,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8498,13 +8532,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/rules");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -8581,8 +8618,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8602,12 +8638,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/rules/run");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8660,8 +8698,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8690,13 +8727,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -8773,8 +8813,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8799,12 +8838,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8863,8 +8904,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8889,12 +8929,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -8960,8 +9002,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -8986,12 +9027,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -9057,8 +9100,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9083,12 +9125,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9148,8 +9192,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9180,12 +9223,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9239,8 +9284,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9265,12 +9309,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9323,8 +9369,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9348,13 +9393,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/rules/simulate");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -9421,8 +9469,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9447,12 +9494,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9517,8 +9566,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9554,12 +9602,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9624,8 +9674,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9645,12 +9694,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/rules/events");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9703,8 +9754,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9729,12 +9779,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9794,8 +9846,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9820,12 +9871,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9884,8 +9937,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9900,12 +9952,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/rules/eventtypes");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9964,8 +10016,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -9985,12 +10036,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/rules/eventtypes/{type}");
             urlBuilder_.Replace("{type}", System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10055,8 +10106,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10210,12 +10260,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class PlansClient : IPlansClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public PlansClient(System.Net.Http.HttpClient httpClient)
+        public PlansClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -10250,12 +10300,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/plans");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10320,8 +10372,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10345,13 +10396,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/plan");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -10428,8 +10482,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10449,12 +10502,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/plans");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10519,8 +10572,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10544,13 +10596,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/plan");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -10617,8 +10670,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10759,12 +10811,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class PingClient : IPingClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public PingClient(System.Net.Http.HttpClient httpClient)
+        public PingClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -10794,12 +10846,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/info");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10858,8 +10910,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10874,12 +10925,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/ping");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -10932,8 +10983,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -10953,12 +11003,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/ping/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -11011,8 +11063,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -11137,12 +11188,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class NewsClient : INewsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public NewsClient(System.Net.Http.HttpClient httpClient)
+        public NewsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -11178,12 +11229,12 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11242,8 +11293,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -11367,12 +11417,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class LanguagesClient : ILanguagesClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public LanguagesClient(System.Net.Http.HttpClient httpClient)
+        public LanguagesClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -11402,12 +11452,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/languages");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11466,8 +11516,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -11603,12 +11652,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class HistoryClient : IHistoryClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public HistoryClient(System.Net.Http.HttpClient httpClient)
+        public HistoryClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -11649,12 +11698,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11719,8 +11770,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -11746,12 +11796,12 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11816,8 +11866,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -11968,12 +12017,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class EventConsumersClient : IEventConsumersClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public EventConsumersClient(System.Net.Http.HttpClient httpClient)
+        public EventConsumersClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -12003,12 +12052,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/event-consumers");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -12067,8 +12116,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12088,12 +12136,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/event-consumers/{consumerName}/start");
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12159,8 +12207,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12180,12 +12227,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/event-consumers/{consumerName}/stop");
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12251,8 +12298,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12272,12 +12318,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/event-consumers/{consumerName}/reset");
             urlBuilder_.Replace("{consumerName}", System.Uri.EscapeDataString(ConvertToString(consumerName, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12343,8 +12389,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12476,12 +12521,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class DiagnosticsClient : IDiagnosticsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public DiagnosticsClient(System.Net.Http.HttpClient httpClient)
+        public DiagnosticsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -12511,12 +12556,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/diagnostics/dump");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -12575,8 +12620,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12591,12 +12635,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/diagnostics/gcdump");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -12655,8 +12699,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12827,12 +12870,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class CommentsClient : ICommentsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public CommentsClient(System.Net.Http.HttpClient httpClient)
+        public CommentsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -12872,12 +12915,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{resource}", System.Uri.EscapeDataString(ConvertToString(resource, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -12942,8 +12987,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -12974,12 +13018,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -13044,8 +13090,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13074,13 +13119,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -13157,8 +13205,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13192,13 +13239,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -13269,8 +13319,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13300,12 +13349,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{commentsId}", System.Uri.EscapeDataString(ConvertToString(commentsId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13364,8 +13415,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13501,12 +13551,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class NotificationsClient : INotificationsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public NotificationsClient(System.Net.Http.HttpClient httpClient)
+        public NotificationsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -13547,12 +13597,12 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -13611,8 +13661,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13637,12 +13686,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{userId}", System.Uri.EscapeDataString(ConvertToString(userId, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{commentId}", System.Uri.EscapeDataString(ConvertToString(commentId, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13701,8 +13750,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -13884,12 +13932,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class BackupsClient : IBackupsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public BackupsClient(System.Net.Http.HttpClient httpClient)
+        public BackupsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -13929,12 +13977,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -13963,7 +14013,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -13997,8 +14047,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14023,12 +14072,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -14087,8 +14138,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14119,12 +14169,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -14153,7 +14205,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -14187,8 +14239,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14208,12 +14259,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/backups");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -14278,8 +14331,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14299,12 +14351,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/backups");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
 
@@ -14374,8 +14428,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14390,12 +14443,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/restore");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -14454,8 +14507,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14474,13 +14526,14 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/restore");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -14535,8 +14588,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -14888,12 +14940,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class AssetsClient : IAssetsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AssetsClient(System.Net.Http.HttpClient httpClient)
+        public AssetsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -15009,12 +15061,19 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
+
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -15043,7 +15102,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -15077,8 +15136,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15170,12 +15228,16 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -15204,7 +15266,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -15238,8 +15300,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15270,12 +15331,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15340,8 +15403,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15365,13 +15427,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/folders");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -15448,8 +15513,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15478,13 +15542,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -15561,8 +15628,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15587,12 +15653,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -15651,8 +15719,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15681,13 +15748,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -15764,8 +15834,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15785,12 +15854,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/tags");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15855,8 +15926,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -15885,13 +15955,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{name}", System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -15958,8 +16031,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16015,12 +16087,16 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -16085,8 +16161,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16122,12 +16197,15 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -16225,8 +16303,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16250,13 +16327,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/query");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(query, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(query, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -16323,8 +16403,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16349,12 +16428,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -16419,8 +16500,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16456,12 +16536,15 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -16559,8 +16642,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16589,13 +16671,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -16672,8 +16757,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16709,12 +16793,14 @@ namespace Squidex.ClientLibrary.Management
             }
             urlBuilder_.Length--;
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -16773,8 +16859,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16798,13 +16883,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/bulk");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -16881,8 +16969,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -16907,12 +16994,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -17010,8 +17099,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -17040,13 +17128,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -17123,8 +17214,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -17576,12 +17666,12 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class AppsClient : IAppsClient
     {
-        private System.Net.Http.HttpClient _httpClient;
+        private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 
-        public AppsClient(System.Net.Http.HttpClient httpClient)
+        public AppsClient(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
         {
-            _httpClient = httpClient;
+            _httpClientProvider = httpClientProvider;
             _settings = new System.Lazy<Newtonsoft.Json.JsonSerializerSettings>(CreateSerializerSettings);
         }
 
@@ -17616,12 +17706,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/scripts");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -17686,8 +17778,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -17711,13 +17802,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/assets/scripts");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -17794,8 +17888,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -17815,12 +17908,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/clients");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -17885,8 +17980,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -17910,13 +18004,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/clients");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -17993,8 +18090,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18023,13 +18119,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -18106,8 +18205,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18132,12 +18230,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18202,8 +18302,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18223,12 +18322,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/contributors");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18293,8 +18394,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18318,13 +18418,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/contributors");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -18401,8 +18504,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18422,12 +18524,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/contributors/me");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18492,8 +18596,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18518,12 +18621,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18588,8 +18693,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18609,12 +18713,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -18643,7 +18749,7 @@ namespace Squidex.ClientLibrary.Management
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            disposeResponse_ = false; // response and client are disposed by FileResponse
                             return fileResponse_;
                         }
                         else
@@ -18677,8 +18783,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18698,12 +18803,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -18791,8 +18898,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18812,12 +18918,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/image");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18882,8 +18990,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18903,12 +19010,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/languages");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18973,8 +19082,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -18998,13 +19106,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/languages");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -19081,8 +19192,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19111,13 +19221,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -19194,8 +19307,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19220,12 +19332,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{language}", System.Uri.EscapeDataString(ConvertToString(language, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19300,8 +19414,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19321,12 +19434,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/roles");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19391,8 +19506,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19416,13 +19530,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/roles");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -19499,8 +19616,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19520,12 +19636,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/roles/permissions");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19590,8 +19708,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19620,13 +19737,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -19703,8 +19823,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19729,12 +19848,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{roleName}", System.Uri.EscapeDataString(ConvertToString(roleName, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19809,8 +19930,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19825,12 +19945,12 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19889,8 +20009,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -19909,13 +20028,14 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps");
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -19996,8 +20116,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20017,12 +20136,12 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/teams/{team}/apps");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20081,8 +20200,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20102,12 +20220,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20172,8 +20292,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20197,13 +20316,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -20280,8 +20402,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20301,12 +20422,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -20365,8 +20488,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20390,13 +20512,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/team");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -20473,8 +20598,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20494,12 +20618,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/settings");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20564,8 +20690,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20589,13 +20714,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/settings");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -20672,8 +20800,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20693,12 +20820,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/workflows");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20763,8 +20892,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20788,13 +20916,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Append("api/apps/{app}/workflows");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -20871,8 +21002,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -20901,13 +21031,16 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value));
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -20984,8 +21117,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -21010,12 +21142,14 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
-            var client_ = _httpClient;
-            var disposeClient_ = false;
+            var client_ = _httpClientProvider.Get();
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -21080,8 +21214,7 @@ namespace Squidex.ClientLibrary.Management
             }
             finally
             {
-                if (disposeClient_)
-                    client_.Dispose();
+                _httpClientProvider.Return(client_);
             }
         }
 
@@ -21933,6 +22066,11 @@ namespace Squidex.ClientLibrary.Management
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class JsonFieldPropertiesDto : FieldPropertiesDto
     {
+        /// <summary>
+        /// The GraphQL schema.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("graphQLSchema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GraphQLSchema { get; set; }
 
     }
 
@@ -22751,7 +22889,7 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("top", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public long Top { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("sort", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("sort", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<SortNode> Sort { get; set; }
 
     }
@@ -24409,6 +24547,7 @@ namespace Squidex.ClientLibrary.Management
     [JsonInheritanceAttribute("SignalR", typeof(SignalRRuleActionDto))]
     [JsonInheritanceAttribute("Script", typeof(ScriptRuleActionDto))]
     [JsonInheritanceAttribute("Prerender", typeof(PrerenderRuleActionDto))]
+    [JsonInheritanceAttribute("OpenSearch", typeof(OpenSearchRuleActionDto))]
     [JsonInheritanceAttribute("Notification", typeof(NotificationRuleActionDto))]
     [JsonInheritanceAttribute("Medium", typeof(MediumRuleActionDto))]
     [JsonInheritanceAttribute("Fastly", typeof(FastlyRuleActionDto))]
@@ -24731,16 +24870,17 @@ namespace Squidex.ClientLibrary.Management
         public string PlanOwner { get; set; }
 
         /// <summary>
-        /// The ID of the team.
+        /// The link to the management portal.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("teamId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TeamId { get; set; }
+        [Newtonsoft.Json.JsonProperty("portalLink", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PortalLink { get; set; }
 
         /// <summary>
-        /// Indicates if there is a billing portal.
+        /// The reason why the plan cannot be changed.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("hasPortal", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool HasPortal { get; set; }
+        [Newtonsoft.Json.JsonProperty("locked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public PlansLockedReason Locked { get; set; }
 
     }
 
@@ -24815,6 +24955,24 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("maxContributors", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int MaxContributors { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
+    public enum PlansLockedReason
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"None")]
+        None = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NotOwner")]
+        NotOwner = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NoPermission")]
+        NoPermission = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ManagedByTeam")]
+        ManagedByTeam = 3,
 
     }
 
@@ -26710,6 +26868,49 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public string Url { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class OpenSearchRuleActionDto : RuleAction
+    {
+        /// <summary>
+        /// The url to the elastic search instance or cluster.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Host { get; set; }
+
+        /// <summary>
+        /// The name of the index.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexName { get; set; }
+
+        /// <summary>
+        /// The optional username.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Username { get; set; }
+
+        /// <summary>
+        /// The optional password.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Password { get; set; }
+
+        /// <summary>
+        /// The optional custom document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Document { get; set; }
+
+        /// <summary>
+        /// The condition when to delete the document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Delete { get; set; }
 
     }
 

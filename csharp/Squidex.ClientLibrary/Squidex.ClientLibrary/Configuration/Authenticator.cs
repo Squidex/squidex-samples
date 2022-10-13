@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Net;
 using System.Security;
 using System.Text;
 using Newtonsoft.Json.Linq;
@@ -19,7 +20,7 @@ namespace Squidex.ClientLibrary.Configuration
     /// <seealso cref="IAuthenticator" />
     public class Authenticator : IAuthenticator
     {
-        private readonly HttpClient httpClient;
+        private const string TokenUrl = "identity-server/connect/token";
         private readonly SquidexOptions options;
 
         /// <summary>
@@ -31,51 +32,80 @@ namespace Squidex.ClientLibrary.Configuration
         {
             Guard.NotNull(options, nameof(options));
 
-            var handler = new HttpClientHandler();
-
-            options.Configurator.Configure(handler);
-
-            httpClient =
-                options.ClientFactory.CreateHttpClient(handler) ??
-                new HttpClient(handler, false);
-
-            // Apply this setting afterwards, to override the value from the client factory.
-            httpClient.BaseAddress = new Uri(options.Url);
-
-            // Also override timeout when create from factory.
-            httpClient.Timeout = options.HttpClientTimeout;
-
-            options.Configurator.Configure(httpClient);
-
             this.options = options;
         }
 
         /// <inheritdoc/>
-        public Task RemoveTokenAsync(string token)
+        public bool ShouldIntercept(HttpRequestMessage request)
+        {
+#if NETSTANDARD2_0
+            return !request.RequestUri.PathAndQuery.ToLowerInvariant().Contains(TokenUrl);
+#else
+            return request.RequestUri?.PathAndQuery.Contains(TokenUrl, StringComparison.OrdinalIgnoreCase) != true;
+#endif
+        }
+
+        /// <inheritdoc/>
+        public Task RemoveTokenAsync(string appName, string token,
+            CancellationToken ct)
         {
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetBearerTokenAsync()
+        public async Task<string> GetBearerTokenAsync(string appName,
+            CancellationToken ct)
         {
-            var url = "identity-server/connect/token";
-
-            var bodyString = $"grant_type=client_credentials&client_id={options.ClientId}&client_secret={options.ClientSecret}&scope=squidex-api";
-            var bodyContent = new StringContent(bodyString, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-            using (var response = await httpClient.PostAsync(url, bodyContent))
+            var httpClient = options.ClientProvider.Get();
+            try
             {
-                if (!response.IsSuccessStatusCode)
+                var httpRequest = BuildRequest(appName);
+
+                using (var response = await httpClient.SendAsync(httpRequest, ct))
                 {
-                    throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+                    }
+#if NET5_0_OR_GREATER
+                    var jsonString = await response.Content.ReadAsStringAsync(ct);
+#else
+                    var jsonString = await response.Content.ReadAsStringAsync();
+#endif
+                    var jsonToken = JToken.Parse(jsonString);
+
+                    return jsonToken["access_token"]!.ToString();
                 }
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var jsonToken = JToken.Parse(jsonString);
-
-                return jsonToken["access_token"]!.ToString();
             }
+            finally
+            {
+                options.ClientProvider.Return(httpClient);
+            }
+        }
+
+        private HttpRequestMessage BuildRequest(string appName)
+        {
+            var clientId = options.ClientId;
+            var clientSecret = options.ClientSecret;
+
+            if (options.AppCredentials != null && options.AppCredentials.TryGetValue(appName, out var credentials))
+            {
+                clientId = credentials.ClientId;
+                clientSecret = credentials.ClientSecret;
+            }
+
+            var parameters = new Dictionary<string, string>
+            {
+                ["grant_type"] = "client_credentials",
+                ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,
+                ["scope"] = "squidex-api"
+            };
+
+            return new HttpRequestMessage(HttpMethod.Post, TokenUrl)
+            {
+                Content = new FormUrlEncodedContent(parameters!)
+            };
         }
     }
 }

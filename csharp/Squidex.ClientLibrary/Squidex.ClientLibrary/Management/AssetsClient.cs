@@ -96,25 +96,41 @@ namespace Squidex.ClientLibrary.Management
         }
 
         /// <inheritdoc />
-        public Task<long> GetUploadProgressAsync(string app, string fileId,
+        public async Task<long> GetUploadProgressAsync(string app, string fileId,
             CancellationToken cancellationToken = default)
         {
             Guard.NotNull(fileId, nameof(fileId));
 
             var url = $"api/apps/{app}/assets/tus/";
 
-            return _httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
+            var httpClient = _httpClientProvider.Get();
+            try
+            {
+                return await httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
+            }
+            finally
+            {
+                _httpClientProvider.Return(httpClient);
+            }
         }
 
         /// <inheritdoc />
-        public Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
+        public async Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
             CancellationToken cancellationToken = default)
         {
             Guard.NotNull(file, nameof(file));
 
             var url = $"api/apps/{app}/assets/tus";
 
-            return _httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(file, this), cancellationToken);
+            var httpClient = _httpClientProvider.Get();
+            try
+            {
+                await httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(file, this), cancellationToken);
+            }
+            finally
+            {
+                _httpClientProvider.Return(httpClient);
+            }
         }
 
         /// <inheritdoc />

@@ -5,12 +5,35 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
 {
     public class SquidexClientManagerTests
     {
+        [Theory]
+        [InlineData("https://cloud.squidex.io")]
+        [InlineData("https://cloud.squidex.io/")]
+        public void Should_build_client_manager_from_service(string url)
+        {
+            var sut =
+                new ServiceCollection()
+                    .AddSquidexClient(options =>
+                    {
+                        options.AppName = "app";
+                        options.ClientId = "id";
+                        options.ClientSecret = "secet";
+                        options.Url = url;
+                    })
+                    .BuildServiceProvider()
+                    .GetRequiredService<ISquidexClientManager>();
+
+            var result = sut.GenerateUrl("relative/url");
+
+            Assert.Equal("https://cloud.squidex.io/relative/url", result);
+        }
+
         [Theory]
         [InlineData("https://cloud.squidex.io")]
         [InlineData("https://cloud.squidex.io/")]

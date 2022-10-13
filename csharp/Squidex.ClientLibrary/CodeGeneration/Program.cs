@@ -28,6 +28,7 @@ namespace CodeGeneration
             generatorSettings.CSharpGeneratorSettings.DictionaryBaseType = "System.Collections.Generic.Dictionary";
             generatorSettings.CSharpGeneratorSettings.DictionaryInstanceType = "System.Collections.Generic.Dictionary";
             generatorSettings.CSharpGeneratorSettings.DictionaryType = "System.Collections.Generic.Dictionary";
+            generatorSettings.CSharpGeneratorSettings.TemplateDirectory = Directory.GetCurrentDirectory();
             generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
             generatorSettings.ExceptionClass = "SquidexManagementException";
@@ -38,10 +39,15 @@ namespace CodeGeneration
 
             var code = codeGenerator.GenerateFile();
 
+            // Fix the creation of abstract classes.
             code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
             code = code.Replace(" = new RuleTriggerDto();", string.Empty);
             code = code.Replace(" = new RuleAction();", string.Empty);
+
+            // Fix the wrong initialization of nested collections.
             code = code.Replace("new System.Collections.Generic.Dictionary<string, System.Collections.ObjectModel.Collection<CallsUsagePerDateDto>>();", "new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();");
+
+            // Fix the custom field names property.
             code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
 
             File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
