@@ -32,7 +32,12 @@ namespace Squidex.ClientLibrary.Utils
         /// <inheritdoc/>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = await authenticator.GetBearerTokenAsync();
+            if (!authenticator.ShouldIntercept(request))
+            {
+                return await base.SendAsync(request, cancellationToken);
+            }
+
+            var token = await authenticator.GetBearerTokenAsync(cancellationToken);
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -40,7 +45,7 @@ namespace Squidex.ClientLibrary.Utils
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                await authenticator.RemoveTokenAsync(token);
+                await authenticator.RemoveTokenAsync(token, cancellationToken);
             }
 
             return response;

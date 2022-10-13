@@ -33,13 +33,14 @@ namespace Squidex.ClientLibrary.Configuration
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetBearerTokenAsync()
+        public async Task<string> GetBearerTokenAsync(
+            CancellationToken ct)
         {
             var result = GetFromCache();
 
             if (result == null)
             {
-                result = await authenticator.GetBearerTokenAsync();
+                result = await authenticator.GetBearerTokenAsync(ct);
 
                 SetToCache(result, DateTimeOffset.UtcNow.AddDays(50));
             }
@@ -48,11 +49,20 @@ namespace Squidex.ClientLibrary.Configuration
         }
 
         /// <inheritdoc/>
-        public Task RemoveTokenAsync(string token)
+        public Task RemoveTokenAsync(string token,
+            CancellationToken ct)
         {
             RemoveFromCache();
 
-            return authenticator.RemoveTokenAsync(token);
+            return authenticator.RemoveTokenAsync(token, ct);
+        }
+
+        /// <inheritdoc/>
+        public bool ShouldIntercept(HttpRequestMessage request)
+        {
+            var shouldIntercept = authenticator.ShouldIntercept(request);
+
+            return shouldIntercept;
         }
 
         /// <summary>
