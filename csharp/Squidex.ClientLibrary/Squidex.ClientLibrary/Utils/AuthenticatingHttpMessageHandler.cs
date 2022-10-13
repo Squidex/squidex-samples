@@ -37,7 +37,16 @@ namespace Squidex.ClientLibrary.Utils
                 return await base.SendAsync(request, cancellationToken);
             }
 
-            var token = await authenticator.GetBearerTokenAsync(cancellationToken);
+            var appName = string.Empty;
+
+            if (request.Headers.TryGetValues(SpecialHeaders.AppName, out var appValues))
+            {
+                request.Headers.Remove(SpecialHeaders.AppName);
+
+                appName = appValues.FirstOrDefault() ?? string.Empty;
+            }
+
+            var token = await authenticator.GetBearerTokenAsync(appName, cancellationToken);
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -45,7 +54,7 @@ namespace Squidex.ClientLibrary.Utils
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                await authenticator.RemoveTokenAsync(token, cancellationToken);
+                await authenticator.RemoveTokenAsync(appName, token, cancellationToken);
             }
 
             return response;

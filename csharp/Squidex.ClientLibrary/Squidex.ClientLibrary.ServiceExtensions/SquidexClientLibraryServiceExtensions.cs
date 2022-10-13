@@ -97,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection to configure.</param>
         /// <param name="configure">The callback to configure the HTTP client.</param>
         /// <returns>The http client builder to make more customizatons.</returns>
-        public static IHttpClientBuilder AddSquidexHttpClient(IServiceCollection services, Action<IServiceProvider, HttpClient>? configure = null)
+        public static IHttpClientBuilder AddSquidexHttpClient(this IServiceCollection services, Action<IServiceProvider, HttpClient>? configure = null)
         {
             return services.AddHttpClient(ClientName, (c, httpClient) =>
             {

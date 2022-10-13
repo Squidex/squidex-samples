@@ -12,11 +12,29 @@ namespace Squidex.ClientLibrary.Tests
 {
     public class BasicClientServiceTests
     {
-        private readonly ISquidexClientManager sut;
-
-        public BasicClientServiceTests()
+        [Fact]
+        public async Task Should_query_content()
         {
-            sut =
+            var sut = CreateSut();
+
+            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+
+            Assert.NotEmpty(result.Items);
+        }
+
+        [Fact]
+        public async Task Should_query_content_with_overriden_credentials()
+        {
+            var sut = CreateSutWithOverridenCredentials();
+
+            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+
+            Assert.NotEmpty(result.Items);
+        }
+
+        private static ISquidexClientManager CreateSut()
+        {
+            var sut =
                new ServiceCollection()
                    .AddSquidexClient(options =>
                    {
@@ -27,14 +45,33 @@ namespace Squidex.ClientLibrary.Tests
                    })
                    .BuildServiceProvider()
                    .GetRequiredService<ISquidexClientManager>();
+
+            return sut;
         }
 
-        [Fact]
-        public async Task Should_query_content()
+        private static ISquidexClientManager CreateSutWithOverridenCredentials()
         {
-            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+            var sut =
+               new ServiceCollection()
+                   .AddSquidexClient(options =>
+                   {
+                       options.AppName = "squidex-website";
+                       options.ClientId = "INVALID";
+                       options.ClientSecret = "INVALID";
+                       options.AppCredentials = new Dictionary<string, AppCredentials>
+                       {
+                           ["squidex-website"] = new AppCredentials
+                           {
+                               ClientId = "squidex-website:default",
+                               ClientSecret = "QGgqxd7bDHBTEkpC6fj8sbdPWgZrPrPfr3xzb3LKoec=",
+                           }
+                       };
+                       options.Url = "https://cloud.squidex.io";
+                   })
+                   .BuildServiceProvider()
+                   .GetRequiredService<ISquidexClientManager>();
 
-            Assert.NotEmpty(result.Items);
+            return sut;
         }
     }
 }

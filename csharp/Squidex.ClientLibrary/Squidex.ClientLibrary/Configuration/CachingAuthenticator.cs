@@ -16,8 +16,14 @@ namespace Squidex.ClientLibrary.Configuration
     public class CachingAuthenticator : IAuthenticator
     {
         private readonly IAuthenticator authenticator;
-        private DateTimeOffset cacheExpires;
-        private string? cacheEntry;
+        private readonly Dictionary<string, CacheEntry> cache = new Dictionary<string, CacheEntry>(StringComparer.OrdinalIgnoreCase);
+
+        private sealed class CacheEntry
+        {
+            public string? Token { get; set; }
+
+            public DateTimeOffset Expires { get; set; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachingAuthenticator"/> class with the cache key,
@@ -33,28 +39,28 @@ namespace Squidex.ClientLibrary.Configuration
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetBearerTokenAsync(
+        public async Task<string> GetBearerTokenAsync(string appName,
             CancellationToken ct)
         {
-            var result = GetFromCache();
+            var result = GetFromCache(appName);
 
             if (result == null)
             {
-                result = await authenticator.GetBearerTokenAsync(ct);
+                result = await authenticator.GetBearerTokenAsync(appName, ct);
 
-                SetToCache(result, DateTimeOffset.UtcNow.AddDays(50));
+                SetToCache(appName, result, DateTimeOffset.UtcNow.AddDays(50));
             }
 
             return result;
         }
 
         /// <inheritdoc/>
-        public Task RemoveTokenAsync(string token,
+        public Task RemoveTokenAsync(string appName, string token,
             CancellationToken ct)
         {
-            RemoveFromCache();
+            RemoveFromCache(appName);
 
-            return authenticator.RemoveTokenAsync(token, ct);
+            return authenticator.RemoveTokenAsync(appName, token, ct);
         }
 
         /// <inheritdoc/>
@@ -68,37 +74,56 @@ namespace Squidex.ClientLibrary.Configuration
         /// <summary>
         /// Gets the current JWT bearer token from the cache.
         /// </summary>
+        /// <param name="appName">The name of the app.</param>
         /// <returns>
         /// The JWT bearer token or null if not found in the cache.
         /// </returns>
-        protected string? GetFromCache()
+        protected string? GetFromCache(string appName)
         {
-            if (cacheExpires < DateTimeOffset.UtcNow)
+            CacheEntry? entry = null;
+
+            lock (cache)
             {
-                RemoveFromCache();
+                cache.TryGetValue(appName, out entry);
             }
 
-            return cacheEntry;
+            if (entry == null)
+            {
+                return null;
+            }
+
+            if (entry.Expires < DateTimeOffset.UtcNow)
+            {
+                RemoveFromCache(appName);
+            }
+
+            return entry.Token;
         }
 
         /// <summary>
         /// Removes from current JWT bearer token from the cache.
         /// </summary>
-        protected void RemoveFromCache()
+        /// <param name="appName">The name of the app.</param>
+        protected void RemoveFromCache(string appName)
         {
-            cacheExpires = default;
-            cacheEntry = default;
+            lock (cache)
+            {
+                cache.Remove(appName);
+            }
         }
 
         /// <summary>
         /// Sets to the current JWT bearer token.
         /// </summary>
+        /// <param name="appName">The name of the app.</param>
         /// <param name="token">The JWT bearer token.</param>
         /// <param name="expires">The date and time when the token will expire.</param>
-        protected void SetToCache(string token, DateTimeOffset expires)
+        protected void SetToCache(string appName, string token, DateTimeOffset expires)
         {
-            cacheExpires = expires;
-            cacheEntry = token;
+            lock (cache)
+            {
+                cache[appName] = new CacheEntry { Token = token, Expires = expires };
+            }
         }
     }
 }

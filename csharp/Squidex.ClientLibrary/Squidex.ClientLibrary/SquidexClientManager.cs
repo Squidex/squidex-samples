@@ -38,7 +38,6 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(options, nameof(options));
 
             options.CheckAndFreeze();
-
             Options = options;
 
             httpClientProvider = options.ClientProvider ?? new StaticHttpClientProvider(options);

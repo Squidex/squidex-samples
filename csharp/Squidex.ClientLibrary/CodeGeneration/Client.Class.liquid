@@ -152,6 +152,12 @@
             using (var request_ = new System.Net.Http.HttpRequestMessage())
 {%     endif -%}
             {
+{% for parameter in operation.Parameters %}
+{% if parameter.VariableName == "app" %}
+                request_.Headers.TryAddWithoutValidation(SpecialHeaders.App, app);
+{% endif -%}
+{% endfor -%}
+
 {%     for parameter in operation.HeaderParameters %}
 {%         if parameter.IsRequired -%}
                 if ({{ parameter.VariableName }} == null)

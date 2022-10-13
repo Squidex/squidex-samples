@@ -148,6 +148,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -230,6 +231,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -327,6 +329,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -420,6 +423,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -523,6 +527,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -616,6 +621,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -716,6 +722,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -982,6 +989,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1066,6 +1074,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1149,6 +1158,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1238,6 +1248,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -1475,6 +1486,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -1710,6 +1724,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -1793,6 +1808,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2092,6 +2108,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2185,6 +2202,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2288,6 +2306,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2382,6 +2401,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2466,6 +2486,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2548,6 +2569,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -2655,6 +2677,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2748,6 +2771,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -3058,6 +3082,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3157,6 +3184,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3266,6 +3296,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3365,6 +3396,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3454,6 +3488,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3553,6 +3588,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3662,6 +3700,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -3913,6 +3952,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -4492,6 +4534,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -4619,6 +4664,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -4741,6 +4789,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -4853,6 +4904,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -4970,6 +5024,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -5087,6 +5144,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -5200,6 +5260,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -5318,6 +5381,10 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -5436,6 +5503,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -5545,6 +5615,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5660,6 +5733,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5770,6 +5846,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5885,6 +5964,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5995,6 +6077,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6110,6 +6195,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6220,6 +6308,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6335,6 +6426,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6445,6 +6539,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6560,6 +6657,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6660,6 +6760,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -6753,6 +6856,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -6865,6 +6971,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -6963,6 +7072,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7071,6 +7183,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -7163,6 +7278,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7275,6 +7393,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7387,6 +7508,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7499,6 +7623,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7611,6 +7738,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -7719,6 +7849,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -7814,6 +7947,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -8221,6 +8357,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -8304,6 +8441,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -8397,6 +8537,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -8500,6 +8643,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8586,6 +8732,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -8694,6 +8843,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8782,6 +8934,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -8877,6 +9032,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -8972,6 +9130,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9067,6 +9228,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9150,6 +9314,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9231,6 +9398,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -9329,6 +9499,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9434,6 +9607,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9523,6 +9699,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9605,6 +9784,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
 
@@ -9694,6 +9876,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -9772,6 +9957,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -9855,6 +10041,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10118,6 +10305,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10211,6 +10401,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -10314,6 +10507,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10407,6 +10601,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -10656,6 +10851,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -10734,6 +10930,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -10811,6 +11008,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -11034,6 +11234,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11256,6 +11457,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11501,6 +11703,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11596,6 +11801,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11851,6 +12057,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -11934,6 +12141,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12024,6 +12232,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12114,6 +12323,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12351,6 +12561,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -12429,6 +12640,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -12708,6 +12920,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -12808,6 +13023,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -12906,6 +13124,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -13023,6 +13244,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -13130,6 +13354,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13375,6 +13602,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -13463,6 +13691,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13753,6 +13982,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -13845,6 +14077,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -13939,6 +14174,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -14026,6 +14264,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -14115,6 +14356,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
 
@@ -14204,6 +14448,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -14286,6 +14531,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -14820,6 +15066,14 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
+
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -14979,6 +15233,11 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -15077,6 +15336,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15170,6 +15432,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -15282,6 +15547,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -15390,6 +15658,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -15482,6 +15753,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -15585,6 +15859,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15683,6 +15960,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -15812,6 +16092,11 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15917,6 +16202,10 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -16043,6 +16332,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(query, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -16141,6 +16433,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -16246,6 +16541,10 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -16377,6 +16676,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -16496,6 +16798,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -16583,6 +16888,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -16691,6 +16999,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -16822,6 +17133,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -17397,6 +17711,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -17490,6 +17807,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -17593,6 +17913,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -17686,6 +18009,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -17798,6 +18124,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -17906,6 +18235,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -17995,6 +18327,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18088,6 +18423,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -18191,6 +18529,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18285,6 +18626,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18374,6 +18718,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
@@ -18461,6 +18808,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
                     content_.Headers.Remove("Content-Type");
@@ -18573,6 +18923,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18662,6 +19015,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -18755,6 +19111,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -18867,6 +19226,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -18975,6 +19337,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19074,6 +19439,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19167,6 +19535,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -19270,6 +19641,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19368,6 +19742,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -19476,6 +19853,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19570,6 +19950,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19652,6 +20033,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -19759,6 +20141,7 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19842,6 +20225,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -19935,6 +20321,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20038,6 +20427,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -20125,6 +20517,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20228,6 +20623,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20321,6 +20719,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20424,6 +20825,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -20517,6 +20921,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20629,6 +21036,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20737,6 +21147,9 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    request_.Headers.TryAddWithoutValidation("X-App", app);
+
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 

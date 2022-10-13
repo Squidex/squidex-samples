@@ -1,0 +1,13 @@
+{
+    "squidex": {
+        "appName": "My-App",
+        "clientId": "My-ClientId",
+        "clientSecret": "My-ClientSecret",
+        "appCredentials": {
+            "My-App2": {
+                "clientId": "My-ClientId2",
+                "clientSecret": "My-ClientSecret2"
+            }
+        }
+    }
+}

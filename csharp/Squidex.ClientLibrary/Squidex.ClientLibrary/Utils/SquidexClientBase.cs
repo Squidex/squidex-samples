@@ -116,7 +116,7 @@ namespace Squidex.ClientLibrary.Utils
             }
         }
 
-        protected internal static HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent? content, QueryContext? context)
+        protected internal HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent? content, QueryContext? context)
         {
             var request = new HttpRequestMessage(method, path);
 
@@ -125,6 +125,7 @@ namespace Squidex.ClientLibrary.Utils
                 request.Content = content;
             }
 
+            request.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, AppName);
             context?.AddToHeaders(request.Headers);
 
             return request;

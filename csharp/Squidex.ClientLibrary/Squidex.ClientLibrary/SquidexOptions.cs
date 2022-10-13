@@ -26,6 +26,7 @@ namespace Squidex.ClientLibrary
         private IHttpClientProvider clientProvider;
         private IHttpClientFactory clientFactory;
         private TimeSpan httpClientTimeout;
+        private IReadOnlyDictionary<string, AppCredentials>? appCredentials;
         private bool isFrozen;
 
         /// <summary>
@@ -44,7 +45,6 @@ namespace Squidex.ClientLibrary
             {
                 return url;
             }
-
             set
             {
                 ThrowIfFrozen();
@@ -66,7 +66,6 @@ namespace Squidex.ClientLibrary
             {
                 return appName;
             }
-
             set
             {
                 ThrowIfFrozen();
@@ -288,6 +287,27 @@ namespace Squidex.ClientLibrary
             }
         }
 
+        /// <summary>
+        /// Gets or sets credentials for specific apps.
+        /// </summary>
+        /// <value>
+        /// The app credentials.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+        public IReadOnlyDictionary<string, AppCredentials>? AppCredentials
+        {
+            get
+            {
+                return appCredentials;
+            }
+            set
+            {
+                ThrowIfFrozen();
+
+                appCredentials = value;
+            }
+        }
+
         private void ThrowIfFrozen()
         {
             if (isFrozen)
@@ -364,6 +384,20 @@ namespace Squidex.ClientLibrary
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
                     throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
+                }
+
+                if (appCredentials != null)
+                {
+                    var newCredentials = new Dictionary<string, AppCredentials>(StringComparer.OrdinalIgnoreCase);
+
+                    foreach (var kvp in appCredentials)
+                    {
+                        kvp.Value.CheckAndFreeze();
+
+                        newCredentials[kvp.Key.ToLowerInvariant()] = kvp.Value;
+                    }
+
+                    appCredentials = newCredentials;
                 }
 
                 var squidexAuthenticator = new Authenticator(this);

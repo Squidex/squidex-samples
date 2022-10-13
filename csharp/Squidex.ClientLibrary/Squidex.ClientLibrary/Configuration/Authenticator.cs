@@ -41,25 +41,25 @@ namespace Squidex.ClientLibrary.Configuration
 #if NETSTANDARD2_0
             return !request.RequestUri.PathAndQuery.ToLowerInvariant().Contains(TokenUrl);
 #else
-            return !request.RequestUri.PathAndQuery.Contains(TokenUrl, StringComparison.OrdinalIgnoreCase);
+            return request.RequestUri?.PathAndQuery.Contains(TokenUrl, StringComparison.OrdinalIgnoreCase) != true;
 #endif
         }
 
         /// <inheritdoc/>
-        public Task RemoveTokenAsync(string token,
+        public Task RemoveTokenAsync(string appName, string token,
             CancellationToken ct)
         {
             return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
-        public async Task<string> GetBearerTokenAsync(
+        public async Task<string> GetBearerTokenAsync(string appName,
             CancellationToken ct)
         {
             var httpClient = options.ClientProvider.Get();
             try
             {
-                var httpRequest = BuildRequest();
+                var httpRequest = BuildRequest(appName);
 
                 using (var response = await httpClient.SendAsync(httpRequest, ct))
                 {
@@ -83,19 +83,28 @@ namespace Squidex.ClientLibrary.Configuration
             }
         }
 
-        private HttpRequestMessage BuildRequest()
+        private HttpRequestMessage BuildRequest(string appName)
         {
-            var content = new FormUrlEncodedContent(new Dictionary<string, string>
+            var clientId = options.ClientId;
+            var clientSecret = options.ClientSecret;
+
+            if (options.AppCredentials != null && options.AppCredentials.TryGetValue(appName, out var credentials))
+            {
+                clientId = credentials.ClientId;
+                clientSecret = credentials.ClientSecret;
+            }
+
+            var parameters = new Dictionary<string, string>
             {
                 ["grant_type"] = "client_credentials",
-                ["client_id"] = options.ClientId,
-                ["client_secret"] = options.ClientSecret,
+                ["client_id"] = clientId,
+                ["client_secret"] = clientSecret,
                 ["scope"] = "squidex-api"
-            });
+            };
 
             return new HttpRequestMessage(HttpMethod.Post, TokenUrl)
             {
-                Content = content
+                Content = new FormUrlEncodedContent(parameters!)
             };
         }
     }
