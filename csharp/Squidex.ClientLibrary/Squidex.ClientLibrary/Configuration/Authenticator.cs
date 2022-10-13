@@ -20,7 +20,7 @@ namespace Squidex.ClientLibrary.Configuration
     /// <seealso cref="IAuthenticator" />
     public class Authenticator : IAuthenticator
     {
-        private const string AuthenticationHeader = "X-AuthRequest";
+        private const string TokenUrl = "identity-server/connect/token";
         private readonly SquidexOptions options;
 
         /// <summary>
@@ -38,7 +38,11 @@ namespace Squidex.ClientLibrary.Configuration
         /// <inheritdoc/>
         public bool ShouldIntercept(HttpRequestMessage request)
         {
-            return !request.Headers.Contains(AuthenticationHeader);
+#if NETSTANDARD2_0
+            return !request.RequestUri.PathAndQuery.ToLowerInvariant().Contains(TokenUrl);
+#else
+            return !request.RequestUri.PathAndQuery.Contains(TokenUrl, StringComparison.OrdinalIgnoreCase);
+#endif
         }
 
         /// <inheritdoc/>
@@ -81,8 +85,6 @@ namespace Squidex.ClientLibrary.Configuration
 
         private HttpRequestMessage BuildRequest()
         {
-            const string url = "identity-server/connect/token";
-
             var content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 ["grant_type"] = "client_credentials",
@@ -91,14 +93,10 @@ namespace Squidex.ClientLibrary.Configuration
                 ["scope"] = "squidex-api"
             });
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, url)
+            return new HttpRequestMessage(HttpMethod.Post, TokenUrl)
             {
                 Content = content
             };
-
-            httpRequest.Headers.TryAddWithoutValidation(AuthenticationHeader, "1");
-
-            return httpRequest;
         }
     }
 }

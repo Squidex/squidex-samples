@@ -11,7 +11,7 @@ namespace Squidex.ClientLibrary.Tests
 {
     public class BasicClientTests
     {
-        private readonly SquidexClientManager sut;
+        private readonly ISquidexClientManager sut;
 
         public BasicClientTests()
         {
@@ -42,9 +42,9 @@ namespace Squidex.ClientLibrary.Tests
         [Fact]
         public async Task Should_get_content()
         {
-            var blogs = sut.CreateDynamicContentsClient("blog");
+            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
 
-            await blogs.GetAsync();
+            Assert.NotEmpty(result.Items);
         }
     }
 }

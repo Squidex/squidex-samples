@@ -10,21 +10,13 @@ using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
 {
-    public class ContentQueryIntegrationTests
+    public class BasicClientServiceTests
     {
-        [Fact]
-        public async Task Should_query_content()
+        private readonly ISquidexClientManager sut;
+
+        public BasicClientServiceTests()
         {
-            var sut = CreateSut().CreateDynamicContentsClient("blog");
-
-            var result = await sut.GetAsync();
-
-            Assert.NotEmpty(result.Items);
-        }
-
-        private ISquidexClientManager CreateSut()
-        {
-            var sut =
+            sut =
                new ServiceCollection()
                    .AddSquidexClient(options =>
                    {
@@ -35,8 +27,14 @@ namespace Squidex.ClientLibrary.Tests
                    })
                    .BuildServiceProvider()
                    .GetRequiredService<ISquidexClientManager>();
+        }
 
-            return sut;
+        [Fact]
+        public async Task Should_query_content()
+        {
+            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+
+            Assert.NotEmpty(result.Items);
         }
     }
 }
