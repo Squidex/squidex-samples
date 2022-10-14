@@ -405,6 +405,11 @@ namespace Squidex.ClientLibrary
                 authenticator = new CachingAuthenticator(squidexAuthenticator);
             }
 
+            if (clientProvider == null)
+            {
+                clientProvider = new StaticHttpClientProvider(this);
+            }
+
             isFrozen = true;
 #pragma warning restore MA0015 // Specify the parameter name in ArgumentException
         }

@@ -24,18 +24,11 @@ namespace Squidex.ClientLibrary.Configuration
         {
             Guard.NotNull(options, nameof(options));
 
-            staticHttpClient = CreateClient(options, true);
+            staticHttpClient = CreateClient(options);
         }
 
-        private static HttpClient CreateClient(SquidexOptions options, bool appendApi)
+        private static HttpClient CreateClient(SquidexOptions options)
         {
-            var url = new Uri(options.Url, UriKind.Absolute);
-
-            if (appendApi)
-            {
-                url = new Uri(url, "api/");
-            }
-
             var handler = new HttpClientHandler();
 
             options.Configurator.Configure(handler);
@@ -52,7 +45,7 @@ namespace Squidex.ClientLibrary.Configuration
                     new HttpClient(messageHandler, false);
 
             // Apply this setting afterwards, to override the value from the client factory.
-            httpClient.BaseAddress = url;
+            httpClient.BaseAddress = new Uri(options.Url, UriKind.Absolute);
 
             // Also override timeout when create from factory.
             httpClient.Timeout = options.HttpClientTimeout;

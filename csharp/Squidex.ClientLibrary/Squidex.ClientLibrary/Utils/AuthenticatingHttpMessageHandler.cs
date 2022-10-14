@@ -30,22 +30,27 @@ namespace Squidex.ClientLibrary.Utils
         }
 
         /// <inheritdoc/>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
+            if (request.Headers.Authorization != null)
+            {
+                return base.SendAsync(request, cancellationToken);
+            }
+
             if (!authenticator.ShouldIntercept(request))
             {
-                return await base.SendAsync(request, cancellationToken);
+                return base.SendAsync(request, cancellationToken);
             }
 
-            var appName = string.Empty;
+            var appName = GetAppName(request);
 
-            if (request.Headers.TryGetValues(SpecialHeaders.AppName, out var appValues))
-            {
-                request.Headers.Remove(SpecialHeaders.AppName);
+            return InterceptAsync(request, appName, true, cancellationToken);
+        }
 
-                appName = appValues.FirstOrDefault() ?? string.Empty;
-            }
-
+        private async Task<HttpResponseMessage> InterceptAsync(HttpRequestMessage request, string appName, bool retry,
+            CancellationToken cancellationToken)
+        {
             var token = await authenticator.GetBearerTokenAsync(appName, cancellationToken);
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -55,9 +60,28 @@ namespace Squidex.ClientLibrary.Utils
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await authenticator.RemoveTokenAsync(appName, token, cancellationToken);
+
+                if (retry)
+                {
+                    return await InterceptAsync(request, appName, false, cancellationToken);
+                }
             }
 
             return response;
+        }
+
+        private static string GetAppName(HttpRequestMessage request)
+        {
+            var appName = string.Empty;
+
+            if (request.Headers.TryGetValues(SpecialHeaders.AppName, out var appValues))
+            {
+                request.Headers.Remove(SpecialHeaders.AppName);
+
+                appName = appValues.FirstOrDefault() ?? string.Empty;
+            }
+
+            return appName;
         }
     }
 }

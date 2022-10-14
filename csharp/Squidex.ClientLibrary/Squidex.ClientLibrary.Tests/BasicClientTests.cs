@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Squidex.ClientLibrary.Configuration;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests
@@ -23,14 +24,6 @@ namespace Squidex.ClientLibrary.Tests
             });
         }
 
-        [Fact]
-        public async Task Should_make_ping_request()
-        {
-            var pingClient = sut.CreatePingClient();
-
-            await pingClient.GetPingAsync();
-        }
-
         [Fact(Skip = "No permissions.")]
         public async Task Should_make_ping_api_request()
         {
@@ -40,8 +33,26 @@ namespace Squidex.ClientLibrary.Tests
         }
 
         [Fact]
+        public async Task Should_make_ping_request()
+        {
+            var pingClient = sut.CreatePingClient();
+
+            await pingClient.GetPingAsync();
+        }
+
+        [Fact]
         public async Task Should_get_content()
         {
+            var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+
+            Assert.NotEmpty(result.Items);
+        }
+
+        [Fact]
+        public async Task Should_get_content_with_invalid_token()
+        {
+            ((CachingAuthenticator)sut.Options.Authenticator).SetToCache(sut.Options.AppName, "TOKEN", DateTime.MaxValue);
+
             var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
 
             Assert.NotEmpty(result.Items);

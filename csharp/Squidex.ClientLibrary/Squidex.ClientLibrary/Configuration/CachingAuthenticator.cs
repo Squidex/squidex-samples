@@ -104,7 +104,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// Removes from current JWT bearer token from the cache.
         /// </summary>
         /// <param name="appName">The name of the app.</param>
-        protected void RemoveFromCache(string appName)
+        public void RemoveFromCache(string appName)
         {
             lock (cache)
             {
@@ -118,7 +118,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="appName">The name of the app.</param>
         /// <param name="token">The JWT bearer token.</param>
         /// <param name="expires">The date and time when the token will expire.</param>
-        protected void SetToCache(string appName, string token, DateTimeOffset expires)
+        public void SetToCache(string appName, string token, DateTimeOffset expires)
         {
             lock (cache)
             {
