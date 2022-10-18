@@ -5,6 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using NJsonSchema;
+using NJsonSchema.CodeGeneration;
+using NJsonSchema.CodeGeneration.CSharp;
 using NSwag;
 using NSwag.CodeGeneration.CSharp;
 using NSwag.CodeGeneration.OperationNameGenerators;
@@ -18,6 +21,8 @@ namespace CodeGeneration
             var document = OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json").Result;
 
             var generatorSettings = new CSharpClientGeneratorSettings();
+            generatorSettings.ExceptionClass = "SquidexManagementException";
+            generatorSettings.CSharpGeneratorSettings.ValueGenerator = new ValueGenerator(generatorSettings.CSharpGeneratorSettings);
             generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
             generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
             generatorSettings.CSharpGeneratorSettings.ExcludedTypeNames = new[] { "JsonInheritanceConverter" };
@@ -28,32 +33,34 @@ namespace CodeGeneration
             generatorSettings.CSharpGeneratorSettings.DictionaryInstanceType = "System.Collections.Generic.Dictionary";
             generatorSettings.CSharpGeneratorSettings.DictionaryType = "System.Collections.Generic.Dictionary";
             generatorSettings.CSharpGeneratorSettings.TemplateDirectory = Directory.GetCurrentDirectory();
+            generatorSettings.OperationNameGenerator = new TagNameGenerator();
             generatorSettings.GenerateOptionalParameters = true;
             generatorSettings.GenerateClientInterfaces = true;
-            generatorSettings.ExceptionClass = "SquidexManagementException";
-            generatorSettings.OperationNameGenerator = new TagNameGenerator();
             generatorSettings.UseBaseUrl = false;
 
             var codeGenerator = new CSharpClientGenerator(document, generatorSettings);
 
             var code = codeGenerator.GenerateFile();
 
-            // Fix the creation of abstract classes.
-            code = code.Replace(" = new FieldPropertiesDto();", string.Empty);
-            code = code.Replace(" = new RuleTriggerDto();", string.Empty);
-            code = code.Replace(" = new RuleAction();", string.Empty);
-
-            // Fix the wrong initialization of nested collections.
-            code = code.Replace("new System.Collections.Generic.Dictionary<string, System.Collections.ObjectModel.Collection<CallsUsagePerDateDto>>();", "new System.Collections.Generic.Dictionary<string, System.Collections.Generic.ICollection<CallsUsagePerDateDto>>();");
-
-            // Fix the custom field names property.
-            code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
-
-            // Be more tolerant with response cpdes.
-            code = code.Replace("if (status_ == 201)", "if (status_ == 201 || status_ == 200)");
-            code = code.Replace("if (status_ == 200)", "if (status_ == 201 || status_ == 200)");
-
             File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
+        }
+
+        public sealed class ValueGenerator : CSharpValueGenerator
+        {
+            public ValueGenerator(CSharpGeneratorSettings settings)
+                : base(settings)
+            {
+            }
+
+            public override string GetDefaultValue(JsonSchema schema, bool allowsNull, string targetType, string typeNameHint, bool useSchemaDefault, TypeResolverBase typeResolver)
+            {
+                if (!string.IsNullOrWhiteSpace(schema.ActualDiscriminator))
+                {
+                    return string.Empty;
+                }
+
+                return base.GetDefaultValue(schema, allowsNull, targetType, typeNameHint, useSchemaDefault, typeResolver);
+            }
         }
 
         public sealed class TagNameGenerator : MultipleClientsFromOperationIdOperationNameGenerator

@@ -297,7 +297,11 @@
 
                     var status_ = (int)response_.StatusCode;
 {%     for response in operation.Responses -%}
+{%         if response.StatusCode == '200' or response.StatusCode == '201' -%}
+                    if (status_ == 200 || status_ == 201{% if response.CheckChunkedStatusCode %} || status_ == 206{% endif %})
+{%             else -%}
                     if (status_ == {{ response.StatusCode }}{% if response.CheckChunkedStatusCode %} || status_ == 206{% endif %})
+{%         endif -%}
                     {
                         {% template Client.Class.ProcessResponse %}
                     }

@@ -1273,7 +1273,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -14009,7 +14009,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -14201,7 +14201,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -15098,7 +15098,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -15262,7 +15262,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -18745,7 +18745,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 201 || status_ == 200 || status_ == 206)
                         {
                             var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
                             var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
@@ -23675,14 +23675,14 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<string> FieldsInLists { get; set; } = new FieldNames();
+        public FieldNames FieldsInLists { get; set; } = new FieldNames();
 
         /// <summary>
         /// The name of fields that are used in content references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.ICollection<string> FieldsInReferences { get; set; } = new FieldNames();
+        public FieldNames FieldsInReferences { get; set; } = new FieldNames();
 
         /// <summary>
         /// The field rules.
@@ -23884,13 +23884,13 @@ namespace Squidex.ClientLibrary.Management
         /// The name of fields that are used in content lists.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> FieldsInLists { get; set; }
+        public FieldNames FieldsInLists { get; set; }
 
         /// <summary>
         /// The name of fields that are used in content references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> FieldsInReferences { get; set; }
+        public FieldNames FieldsInReferences { get; set; }
 
     }
 
@@ -23975,13 +23975,13 @@ namespace Squidex.ClientLibrary.Management
         /// The names of the fields that should be used in references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> FieldsInReferences { get; set; }
+        public FieldNames FieldsInReferences { get; set; }
 
         /// <summary>
         /// The names of the fields that should be shown in lists, including meta fields.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<string> FieldsInLists { get; set; }
+        public FieldNames FieldsInLists { get; set; }
 
         /// <summary>
         /// Optional fields.
