@@ -154,7 +154,7 @@
             {
 {% for parameter in operation.Parameters %}
 {% if parameter.VariableName == "app" %}
-                request_.Headers.TryAddWithoutValidation(SpecialHeaders.App, app);
+                request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 {% endif -%}
 {% endfor -%}
 

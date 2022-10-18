@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.IO;
 using NSwag;
 using NSwag.CodeGeneration.CSharp;
 using NSwag.CodeGeneration.OperationNameGenerators;
@@ -49,6 +48,10 @@ namespace CodeGeneration
 
             // Fix the custom field names property.
             code = code.Replace("public FieldNames", "public System.Collections.Generic.ICollection<string>");
+
+            // Be more tolerant with response cpdes.
+            code = code.Replace("if (status_ == 201)", "if (status_ == 201 || status_ == 200)");
+            code = code.Replace("if (status_ == 200)", "if (status_ == 201 || status_ == 200)");
 
             File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
         }

@@ -173,7 +173,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UsersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -260,7 +260,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -354,7 +354,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -452,7 +452,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -647,7 +647,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -748,7 +748,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1014,7 +1014,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ResourcesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1099,7 +1099,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<UserDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1183,7 +1183,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1487,7 +1487,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -1517,7 +1517,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TranslationDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1749,7 +1749,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TemplatesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1833,7 +1833,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TemplateDetailsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2133,7 +2133,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2231,7 +2231,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2331,7 +2331,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2426,7 +2426,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2511,7 +2511,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<TeamDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2598,7 +2598,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2702,7 +2702,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2800,7 +2800,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3083,7 +3083,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -3109,7 +3109,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<LogDownloadDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3185,7 +3185,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -3211,7 +3211,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CallsUsageDtoDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3321,7 +3321,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CallsUsageDtoDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3397,7 +3397,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -3423,7 +3423,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CurrentStorageDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3513,7 +3513,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CurrentStorageDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3589,7 +3589,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -3615,7 +3615,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<StorageUsagePerDateDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3725,7 +3725,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<StorageUsagePerDateDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3953,7 +3953,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -3979,7 +3979,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<SearchResultDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -4535,7 +4535,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -4565,7 +4565,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -4665,7 +4665,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -4695,7 +4695,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -4790,7 +4790,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -4820,7 +4820,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -4905,7 +4905,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -4935,7 +4935,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5025,7 +5025,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -5055,7 +5055,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5145,7 +5145,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -5175,7 +5175,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5261,7 +5261,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5287,7 +5287,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5382,7 +5382,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
@@ -5413,7 +5413,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5504,7 +5504,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -5530,7 +5530,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5616,7 +5616,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5643,7 +5643,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5734,7 +5734,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5761,7 +5761,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5847,7 +5847,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5874,7 +5874,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -5965,7 +5965,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -5992,7 +5992,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6078,7 +6078,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6105,7 +6105,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6196,7 +6196,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6223,7 +6223,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6309,7 +6309,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6336,7 +6336,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6427,7 +6427,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6454,7 +6454,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6540,7 +6540,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6567,7 +6567,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6658,7 +6658,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -6685,7 +6685,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6761,7 +6761,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6787,7 +6787,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemasDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6857,7 +6857,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -6887,7 +6887,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -6972,7 +6972,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -6998,7 +6998,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7073,7 +7073,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7103,7 +7103,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7184,7 +7184,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -7279,7 +7279,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7309,7 +7309,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7394,7 +7394,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7424,7 +7424,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7509,7 +7509,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7539,7 +7539,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7624,7 +7624,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7654,7 +7654,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7739,7 +7739,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -7769,7 +7769,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7850,7 +7850,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7877,7 +7877,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -7948,7 +7948,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -7975,7 +7975,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -8382,7 +8382,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, RuleElementDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -8442,7 +8442,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -8468,7 +8468,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RulesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -8538,7 +8538,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -8568,7 +8568,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -8644,7 +8644,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -8733,7 +8733,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -8763,7 +8763,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -8844,7 +8844,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -8935,7 +8935,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -8962,7 +8962,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -9033,7 +9033,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -9060,7 +9060,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -9131,7 +9131,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -9229,7 +9229,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -9315,7 +9315,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -9399,7 +9399,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -9429,7 +9429,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SimulatedRuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -9500,7 +9500,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -9526,7 +9526,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<SimulatedRuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -9608,7 +9608,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -9634,7 +9634,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -9700,7 +9700,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -9785,7 +9785,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -9877,7 +9877,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -9982,7 +9982,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10066,7 +10066,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10306,7 +10306,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -10332,7 +10332,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PlansDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10402,7 +10402,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -10432,7 +10432,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PlanChangedDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10532,7 +10532,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PlansDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10630,7 +10630,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PlanChangedDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -10876,7 +10876,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -11009,7 +11009,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
 
@@ -11259,7 +11259,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<FeaturesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -11482,7 +11482,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<LanguageDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -11704,7 +11704,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -11730,7 +11730,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<HistoryEventDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -11826,7 +11826,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<HistoryEventDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -12082,7 +12082,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -12167,7 +12167,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -12258,7 +12258,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -12349,7 +12349,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -12921,7 +12921,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -12947,7 +12947,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -13024,7 +13024,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -13050,7 +13050,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CommentsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -13125,7 +13125,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -13155,7 +13155,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CommentDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -13245,7 +13245,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -13355,7 +13355,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -13627,7 +13627,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CommentsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -13983,7 +13983,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
@@ -14078,7 +14078,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -14175,7 +14175,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
@@ -14265,7 +14265,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -14291,7 +14291,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<BackupJobsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -14357,7 +14357,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -14473,7 +14473,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RestoreJobDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15067,7 +15067,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
 
 
@@ -15337,7 +15337,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -15363,7 +15363,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFoldersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15433,7 +15433,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -15463,7 +15463,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15548,7 +15548,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -15578,7 +15578,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15659,7 +15659,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -15754,7 +15754,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -15784,7 +15784,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15860,7 +15860,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -15886,7 +15886,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, int>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -15961,7 +15961,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -15991,7 +15991,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, int>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16093,7 +16093,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
 
 
@@ -16121,7 +16121,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16203,7 +16203,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
 
                     var boundary_ = System.Guid.NewGuid().ToString();
@@ -16243,7 +16243,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16333,7 +16333,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(query, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -16363,7 +16363,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16434,7 +16434,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -16460,7 +16460,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16542,7 +16542,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
 
                     var boundary_ = System.Guid.NewGuid().ToString();
@@ -16582,7 +16582,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16677,7 +16677,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -16707,7 +16707,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -16799,7 +16799,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -16889,7 +16889,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -16919,7 +16919,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<BulkResultDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -17000,7 +17000,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
@@ -17039,7 +17039,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -17134,7 +17134,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -17164,7 +17164,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -17712,7 +17712,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -17738,7 +17738,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetScriptsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -17808,7 +17808,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -17838,7 +17838,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AssetScriptsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -17914,7 +17914,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -17940,7 +17940,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18010,7 +18010,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -18040,7 +18040,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18125,7 +18125,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -18155,7 +18155,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18236,7 +18236,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -18262,7 +18262,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18328,7 +18328,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -18354,7 +18354,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18424,7 +18424,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -18454,7 +18454,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18530,7 +18530,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -18556,7 +18556,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18627,7 +18627,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -18653,7 +18653,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18719,7 +18719,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
@@ -18809,7 +18809,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var boundary_ = System.Guid.NewGuid().ToString();
                     var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
@@ -18848,7 +18848,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -18924,7 +18924,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -18950,7 +18950,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19016,7 +19016,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -19042,7 +19042,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19112,7 +19112,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -19142,7 +19142,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19227,7 +19227,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -19257,7 +19257,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19338,7 +19338,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -19364,7 +19364,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19440,7 +19440,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -19466,7 +19466,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19536,7 +19536,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -19566,7 +19566,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19642,7 +19642,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -19668,7 +19668,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19743,7 +19743,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -19773,7 +19773,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19854,7 +19854,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -19880,7 +19880,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -19975,7 +19975,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AppDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20062,7 +20062,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 201)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20166,7 +20166,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AppDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20226,7 +20226,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -20252,7 +20252,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20322,7 +20322,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -20352,7 +20352,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20428,7 +20428,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
@@ -20518,7 +20518,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -20548,7 +20548,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20624,7 +20624,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -20650,7 +20650,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20720,7 +20720,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -20750,7 +20750,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20826,7 +20826,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -20852,7 +20852,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -20922,7 +20922,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -20952,7 +20952,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -21037,7 +21037,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
@@ -21067,7 +21067,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -21148,7 +21148,7 @@ namespace Squidex.ClientLibrary.Management
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
 
-                    request_.Headers.TryAddWithoutValidation("X-App", app);
+                    request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
 
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -21174,7 +21174,7 @@ namespace Squidex.ClientLibrary.Management
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201 || status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -24542,6 +24542,7 @@ namespace Squidex.ClientLibrary.Management
 
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "actionType")]
     [JsonInheritanceAttribute("Webhook", typeof(WebhookRuleActionDto))]
+    [JsonInheritanceAttribute("Typesense", typeof(TypesenseRuleActionDto))]
     [JsonInheritanceAttribute("Tweet", typeof(TweetRuleActionDto))]
     [JsonInheritanceAttribute("Slack", typeof(SlackRuleActionDto))]
     [JsonInheritanceAttribute("SignalR", typeof(SignalRRuleActionDto))]
@@ -26734,6 +26735,44 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class TypesenseRuleActionDto : RuleAction
+    {
+        /// <summary>
+        /// The url to the instance or cluster.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Uri Host { get; set; }
+
+        /// <summary>
+        /// The name of the index.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("indexName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string IndexName { get; set; }
+
+        /// <summary>
+        /// The api key.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("apiKey", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ApiKey { get; set; }
+
+        /// <summary>
+        /// The optional custom document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Document { get; set; }
+
+        /// <summary>
+        /// The condition when to delete the document.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Delete { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class TweetRuleActionDto : RuleAction
     {
         /// <summary>
@@ -26875,7 +26914,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class OpenSearchRuleActionDto : RuleAction
     {
         /// <summary>
-        /// The url to the elastic search instance or cluster.
+        /// The url to the instance or cluster.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -27078,7 +27117,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class ElasticSearchRuleActionDto : RuleAction
     {
         /// <summary>
-        /// The url to the elastic search instance or cluster.
+        /// The url to the instance or cluster.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("host", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
