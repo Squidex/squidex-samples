@@ -20,7 +20,9 @@ namespace Integration.Localize.Controllers
                 CacheItemStructure = new CacheItemStructure
                 {
                     [MetaFields.SchemaName] = "Schema",
-                    [MetaFields.ContentId] = "Content Id"
+                    [MetaFields.ContentId] = "Content Id",
+                    [MetaFields.DateCreated] = "Creation Date",
+                    [MetaFields.DateUpdated] = "Update"
                 }
             };
 
