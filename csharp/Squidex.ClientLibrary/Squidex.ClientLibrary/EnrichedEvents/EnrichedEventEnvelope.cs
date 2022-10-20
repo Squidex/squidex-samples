@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Newtonsoft.Json;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents
@@ -29,28 +28,6 @@ namespace Squidex.ClientLibrary.EnrichedEvents
         /// The payload of the evnet.
         /// </summary>
         public EnrichedEvent Payload { get; set; }
-
-        /// <summary>
-        /// Utils to deserialize an Envelope.
-        /// </summary>
-        /// <param name="json">The string to be deserialized.</param>
-        /// <param name="settings">Custom JsonSerializerSettings settings. TypeNameHandling and SerializationBinder will be overwritten.</param>
-        /// <returns>
-        /// The enriched event.
-        /// </returns>
-        [Obsolete("Use FromJson instead.")]
-        public static EnrichedEventEnvelope DeserializeEnvelope(string json, JsonSerializerSettings? settings = null)
-        {
-            if (settings == null)
-            {
-                settings = new JsonSerializerSettings();
-            }
-
-            settings.SerializationBinder = new EnrichedEventSerializationBinder();
-            settings.TypeNameHandling = TypeNameHandling.Auto;
-
-            return JsonConvert.DeserializeObject<EnrichedEventEnvelope>(json, settings)!;
-        }
 
         /// <summary>
         /// Utils to deserialize an Envelope.

@@ -292,37 +292,26 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Creates a client instance to query and manage untyped rules.
         /// </summary>
+        /// <param name="appName">The optional app name.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
-        IExtendableRulesClient CreateExtendableRulesClient();
-
-        /// <summary>
-        /// Creates a client instance to query and manage untyped rules.
-        /// </summary>
-        /// <param name="appName">The name of the app. Cannot be null.</param>
-        /// <returns>
-        /// The created client.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
-        /// <remarks>
-        /// Do not create new clients frequently.
-        /// </remarks>
-        IExtendableRulesClient CreateExtendableRulesClient(string appName);
+        IExtendableRulesClient CreateExtendableRulesClient(string? appName = null);
 
         /// <summary>
         /// Creates a client instance to query and manage contents for a schema.
         /// </summary>
         /// <typeparam name="TEntity">The type for the content entity.</typeparam>
         /// <typeparam name="TData">The type that represents the data structure.</typeparam>
-        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null or empty.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
@@ -333,13 +322,15 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <typeparam name="TEntity">The type for the content entity.</typeparam>
         /// <typeparam name="TData">The type that represents the data structure.</typeparam>
-        /// <param name="appName">The name of the app. Cannot be null.</param>
-        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <param name="appName">The name of the app. Cannot be null or empty.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null or empty.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
@@ -348,11 +339,12 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Creates a client instance to query and manage contents for a schema with dynamic data shape.
         /// </summary>
-        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null or empty.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
@@ -361,17 +353,45 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Creates a client instance to query and manage contents for an app and schema with dynamic data shape.
         /// </summary>
-        /// <param name="appName">The name of the app. Cannot be null.</param>
-        /// <param name="schemaName">The name of the schema. Cannot be null.</param>
+        /// <param name="appName">The name of the app. Cannot be null or empty.</param>
+        /// <param name="schemaName">The name of the schema. Cannot be null or empty.</param>
         /// <returns>
         /// The created client.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
+        /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
         /// <remarks>
         /// Do not create new clients frequently.
         /// </remarks>
         IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName);
+
+        /// <summary>
+        /// Creates a client instance to query and manage contents across all schemas.
+        /// </summary>
+        /// <typeparam name="TEntity">The type for the content entity.</typeparam>
+        /// <typeparam name="TData">The type that represents the data structure.</typeparam>
+        /// <param name="appName">The optional app name.</param>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IContentsSharedClient<TEntity, TData> CreateSharedContentsClient<TEntity, TData>(string? appName = null) where TEntity : Content<TData> where TData : class, new();
+
+        /// <summary>
+        /// Creates a client instance to query and manage contents across all schemas with dynamic data shape.
+        /// </summary>
+        /// <param name="appName">The optional app name.</param>
+        /// <returns>
+        /// The created client.
+        /// </returns>
+        /// <remarks>
+        /// Do not create new clients frequently.
+        /// </remarks>
+        IContentsSharedClient<DynamicContent, DynamicData> CreateSharedDynamicContentsClient(string? appName = null);
 
         /// <summary>
         /// Creates a <see cref="HttpClient"/> to make all kind of authorized requests.

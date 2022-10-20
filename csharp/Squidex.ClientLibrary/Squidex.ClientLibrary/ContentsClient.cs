@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Text;
-using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
@@ -84,70 +82,13 @@ namespace Squidex.ClientLibrary
             while (!ct.IsCancellationRequested);
         }
 
-        /// <inheritdoc />
-        public async Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext? context = null,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(requests, nameof(requests));
-
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>[]>(HttpMethod.Post, BuildAppUrl("graphql/batch", false, context), requests.ToContent(), context, ct);
-
-            return response;
-        }
-
-        /// <inheritdoc/>
-        public async Task<TResponse> GraphQlGetAsync<TResponse>(object request, QueryContext? context = null,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(request, nameof(request));
-
-            var query = BuildQuery(request);
-
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Get, BuildAppUrl("graphql", true, context) + query, null, context, ct);
-
-            if (response.Errors?.Length > 0)
-            {
-                throw new SquidexGraphQlException(response.Errors, 400);
-            }
-
-            return response.Data;
-        }
-
-        /// <inheritdoc/>
-        public async Task<TResponse> GraphQlAsync<TResponse>(object request, QueryContext? context = null,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(request, nameof(request));
-
-            var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildAppUrl("graphql", false, context), request.ToContent(), context, ct);
-
-            if (response.Errors?.Length > 0)
-            {
-                throw new SquidexGraphQlException(response.Errors, 400);
-            }
-
-            return response.Data;
-        }
-
-        /// <inheritdoc/>
-        public Task<ContentsResult<TEntity, TData>> GetAsync(HashSet<string> ids, QueryContext? context = null,
-             CancellationToken ct = default)
-        {
-            Guard.NotNull(ids, nameof(ids));
-            Guard.NotNullOrEmpty(ids, nameof(ids));
-
-            var q = $"?ids={string.Join(",", ids)}";
-
-            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildAppUrl(q, true, context), null, context, ct);
-        }
-
         /// <inheritdoc/>
         public Task<ContentsResult<TEntity, TData>> GetAsync(ContentQuery? query = null, QueryContext? context = null,
              CancellationToken ct = default)
         {
             var q = query?.ToQuery(true) ?? string.Empty;
 
-            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl(q, true, context), null, context, ct);
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl(q, true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -156,7 +97,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildSchemaUrl($"{id}/", true, context), null, context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{id}/", true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -165,7 +106,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TData>(HttpMethod.Get, BuildSchemaUrl($"{id}/{version}", true, context), null, context, ct);
+            return RequestJsonAsync<TData>(HttpMethod.Get, BuildUrl($"{id}/{version}", true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -185,7 +126,7 @@ namespace Squidex.ClientLibrary
 
             var q = query?.ToQuery(true) ?? string.Empty;
 
-            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl($"{id}/referencing{q}", true, context), null, context, ct);
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{id}/referencing{q}", true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -205,7 +146,7 @@ namespace Squidex.ClientLibrary
 
             var q = query?.ToQuery(true) ?? string.Empty;
 
-            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildSchemaUrl($"{id}/references{q}", true, context), null, context, ct);
+            return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{id}/references{q}", true, context), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -214,7 +155,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"?publish={options.Publish}&id={options.Id ?? string.Empty}", false), data.ToContent(), context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"?publish={options.Publish}&id={options.Id ?? string.Empty}", false), data.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>
@@ -223,7 +164,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}/draft", false), null, context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}/draft", false), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -242,7 +183,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNull(id, nameof(id));
             Guard.NotNull(request, nameof(request));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}/status", false), request.ToContent(), context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}/status", false), request.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>
@@ -261,7 +202,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(patch, nameof(patch));
 
-            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildSchemaUrl($"{id}/", false), patch.ToContent(), context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildUrl($"{id}/", false), patch.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>
@@ -280,7 +221,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildSchemaUrl($"{id}?publish={options.Publish}&patch={options.Patch}", false), data.ToContent(), context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}?publish={options.Publish}&patch={options.Patch}", false), data.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>
@@ -299,7 +240,7 @@ namespace Squidex.ClientLibrary
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(data, nameof(data));
 
-            return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildSchemaUrl($"{id}", false), data.ToContent(), context, ct);
+            return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}", false), data.ToContent(), context, ct);
         }
 
         /// <inheritdoc/>
@@ -317,7 +258,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestAsync(HttpMethod.Delete, BuildSchemaUrl($"{id}?permanent={options.Permanent}&checkReferrers={options.CheckReferrers}", false), null, null, ct);
+            return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}?permanent={options.Permanent}&checkReferrers={options.CheckReferrers}", false), null, null, ct);
         }
 
         /// <inheritdoc/>
@@ -335,7 +276,7 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNullOrEmpty(id, nameof(id));
 
-            return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildSchemaUrl($"{id}/draft", false), null, context, ct);
+            return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildUrl($"{id}/draft", false), null, context, ct);
         }
 
         /// <inheritdoc/>
@@ -353,10 +294,10 @@ namespace Squidex.ClientLibrary
         {
             Guard.NotNull(update, nameof(update));
 
-            return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildSchemaUrl("bulk", false), update.ToContent(), null, ct);
+            return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildUrl("bulk", false), update.ToContent(), null, ct);
         }
 
-        private string BuildSchemaUrl(string path, bool query, QueryContext? context = null)
+        private string BuildUrl(string path, bool query, QueryContext? context = null)
         {
             if (ShouldUseCDN(query, context))
             {
@@ -366,50 +307,6 @@ namespace Squidex.ClientLibrary
             {
                 return $"api/content/{AppName}/{SchemaName}/{path}";
             }
-        }
-
-        private string BuildAppUrl(string path, bool query, QueryContext? context = null)
-        {
-            if (ShouldUseCDN(query, context))
-            {
-                return $"{Options.ContentCDN}{AppName}/{path}";
-            }
-            else
-            {
-                return $"api/content/{AppName}/{path}";
-            }
-        }
-
-        private static string BuildQuery(object request)
-        {
-            var parameters = JObject.FromObject(request);
-
-            var queryBuilder = new StringBuilder();
-
-            foreach (var kvp in parameters)
-            {
-                var value = kvp.Value;
-
-                if (value == null)
-                {
-                    continue;
-                }
-
-                if (queryBuilder.Length > 0)
-                {
-                    queryBuilder.Append('&');
-                }
-                else
-                {
-                    queryBuilder.Append('?');
-                }
-
-                queryBuilder.Append(kvp.Key);
-                queryBuilder.Append('=');
-                queryBuilder.Append(Uri.EscapeDataString(value.ToString()));
-            }
-
-            return queryBuilder.ToString();
         }
 
         private bool ShouldUseCDN(bool query, QueryContext? context)

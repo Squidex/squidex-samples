@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
@@ -266,15 +265,9 @@ namespace Squidex.ClientLibrary
         }
 
         /// <inheritdoc/>
-        public IExtendableRulesClient CreateExtendableRulesClient()
+        public IExtendableRulesClient CreateExtendableRulesClient(string? appName = null)
         {
-            return CreateExtendableRulesClient(Options.AppName);
-        }
-
-        /// <inheritdoc/>
-        public IExtendableRulesClient CreateExtendableRulesClient(string appName)
-        {
-            return new ExtendableRulesClient(Options, appName, Options.ClientProvider);
+            return new ExtendableRulesClient(Options, appName ?? Options.AppName, Options.ClientProvider);
         }
 
         /// <inheritdoc/>
@@ -299,6 +292,18 @@ namespace Squidex.ClientLibrary
         public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName)
         {
             return new ContentsClient<DynamicContent, DynamicData>(Options, appName, schemaName, Options.ClientProvider);
+        }
+
+        /// <inheritdoc/>
+        public IContentsSharedClient<TEntity, TData> CreateSharedContentsClient<TEntity, TData>(string? appName = null) where TEntity : Content<TData> where TData : class, new()
+        {
+            return new ContentsSharedClient<TEntity, TData>(Options, appName ?? Options.AppName, Options.ClientProvider);
+        }
+
+        /// <inheritdoc/>
+        public IContentsSharedClient<DynamicContent, DynamicData> CreateSharedDynamicContentsClient(string? appName = null)
+        {
+            return new ContentsSharedClient<DynamicContent, DynamicData>(Options, appName ?? Options.AppName, Options.ClientProvider);
         }
 
         /// <inheritdoc/>
