@@ -300,6 +300,21 @@ namespace Squidex.ClientLibrary
         /// Gets a content item by ID and version.
         /// </summary>
         /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
+        /// <param name="version">The version of the content item.</param>
+        /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
+        /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>
+        /// The content item or null if not found.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+        Task<TEntity> GetAsync(string id, long version, QueryContext? context = null,
+             CancellationToken ct = default);
+
+        /// <summary>
+        /// Gets a content item by ID and version.
+        /// </summary>
+        /// <param name="id">The ID of the content item. Cannot be null or empty.</param>
         /// <param name="version">The version of the content.</param>
         /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when querying content items.</param>
         /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -308,6 +323,7 @@ namespace Squidex.ClientLibrary
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+        [Obsolete("Use GetAsync with version.")]
         Task<TData> GetDataAsync(string id, int version, QueryContext? context = null,
              CancellationToken ct = default);
 
