@@ -90,6 +90,11 @@ namespace Squidex.ClientLibrary
         /// </value>
         public string? Search { get; set; }
 
+        /// <summary>
+        /// Pick a random number of elements from the result set.
+        /// </summary>
+        public int Random { get; set; }
+
         internal string ToQuery(bool supportsSearch)
         {
             var queries = new List<string>();
@@ -102,6 +107,11 @@ namespace Squidex.ClientLibrary
             if (Top.HasValue)
             {
                 queries.Add($"$top={Top.Value}");
+            }
+
+            if (Random > 0)
+            {
+                queries.Add($"$random={Random}");
             }
 
             if (!string.IsNullOrWhiteSpace(OrderBy))

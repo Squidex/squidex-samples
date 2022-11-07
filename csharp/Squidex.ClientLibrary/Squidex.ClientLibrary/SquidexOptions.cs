@@ -12,7 +12,7 @@ namespace Squidex.ClientLibrary
     /// <summary>
     /// The options to configure <see cref="SquidexClientManager"/>.
     /// </summary>
-    public class SquidexOptions
+    public class SquidexOptions : OptionsBase
     {
         private string url = "https://cloud.squidex.io";
         private string appName;
@@ -26,8 +26,8 @@ namespace Squidex.ClientLibrary
         private IHttpClientProvider clientProvider;
         private IHttpClientFactory clientFactory;
         private TimeSpan httpClientTimeout;
+        private TimeSpan tokenRetryTime = TimeSpan.FromHours(1);
         private IReadOnlyDictionary<string, AppCredentials>? appCredentials;
-        private bool isFrozen;
 
         /// <summary>
         /// Gets or sets the URL to the Squidex installation.
@@ -41,16 +41,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string Url
         {
-            get
-            {
-                return url;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                url = value;
-            }
+            get => url;
+            set => Set(ref url, value);
         }
 
         /// <summary>
@@ -62,16 +54,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string AppName
         {
-            get
-            {
-                return appName;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                appName = value;
-            }
+            get => appName;
+            set => Set(ref appName, value);
         }
 
         /// <summary>
@@ -83,16 +67,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string ClientId
         {
-            get
-            {
-                return clientId;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientId = value;
-            }
+            get => clientId;
+            set => Set(ref clientId, value);
         }
 
         /// <summary>
@@ -104,16 +80,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string ClientSecret
         {
-            get
-            {
-                return clientSecret;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientSecret = value;
-            }
+            get => clientSecret;
+            set => Set(ref clientSecret, value);
         }
 
         /// <summary>
@@ -125,16 +93,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string ContentCDN
         {
-            get
-            {
-                return contentCDN;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                contentCDN = value;
-            }
+            get => contentCDN;
+            set => Set(ref contentCDN, value);
         }
 
         /// <summary>
@@ -146,16 +106,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string AssetCDN
         {
-            get
-            {
-                return assetCDN;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                assetCDN = value;
-            }
+            get => assetCDN;
+            set => Set(ref assetCDN, value);
         }
 
         /// <summary>
@@ -170,16 +122,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public bool ReadResponseAsString
         {
-            get
-            {
-                return readResponseAsString;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                readResponseAsString = value;
-            }
+            get => readResponseAsString;
+            set => Set(ref readResponseAsString, value);
         }
 
         /// <summary>
@@ -191,16 +135,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public IAuthenticator Authenticator
         {
-            get
-            {
-                return authenticator;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                authenticator = value;
-            }
+            get => authenticator;
+            set => Set(ref authenticator, value);
         }
 
         /// <summary>
@@ -212,16 +148,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public IHttpConfigurator Configurator
         {
-            get
-            {
-                return configurator;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                configurator = value;
-            }
+            get => configurator;
+            set => Set(ref configurator, value);
         }
 
         /// <summary>
@@ -233,16 +161,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public IHttpClientFactory ClientFactory
         {
-            get
-            {
-                return clientFactory;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientFactory = value;
-            }
+            get => clientFactory;
+            set => Set(ref clientFactory, value);
         }
 
         /// <summary>
@@ -254,16 +174,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public IHttpClientProvider ClientProvider
         {
-            get
-            {
-                return clientProvider;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientProvider = value;
-            }
+            get => clientProvider;
+            set => Set(ref clientProvider, value);
         }
 
         /// <summary>
@@ -275,16 +187,21 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public TimeSpan HttpClientTimeout
         {
-            get
-            {
-                return httpClientTimeout;
-            }
-            set
-            {
-                ThrowIfFrozen();
+            get => httpClientTimeout;
+            set => Set(ref httpClientTimeout, value);
+        }
 
-                httpClientTimeout = value;
-            }
+        /// <summary>
+        /// Gets or sets value indicating after which time a new token will returned when the previous attempt has failed.
+        /// </summary>
+        /// <value>
+        /// The token retry time. The default is one hour.
+        /// </value>
+        /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+        public TimeSpan TokenRetryTime
+        {
+            get => tokenRetryTime;
+            set => Set(ref tokenRetryTime, value);
         }
 
         /// <summary>
@@ -296,24 +213,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public IReadOnlyDictionary<string, AppCredentials>? AppCredentials
         {
-            get
-            {
-                return appCredentials;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                appCredentials = value;
-            }
-        }
-
-        private void ThrowIfFrozen()
-        {
-            if (isFrozen)
-            {
-                throw new InvalidOperationException("Options are frozen and cannot be changed.");
-            }
+            get => appCredentials;
+            set => Set(ref appCredentials, value);
         }
 
         /// <summary>
@@ -321,7 +222,7 @@ namespace Squidex.ClientLibrary
         /// </summary>
         public void CheckAndFreeze()
         {
-            if (isFrozen)
+            if (IsFrozen)
             {
                 return;
             }
@@ -410,7 +311,7 @@ namespace Squidex.ClientLibrary
                 clientProvider = new StaticHttpClientProvider(this);
             }
 
-            isFrozen = true;
+            Freeze();
 #pragma warning restore MA0015 // Specify the parameter name in ArgumentException
         }
     }

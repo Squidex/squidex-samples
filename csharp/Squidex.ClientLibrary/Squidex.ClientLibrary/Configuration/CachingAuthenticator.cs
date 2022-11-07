@@ -16,14 +16,7 @@ namespace Squidex.ClientLibrary.Configuration
     public class CachingAuthenticator : IAuthenticator
     {
         private readonly IAuthenticator authenticator;
-        private readonly Dictionary<string, CacheEntry> cache = new Dictionary<string, CacheEntry>(StringComparer.OrdinalIgnoreCase);
-
-        private sealed class CacheEntry
-        {
-            public string? Token { get; set; }
-
-            public DateTimeOffset Expires { get; set; }
-        }
+        private readonly Cache<string, string?> cache = new Cache<string, string?>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachingAuthenticator"/> class with the cache key,
@@ -48,7 +41,7 @@ namespace Squidex.ClientLibrary.Configuration
             {
                 result = await authenticator.GetBearerTokenAsync(appName, ct);
 
-                SetToCache(appName, result, DateTimeOffset.UtcNow.AddDays(50));
+                cache.Set(appName, result, TimeSpan.FromDays(50));
             }
 
             return result;
@@ -58,7 +51,7 @@ namespace Squidex.ClientLibrary.Configuration
         public Task RemoveTokenAsync(string appName, string token,
             CancellationToken ct)
         {
-            RemoveFromCache(appName);
+            cache.Remove(appName);
 
             return authenticator.RemoveTokenAsync(appName, token, ct);
         }
@@ -80,24 +73,9 @@ namespace Squidex.ClientLibrary.Configuration
         /// </returns>
         protected string? GetFromCache(string appName)
         {
-            CacheEntry? entry = null;
+            cache.TryGet(appName, out var token);
 
-            lock (cache)
-            {
-                cache.TryGetValue(appName, out entry);
-            }
-
-            if (entry == null)
-            {
-                return null;
-            }
-
-            if (entry.Expires < DateTimeOffset.UtcNow)
-            {
-                RemoveFromCache(appName);
-            }
-
-            return entry.Token;
+            return token;
         }
 
         /// <summary>
@@ -106,10 +84,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="appName">The name of the app.</param>
         public void RemoveFromCache(string appName)
         {
-            lock (cache)
-            {
-                cache.Remove(appName);
-            }
+            cache.Remove(appName);
         }
 
         /// <summary>
@@ -120,10 +95,7 @@ namespace Squidex.ClientLibrary.Configuration
         /// <param name="expires">The date and time when the token will expire.</param>
         public void SetToCache(string appName, string token, DateTimeOffset expires)
         {
-            lock (cache)
-            {
-                cache[appName] = new CacheEntry { Token = token, Expires = expires };
-            }
+            cache.Set(appName, token, expires);
         }
     }
 }

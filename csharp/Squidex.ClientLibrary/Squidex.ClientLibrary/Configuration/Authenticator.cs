@@ -20,6 +20,7 @@ namespace Squidex.ClientLibrary.Configuration
     {
         private const string TokenUrl = "identity-server/connect/token";
         private readonly SquidexOptions options;
+        private readonly Cache<(string, string), Exception> invalidAttempts = new Cache<(string, string), Exception>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Authenticator"/> class.
@@ -57,13 +58,27 @@ namespace Squidex.ClientLibrary.Configuration
             var httpClient = options.ClientProvider.Get();
             try
             {
-                var httpRequest = BuildRequest(appName);
+                var clientId = options.ClientId;
+                var clientSecret = options.ClientSecret;
+
+                if (options.AppCredentials != null && options.AppCredentials.TryGetValue(appName, out var credentials))
+                {
+                    clientId = credentials.ClientId;
+                    clientSecret = credentials.ClientSecret;
+                }
+
+                ThrowFromPreviousAttempt(clientId, clientSecret);
+
+                var httpRequest = BuildRequest(clientId, clientSecret);
 
                 using (var response = await httpClient.SendAsync(httpRequest, ct))
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+                        var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+
+                        StorePreviousAttempt(clientId, clientSecret, exception);
+                        throw exception;
                     }
 #if NET5_0_OR_GREATER
                     var jsonString = await response.Content.ReadAsStringAsync(ct);
@@ -81,17 +96,35 @@ namespace Squidex.ClientLibrary.Configuration
             }
         }
 
-        private HttpRequestMessage BuildRequest(string appName)
+        private void StorePreviousAttempt(string clientId, string clientSecret, Exception exception)
         {
-            var clientId = options.ClientId;
-            var clientSecret = options.ClientSecret;
+            var retryTime = options.TokenRetryTime;
 
-            if (options.AppCredentials != null && options.AppCredentials.TryGetValue(appName, out var credentials))
+            if (retryTime < TimeSpan.Zero || retryTime == TimeSpan.MaxValue)
             {
-                clientId = credentials.ClientId;
-                clientSecret = credentials.ClientSecret;
+                return;
             }
 
+            invalidAttempts.Set((clientId, clientSecret), exception, options.TokenRetryTime);
+        }
+
+        private void ThrowFromPreviousAttempt(string clientId, string clientSecret)
+        {
+            var retryTime = options.TokenRetryTime;
+
+            if (retryTime < TimeSpan.Zero || retryTime == TimeSpan.MaxValue)
+            {
+                return;
+            }
+
+            if (invalidAttempts.TryGet((clientId, clientSecret), out var exception))
+            {
+                throw exception;
+            }
+        }
+
+        private HttpRequestMessage BuildRequest(string clientId, string clientSecret)
+        {
             var parameters = new Dictionary<string, string>
             {
                 ["grant_type"] = "client_credentials",

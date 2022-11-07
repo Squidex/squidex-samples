@@ -10,11 +10,10 @@ namespace Squidex.ClientLibrary
     /// <summary>
     /// Application specific credentials.
     /// </summary>
-    public sealed class AppCredentials
+    public sealed class AppCredentials : OptionsBase
     {
         private string clientId;
         private string clientSecret;
-        private bool isFrozen;
 
         /// <summary>
         /// Gets or sets the client identifier.
@@ -25,16 +24,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string ClientId
         {
-            get
-            {
-                return clientId;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientId = value;
-            }
+            get => clientId;
+            set => Set(ref clientId, value);
         }
 
         /// <summary>
@@ -46,24 +37,8 @@ namespace Squidex.ClientLibrary
         /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
         public string ClientSecret
         {
-            get
-            {
-                return clientSecret;
-            }
-            set
-            {
-                ThrowIfFrozen();
-
-                clientSecret = value;
-            }
-        }
-
-        private void ThrowIfFrozen()
-        {
-            if (isFrozen)
-            {
-                throw new InvalidOperationException("Options are frozen and cannot be changed.");
-            }
+            get => clientSecret;
+            set => Set(ref clientSecret, value);
         }
 
         /// <summary>
@@ -71,7 +46,7 @@ namespace Squidex.ClientLibrary
         /// </summary>
         public void CheckAndFreeze()
         {
-            if (isFrozen)
+            if (IsFrozen)
             {
                 return;
             }
@@ -87,7 +62,7 @@ namespace Squidex.ClientLibrary
                 throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
             }
 
-            isFrozen = true;
+            Freeze();
 #pragma warning restore MA0015 // Specify the parameter name in ArgumentException
         }
     }
