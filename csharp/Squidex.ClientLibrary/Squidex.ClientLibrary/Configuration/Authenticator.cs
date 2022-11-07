@@ -98,25 +98,11 @@ namespace Squidex.ClientLibrary.Configuration
 
         private void StorePreviousAttempt(string clientId, string clientSecret, Exception exception)
         {
-            var retryTime = options.TokenRetryTime;
-
-            if (retryTime < TimeSpan.Zero || retryTime == TimeSpan.MaxValue)
-            {
-                return;
-            }
-
             invalidAttempts.Set((clientId, clientSecret), exception, options.TokenRetryTime);
         }
 
         private void ThrowFromPreviousAttempt(string clientId, string clientSecret)
         {
-            var retryTime = options.TokenRetryTime;
-
-            if (retryTime < TimeSpan.Zero || retryTime == TimeSpan.MaxValue)
-            {
-                return;
-            }
-
             if (invalidAttempts.TryGet((clientId, clientSecret), out var exception))
             {
                 throw exception;
