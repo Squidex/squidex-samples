@@ -5,32 +5,31 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem
+namespace Squidex.CLI.Commands.Implementation.FileSystem;
+
+public sealed class FilePath
 {
-    public sealed class FilePath
+    public static readonly FilePath Root = new FilePath(string.Empty);
+
+    public string[] Elements { get; }
+
+    public FilePath(params string[] elements)
     {
-        public static readonly FilePath Root = new FilePath(string.Empty);
+        Elements = elements;
+    }
 
-        public string[] Elements { get; }
+    public static FilePath Create(string path)
+    {
+        return new FilePath(path.Split('/', '\\'));
+    }
 
-        public FilePath(params string[] elements)
-        {
-            Elements = elements;
-        }
+    public FilePath Combine(FilePath path)
+    {
+        return new FilePath(Elements.Concat(path.Elements).ToArray());
+    }
 
-        public static FilePath Create(string path)
-        {
-            return new FilePath(path.Split('/', '\\'));
-        }
-
-        public FilePath Combine(FilePath path)
-        {
-            return new FilePath(Elements.Concat(path.Elements).ToArray());
-        }
-
-        public override string ToString()
-        {
-            return Path.Combine(Elements);
-        }
+    public override string ToString()
+    {
+        return Path.Combine(Elements);
     }
 }

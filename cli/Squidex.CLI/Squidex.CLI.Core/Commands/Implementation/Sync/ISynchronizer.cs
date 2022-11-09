@@ -7,22 +7,21 @@
 
 using Squidex.CLI.Commands.Implementation.FileSystem;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation.Sync;
+
+public interface ISynchronizer
 {
-    public interface ISynchronizer
-    {
-        int Order => 0;
+    int Order => 0;
 
-        string Name { get; }
+    string Name { get; }
 
-        Task CleanupAsync(IFileSystem fs);
+    Task CleanupAsync(IFileSystem fs);
 
-        Task DescribeAsync(ISyncService sync, MarkdownWriter writer);
+    Task DescribeAsync(ISyncService sync, MarkdownWriter writer);
 
-        Task ExportAsync(ISyncService sync, SyncOptions options, ISession session);
+    Task ExportAsync(ISyncService sync, SyncOptions options, ISession session);
 
-        Task ImportAsync(ISyncService sync, SyncOptions options, ISession session);
+    Task ImportAsync(ISyncService sync, SyncOptions options, ISession session);
 
-        Task GenerateSchemaAsync(ISyncService sync);
-    }
+    Task GenerateSchemaAsync(ISyncService sync);
 }

@@ -10,243 +10,242 @@ using Slugify;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.TestData
+namespace Squidex.CLI.Commands.Implementation.TestData;
+
+public sealed class TestDataGenerator
 {
-    public sealed class TestDataGenerator
+    private readonly SlugHelper slugify = new SlugHelper();
+    private readonly SchemaDto schema;
+    private readonly AppLanguagesDto languages;
+    private readonly Random random = new Random();
+
+    public TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
     {
-        private readonly SlugHelper slugify = new SlugHelper();
-        private readonly SchemaDto schema;
-        private readonly AppLanguagesDto languages;
-        private readonly Random random = new Random();
+        this.schema = schema;
 
-        public TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
+        this.languages = languages;
+    }
+
+    public DynamicData GenerateTestData()
+    {
+        var data = new DynamicData();
+
+        foreach (var field in schema.Fields)
         {
-            this.schema = schema;
+            var fieldData = new JObject();
 
-            this.languages = languages;
-        }
-
-        public DynamicData GenerateTestData()
-        {
-            var data = new DynamicData();
-
-            foreach (var field in schema.Fields)
+            if (field.Partitioning == "invariant")
             {
-                var fieldData = new JObject();
+                var value = GenerateValue(field);
 
-                if (field.Partitioning == "invariant")
+                fieldData["iv"] = value;
+            }
+            else
+            {
+                foreach (var language in languages.Items)
                 {
                     var value = GenerateValue(field);
 
-                    fieldData["iv"] = value;
+                    fieldData[language.Iso2Code] = value;
                 }
-                else
-                {
-                    foreach (var language in languages.Items)
-                    {
-                        var value = GenerateValue(field);
+            }
 
-                        fieldData[language.Iso2Code] = value;
+            data.Add(field.Name, fieldData);
+        }
+
+        return data;
+    }
+
+    private JToken? GenerateValue(FieldDto field)
+    {
+        switch (field.Properties)
+        {
+            case BooleanFieldPropertiesDto booleanField:
+                {
+                    if (booleanField.IsRequired)
+                    {
+                        var value = random.Next(2);
+
+                        return value == 1;
+                    }
+                    else
+                    {
+                        var value = random.Next(3);
+
+                        return value switch
+                        {
+                            1 => true,
+                            2 => false,
+                            _ => null
+                        };
                     }
                 }
 
-                data.Add(field.Name, fieldData);
-            }
+            case DateTimeFieldPropertiesDto dateTimeField:
+                {
+                    var min = DateTimeOffset.UtcNow;
+                    var max = DateTimeOffset.UtcNow.AddDays(30);
 
-            return data;
-        }
-
-        private JToken? GenerateValue(FieldDto field)
-        {
-            switch (field.Properties)
-            {
-                case BooleanFieldPropertiesDto booleanField:
+                    if (dateTimeField.MinValue.HasValue && dateTimeField.MaxValue.HasValue)
                     {
-                        if (booleanField.IsRequired)
-                        {
-                            var value = random.Next(2);
+                        min = dateTimeField.MinValue.Value;
+                        max = dateTimeField.MaxValue.Value;
+                    }
+                    else if (dateTimeField.MinValue.HasValue)
+                    {
+                        min = dateTimeField.MinValue.Value;
+                        max = min.AddDays(30);
+                    }
+                    else if (dateTimeField.MaxValue.HasValue)
+                    {
+                        max = dateTimeField.MaxValue.Value;
+                        min = max.AddDays(-30);
+                    }
 
-                            return value == 1;
+                    var range = max - min;
+
+                    var result = min.AddMinutes(random.Next(0, (int)range.TotalMinutes)).UtcDateTime;
+
+                    if (dateTimeField.Editor == DateTimeFieldEditor.Date)
+                    {
+                        result = result.Date;
+                    }
+
+                    return result;
+                }
+
+            case GeolocationFieldPropertiesDto:
+                {
+                    var lat = random.Next(-90, 90);
+                    var lon = random.Next(-180, 180);
+
+                    return new JObject(
+                        new JProperty("latitude",
+                            lat),
+                        new JProperty("longitude",
+                            lon));
+                }
+
+            case JsonFieldPropertiesDto:
+                {
+                    return new JObject(
+                        new JProperty("value",
+                            LoremIpsum.GetWord(random)));
+                }
+
+            case NumberFieldPropertiesDto numberField:
+                {
+                    if (numberField.AllowedValues?.Count > 0)
+                    {
+                        return GetRandomValue(numberField.AllowedValues);
+                    }
+
+                    var value = GetRandom(numberField.MinValue, numberField.MaxValue, 0, 100);
+
+                    return Math.Round(value, 2);
+                }
+
+            case StringFieldPropertiesDto stringField:
+                {
+                    if (!string.IsNullOrWhiteSpace(stringField.Pattern))
+                    {
+                        throw new NotSupportedException("Patterns validation for string fields are not supported.");
+                    }
+
+                    if (stringField.AllowedValues?.Count > 0)
+                    {
+                        return GetRandomValue(stringField.AllowedValues);
+                    }
+
+                    if (stringField.Editor == StringFieldEditor.Color)
+                    {
+                        var r = random.Next(0, 0xFF);
+                        var g = random.Next(0, 0xFF);
+                        var b = random.Next(0, 0xFF);
+
+                        return $"#{r:x2}{g:x2}{b:x2}";
+                    }
+
+                    var max = 100;
+
+                    if (stringField.MaxLength.HasValue)
+                    {
+                        max = stringField.MaxLength.Value;
+                    }
+                    else if (stringField.Editor == StringFieldEditor.RichText || stringField.Editor == StringFieldEditor.Markdown)
+                    {
+                        max = 1000;
+                    }
+
+                    var result = LoremIpsum.Text(max, stringField.Editor == StringFieldEditor.RichText);
+
+                    if (stringField.Editor == StringFieldEditor.Slug)
+                    {
+                        result = slugify.GenerateSlug(result).Replace(".", "x", StringComparison.Ordinal);
+                    }
+
+                    return result;
+                }
+
+            case TagsFieldPropertiesDto tagsField:
+                {
+                    var items = (int)GetRandom(tagsField.MinItems, tagsField.MaxItems, 1, 5);
+
+                    var result = new JArray();
+
+                    for (var i = 0; i < items; i++)
+                    {
+                        string value;
+
+                        if (tagsField.AllowedValues?.Count > 0)
+                        {
+                            value = GetRandomValue(tagsField.AllowedValues);
                         }
                         else
                         {
-                            var value = random.Next(3);
-
-                            return value switch
-                            {
-                                1 => true,
-                                2 => false,
-                                _ => null
-                            };
+                            value = LoremIpsum.GetWord(random);
                         }
+
+                        result.Add(value);
                     }
 
-                case DateTimeFieldPropertiesDto dateTimeField:
-                    {
-                        var min = DateTimeOffset.UtcNow;
-                        var max = DateTimeOffset.UtcNow.AddDays(30);
-
-                        if (dateTimeField.MinValue.HasValue && dateTimeField.MaxValue.HasValue)
-                        {
-                            min = dateTimeField.MinValue.Value;
-                            max = dateTimeField.MaxValue.Value;
-                        }
-                        else if (dateTimeField.MinValue.HasValue)
-                        {
-                            min = dateTimeField.MinValue.Value;
-                            max = min.AddDays(30);
-                        }
-                        else if (dateTimeField.MaxValue.HasValue)
-                        {
-                            max = dateTimeField.MaxValue.Value;
-                            min = max.AddDays(-30);
-                        }
-
-                        var range = max - min;
-
-                        var result = min.AddMinutes(random.Next(0, (int)range.TotalMinutes)).UtcDateTime;
-
-                        if (dateTimeField.Editor == DateTimeFieldEditor.Date)
-                        {
-                            result = result.Date;
-                        }
-
-                        return result;
-                    }
-
-                case GeolocationFieldPropertiesDto:
-                    {
-                        var lat = random.Next(-90, 90);
-                        var lon = random.Next(-180, 180);
-
-                        return new JObject(
-                            new JProperty("latitude",
-                                lat),
-                            new JProperty("longitude",
-                                lon));
-                    }
-
-                case JsonFieldPropertiesDto:
-                    {
-                        return new JObject(
-                            new JProperty("value",
-                                LoremIpsum.GetWord(random)));
-                    }
-
-                case NumberFieldPropertiesDto numberField:
-                    {
-                        if (numberField.AllowedValues?.Count > 0)
-                        {
-                            return GetRandomValue(numberField.AllowedValues);
-                        }
-
-                        var value = GetRandom(numberField.MinValue, numberField.MaxValue, 0, 100);
-
-                        return Math.Round(value, 2);
-                    }
-
-                case StringFieldPropertiesDto stringField:
-                    {
-                        if (!string.IsNullOrWhiteSpace(stringField.Pattern))
-                        {
-                            throw new NotSupportedException("Patterns validation for string fields are not supported.");
-                        }
-
-                        if (stringField.AllowedValues?.Count > 0)
-                        {
-                            return GetRandomValue(stringField.AllowedValues);
-                        }
-
-                        if (stringField.Editor == StringFieldEditor.Color)
-                        {
-                            var r = random.Next(0, 0xFF);
-                            var g = random.Next(0, 0xFF);
-                            var b = random.Next(0, 0xFF);
-
-                            return $"#{r:x2}{g:x2}{b:x2}";
-                        }
-
-                        var max = 100;
-
-                        if (stringField.MaxLength.HasValue)
-                        {
-                            max = stringField.MaxLength.Value;
-                        }
-                        else if (stringField.Editor == StringFieldEditor.RichText || stringField.Editor == StringFieldEditor.Markdown)
-                        {
-                            max = 1000;
-                        }
-
-                        var result = LoremIpsum.Text(max, stringField.Editor == StringFieldEditor.RichText);
-
-                        if (stringField.Editor == StringFieldEditor.Slug)
-                        {
-                            result = slugify.GenerateSlug(result).Replace(".", "x", StringComparison.Ordinal);
-                        }
-
-                        return result;
-                    }
-
-                case TagsFieldPropertiesDto tagsField:
-                    {
-                        var items = (int)GetRandom(tagsField.MinItems, tagsField.MaxItems, 1, 5);
-
-                        var result = new JArray();
-
-                        for (var i = 0; i < items; i++)
-                        {
-                            string value;
-
-                            if (tagsField.AllowedValues?.Count > 0)
-                            {
-                                value = GetRandomValue(tagsField.AllowedValues);
-                            }
-                            else
-                            {
-                                value = LoremIpsum.GetWord(random);
-                            }
-
-                            result.Add(value);
-                        }
-
-                        return result;
-                    }
-            }
-
-            throw new NotSupportedException($"Field type {field.Properties.GetType().Name} for field '{field.Name}' is not supported.");
+                    return result;
+                }
         }
 
-        private T GetRandomValue<T>(ICollection<T> source)
+        throw new NotSupportedException($"Field type {field.Properties.GetType().Name} for field '{field.Name}' is not supported.");
+    }
+
+    private T GetRandomValue<T>(ICollection<T> source)
+    {
+        return source.ElementAt(random.Next(0, source.Count));
+    }
+
+    private double GetRandom(double? minValue, double? maxValue, double defaultMin, double defaultMax)
+    {
+        var min = defaultMin;
+        var max = defaultMax;
+
+        var defaultRange = defaultMax - defaultMin;
+
+        if (minValue.HasValue && maxValue.HasValue)
         {
-            return source.ElementAt(random.Next(0, source.Count));
+            min = minValue.Value;
+            max = maxValue.Value;
         }
-
-        private double GetRandom(double? minValue, double? maxValue, double defaultMin, double defaultMax)
+        else if (minValue.HasValue)
         {
-            var min = defaultMin;
-            var max = defaultMax;
-
-            var defaultRange = defaultMax - defaultMin;
-
-            if (minValue.HasValue && maxValue.HasValue)
-            {
-                min = minValue.Value;
-                max = maxValue.Value;
-            }
-            else if (minValue.HasValue)
-            {
-                min = minValue.Value;
-                max = min + defaultRange;
-            }
-            else if (maxValue.HasValue)
-            {
-                max = maxValue.Value;
-                min = max - defaultRange;
-            }
-
-            var value = random.NextDouble();
-
-            return min + (value * (max - min));
+            min = minValue.Value;
+            max = min + defaultRange;
         }
+        else if (maxValue.HasValue)
+        {
+            max = maxValue.Value;
+            min = max - defaultRange;
+        }
+
+        var value = random.NextDouble();
+
+        return min + (value * (max - min));
     }
 }

@@ -10,128 +10,127 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands.Implementation.ImExport
+namespace Squidex.CLI.Commands.Implementation.ImExport;
+
+public sealed class Csv2SquidexConverter
 {
-    public sealed class Csv2SquidexConverter
+    private readonly JsonMapping mapping;
+
+    public Csv2SquidexConverter(string? fields)
     {
-        private readonly JsonMapping mapping;
+        mapping = JsonMapping.ForCsv2Json(fields);
+    }
 
-        public Csv2SquidexConverter(string? fields)
+    public IEnumerable<DynamicData> ReadAll(CsvReader csvReader)
+    {
+        if (csvReader.Read())
         {
-            mapping = JsonMapping.ForCsv2Json(fields);
-        }
+            csvReader.ReadHeader();
 
-        public IEnumerable<DynamicData> ReadAll(CsvReader csvReader)
-        {
-            if (csvReader.Read())
+            while (csvReader.Read())
             {
-                csvReader.ReadHeader();
+                var data = new DynamicData();
 
-                while (csvReader.Read())
+                foreach (var (name, path, format) in mapping)
                 {
-                    var data = new DynamicData();
-
-                    foreach (var (name, path, format) in mapping)
+                    if (csvReader.TryGetField<string>(name, out var value))
                     {
-                        if (csvReader.TryGetField<string>(name, out var value))
+                        try
                         {
-                            try
+                            if (format == "raw")
                             {
-                                if (format == "raw")
-                                {
-                                    SetValue(data, value, path);
-                                }
-                                else
-                                {
-                                    SetValue(data, JToken.Parse(value), path);
-                                }
+                                SetValue(data, value, path);
                             }
-                            catch (JsonReaderException)
+                            else
                             {
-                                SetValue(data, JToken.Parse($"\"{value}\""), path);
+                                SetValue(data, JToken.Parse(value!), path);
                             }
                         }
-                        else
+                        catch (JsonReaderException)
                         {
-                            throw new InvalidOperationException($"Cannot find field {name} in CSV file. Please check the delimiters setting.");
+                            SetValue(data, JToken.Parse($"\"{value}\""), path);
                         }
-                    }
-
-                    yield return data;
-                }
-            }
-        }
-
-        private static void SetValue(DynamicData data, JToken value, JsonPath path)
-        {
-            if (!data.TryGetValue(path[0].Key, out var property))
-            {
-                property = new JObject();
-
-                data[path[0].Key] = property;
-            }
-
-            static object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
-            {
-                if (index >= 0)
-                {
-                    if (parent is JArray array)
-                    {
-                        while (array.Count < index + 1)
-                        {
-                            array.Add(JValue.CreateNull());
-                        }
-
-                        if (merge && array[index].Type == currentValue.Type)
-                        {
-                            return array[index];
-                        }
-
-                        array[index] = currentValue;
-
-                        return currentValue;
-                    }
-                }
-                else
-                {
-                    if (parent is IDictionary<string, JToken> obj)
-                    {
-                        if (merge && obj.TryGetValue(key, out var temp) && temp.Type == currentValue.Type)
-                        {
-                            return temp;
-                        }
-
-                        obj[key] = currentValue;
-
-                        return currentValue;
-                    }
-                }
-
-                throw new CLIException("Invalid json mapping.");
-            }
-
-            object container = property;
-
-            for (var i = 1; i < path.Count; i++)
-            {
-                var (key, index) = path[i];
-
-                if (i == path.Count - 1)
-                {
-                    AddElement(container, key, index, value, false);
-                }
-                else
-                {
-                    var (_, next) = path[i + 1];
-
-                    if (next >= 0)
-                    {
-                        container = AddElement(container, key, index, new JArray(), true);
                     }
                     else
                     {
-                        container = AddElement(container, key, index, new JObject(), true);
+                        throw new InvalidOperationException($"Cannot find field {name} in CSV file. Please check the delimiters setting.");
                     }
+                }
+
+                yield return data;
+            }
+        }
+    }
+
+    private static void SetValue(DynamicData data, JToken value, JsonPath path)
+    {
+        if (!data.TryGetValue(path[0].Key, out var property))
+        {
+            property = new JObject();
+
+            data[path[0].Key] = property;
+        }
+
+        static object AddElement(object parent, string key, int index, JToken currentValue, bool merge)
+        {
+            if (index >= 0)
+            {
+                if (parent is JArray array)
+                {
+                    while (array.Count < index + 1)
+                    {
+                        array.Add(JValue.CreateNull());
+                    }
+
+                    if (merge && array[index].Type == currentValue.Type)
+                    {
+                        return array[index];
+                    }
+
+                    array[index] = currentValue;
+
+                    return currentValue;
+                }
+            }
+            else
+            {
+                if (parent is IDictionary<string, JToken> obj)
+                {
+                    if (merge && obj.TryGetValue(key, out var temp) && temp.Type == currentValue.Type)
+                    {
+                        return temp;
+                    }
+
+                    obj[key] = currentValue;
+
+                    return currentValue;
+                }
+            }
+
+            throw new CLIException("Invalid json mapping.");
+        }
+
+        object container = property;
+
+        for (var i = 1; i < path.Count; i++)
+        {
+            var (key, index) = path[i];
+
+            if (i == path.Count - 1)
+            {
+                AddElement(container, key, index, value, false);
+            }
+            else
+            {
+                var (_, next) = path[i + 1];
+
+                if (next >= 0)
+                {
+                    container = AddElement(container, key, index, new JArray(), true);
+                }
+                else
+                {
+                    container = AddElement(container, key, index, new JObject(), true);
                 }
             }
         }

@@ -16,113 +16,113 @@ using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands
+namespace Squidex.CLI.Commands;
+
+public partial class App
 {
-    public partial class App
+    private const string JsonSeparator = "-----------------";
+
+    [Command("content", Description = "Manage contents.")]
+    [Subcommand]
+    public sealed class Content
     {
-        private const string JsonSeparator = "-----------------";
+        private readonly IConfigurationService configuration;
+        private readonly ILogger log;
 
-        [Command("content", Description = "Manage contents.")]
-        [Subcommand]
-        public sealed class Content
+        public Content(IConfigurationService configuration, ILogger log)
         {
-            private readonly IConfigurationService configuration;
-            private readonly ILogger log;
+            this.configuration = configuration;
 
-            public Content(IConfigurationService configuration, ILogger log)
+            this.log = log;
+        }
+
+        [Command("test-data", Description = "Generates test data.")]
+        public async Task TestData(TestDataArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            var taskForSchema = session.Schemas.GetSchemaAsync(session.App, arguments.Schema);
+            var taskForLanguages = session.Apps.GetLanguagesAsync(session.App);
+
+            await Task.WhenAll(
+                taskForSchema,
+                taskForLanguages);
+
+            var datas = new List<DynamicData>();
+
+            if (arguments.Count > 0)
             {
-                this.configuration = configuration;
-
-                this.log = log;
-            }
-
-            [Command("test-data", Description = "Generates test data.")]
-            public async Task TestData(TestDataArguments arguments)
-            {
-                var session = configuration.StartSession(arguments.App);
-
-                var taskForSchema = session.Schemas.GetSchemaAsync(session.App, arguments.Schema);
-                var taskForLanguages = session.Apps.GetLanguagesAsync(session.App);
-
-                await Task.WhenAll(
-                    taskForSchema,
-                    taskForLanguages);
-
-                var datas = new List<DynamicData>();
-
-                if (arguments.Count > 0)
-                {
 #pragma warning disable MA0042 // Do not use blocking calls in an async method
-                    var generator = new TestDataGenerator(taskForSchema.Result, taskForLanguages.Result);
+                var generator = new TestDataGenerator(taskForSchema.Result, taskForLanguages.Result);
 #pragma warning restore MA0042 // Do not use blocking calls in an async method
 
-                    for (var i = 0; i < arguments.Count; i++)
-                    {
-                        datas.Add(generator.GenerateTestData());
-                    }
-                }
-
-                if (!string.IsNullOrWhiteSpace(arguments.File))
+                for (var i = 0; i < arguments.Count; i++)
                 {
-                    await using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
-                    {
-                        await stream.WriteJsonAsync(datas);
-                    }
-                }
-                else
-                {
-                    await session.ImportAsync(arguments, log, datas);
+                    datas.Add(generator.GenerateTestData());
                 }
             }
 
-            [Command("import", Description = "Import the content to a schema.",
-                ExtendedHelpText =
+            if (!string.IsNullOrWhiteSpace(arguments.File))
+            {
+                await using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
+                {
+                    await stream.WriteJsonAsync(datas);
+                }
+            }
+            else
+            {
+                await session.ImportAsync(arguments, log, datas);
+            }
+        }
+
+        [Command("import", Description = "Import the content to a schema.",
+            ExtendedHelpText =
 @"Use the following format to define fields from the CSV/JSON file:
     - name (for invariant fields)
     - name=other(for invariant fields from another field)
     - name.de=name (for localized fields)
 ")]
-            public async Task Import(ImportArguments arguments)
+        public async Task Import(ImportArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            if (arguments.Format == Format.JSON)
             {
-                var session = configuration.StartSession(arguments.App);
+                var converter = new Json2SquidexConverter(arguments.Fields);
 
-                if (arguments.Format == Format.JSON)
+                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
                 {
-                    var converter = new Json2SquidexConverter(arguments.Fields);
+                    var datas = converter.ReadAsArray(stream);
 
-                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                    {
-                        var datas = converter.ReadAsArray(stream);
-
-                        await session.ImportAsync(arguments, log, datas);
-                    }
-                }
-                else if (arguments.Format == Format.JSON_Separated)
-                {
-                    var converter = new Json2SquidexConverter(arguments.Fields);
-
-                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                    {
-                        var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
-
-                        await session.ImportAsync(arguments, log, datas);
-                    }
-                }
-                else
-                {
-                    var converter = new Csv2SquidexConverter(arguments.Fields);
-
-                    await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                    {
-                        var datas = converter.Read(stream, arguments.Delimiter);
-
-                        await session.ImportAsync(arguments, log, datas);
-                    }
+                    await session.ImportAsync(arguments, log, datas);
                 }
             }
+            else if (arguments.Format == Format.JSON_Separated)
+            {
+                var converter = new Json2SquidexConverter(arguments.Fields);
 
-            [Command("export", Description = "Export the content for a schema.",
-                ExtendedHelpText =
+                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                {
+                    var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
+
+                    await session.ImportAsync(arguments, log, datas);
+                }
+            }
+            else
+            {
+                var converter = new Csv2SquidexConverter(arguments.Fields);
+
+                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
+                {
+                    var datas = converter.Read(stream, arguments.Delimiter);
+
+                    await session.ImportAsync(arguments, log, datas);
+                }
+            }
+        }
+
+        [Command("export", Description = "Export the content for a schema.",
+            ExtendedHelpText =
 @"Use the following format to define fields for CSV:
     - id
     - createdBy
@@ -135,269 +135,268 @@ namespace Squidex.CLI.Commands
     - name=data.name (for invariant fields with alias)
     - name (German)=data.name.de (for localized fields with alias)
 ")]
-            public async Task Export(ExportArguments arguments)
+        public async Task Export(ExportArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            string OpenFile(string extension)
             {
-                var session = configuration.StartSession(arguments.App);
+                var file = arguments.Output;
 
-                string OpenFile(string extension)
+                if (string.IsNullOrWhiteSpace(file))
                 {
-                    var file = arguments.Output;
-
-                    if (string.IsNullOrWhiteSpace(file))
-                    {
-                        file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}{extension}";
-                    }
-
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
-
-                    return file;
+                    file = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}{extension}";
                 }
 
-                if (arguments.Format == Format.JSON && arguments.FilePerContent)
+                if (File.Exists(file))
                 {
-                    var folderName = arguments.Output;
-
-                    if (string.IsNullOrWhiteSpace(folderName))
-                    {
-                        folderName = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
-                    }
-
-                    var folder = Directory.CreateDirectory(folderName);
-
-                    await session.ExportAsync(arguments, log, async entity =>
-                    {
-                        var fileName = $"{arguments.Schema}_{entity.Id}.json";
-                        var filePath = folder.GetFile(fileName).FullName;
-
-                        if (arguments.FullEntities)
-                        {
-                            await Helper.WriteJsonToFileAsync(entity, filePath);
-                        }
-                        else
-                        {
-                            await Helper.WriteJsonToFileAsync(entity.Data, filePath);
-                        }
-                    });
+                    File.Delete(file);
                 }
-                else if (arguments.Format == Format.JSON && !arguments.FilePerContent)
+
+                return file;
+            }
+
+            if (arguments.Format == Format.JSON && arguments.FilePerContent)
+            {
+                var folderName = arguments.Output;
+
+                if (string.IsNullOrWhiteSpace(folderName))
                 {
-                    var file = OpenFile(".json");
+                    folderName = $"{arguments.Schema}_{DateTime.UtcNow:yyyy-MM-dd-hh-mm-ss}";
+                }
 
-                    var allRecords = new List<DynamicContent>();
+                var folder = Directory.CreateDirectory(folderName);
 
-                    await session.ExportAsync(arguments, log, entity =>
-                    {
-                        allRecords.Add(entity);
-
-                        return Task.CompletedTask;
-                    });
+                await session.ExportAsync(arguments, log, async entity =>
+                {
+                    var fileName = $"{arguments.Schema}_{entity.Id}.json";
+                    var filePath = folder.GetFile(fileName).FullName;
 
                     if (arguments.FullEntities)
                     {
-                        await Helper.WriteJsonToFileAsync(allRecords, file);
+                        await Helper.WriteJsonToFileAsync(entity, filePath);
                     }
                     else
                     {
-                        await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), file);
+                        await Helper.WriteJsonToFileAsync(entity.Data, filePath);
+                    }
+                });
+            }
+            else if (arguments.Format == Format.JSON && !arguments.FilePerContent)
+            {
+                var file = OpenFile(".json");
+
+                var allRecords = new List<DynamicContent>();
+
+                await session.ExportAsync(arguments, log, entity =>
+                {
+                    allRecords.Add(entity);
+
+                    return Task.CompletedTask;
+                });
+
+                if (arguments.FullEntities)
+                {
+                    await Helper.WriteJsonToFileAsync(allRecords, file);
+                }
+                else
+                {
+                    await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), file);
+                }
+            }
+            else if (arguments.Format == Format.JSON_Separated && !arguments.FilePerContent)
+            {
+                var file = OpenFile(".json");
+
+                await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                {
+                    await using (var writer = new StreamWriter(stream))
+                    {
+                        await session.ExportAsync(arguments, log, async entity =>
+                        {
+                            if (arguments.FullEntities)
+                            {
+                                await writer.WriteJsonAsync(entity);
+                            }
+                            else
+                            {
+                                await writer.WriteJsonAsync(entity.Data);
+                            }
+
+                            await writer.WriteLineAsync();
+                            await writer.WriteLineAsync(JsonSeparator);
+                        });
                     }
                 }
-                else if (arguments.Format == Format.JSON_Separated && !arguments.FilePerContent)
-                {
-                    var file = OpenFile(".json");
+            }
+            else if (arguments.Format == Format.CSV && !arguments.FilePerContent)
+            {
+                var file = OpenFile(".csv");
 
-                    await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                var converter = new Squidex2CsvConverter(arguments.Fields);
+
+                await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                {
+                    await using (var streamWriter = new StreamWriter(stream))
                     {
-                        await using (var writer = new StreamWriter(stream))
+                        var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                         {
+                            Delimiter = ";"
+                        };
+
+                        await using (var writer = new CsvWriter(streamWriter, csvOptions))
+                        {
+                            foreach (var fieldName in converter.FieldNames)
+                            {
+                                writer.WriteField(fieldName);
+                            }
+
+                            await writer.NextRecordAsync();
+
                             await session.ExportAsync(arguments, log, async entity =>
                             {
-                                if (arguments.FullEntities)
+                                foreach (var value in converter.GetValues(entity))
                                 {
-                                    await writer.WriteJsonAsync(entity);
-                                }
-                                else
-                                {
-                                    await writer.WriteJsonAsync(entity.Data);
+                                    if (value is string text)
+                                    {
+                                        writer.WriteField(text, true);
+                                    }
+                                    else
+                                    {
+                                        writer.WriteField(value);
+                                    }
                                 }
 
-                                await writer.WriteLineAsync();
-                                await writer.WriteLineAsync(JsonSeparator);
+                                await writer.NextRecordAsync();
                             });
                         }
                     }
                 }
-                else if (arguments.Format == Format.CSV && !arguments.FilePerContent)
-                {
-                    var file = OpenFile(".csv");
-
-                    var converter = new Squidex2CsvConverter(arguments.Fields);
-
-                    await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
-                    {
-                        await using (var streamWriter = new StreamWriter(stream))
-                        {
-                            var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
-                            {
-                                Delimiter = ";"
-                            };
-
-                            await using (var writer = new CsvWriter(streamWriter, csvOptions))
-                            {
-                                foreach (var fieldName in converter.FieldNames)
-                                {
-                                    writer.WriteField(fieldName);
-                                }
-
-                                await writer.NextRecordAsync();
-
-                                await session.ExportAsync(arguments, log, async entity =>
-                                {
-                                    foreach (var value in converter.GetValues(entity))
-                                    {
-                                        if (value is string text)
-                                        {
-                                            writer.WriteField(text, true);
-                                        }
-                                        else
-                                        {
-                                            writer.WriteField(value);
-                                        }
-                                    }
-
-                                    await writer.NextRecordAsync();
-                                });
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    throw new CLIException("Multiple files are not supported for this format.");
-                }
             }
-
-            public enum Format
+            else
             {
-                CSV,
-                JSON,
-                JSON_Separated
+                throw new CLIException("Multiple files are not supported for this format.");
             }
+        }
 
-            public sealed class ImportArguments : AppArguments, IImportSettings
+        public enum Format
+        {
+            CSV,
+            JSON,
+            JSON_Separated
+        }
+
+        public sealed class ImportArguments : AppArguments, IImportSettings
+        {
+            [Operand("schema", Description = "The name of the schema.")]
+            public string Schema { get; set; }
+
+            [Operand("file", Description = "The path to the file.")]
+            public string File { get; set; }
+
+            [Option('u', "unpublished", Description = "Import unpublished content.")]
+            public bool Unpublished { get; set; }
+
+            [Option("fields", Description = "Comma separated list of fields to import.")]
+            public string Fields { get; set; }
+
+            [Option("delimiter", Description = "The csv delimiter.")]
+            public string Delimiter { get; set; } = ";";
+
+            [Option("key", Description = "The key field to use.")]
+            public string KeyField { get; set; }
+
+            [Option("format", Description = "Defines the input format.")]
+            public Format Format { get; set; }
+
+            public sealed class Validator : AbstractValidator<ImportArguments>
             {
-                [Operand("schema", Description = "The name of the schema.")]
-                public string Schema { get; set; }
-
-                [Operand("file", Description = "The path to the file.")]
-                public string File { get; set; }
-
-                [Option('u', "unpublished", Description = "Import unpublished content.")]
-                public bool Unpublished { get; set; }
-
-                [Option("fields", Description = "Comma separated list of fields to import.")]
-                public string Fields { get; set; }
-
-                [Option("delimiter", Description = "The csv delimiter.")]
-                public string Delimiter { get; set; } = ";";
-
-                [Option("key", Description = "The key field to use.")]
-                public string KeyField { get; set; }
-
-                [Option("format", Description = "Defines the input format.")]
-                public Format Format { get; set; }
-
-                public sealed class Validator : AbstractValidator<ImportArguments>
+                public Validator()
                 {
-                    public Validator()
-                    {
-                        RuleFor(x => x.File).NotEmpty();
-                        RuleFor(x => x.Schema).NotEmpty();
+                    RuleFor(x => x.File).NotEmpty();
+                    RuleFor(x => x.Schema).NotEmpty();
 
-                        When(x => x.Format == Format.CSV, () =>
-                        {
-                            RuleFor(x => x.Delimiter).NotEmpty();
-                            RuleFor(x => x.Fields).NotEmpty();
-                        });
-                    }
+                    When(x => x.Format == Format.CSV, () =>
+                    {
+                        RuleFor(x => x.Delimiter).NotEmpty();
+                        RuleFor(x => x.Fields).NotEmpty();
+                    });
                 }
             }
+        }
 
-            public sealed class ExportArguments : AppArguments, IExportSettings
+        public sealed class ExportArguments : AppArguments, IExportSettings
+        {
+            [Operand("schema", Description = "The name of the schema.")]
+            public string Schema { get; set; }
+
+            [Option("filter", Description = "Optional filter.")]
+            public string Filter { get; set; }
+
+            [Option("text", Description = "Optional full text query.")]
+            public string FullText { get; set; }
+
+            [Option("order", Description = "Optional ordering.")]
+            public string OrderBy { get; set; }
+
+            [Option("output", Description = "Optional file or folder name. Default: Schema name.")]
+            public string Output { get; set; }
+
+            [Option("delimiter", Description = "The csv delimiter.")]
+            public string Delimiter { get; set; } = ";";
+
+            [Option('u', "unpublished", Description = "Export unpublished content.")]
+            public bool Unpublished { get; set; }
+
+            [Option('m', "multiple", Description = "Creates one file per content.")]
+            public bool FilePerContent { get; set; }
+
+            [Option("fields", Description = "Comma separated list of fields. CSV only.")]
+            public string Fields { get; set; }
+
+            [Option("full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
+            public bool FullEntities { get; set; }
+
+            [Option("format", Description = "Defines the output format.")]
+            public Format Format { get; set; }
+
+            public sealed class Validator : AbstractValidator<ExportArguments>
             {
-                [Operand("schema", Description = "The name of the schema.")]
-                public string Schema { get; set; }
-
-                [Option("filter", Description = "Optional filter.")]
-                public string Filter { get; set; }
-
-                [Option("text", Description = "Optional full text query.")]
-                public string FullText { get; set; }
-
-                [Option("order", Description = "Optional ordering.")]
-                public string OrderBy { get; set; }
-
-                [Option("output", Description = "Optional file or folder name. Default: Schema name.")]
-                public string Output { get; set; }
-
-                [Option("delimiter", Description = "The csv delimiter.")]
-                public string Delimiter { get; set; } = ";";
-
-                [Option('u', "unpublished", Description = "Export unpublished content.")]
-                public bool Unpublished { get; set; }
-
-                [Option('m', "multiple", Description = "Creates one file per content.")]
-                public bool FilePerContent { get; set; }
-
-                [Option("fields", Description = "Comma separated list of fields. CSV only.")]
-                public string Fields { get; set; }
-
-                [Option("full", Description = "Write full entities, not only data when exporting as CSV. Default: false.")]
-                public bool FullEntities { get; set; }
-
-                [Option("format", Description = "Defines the output format.")]
-                public Format Format { get; set; }
-
-                public sealed class Validator : AbstractValidator<ExportArguments>
+                public Validator()
                 {
-                    public Validator()
+                    When(x => x.Format == Format.CSV, () =>
                     {
-                        When(x => x.Format == Format.CSV, () =>
-                        {
-                            RuleFor(x => x.Delimiter).NotEmpty();
-                            RuleFor(x => x.Fields).NotEmpty();
-                        });
+                        RuleFor(x => x.Delimiter).NotEmpty();
+                        RuleFor(x => x.Fields).NotEmpty();
+                    });
 
-                        RuleFor(x => x.Schema).NotEmpty();
-                    }
+                    RuleFor(x => x.Schema).NotEmpty();
                 }
             }
+        }
 
-            public sealed class TestDataArguments : AppArguments, IImportSettings
+        public sealed class TestDataArguments : AppArguments, IImportSettings
+        {
+            [Operand("schema", Description = "The name of the schema.")]
+            public string Schema { get; set; }
+
+            [Option('u', "unpublished", Description = "Import unpublished content.")]
+            public bool Unpublished { get; set; }
+
+            [Option('c', "count", Description = "The number of items.")]
+            public int Count { get; set; } = 10;
+
+            [Option("file", Description = "The optional path to the file.")]
+            public string File { get; set; }
+
+            string? IImportSettings.KeyField => null;
+
+            public sealed class Validator : AbstractValidator<TestDataArguments>
             {
-                [Operand("schema", Description = "The name of the schema.")]
-                public string Schema { get; set; }
-
-                [Option('u', "unpublished", Description = "Import unpublished content.")]
-                public bool Unpublished { get; set; }
-
-                [Option('c', "count", Description = "The number of items.")]
-                public int Count { get; set; } = 10;
-
-                [Option("file", Description = "The optional path to the file.")]
-                public string File { get; set; }
-
-                string? IImportSettings.KeyField => null;
-
-                public sealed class Validator : AbstractValidator<TestDataArguments>
+                public Validator()
                 {
-                    public Validator()
-                    {
-                        RuleFor(x => x.Schema).NotEmpty();
-                        RuleFor(x => x.Count).GreaterThan(0);
-                    }
+                    RuleFor(x => x.Schema).NotEmpty();
+                    RuleFor(x => x.Count).GreaterThan(0);
                 }
             }
         }

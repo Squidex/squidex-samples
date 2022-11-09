@@ -7,63 +7,62 @@
 
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary.Configuration
+namespace Squidex.ClientLibrary.Configuration;
+
+/// <summary>
+/// Provides a static instance.
+/// </summary>
+public sealed class StaticHttpClientProvider : IHttpClientProvider
 {
+    private readonly HttpClient staticHttpClient;
+
     /// <summary>
-    /// Provides a static instance.
+    /// Initializes a new instance of the <see cref="StaticHttpClientProvider"/> class.
     /// </summary>
-    public sealed class StaticHttpClientProvider : IHttpClientProvider
+    /// <param name="options">The options.</param>
+    public StaticHttpClientProvider(SquidexOptions options)
     {
-        private readonly HttpClient staticHttpClient;
+        Guard.NotNull(options, nameof(options));
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StaticHttpClientProvider"/> class.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        public StaticHttpClientProvider(SquidexOptions options)
+        staticHttpClient = CreateClient(options);
+    }
+
+    private static HttpClient CreateClient(SquidexOptions options)
+    {
+        var handler = new HttpClientHandler();
+
+        options.Configurator.Configure(handler);
+
+        HttpMessageHandler messageHandler = new AuthenticatingHttpMessageHandler(options.Authenticator)
         {
-            Guard.NotNull(options, nameof(options));
+            InnerHandler = handler
+        };
 
-            staticHttpClient = CreateClient(options);
-        }
+        messageHandler = options.ClientFactory.CreateHttpMessageHandler(messageHandler) ?? messageHandler;
 
-        private static HttpClient CreateClient(SquidexOptions options)
-        {
-            var handler = new HttpClientHandler();
+        var httpClient =
+            options.ClientFactory.CreateHttpClient(messageHandler) ??
+                new HttpClient(messageHandler, false);
 
-            options.Configurator.Configure(handler);
+        // Apply this setting afterwards, to override the value from the client factory.
+        httpClient.BaseAddress = new Uri(options.Url, UriKind.Absolute);
 
-            HttpMessageHandler messageHandler = new AuthenticatingHttpMessageHandler(options.Authenticator)
-            {
-                InnerHandler = handler
-            };
+        // Also override timeout when create from factory.
+        httpClient.Timeout = options.HttpClientTimeout;
 
-            messageHandler = options.ClientFactory.CreateHttpMessageHandler(messageHandler) ?? messageHandler;
+        options.Configurator.Configure(httpClient);
 
-            var httpClient =
-                options.ClientFactory.CreateHttpClient(messageHandler) ??
-                    new HttpClient(messageHandler, false);
+        return httpClient;
+    }
 
-            // Apply this setting afterwards, to override the value from the client factory.
-            httpClient.BaseAddress = new Uri(options.Url, UriKind.Absolute);
+    /// <inheritdoc />
+    public HttpClient Get()
+    {
+        return staticHttpClient;
+    }
 
-            // Also override timeout when create from factory.
-            httpClient.Timeout = options.HttpClientTimeout;
-
-            options.Configurator.Configure(httpClient);
-
-            return httpClient;
-        }
-
-        /// <inheritdoc />
-        public HttpClient Get()
-        {
-            return staticHttpClient;
-        }
-
-        /// <inheritdoc />
-        public void Return(HttpClient httpClient)
-        {
-        }
+    /// <inheritdoc />
+    public void Return(HttpClient httpClient)
+    {
     }
 }

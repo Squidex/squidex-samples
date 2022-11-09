@@ -5,10 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+internal static class SpecialHeaders
 {
-    internal static class SpecialHeaders
-    {
-        public const string AppName = "X-App";
-    }
+    public const string AppName = "X-App";
 }

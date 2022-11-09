@@ -5,41 +5,40 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Type of event on a content.
+/// </summary>
+public enum EnrichedContentEventType
 {
     /// <summary>
-    /// Type of event on a content.
+    /// Content Created.
     /// </summary>
-    public enum EnrichedContentEventType
-    {
-        /// <summary>
-        /// Content Created.
-        /// </summary>
-        Created,
+    Created,
 
-        /// <summary>
-        /// Content Deleted.
-        /// </summary>
-        Deleted,
+    /// <summary>
+    /// Content Deleted.
+    /// </summary>
+    Deleted,
 
-        /// <summary>
-        /// Content Published.
-        /// </summary>
-        Published,
+    /// <summary>
+    /// Content Published.
+    /// </summary>
+    Published,
 
-        /// <summary>
-        /// Content Status Changed.
-        /// </summary>
-        StatusChanged,
+    /// <summary>
+    /// Content Status Changed.
+    /// </summary>
+    StatusChanged,
 
-        /// <summary>
-        /// Content Updated.
-        /// </summary>
-        Updated,
+    /// <summary>
+    /// Content Updated.
+    /// </summary>
+    Updated,
 
-        /// <summary>
-        /// Content Unpublished.
-        /// </summary>
-        Unpublished
-    }
+    /// <summary>
+    /// Content Unpublished.
+    /// </summary>
+    Unpublished
 }

@@ -8,18 +8,17 @@
 using System.ComponentModel.DataAnnotations;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Contents
+namespace Squidex.CLI.Commands.Implementation.Sync.Contents;
+
+internal sealed class ContentModel
 {
-    internal sealed class ContentModel
-    {
-        [Required]
-        public string Schema { get; set; }
+    [Required]
+    public string Schema { get; set; }
 
-        [Required]
-        public DynamicData Data { get; set; }
+    [Required]
+    public DynamicData Data { get; set; }
 
-        public string? Id { get; set; }
+    public string? Id { get; set; }
 
-        public string? Status { get; set; }
-    }
+    public string? Status { get; set; }
 }

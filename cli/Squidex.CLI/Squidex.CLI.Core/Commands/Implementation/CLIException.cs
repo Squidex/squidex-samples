@@ -7,28 +7,27 @@
 
 using System.Runtime.Serialization;
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation;
+
+[Serializable]
+public class CLIException : Exception
 {
-    [Serializable]
-    public class CLIException : Exception
+    public CLIException()
     {
-        public CLIException()
-        {
-        }
+    }
 
-        public CLIException(string message)
-            : base(message)
-        {
-        }
+    public CLIException(string message)
+        : base(message)
+    {
+    }
 
-        public CLIException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    public CLIException(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 
-        protected CLIException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
+    protected CLIException(SerializationInfo info, StreamingContext context)
+        : base(info, context)
+    {
     }
 }

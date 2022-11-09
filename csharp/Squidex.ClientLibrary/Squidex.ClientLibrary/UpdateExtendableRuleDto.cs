@@ -8,35 +8,34 @@
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// A HTTP request to update a rule.
+/// </summary>
+public sealed class UpdateExtendableRuleDto
 {
     /// <summary>
-    /// A HTTP request to update a rule.
+    /// Gets or sets the optional new name of the rule.
     /// </summary>
-    public sealed class UpdateExtendableRuleDto
-    {
-        /// <summary>
-        /// Gets or sets the optional new name of the rule.
-        /// </summary>
-        /// <value>
-        /// The optional new name of the rule.
-        /// </value>
-        public string Name { get; set; }
+    /// <value>
+    /// The optional new name of the rule.
+    /// </value>
+    public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the optional new trigger.
-        /// </summary>
-        /// <value>
-        /// The optional new trigger.
-        /// </value>
-        public RuleTriggerDto Trigger { get; set; }
+    /// <summary>
+    /// Gets or sets the optional new trigger.
+    /// </summary>
+    /// <value>
+    /// The optional new trigger.
+    /// </value>
+    public RuleTriggerDto Trigger { get; set; }
 
-        /// <summary>
-        /// Gets or sets the optional new action.
-        /// </summary>
-        /// <value>
-        /// The optional new action.
-        /// </value>
-        public JObject Action { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets the optional new action.
+    /// </summary>
+    /// <value>
+    /// The optional new action.
+    /// </value>
+    public JObject Action { get; set; }
 }

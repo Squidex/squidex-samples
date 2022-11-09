@@ -5,22 +5,21 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem
+namespace Squidex.CLI.Commands.Implementation.FileSystem;
+
+public interface IFile
 {
-    public interface IFile
-    {
-        string FullName { get; }
+    string FullName { get; }
 
-        string FullLocalName { get; }
+    string FullLocalName { get; }
 
-        string Name { get; }
+    string Name { get; }
 
-        bool Exists { get; }
+    bool Exists { get; }
 
-        Stream OpenRead();
+    Stream OpenRead();
 
-        Stream OpenWrite();
+    Stream OpenWrite();
 
-        void Delete();
-    }
+    void Delete();
 }

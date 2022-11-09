@@ -8,40 +8,39 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// Converter for the Status.
+/// </summary>
+public sealed class StatusTypeConverter : TypeConverter
 {
-    /// <summary>
-    /// Converter for the Status.
-    /// </summary>
-    public sealed class StatusTypeConverter : TypeConverter
+    /// <inheritdoc />
+    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {
-        /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
+        return sourceType == typeof(string);
+    }
+
+    /// <inheritdoc />
+    public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
+    {
+        return destinationType == typeof(string);
+    }
+
+    /// <inheritdoc />
+    public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
+    {
+        if (value is string s)
         {
-            return sourceType == typeof(string);
+            return new Status(s);
         }
 
-        /// <inheritdoc />
-        public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
-        {
-            return destinationType == typeof(string);
-        }
+        return default(Status);
+    }
 
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object? value)
-        {
-            if (value is string s)
-            {
-                return new Status(s);
-            }
-
-            return default(Status);
-        }
-
-        /// <inheritdoc />
-        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
-        {
-            return value?.ToString();
-        }
+    /// <inheritdoc />
+    public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+    {
+        return value?.ToString();
     }
 }

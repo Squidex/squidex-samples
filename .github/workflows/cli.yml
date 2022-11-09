@@ -17,9 +17,9 @@ jobs:
       uses: montudor/action-zip@v0.1.0
  
     - name: setup dotnet
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.100
+        dotnet-version: 7.0.x
 
     - name: publish dotnet
       run: |

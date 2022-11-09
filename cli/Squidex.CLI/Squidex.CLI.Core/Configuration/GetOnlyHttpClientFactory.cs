@@ -7,18 +7,17 @@
 
 using Squidex.ClientLibrary.Configuration;
 
-namespace Squidex.CLI.Configuration
-{
-    public sealed class GetOnlyHttpClientFactory : IHttpClientFactory
-    {
-        public HttpClient? CreateHttpClient(HttpMessageHandler messageHandler)
-        {
-            return new GetOnlyHttpClient(messageHandler);
-        }
+namespace Squidex.CLI.Configuration;
 
-        public HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner)
-        {
-            return null;
-        }
+public sealed class GetOnlyHttpClientFactory : IHttpClientFactory
+{
+    public HttpClient? CreateHttpClient(HttpMessageHandler messageHandler)
+    {
+        return new GetOnlyHttpClient(messageHandler);
+    }
+
+    public HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner)
+    {
+        return null;
     }
 }

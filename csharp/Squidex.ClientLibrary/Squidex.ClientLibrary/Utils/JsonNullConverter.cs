@@ -7,26 +7,25 @@
 
 using Newtonsoft.Json;
 
-namespace Squidex.ClientLibrary.Utils
+namespace Squidex.ClientLibrary.Utils;
+
+/// <summary>
+/// A JSON converter for <see cref="JsonNull{T}"/> instances.
+/// </summary>
+/// <typeparam name="T">The wrapped type.</typeparam>
+public class JsonNullConverter<T> : JsonConverter<JsonNull<T>>
 {
-    /// <summary>
-    /// A JSON converter for <see cref="JsonNull{T}"/> instances.
-    /// </summary>
-    /// <typeparam name="T">The wrapped type.</typeparam>
-    public class JsonNullConverter<T> : JsonConverter<JsonNull<T>>
+    /// <inheritdoc/>
+    public override void WriteJson(JsonWriter writer, JsonNull<T> value, JsonSerializer serializer)
     {
-        /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, JsonNull<T> value, JsonSerializer serializer)
-        {
-            serializer.Serialize(writer, value.Value, typeof(T));
-        }
+        serializer.Serialize(writer, value.Value, typeof(T));
+    }
 
-        /// <inheritdoc/>
-        public override JsonNull<T> ReadJson(JsonReader reader, Type objectType, JsonNull<T> existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            var value = serializer.Deserialize<T>(reader);
+    /// <inheritdoc/>
+    public override JsonNull<T> ReadJson(JsonReader reader, Type objectType, JsonNull<T> existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        var value = serializer.Deserialize<T>(reader);
 
-            return new JsonNull<T>(value!);
-        }
+        return new JsonNull<T>(value!);
     }
 }

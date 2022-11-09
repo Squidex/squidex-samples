@@ -7,62 +7,61 @@
 
 using System.IO.Compression;
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip;
+
+public sealed class ZipFile : IFile
 {
-    public sealed class ZipFile : IFile
+    private readonly ZipArchive archive;
+    private readonly string archivePath;
+    private ZipArchiveEntry? entry;
+
+    public string FullName { get; }
+
+    public string FullLocalName => archivePath;
+
+    public string Name { get; }
+
+    public bool Exists => entry != null;
+
+    public ZipFile(ZipArchive archive, string archivePath, string name, string filePath)
     {
-        private readonly ZipArchive archive;
-        private readonly string archivePath;
-        private ZipArchiveEntry? entry;
+        entry = archive.GetEntry(archivePath);
 
-        public string FullName { get; }
+        this.archive = archive;
+        this.archivePath = archivePath;
 
-        public string FullLocalName => archivePath;
+        Name = name;
 
-        public string Name { get; }
+        FullName = $"{filePath}//{archivePath}";
+    }
 
-        public bool Exists => entry != null;
+    public void Delete()
+    {
+        entry?.Delete();
+    }
 
-        public ZipFile(ZipArchive archive, string archivePath, string name, string filePath)
+    public Stream OpenRead()
+    {
+        if (entry == null)
         {
-            entry = archive.GetEntry(archivePath);
-
-            this.archive = archive;
-            this.archivePath = archivePath;
-
-            Name = name;
-
-            FullName = $"{filePath}//{archivePath}";
+            throw new FileNotFoundException(null, archivePath);
         }
 
-        public void Delete()
+        return entry.Open();
+    }
+
+    public Stream OpenWrite()
+    {
+        if (entry == null)
         {
-            entry?.Delete();
+            entry = archive.CreateEntry(archivePath);
         }
 
-        public Stream OpenRead()
-        {
-            if (entry == null)
-            {
-                throw new FileNotFoundException(null, archivePath);
-            }
+        return entry.Open();
+    }
 
-            return entry.Open();
-        }
-
-        public Stream OpenWrite()
-        {
-            if (entry == null)
-            {
-                entry = archive.CreateEntry(archivePath);
-            }
-
-            return entry.Open();
-        }
-
-        public override string ToString()
-        {
-            return FullName;
-        }
+    public override string ToString()
+    {
+        return FullName;
     }
 }

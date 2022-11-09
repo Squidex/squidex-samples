@@ -7,38 +7,37 @@
 
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Envelope which contains the generated events.
+/// </summary>
+public class EnrichedEventEnvelope
 {
     /// <summary>
-    /// Envelope which contains the generated events.
+    /// Type of the event.
     /// </summary>
-    public class EnrichedEventEnvelope
+    public string Type { get; set; }
+
+    /// <summary>
+    /// When the event has been generated.
+    /// </summary>
+    public DateTimeOffset Timestamp { get; set; }
+
+    /// <summary>
+    /// The payload of the evnet.
+    /// </summary>
+    public EnrichedEvent Payload { get; set; }
+
+    /// <summary>
+    /// Utils to deserialize an Envelope.
+    /// </summary>
+    /// <param name="json">The string to be deserialized.</param>
+    /// <returns>
+    /// The enriched event.
+    /// </returns>
+    public static EnrichedEventEnvelope FromJson(string json)
     {
-        /// <summary>
-        /// Type of the event.
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
-        /// When the event has been generated.
-        /// </summary>
-        public DateTimeOffset Timestamp { get; set; }
-
-        /// <summary>
-        /// The payload of the evnet.
-        /// </summary>
-        public EnrichedEvent Payload { get; set; }
-
-        /// <summary>
-        /// Utils to deserialize an Envelope.
-        /// </summary>
-        /// <param name="json">The string to be deserialized.</param>
-        /// <returns>
-        /// The enriched event.
-        /// </returns>
-        public static EnrichedEventEnvelope FromJson(string json)
-        {
-            return json.FromJsonWithTypes<EnrichedEventEnvelope>();
-        }
+        return json.FromJsonWithTypes<EnrichedEventEnvelope>();
     }
 }

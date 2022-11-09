@@ -7,16 +7,15 @@
 
 using Newtonsoft.Json.Linq;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// A dynamic data object.
+/// </summary>
+/// <remarks>
+/// Use this type when you have a dynamic structure for your content or if you query content items across many schemas.
+/// </remarks>
+[KeepCasing]
+public sealed class DynamicData : Dictionary<string, JToken>
 {
-    /// <summary>
-    /// A dynamic data object.
-    /// </summary>
-    /// <remarks>
-    /// Use this type when you have a dynamic structure for your content or if you query content items across many schemas.
-    /// </remarks>
-    [KeepCasing]
-    public sealed class DynamicData : Dictionary<string, JToken>
-    {
-    }
 }

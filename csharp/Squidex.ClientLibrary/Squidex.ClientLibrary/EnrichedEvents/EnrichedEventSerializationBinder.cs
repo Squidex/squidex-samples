@@ -7,38 +7,37 @@
 
 using Newtonsoft.Json.Serialization;
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Binder to deserialize the EnrichedEventEnvelope with the right payload using the $type on the json tree.
+/// </summary>
+public sealed class EnrichedEventSerializationBinder : ISerializationBinder
 {
     /// <summary>
-    /// Binder to deserialize the EnrichedEventEnvelope with the right payload using the $type on the json tree.
+    /// List of available event classes.
     /// </summary>
-    public sealed class EnrichedEventSerializationBinder : ISerializationBinder
+    public IList<Type> EnrichedEventTypes { get; set; } = new List<Type>
     {
-        /// <summary>
-        /// List of available event classes.
-        /// </summary>
-        public IList<Type> EnrichedEventTypes { get; set; } = new List<Type>
-        {
-            typeof(EnrichedCommentEvent),
-            typeof(EnrichedContentEvent),
-            typeof(EnrichedManualEvent),
-            typeof(EnrichedAssetEvent),
-            typeof(EnrichedSchemaEvent),
-            typeof(EnrichedUsageExceededEvent)
-        };
+        typeof(EnrichedCommentEvent),
+        typeof(EnrichedContentEvent),
+        typeof(EnrichedManualEvent),
+        typeof(EnrichedAssetEvent),
+        typeof(EnrichedSchemaEvent),
+        typeof(EnrichedUsageExceededEvent)
+    };
 
-        /// <inheritdoc/>
-        public Type BindToType(string? assemblyName, string typeName)
-        {
-            return EnrichedEventTypes.Single(t => t.Name == typeName);
-        }
+    /// <inheritdoc/>
+    public Type BindToType(string? assemblyName, string typeName)
+    {
+        return EnrichedEventTypes.Single(t => t.Name == typeName);
+    }
 
-        /// <inheritdoc/>
-        public void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
-        {
-            assemblyName = null;
+    /// <inheritdoc/>
+    public void BindToName(Type serializedType, out string? assemblyName, out string? typeName)
+    {
+        assemblyName = null;
 
-            typeName = serializedType.Name;
-        }
+        typeName = serializedType.Name;
     }
 }

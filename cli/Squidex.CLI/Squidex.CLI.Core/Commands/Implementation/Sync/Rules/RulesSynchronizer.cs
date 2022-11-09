@@ -9,249 +9,248 @@ using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Rules
+namespace Squidex.CLI.Commands.Implementation.Sync.Rules;
+
+public sealed class RulesSynchronizer : ISynchronizer
 {
-    public sealed class RulesSynchronizer : ISynchronizer
+    private const string Ref = "../__json/rule";
+    private readonly ILogger log;
+
+    public string Name => "Rules";
+
+    public RulesSynchronizer(ILogger log)
     {
-        private const string Ref = "../__json/rule";
-        private readonly ILogger log;
+        this.log = log;
+    }
 
-        public string Name => "Rules";
-
-        public RulesSynchronizer(ILogger log)
+    public Task CleanupAsync(IFileSystem fs)
+    {
+        foreach (var file in GetFiles(fs))
         {
-            this.log = log;
+            file.Delete();
         }
 
-        public Task CleanupAsync(IFileSystem fs)
+        return Task.CompletedTask;
+    }
+
+    public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var current = await session.Rules.GetRulesAsync();
+
+        await MapSchemaIdsToNamesAsync(session, current);
+
+        await current.Items.OrderBy(x => x.Created).Foreach(async (rule, i) =>
         {
-            foreach (var file in GetFiles(fs))
+            var ruleName = rule.Name;
+
+            if (string.IsNullOrWhiteSpace(ruleName))
             {
-                file.Delete();
+                ruleName = "<Unnammed>";
             }
 
-            return Task.CompletedTask;
-        }
-
-        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
-        {
-            var current = await session.Rules.GetRulesAsync();
-
-            await MapSchemaIdsToNamesAsync(session, current);
-
-            await current.Items.OrderBy(x => x.Created).Foreach(async (rule, i) =>
+            await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
             {
-                var ruleName = rule.Name;
-
-                if (string.IsNullOrWhiteSpace(ruleName))
-                {
-                    ruleName = "<Unnammed>";
-                }
-
-                await log.DoSafeAsync($"Exporting {ruleName} ({rule.Id})", async () =>
-                {
-                    await sync.WriteWithSchemaAs<RuleModel>(new FilePath("rules", $"rule{i}.json"), rule, Ref);
-                });
+                await sync.WriteWithSchemaAs<RuleModel>(new FilePath("rules", $"rule{i}.json"), rule, Ref);
             });
+        });
+    }
+
+    public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => sync.Read<RuleModel>(x, log))
+                .ToList();
+
+        writer.Paragraph($"{models.Count} rule(s).");
+
+        if (models.Count > 0)
+        {
+            var rows = models.Select(x => new object[] { x.Name, x.Trigger.TypeName(), x.Action.TypeName() }).OrderBy(x => x[0]).ToArray();
+
+            writer.Table(new[] { "Name", "Trigger", "Action" }, rows);
         }
 
-        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        return Task.CompletedTask;
+    }
+
+    public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => sync.Read<RuleModel>(x, log))
+                .ToList();
+
+        if (!models.HasDistinctNames(x => x.Name))
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => sync.Read<RuleModel>(x, log))
-                    .ToList();
-
-            writer.Paragraph($"{models.Count} rule(s).");
-
-            if (models.Count > 0)
-            {
-                var rows = models.Select(x => new object[] { x.Name, x.Trigger.TypeName(), x.Action.TypeName() }).OrderBy(x => x[0]).ToArray();
-
-                writer.Table(new[] { "Name", "Trigger", "Action" }, rows);
-            }
-
-            return Task.CompletedTask;
+            log.WriteLine("ERROR: Can only sync rules when all target rules have distinct names.");
+            return;
         }
 
-        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+        var current = await session.Rules.GetRulesAsync();
+
+        if (!current.Items.HasDistinctNames(x => x.Name))
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => sync.Read<RuleModel>(x, log))
-                    .ToList();
+            log.WriteLine("ERROR: Can only sync rules when all current rules have distinct names.");
+            return;
+        }
 
-            if (!models.HasDistinctNames(x => x.Name))
+        var rulesByName = current.Items.ToDictionary(x => x.Name);
+
+        if (options.Delete)
+        {
+            foreach (var (name, rule) in rulesByName.ToList())
             {
-                log.WriteLine("ERROR: Can only sync rules when all target rules have distinct names.");
-                return;
-            }
-
-            var current = await session.Rules.GetRulesAsync();
-
-            if (!current.Items.HasDistinctNames(x => x.Name))
-            {
-                log.WriteLine("ERROR: Can only sync rules when all current rules have distinct names.");
-                return;
-            }
-
-            var rulesByName = current.Items.ToDictionary(x => x.Name);
-
-            if (options.Delete)
-            {
-                foreach (var (name, rule) in rulesByName.ToList())
+                if (models.All(x => x.Name != name))
                 {
-                    if (models.All(x => x.Name != name))
+                    await log.DoSafeAsync($"Rule '{name}' deleting", async () =>
                     {
-                        await log.DoSafeAsync($"Rule '{name}' deleting", async () =>
-                        {
-                            await session.Rules.DeleteRuleAsync(rule.Id);
+                        await session.Rules.DeleteRuleAsync(rule.Id);
 
-                            rulesByName.Remove(name);
-                        });
-                    }
+                        rulesByName.Remove(name);
+                    });
                 }
             }
+        }
 
-            await MapSchemaNamesToIdsAsync(session, models);
+        await MapSchemaNamesToIdsAsync(session, models);
 
-            foreach (var newRule in models)
+        foreach (var newRule in models)
+        {
+            if (rulesByName.ContainsKey(newRule.Name))
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Rule '{newRule.Name}' creating", async () =>
             {
                 if (rulesByName.ContainsKey(newRule.Name))
                 {
-                    continue;
+                    throw new CLIException("Name already used.");
                 }
 
-                await log.DoSafeAsync($"Rule '{newRule.Name}' creating", async () =>
+                var request = newRule.ToCreate();
+
+                var created = await session.Rules.CreateRuleAsync(request);
+
+                rulesByName[newRule.Name] = created;
+            });
+        }
+
+        foreach (var newRule in models)
+        {
+            var rule = rulesByName.GetValueOrDefault(newRule.Name);
+
+            if (rule == null)
+            {
+                return;
+            }
+
+            await log.DoVersionedAsync($"Rule '{newRule.Name}' updating", rule.Version, async () =>
+            {
+                var request = newRule.ToUpdate();
+
+                rule = await session.Rules.UpdateRuleAsync(rule.Id, request);
+
+                return rule.Version;
+            });
+
+            if (newRule.IsEnabled != rule.IsEnabled)
+            {
+                if (newRule.IsEnabled)
                 {
-                    if (rulesByName.ContainsKey(newRule.Name))
+                    await log.DoVersionedAsync($"Rule '{newRule.Name}' enabling", rule.Version, async () =>
                     {
-                        throw new CLIException("Name already used.");
-                    }
+                        var result = await session.Rules.EnableRuleAsync(rule.Id);
 
-                    var request = newRule.ToCreate();
-
-                    var created = await session.Rules.CreateRuleAsync(request);
-
-                    rulesByName[newRule.Name] = created;
-                });
-            }
-
-            foreach (var newRule in models)
-            {
-                var rule = rulesByName.GetValueOrDefault(newRule.Name);
-
-                if (rule == null)
-                {
-                    return;
+                        return result.Version;
+                    });
                 }
-
-                await log.DoVersionedAsync($"Rule '{newRule.Name}' updating", rule.Version, async () =>
+                else
                 {
-                    var request = newRule.ToUpdate();
-
-                    rule = await session.Rules.UpdateRuleAsync(rule.Id, request);
-
-                    return rule.Version;
-                });
-
-                if (newRule.IsEnabled != rule.IsEnabled)
-                {
-                    if (newRule.IsEnabled)
+                    await log.DoVersionedAsync($"Rule '{newRule.Name}' disabling", rule.Version, async () =>
                     {
-                        await log.DoVersionedAsync($"Rule '{newRule.Name}' enabling", rule.Version, async () =>
-                        {
-                            var result = await session.Rules.EnableRuleAsync(rule.Id);
+                        var result = await session.Rules.DisableRuleAsync(rule.Id);
 
-                            return result.Version;
-                        });
-                    }
-                    else
-                    {
-                        await log.DoVersionedAsync($"Rule '{newRule.Name}' disabling", rule.Version, async () =>
-                        {
-                            var result = await session.Rules.DisableRuleAsync(rule.Id);
-
-                            return result.Version;
-                        });
-                    }
+                        return result.Version;
+                    });
                 }
             }
         }
+    }
 
-        private async Task MapSchemaIdsToNamesAsync(ISession session, ExtendableRules current)
+    private async Task MapSchemaIdsToNamesAsync(ISession session, ExtendableRules current)
+    {
+        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
+        var map = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+
+        foreach (var rule in current.Items)
         {
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-
-            var map = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
-
-            foreach (var rule in current.Items)
+            if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
             {
-                if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
-                {
-                    MapSchemas(contentTrigger, map);
-                }
+                MapSchemas(contentTrigger, map);
             }
         }
+    }
 
-        private async Task MapSchemaNamesToIdsAsync(ISession session, List<RuleModel> models)
+    private async Task MapSchemaNamesToIdsAsync(ISession session, List<RuleModel> models)
+    {
+        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+
+        var map = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
+
+        foreach (var newRule in models)
         {
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-
-            var map = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
-
-            foreach (var newRule in models)
+            if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
             {
-                if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
-                {
-                    MapSchemas(contentTrigger, map);
-                }
+                MapSchemas(contentTrigger, map);
             }
         }
+    }
 
-        private void MapSchemas(ContentChangedRuleTriggerDto dto, Dictionary<string, string> schemaMap)
+    private void MapSchemas(ContentChangedRuleTriggerDto dto, Dictionary<string, string> schemaMap)
+    {
+        foreach (var schema in dto.Schemas)
         {
-            foreach (var schema in dto.Schemas)
+            if (!schemaMap.TryGetValue(schema.SchemaId!, out var found))
             {
-                if (!schemaMap.TryGetValue(schema.SchemaId!, out var found))
-                {
-                    log.WriteLine($"Schema {schema.SchemaId} not found.");
-                }
+                log.WriteLine($"Schema {schema.SchemaId} not found.");
+            }
 
-                schema.SchemaId = found;
+            schema.SchemaId = found;
+        }
+    }
+
+    private static IEnumerable<IFile> GetFiles(IFileSystem fs)
+    {
+        foreach (var file in fs.GetFiles(new FilePath("rules"), ".json"))
+        {
+            if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
+            {
+                yield return file;
             }
         }
+    }
 
-        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
+    public async Task GenerateSchemaAsync(ISyncService sync)
+    {
+        await sync.WriteJsonSchemaAsync<RuleModel>(new FilePath("rule.json"));
+
+        var sample = new RuleModel
         {
-            foreach (var file in fs.GetFiles(new FilePath("rules"), ".json"))
+            Name = "My-Rule",
+            Trigger = new ContentChangedRuleTriggerDto
             {
-                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
-                {
-                    yield return file;
-                }
-            }
-        }
-
-        public async Task GenerateSchemaAsync(ISyncService sync)
-        {
-            await sync.WriteJsonSchemaAsync<RuleModel>(new FilePath("rule.json"));
-
-            var sample = new RuleModel
+                HandleAll = true
+            },
+            TypedAction = new WebhookRuleActionDto
             {
-                Name = "My-Rule",
-                Trigger = new ContentChangedRuleTriggerDto
-                {
-                    HandleAll = true
-                },
-                TypedAction = new WebhookRuleActionDto
-                {
-                    Url = new Uri("https://squidex.io")
-                },
-                IsEnabled = true
-            };
+                Url = new Uri("https://squidex.io")
+            },
+            IsEnabled = true
+        };
 
-            await sync.WriteWithSchema(new FilePath("rules", "__rule.json"), sample, Ref);
-        }
+        await sync.WriteWithSchema(new FilePath("rules", "__rule.json"), sample, Ref);
     }
 }

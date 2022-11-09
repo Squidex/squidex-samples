@@ -7,23 +7,22 @@
 
 using NJsonSchema.Generation;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
-{
-    public sealed class GuidFixProcessor : ISchemaProcessor
-    {
-        public void Process(SchemaProcessorContext context)
-        {
-            foreach (var (_, property) in context.Schema.Properties)
-            {
-                if (property.Format == "guid")
-                {
-                    property.Format = null;
-                }
+namespace Squidex.CLI.Commands.Implementation.Sync;
 
-                if (property.Item != null && property.Item.Format == "guid")
-                {
-                    property.Item.Format = null;
-                }
+public sealed class GuidFixProcessor : ISchemaProcessor
+{
+    public void Process(SchemaProcessorContext context)
+    {
+        foreach (var (_, property) in context.Schema.Properties)
+        {
+            if (property.Format == "guid")
+            {
+                property.Format = null;
+            }
+
+            if (property.Item != null && property.Item.Format == "guid")
+            {
+                property.Item.Format = null;
             }
         }
     }

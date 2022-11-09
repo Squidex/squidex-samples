@@ -7,39 +7,38 @@
 
 using Newtonsoft.Json;
 
-namespace Squidex.ClientLibrary.Utils
+namespace Squidex.ClientLibrary.Utils;
+
+/// <summary>
+/// A JSON converter for <see cref="Actor"/> instances.
+/// </summary>
+/// <remarks>
+/// Example of input: "subject:123456789".
+/// </remarks>
+public class ActorConverter : JsonConverter<Actor>
 {
-    /// <summary>
-    /// A JSON converter for <see cref="Actor"/> instances.
-    /// </summary>
-    /// <remarks>
-    /// Example of input: "subject:123456789".
-    /// </remarks>
-    public class ActorConverter : JsonConverter<Actor>
+    /// <inheritdoc />
+    public override void WriteJson(JsonWriter writer, Actor? value, JsonSerializer serializer)
     {
-        /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, Actor? value, JsonSerializer serializer)
+        if (value == null)
         {
-            if (value == null)
-            {
-                writer.WriteNull();
-                return;
-            }
-
-            serializer.Serialize(writer, $"{value.Type}:{value.Id}");
+            writer.WriteNull();
+            return;
         }
 
-        /// <inheritdoc />
-        public override Actor? ReadJson(JsonReader reader, Type objectType, Actor? existingValue, bool hasExistingValue, JsonSerializer serializer)
+        serializer.Serialize(writer, $"{value.Type}:{value.Id}");
+    }
+
+    /// <inheritdoc />
+    public override Actor? ReadJson(JsonReader reader, Type objectType, Actor? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        if (reader.TokenType == JsonToken.Null)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
-
-            var s = ((string)reader.Value!).Split(':');
-
-            return new Actor { Id = s[1], Type = s[0] };
+            return null;
         }
+
+        var s = ((string)reader.Value!).Split(':');
+
+        return new Actor { Id = s[1], Type = s[0] };
     }
 }

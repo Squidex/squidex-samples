@@ -10,28 +10,27 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Rules
+namespace Squidex.CLI.Commands.Implementation.Sync.Rules;
+
+internal sealed class RuleModel
 {
-    internal sealed class RuleModel
+    public bool IsEnabled { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+
+    [Required]
+    public RuleTriggerDto Trigger { get; set; }
+
+    [Required]
+    public DynamicRuleAction Action { get; set; }
+
+    [JsonIgnore]
+    public RuleAction TypedAction
     {
-        public bool IsEnabled { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public RuleTriggerDto Trigger { get; set; }
-
-        [Required]
-        public DynamicRuleAction Action { get; set; }
-
-        [JsonIgnore]
-        public RuleAction TypedAction
+        set
         {
-            set
-            {
-                Action = new DynamicRuleAction(JObject.FromObject(value));
-            }
+            Action = new DynamicRuleAction(JObject.FromObject(value));
         }
     }
 }

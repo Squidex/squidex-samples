@@ -10,203 +10,202 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Configuration;
 
-namespace Squidex.CLI.Configuration
+namespace Squidex.CLI.Configuration;
+
+public sealed class ConfigurationService : IConfigurationService
 {
-    public sealed class ConfigurationService : IConfigurationService
+    private const string CloudUrl = "https://cloud.squidex.io";
+    private readonly JsonSerializer jsonSerializer = new JsonSerializer();
+    private readonly Configuration configuration;
+    private readonly FileInfo configurationFile;
+
+    public DirectoryInfo WorkingDirectory => configurationFile.Directory!;
+
+    public ConfigurationService()
     {
-        private const string CloudUrl = "https://cloud.squidex.io";
-        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
-        private readonly Configuration configuration;
-        private readonly FileInfo configurationFile;
+        (configuration, configurationFile) = LoadConfiguration();
+    }
 
-        public DirectoryInfo WorkingDirectory => configurationFile.Directory!;
+    private (Configuration, FileInfo) LoadConfiguration()
+    {
+        DirectoryInfo? workingDirectory = null;
 
-        public ConfigurationService()
+        var folderPath = Environment.GetEnvironmentVariable("SQCLI_FOLDER");
+
+        if (!string.IsNullOrWhiteSpace(folderPath))
         {
-            (configuration, configurationFile) = LoadConfiguration();
+            if (Directory.Exists(folderPath))
+            {
+                workingDirectory = new DirectoryInfo(folderPath);
+            }
         }
 
-        private (Configuration, FileInfo) LoadConfiguration()
+        if (workingDirectory == null)
         {
-            DirectoryInfo? workingDirectory = null;
+            var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-            var folderPath = Environment.GetEnvironmentVariable("SQCLI_FOLDER");
-
-            if (!string.IsNullOrWhiteSpace(folderPath))
+            if (Directory.Exists(userFolder))
             {
-                if (Directory.Exists(folderPath))
-                {
-                    workingDirectory = new DirectoryInfo(folderPath);
-                }
+                workingDirectory = Directory.CreateDirectory(Path.Combine(userFolder, ".sqcli"));
             }
+        }
 
-            if (workingDirectory == null)
+        if (workingDirectory == null)
+        {
+            workingDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
+        }
+
+        var file = workingDirectory.GetFile(".configuration");
+
+        try
+        {
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            using (var stream = file.OpenRead())
             {
-                var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-                if (Directory.Exists(userFolder))
+                using (var streamReader = new StreamReader(stream))
                 {
-                    workingDirectory = Directory.CreateDirectory(Path.Combine(userFolder, ".sqcli"));
-                }
-            }
-
-            if (workingDirectory == null)
-            {
-                workingDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-            }
-
-            var file = workingDirectory.GetFile(".configuration");
-
-            try
-            {
-                var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-                using (var stream = file.OpenRead())
-                {
-                    using (var streamReader = new StreamReader(stream))
+                    using (var jsonReader = new JsonTextReader(streamReader))
                     {
-                        using (var jsonReader = new JsonTextReader(streamReader))
+                        var result = jsonSerializer.Deserialize<Configuration>(jsonReader);
+
+                        if (result == null)
                         {
-                            var result = jsonSerializer.Deserialize<Configuration>(jsonReader);
-
-                            if (result == null)
-                            {
-                                return (new Configuration(), file);
-                            }
-
-                            foreach (var (key, config) in result.Apps)
-                            {
-                                if (string.IsNullOrWhiteSpace(config.Name))
-                                {
-                                    config.Name = key;
-                                }
-                            }
-
-                            return (result, file);
+                            return (new Configuration(), file);
                         }
+
+                        foreach (var (key, config) in result.Apps)
+                        {
+                            if (string.IsNullOrWhiteSpace(config.Name))
+                            {
+                                config.Name = key;
+                            }
+                        }
+
+                        return (result, file);
                     }
                 }
             }
-            catch
-            {
-                return (new Configuration(), file);
-            }
         }
-
-        private void Save()
+        catch
         {
-            try
-            {
-                var fullPath = configurationFile.FullName;
-
-                File.WriteAllText(fullPath, JsonConvert.SerializeObject(configuration));
-            }
-            catch (Exception ex)
-            {
-                throw new CLIException("Failed to save configuration file.", ex);
-            }
+            return (new Configuration(), file);
         }
+    }
 
-        public void Reset()
+    private void Save()
+    {
+        try
         {
-            configuration.Apps.Clear();
-            configuration.CurrentApp = null;
+            var fullPath = configurationFile.FullName;
 
-            Save();
+            File.WriteAllText(fullPath, JsonConvert.SerializeObject(configuration));
         }
-
-        public void Upsert(string config, ConfiguredApp appConfig)
+        catch (Exception ex)
         {
-            if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))
-            {
-                appConfig.ServiceUrl = CloudUrl;
-            }
-
-            configuration.Apps[config] = appConfig;
-
-            if (string.IsNullOrWhiteSpace(configuration.CurrentApp))
-            {
-                configuration.CurrentApp = config;
-            }
-
-            Save();
+            throw new CLIException("Failed to save configuration file.", ex);
         }
+    }
 
-        public void UseApp(string entry)
+    public void Reset()
+    {
+        configuration.Apps.Clear();
+        configuration.CurrentApp = null;
+
+        Save();
+    }
+
+    public void Upsert(string config, ConfiguredApp appConfig)
+    {
+        if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))
         {
-            if (!configuration.Apps.ContainsKey(entry))
-            {
-                throw new CLIException("App config with the name does not exist.");
-            }
-
-            configuration.CurrentApp = entry;
-
-            Save();
+            appConfig.ServiceUrl = CloudUrl;
         }
 
-        public void Remove(string entry)
+        configuration.Apps[config] = appConfig;
+
+        if (string.IsNullOrWhiteSpace(configuration.CurrentApp))
         {
-            if (!configuration.Apps.ContainsKey(entry))
-            {
-                throw new CLIException("App config with the name does not exist.");
-            }
-
-            configuration.Apps.Remove(entry);
-
-            if (configuration.CurrentApp == entry)
-            {
-                configuration.CurrentApp = configuration.Apps.FirstOrDefault().Key;
-            }
-
-            Save();
+            configuration.CurrentApp = config;
         }
 
-        public ISession StartSession(string appName, bool emulate = false)
+        Save();
+    }
+
+    public void UseApp(string entry)
+    {
+        if (!configuration.Apps.ContainsKey(entry))
         {
-            if (!string.IsNullOrWhiteSpace(appName) && configuration.Apps.TryGetValue(appName, out var app))
-            {
-                var options = CreateOptions(app, emulate);
-
-                return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
-            }
-
-            if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
-            {
-                var options = CreateOptions(app, emulate);
-
-                return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
-            }
-
-            throw new CLIException("Cannot find valid configuration.");
+            throw new CLIException("App config with the name does not exist.");
         }
 
-        private static SquidexOptions CreateOptions(ConfiguredApp app, bool emulate)
+        configuration.CurrentApp = entry;
+
+        Save();
+    }
+
+    public void Remove(string entry)
+    {
+        if (!configuration.Apps.ContainsKey(entry))
         {
-            var options = new SquidexOptions
-            {
-                AppName = app.Name,
-                ClientId = app.ClientId,
-                ClientSecret = app.ClientSecret,
-                Url = app.ServiceUrl,
-                HttpClientTimeout = TimeSpan.FromHours(1)
-            };
-
-            if (app.IgnoreSelfSigned)
-            {
-                options.Configurator = AcceptAllCertificatesConfigurator.Instance;
-            }
-
-            if (emulate)
-            {
-                options.ClientFactory = new GetOnlyHttpClientFactory();
-            }
-
-            return options;
+            throw new CLIException("App config with the name does not exist.");
         }
 
-        public Configuration GetConfiguration()
+        configuration.Apps.Remove(entry);
+
+        if (configuration.CurrentApp == entry)
         {
-            return configuration;
+            configuration.CurrentApp = configuration.Apps.FirstOrDefault().Key;
         }
+
+        Save();
+    }
+
+    public ISession StartSession(string appName, bool emulate = false)
+    {
+        if (!string.IsNullOrWhiteSpace(appName) && configuration.Apps.TryGetValue(appName, out var app))
+        {
+            var options = CreateOptions(app, emulate);
+
+            return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
+        }
+
+        if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
+        {
+            var options = CreateOptions(app, emulate);
+
+            return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
+        }
+
+        throw new CLIException("Cannot find valid configuration.");
+    }
+
+    private static SquidexOptions CreateOptions(ConfiguredApp app, bool emulate)
+    {
+        var options = new SquidexOptions
+        {
+            AppName = app.Name,
+            ClientId = app.ClientId,
+            ClientSecret = app.ClientSecret,
+            Url = app.ServiceUrl,
+            HttpClientTimeout = TimeSpan.FromHours(1)
+        };
+
+        if (app.IgnoreSelfSigned)
+        {
+            options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+        }
+
+        if (emulate)
+        {
+            options.ClientFactory = new GetOnlyHttpClientFactory();
+        }
+
+        return options;
+    }
+
+    public Configuration GetConfiguration()
+    {
+        return configuration;
     }
 }

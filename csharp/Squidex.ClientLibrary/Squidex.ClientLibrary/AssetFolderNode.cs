@@ -5,61 +5,60 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// Represents an asset folder.
+/// </summary>
+public sealed record AssetFolderNode
 {
     /// <summary>
-    /// Represents an asset folder.
+    /// The ID of the root folder.
     /// </summary>
-    public sealed record AssetFolderNode
+    public static readonly string RootId = Guid.Empty.ToString();
+
+    private readonly Dictionary<string, AssetFolderNode> children = new Dictionary<string, AssetFolderNode>();
+
+    /// <summary>
+    /// Gets the children of this folder.
+    /// </summary>
+    public IReadOnlyDictionary<string, AssetFolderNode> Children => children;
+
+    /// <summary>
+    /// Gets the parent folder.
+    /// </summary>
+    public AssetFolderNode? Parent { get; private set; }
+
+    /// <summary>
+    /// Gets the ID of this folder.
+    /// </summary>
+    public string Id { get; }
+
+    /// <summary>
+    /// Gets the name of this folder.
+    /// </summary>
+    public string Name { get; }
+
+    /// <summary>
+    /// Gets the full path of this folder.
+    /// </summary>
+    public string Path { get; }
+
+    /// <summary>
+    /// Indicates whether the children of the folder have been queried already.
+    /// </summary>
+    public bool HasBeenQueried { get; internal set; }
+
+    internal AssetFolderNode(string id, string name, string path)
     {
-        /// <summary>
-        /// The ID of the root folder.
-        /// </summary>
-        public static readonly string RootId = Guid.Empty.ToString();
+        Id = id;
+        Path = path;
+        Name = name;
+    }
 
-        private readonly Dictionary<string, AssetFolderNode> children = new Dictionary<string, AssetFolderNode>();
-
-        /// <summary>
-        /// Gets the children of this folder.
-        /// </summary>
-        public IReadOnlyDictionary<string, AssetFolderNode> Children => children;
-
-        /// <summary>
-        /// Gets the parent folder.
-        /// </summary>
-        public AssetFolderNode? Parent { get; private set; }
-
-        /// <summary>
-        /// Gets the ID of this folder.
-        /// </summary>
-        public string Id { get; }
-
-        /// <summary>
-        /// Gets the name of this folder.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets the full path of this folder.
-        /// </summary>
-        public string Path { get; }
-
-        /// <summary>
-        /// Indicates whether the children of the folder have been queried already.
-        /// </summary>
-        public bool HasBeenQueried { get; internal set; }
-
-        internal AssetFolderNode(string id, string name, string path)
-        {
-            Id = id;
-            Path = path;
-            Name = name;
-        }
-
-        internal void Add(AssetFolderNode child, string name)
-        {
-            children[name] = child;
-            child.Parent = this;
-        }
+    internal void Add(AssetFolderNode child, string name)
+    {
+        children[name] = child;
+        child.Parent = this;
     }
 }

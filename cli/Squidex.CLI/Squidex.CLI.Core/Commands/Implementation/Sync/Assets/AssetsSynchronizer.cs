@@ -8,204 +8,203 @@
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Assets
+namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
+
+public sealed class AssetsSynchronizer : ISynchronizer
 {
-    public sealed class AssetsSynchronizer : ISynchronizer
+    private const string Ref = "../__json/assets";
+    private readonly ILogger log;
+
+    public int Order => -1000;
+
+    public string Name => "Assets";
+
+    public AssetsSynchronizer(ILogger log)
     {
-        private const string Ref = "../__json/assets";
-        private readonly ILogger log;
+        this.log = log;
+    }
 
-        public int Order => -1000;
-
-        public string Name => "Assets";
-
-        public AssetsSynchronizer(ILogger log)
+    public Task CleanupAsync(IFileSystem fs)
+    {
+        foreach (var file in GetFiles(fs))
         {
-            this.log = log;
+            file.Delete();
         }
 
-        public Task CleanupAsync(IFileSystem fs)
+        return Task.CompletedTask;
+    }
+
+    public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem)
         {
-            foreach (var file in GetFiles(fs))
+            FilePathProvider = asset => asset.Id.GetBlobPath()
+        };
+
+        try
+        {
+            var assets = new List<AssetModel>();
+            var assetBatch = 0;
+
+            async Task SaveAsync()
             {
-                file.Delete();
+                var model = new AssetsModel
+                {
+                    Assets = assets
+                };
+
+                await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
+                {
+                    await sync.WriteWithSchema(new FilePath("assets", $"{assetBatch}.json"), model, Ref);
+                });
             }
 
-            return Task.CompletedTask;
-        }
-
-        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
-        {
-            var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem)
+            await session.Assets.GetAllAsync(session.App, async asset =>
             {
-                FilePathProvider = asset => asset.Id.GetBlobPath()
-            };
+                var model = asset.ToModel();
 
-            try
-            {
-                var assets = new List<AssetModel>();
-                var assetBatch = 0;
+                model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
 
-                async Task SaveAsync()
-                {
-                    var model = new AssetsModel
-                    {
-                        Assets = assets
-                    };
+                assets.Add(model);
 
-                    await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
-                    {
-                        await sync.WriteWithSchema(new FilePath("assets", $"{assetBatch}.json"), model, Ref);
-                    });
-                }
-
-                await session.Assets.GetAllAsync(session.App, async asset =>
-                {
-                    var model = asset.ToModel();
-
-                    model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
-
-                    assets.Add(model);
-
-                    if (assets.Count > 50)
-                    {
-                        await SaveAsync();
-
-                        assets.Clear();
-                        assetBatch++;
-                    }
-
-                    await downloadPipeline.DownloadAsync(asset);
-                });
-
-                if (assets.Count > 0)
+                if (assets.Count > 50)
                 {
                     await SaveAsync();
+
+                    assets.Clear();
+                    assetBatch++;
                 }
-            }
-            finally
+
+                await downloadPipeline.DownloadAsync(asset);
+            });
+
+            if (assets.Count > 0)
             {
-                await downloadPipeline.CompleteAsync();
+                await SaveAsync();
             }
         }
-
-        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        finally
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => (x, sync.Read<AssetsModel>(x, log)));
-
-            writer.Paragraph($"{models.SelectMany(x => x.Item2.Assets).Count()} asset(s).");
-
-            return Task.CompletedTask;
+            await downloadPipeline.CompleteAsync();
         }
+    }
 
-        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+    public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => (x, sync.Read<AssetsModel>(x, log)));
+
+        writer.Paragraph($"{models.SelectMany(x => x.Item2.Assets).Count()} asset(s).");
+
+        return Task.CompletedTask;
+    }
+
+    public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => (x, sync.Read<AssetsModel>(x, log)));
+
+        var batchIndex = 0;
+
+        foreach (var (_, model) in models)
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => (x, sync.Read<AssetsModel>(x, log)));
-
-            var batchIndex = 0;
-
-            foreach (var (_, model) in models)
+            if (model?.Assets?.Count > 0)
             {
-                if (model?.Assets?.Count > 0)
+                var uploader = new UploadPipeline(session, log, sync.FileSystem)
                 {
-                    var uploader = new UploadPipeline(session, log, sync.FileSystem)
-                    {
-                        FilePathProvider = asset => asset.Id.GetBlobPath()
-                    };
+                    FilePathProvider = asset => asset.Id.GetBlobPath()
+                };
 
-                    try
-                    {
-                        foreach (var asset in model.Assets)
-                        {
-                            await uploader.UploadAsync(asset);
-                        }
-                    }
-                    finally
-                    {
-                        await uploader.CompleteAsync();
-                    }
-
-                    var request = new BulkUpdateAssetsDto();
-
+                try
+                {
                     foreach (var asset in model.Assets)
                     {
-                        var parentId = await sync.Folders.GetIdAsync(asset.FolderPath);
-
-                        request.Jobs.Add(asset.ToMove(parentId));
-                        request.Jobs.Add(asset.ToAnnotate());
-                    }
-
-                    var assetIndex = 0;
-
-                    var results = await session.Assets.BulkUpdateAssetsAsync(session.App, request);
-
-                    foreach (var asset in model.Assets)
-                    {
-                        // We create wo commands per asset.
-                        var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));
-                        var result2 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2) + 1);
-
-                        log.StepStart($"Upserting #{batchIndex}/{assetIndex}");
-
-                        if (result1?.Error != null)
-                        {
-                            log.StepFailed(result1.Error.ToString());
-                        }
-                        else if (result2?.Error != null)
-                        {
-                            log.StepFailed(result2.Error.ToString());
-                        }
-                        else if (result1?.Id != null && result2?.Id != null)
-                        {
-                            log.StepSuccess();
-                        }
-                        else
-                        {
-                            log.StepSkipped("Unknown Reason");
-                        }
-
-                        assetIndex++;
+                        await uploader.UploadAsync(asset);
                     }
                 }
-
-                batchIndex++;
-            }
-        }
-
-        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
-        {
-            foreach (var file in fs.GetFiles(new FilePath("assets"), ".json"))
-            {
-                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
+                finally
                 {
-                    yield return file;
+                    await uploader.CompleteAsync();
+                }
+
+                var request = new BulkUpdateAssetsDto();
+
+                foreach (var asset in model.Assets)
+                {
+                    var parentId = await sync.Folders.GetIdAsync(asset.FolderPath);
+
+                    request.Jobs.Add(asset.ToMove(parentId));
+                    request.Jobs.Add(asset.ToAnnotate());
+                }
+
+                var assetIndex = 0;
+
+                var results = await session.Assets.BulkUpdateAssetsAsync(session.App, request);
+
+                foreach (var asset in model.Assets)
+                {
+                    // We create wo commands per asset.
+                    var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));
+                    var result2 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2) + 1);
+
+                    log.StepStart($"Upserting #{batchIndex}/{assetIndex}");
+
+                    if (result1?.Error != null)
+                    {
+                        log.StepFailed(result1.Error.ToString());
+                    }
+                    else if (result2?.Error != null)
+                    {
+                        log.StepFailed(result2.Error.ToString());
+                    }
+                    else if (result1?.Id != null && result2?.Id != null)
+                    {
+                        log.StepSuccess();
+                    }
+                    else
+                    {
+                        log.StepSkipped("Unknown Reason");
+                    }
+
+                    assetIndex++;
                 }
             }
-        }
 
-        public async Task GenerateSchemaAsync(ISyncService sync)
+            batchIndex++;
+        }
+    }
+
+    private static IEnumerable<IFile> GetFiles(IFileSystem fs)
+    {
+        foreach (var file in fs.GetFiles(new FilePath("assets"), ".json"))
         {
-            await sync.WriteJsonSchemaAsync<AssetsModel>(new FilePath("assets.json"));
-
-            var sample = new AssetsModel
+            if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
             {
-                Assets = new List<AssetModel>
-                {
-                    new AssetModel
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        FileName = "my.file.txt",
-                        FileHash = "<Optional Hash>",
-                        MimeType = "plain/text"
-                    }
-                }
-            };
-
-            await sync.WriteWithSchema(new FilePath("assets", "__asset.json"), sample, Ref);
+                yield return file;
+            }
         }
+    }
+
+    public async Task GenerateSchemaAsync(ISyncService sync)
+    {
+        await sync.WriteJsonSchemaAsync<AssetsModel>(new FilePath("assets.json"));
+
+        var sample = new AssetsModel
+        {
+            Assets = new List<AssetModel>
+            {
+                new AssetModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FileName = "my.file.txt",
+                    FileHash = "<Optional Hash>",
+                    MimeType = "plain/text"
+                }
+            }
+        };
+
+        await sync.WriteWithSchema(new FilePath("assets", "__asset.json"), sample, Ref);
     }
 }

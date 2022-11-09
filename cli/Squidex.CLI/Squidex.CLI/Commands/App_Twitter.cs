@@ -10,120 +10,119 @@ using CoreTweet;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 
-namespace Squidex.CLI.Commands
+namespace Squidex.CLI.Commands;
+
+public sealed partial class App
 {
-    public sealed partial class App
+    [Command("twitter", Description = "Manage twitter.")]
+    [Subcommand]
+    public sealed class Twitter
     {
-        [Command("twitter", Description = "Manage twitter.")]
-        [Subcommand]
-        public sealed class Twitter
+        private readonly ILogger log;
+
+        public Twitter(ILogger log)
         {
-            private readonly ILogger log;
+            this.log = log;
+        }
 
-            public Twitter(ILogger log)
+        [Command("auth", Description = "Starts the authentication.")]
+        public async Task Auth(AuthArguments arguments)
+        {
+            var session = await OAuth.AuthorizeAsync(arguments.ClientId, arguments.ClientSecret);
+
+            await File.WriteAllTextAsync(".twitterToken", session.RequestToken);
+            await File.WriteAllTextAsync(".twitterSecret", session.RequestTokenSecret);
+
+            log.WriteLine($"Request Token:  {session.RequestToken}");
+            log.WriteLine($"Request Secret: {session.RequestTokenSecret}");
+
+            log.WriteLine();
+            log.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
+        }
+
+        [Command("token", Description = "Create an access token and secret.")]
+        public async Task Token(TokenArguments arguments)
+        {
+            var requestToken = ReadToken(arguments.RequestToken, ".twitterToken", nameof(arguments.RequestToken));
+            var requestSecret = ReadToken(arguments.RequestTokenSecret, ".twitterSecret", nameof(arguments.RequestTokenSecret));
+
+            var session = new OAuth.OAuthSession
             {
-                this.log = log;
-            }
+                ConsumerKey = arguments.ClientId,
+                ConsumerSecret = arguments.ClientSecret,
+                RequestToken = requestToken,
+                RequestTokenSecret = requestSecret
+            };
 
-            [Command("auth", Description = "Starts the authentication.")]
-            public async Task Auth(AuthArguments arguments)
+            var tokens = await session.GetTokensAsync(arguments.PinCode);
+
+            log.WriteLine($"Access Token:  {tokens.AccessToken}");
+            log.WriteLine($"Access Secret: {tokens.AccessTokenSecret}");
+        }
+
+        private string ReadToken(string fromArgs, string file, string parameter)
+        {
+            var requestToken = fromArgs;
+
+            if (string.IsNullOrWhiteSpace(requestToken))
             {
-                var session = await OAuth.AuthorizeAsync(arguments.ClientId, arguments.ClientSecret);
-
-                await File.WriteAllTextAsync(".twitterToken", session.RequestToken);
-                await File.WriteAllTextAsync(".twitterSecret", session.RequestTokenSecret);
-
-                log.WriteLine($"Request Token:  {session.RequestToken}");
-                log.WriteLine($"Request Secret: {session.RequestTokenSecret}");
-
-                log.WriteLine();
-                log.WriteLine($"Open the following url to get the pin: {session.AuthorizeUri}");
-            }
-
-            [Command("token", Description = "Create an access token and secret.")]
-            public async Task Token(TokenArguments arguments)
-            {
-                var requestToken = ReadToken(arguments.RequestToken, ".twitterToken", nameof(arguments.RequestToken));
-                var requestSecret = ReadToken(arguments.RequestTokenSecret, ".twitterSecret", nameof(arguments.RequestTokenSecret));
-
-                var session = new OAuth.OAuthSession
+                if (File.Exists(".twitterToken"))
                 {
-                    ConsumerKey = arguments.ClientId,
-                    ConsumerSecret = arguments.ClientSecret,
-                    RequestToken = requestToken,
-                    RequestTokenSecret = requestSecret
-                };
+                    requestToken = File.ReadAllText(file);
 
-                var tokens = await session.GetTokensAsync(arguments.PinCode);
-
-                log.WriteLine($"Access Token:  {tokens.AccessToken}");
-                log.WriteLine($"Access Secret: {tokens.AccessTokenSecret}");
-            }
-
-            private string ReadToken(string fromArgs, string file, string parameter)
-            {
-                var requestToken = fromArgs;
-
-                if (string.IsNullOrWhiteSpace(requestToken))
-                {
-                    if (File.Exists(".twitterToken"))
-                    {
-                        requestToken = File.ReadAllText(file);
-
-                        log.WriteLine($"Using {parameter} {requestToken} from last command.");
-                        log.WriteLine();
-                    }
-                }
-
-                if (string.IsNullOrWhiteSpace(requestToken))
-                {
-                    log.WriteLine($"{parameter} not defined or found from last command.");
-                }
-
-                return requestToken;
-            }
-
-            public sealed class AuthArguments : AppArguments
-            {
-                [Option("clientId")]
-                public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
-
-                [Option("clientSecret")]
-                public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
-
-                public sealed class Validator : AbstractValidator<AuthArguments>
-                {
-                    public Validator()
-                    {
-                        RuleFor(x => x.ClientId).NotEmpty();
-                        RuleFor(x => x.ClientSecret).NotEmpty();
-                    }
+                    log.WriteLine($"Using {parameter} {requestToken} from last command.");
+                    log.WriteLine();
                 }
             }
 
-            public sealed class TokenArguments : AppArguments
+            if (string.IsNullOrWhiteSpace(requestToken))
             {
-                [Operand("pin", Description = "The pin from the auth request.")]
-                public string PinCode { get; set; }
+                log.WriteLine($"{parameter} not defined or found from last command.");
+            }
 
-                [Option("clientId")]
-                public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
+            return requestToken;
+        }
 
-                [Option("clientSecret")]
-                public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
+        public sealed class AuthArguments : AppArguments
+        {
+            [Option("clientId")]
+            public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
 
-                [Option("token")]
-                public string RequestToken { get; set; }
+            [Option("clientSecret")]
+            public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
 
-                [Option("secret")]
-                public string RequestTokenSecret { get; set; }
-
-                public sealed class Validator : AbstractValidator<TokenArguments>
+            public sealed class Validator : AbstractValidator<AuthArguments>
+            {
+                public Validator()
                 {
-                    public Validator()
-                    {
-                        RuleFor(x => x.PinCode).NotEmpty();
-                    }
+                    RuleFor(x => x.ClientId).NotEmpty();
+                    RuleFor(x => x.ClientSecret).NotEmpty();
+                }
+            }
+        }
+
+        public sealed class TokenArguments : AppArguments
+        {
+            [Operand("pin", Description = "The pin from the auth request.")]
+            public string PinCode { get; set; }
+
+            [Option("clientId")]
+            public string ClientId { get; set; } = "QZhb3HQcGCvE6G8yNNP9ksNet";
+
+            [Option("clientSecret")]
+            public string ClientSecret { get; set; } = "Pdu9wdN72T33KJRFdFy1w4urBKDRzIyuKpc0OItQC2E616DuZD";
+
+            [Option("token")]
+            public string RequestToken { get; set; }
+
+            [Option("secret")]
+            public string RequestTokenSecret { get; set; }
+
+            public sealed class Validator : AbstractValidator<TokenArguments>
+            {
+                public Validator()
+                {
+                    RuleFor(x => x.PinCode).NotEmpty();
                 }
             }
         }

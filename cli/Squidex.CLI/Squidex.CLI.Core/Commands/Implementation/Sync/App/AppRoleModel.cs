@@ -7,13 +7,12 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.App
-{
-    internal sealed class AppRoleModel
-    {
-        [Required]
-        public List<string> Permissions { get; set; }
+namespace Squidex.CLI.Commands.Implementation.Sync.App;
 
-        public Dictionary<string, object>? Properties { get; set; }
-    }
+internal sealed class AppRoleModel
+{
+    [Required]
+    public List<string> Permissions { get; set; }
+
+    public Dictionary<string, object>? Properties { get; set; }
 }

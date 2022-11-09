@@ -5,32 +5,31 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.Configuration
+namespace Squidex.ClientLibrary.Configuration;
+
+/// <summary>
+/// Configures the HTTP client to accept all SSL certificates.
+/// </summary>
+/// <seealso cref="IHttpConfigurator" />
+public sealed class AcceptAllCertificatesConfigurator : IHttpConfigurator
 {
     /// <summary>
-    /// Configures the HTTP client to accept all SSL certificates.
+    /// The only instance of this class.
     /// </summary>
-    /// <seealso cref="IHttpConfigurator" />
-    public sealed class AcceptAllCertificatesConfigurator : IHttpConfigurator
+    public static readonly AcceptAllCertificatesConfigurator Instance = new AcceptAllCertificatesConfigurator();
+
+    private AcceptAllCertificatesConfigurator()
     {
-        /// <summary>
-        /// The only instance of this class.
-        /// </summary>
-        public static readonly AcceptAllCertificatesConfigurator Instance = new AcceptAllCertificatesConfigurator();
+    }
 
-        private AcceptAllCertificatesConfigurator()
-        {
-        }
+    /// <inheritdoc/>
+    public void Configure(HttpClient httpClient)
+    {
+    }
 
-        /// <inheritdoc/>
-        public void Configure(HttpClient httpClient)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void Configure(HttpClientHandler httpClientHandler)
-        {
-            httpClientHandler.ServerCertificateCustomValidationCallback += (message, certificate, chain, errors) => true;
-        }
+    /// <inheritdoc/>
+    public void Configure(HttpClientHandler httpClientHandler)
+    {
+        httpClientHandler.ServerCertificateCustomValidationCallback += (message, certificate, chain, errors) => true;
     }
 }

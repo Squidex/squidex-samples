@@ -7,22 +7,21 @@
 
 using Microsoft.Extensions.Options;
 
-namespace Squidex.ClientLibrary.ServiceExtensions
-{
-    internal sealed class OptionsValidator : IValidateOptions<SquidexServiceOptions>
-    {
-        public ValidateOptionsResult Validate(string name, SquidexServiceOptions options)
-        {
-            try
-            {
-                options.CheckAndFreeze();
+namespace Squidex.ClientLibrary.ServiceExtensions;
 
-                return ValidateOptionsResult.Success;
-            }
-            catch (Exception ex)
-            {
-                return ValidateOptionsResult.Fail(ex.Message);
-            }
+internal sealed class OptionsValidator : IValidateOptions<SquidexServiceOptions>
+{
+    public ValidateOptionsResult Validate(string name, SquidexServiceOptions options)
+    {
+        try
+        {
+            options.CheckAndFreeze();
+
+            return ValidateOptionsResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return ValidateOptionsResult.Fail(ex.Message);
         }
     }
 }

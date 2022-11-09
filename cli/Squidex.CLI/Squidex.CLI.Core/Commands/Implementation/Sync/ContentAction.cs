@@ -5,14 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation.Sync;
+
+public enum ContentAction
 {
-    public enum ContentAction
-    {
-        Upsert,
-        UpsertPatch,
-        Create,
-        Update,
-        Patch
-    }
+    Upsert,
+    UpsertPatch,
+    Create,
+    Update,
+    Patch
 }

@@ -8,38 +8,37 @@
 using Squidex.CLI.Commands.Implementation.TestData;
 using Xunit;
 
-namespace Squidex.CLI
+namespace Squidex.CLI;
+
+public class LoremIpsumTests
 {
-    public class LoremIpsumTests
+    [Fact]
+    public void Should_generate_single_character()
     {
-        [Fact]
-        public void Should_generate_single_character()
-        {
-            var result = LoremIpsum.Text(1, false);
+        var result = LoremIpsum.Text(1, false);
 
-            Assert.Equal("l", result);
+        Assert.Equal("l", result);
+    }
+
+    [Fact]
+    public void Should_generate_html_text()
+    {
+        for (var i = 0; i < 5000; i++)
+        {
+            var result = LoremIpsum.Text(i, true);
+
+            Assert.NotNull(result);
         }
+    }
 
-        [Fact]
-        public void Should_generate_html_text()
+    [Fact]
+    public void Should_generate_text()
+    {
+        for (var i = 0; i < 5000; i++)
         {
-            for (var i = 0; i < 5000; i++)
-            {
-                var result = LoremIpsum.Text(i, true);
+            var result = LoremIpsum.Text(i, false);
 
-                Assert.NotNull(result);
-            }
-        }
-
-        [Fact]
-        public void Should_generate_text()
-        {
-            for (var i = 0; i < 5000; i++)
-            {
-                var result = LoremIpsum.Text(i, false);
-
-                Assert.NotNull(result);
-            }
+            Assert.NotNull(result);
         }
     }
 }

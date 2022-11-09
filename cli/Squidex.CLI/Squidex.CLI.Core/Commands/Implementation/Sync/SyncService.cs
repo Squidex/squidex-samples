@@ -16,192 +16,191 @@ using NJsonSchema.Infrastructure;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation.Sync;
+
+public sealed class SyncService : ISyncService
 {
-    public sealed class SyncService : ISyncService
+    private readonly JsonSchemaGeneratorSettings jsonSchemaGeneratorSettings;
+    private readonly JsonSerializerSettings jsonSerializerSettings;
+    private readonly JsonSerializer jsonSerializer;
+
+    public IFileSystem FileSystem { get; }
+
+    public AssetFolderTree Folders { get; }
+
+    internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
     {
-        private readonly JsonSchemaGeneratorSettings jsonSchemaGeneratorSettings;
-        private readonly JsonSerializerSettings jsonSerializerSettings;
-        private readonly JsonSerializer jsonSerializer;
-
-        public IFileSystem FileSystem { get; }
-
-        public AssetFolderTree Folders { get; }
-
-        internal sealed class CamelCaseExceptDictionaryKeysResolver : CamelCasePropertyNamesContractResolver
+        protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
         {
-            protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+            var contract = base.CreateDictionaryContract(objectType);
+
+            contract.DictionaryKeyResolver = propertyName => propertyName;
+
+            return contract;
+        }
+    }
+
+    public SyncService(IFileSystem fileSystem, ISession session)
+    {
+        Folders = new AssetFolderTree(session.Assets, session.App);
+
+        jsonSerializerSettings = new JsonSerializerSettings
+        {
+            ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
+        };
+
+        jsonSerializerSettings.Converters.Add(new StringEnumConverter());
+        jsonSerializerSettings.Formatting = Formatting.Indented;
+        jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+
+        jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
+        {
+            FlattenInheritanceHierarchy = true,
+            SchemaType = SchemaType.JsonSchema,
+            SchemaNameGenerator = new DefaultSchemaNameGenerator(),
+            SerializerSettings = jsonSerializerSettings
+        };
+
+        jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());
+        jsonSchemaGeneratorSettings.SchemaProcessors.Add(new GuidFixProcessor());
+
+        jsonSchemaGeneratorSettings.TypeMappers.Add(
+            new PrimitiveTypeMapper(typeof(DynamicData), schema =>
             {
-                var contract = base.CreateDictionaryContract(objectType);
+                schema.Type = JsonObjectType.Object;
 
-                contract.DictionaryKeyResolver = propertyName => propertyName;
+                schema.AdditionalPropertiesSchema = new JsonSchema
+                {
+                    Description = "Any."
+                };
+            }));
 
-                return contract;
+        jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
+
+        FileSystem = fileSystem;
+    }
+
+    public T Read<T>(IFile file, ILogger log)
+    {
+        var jsonText = file.ReadAllText();
+        var jsonSchema = GetSchema<T>();
+
+        var errors = jsonSchema.Validate(jsonText);
+
+        if (errors.Any())
+        {
+            log.WriteLine("File {0} is not valid", file.FullName);
+
+            foreach (var error in errors)
+            {
+                if (error.HasLineInfo)
+                {
+                    log.WriteLine("* {0}, Line: {1}, Col: {2}", error, error.LineNumber, error.LinePosition);
+                }
+                else
+                {
+                    log.WriteLine("* {0}", error);
+                }
             }
+
+            throw new JsonException($"Error reading file {file.FullName}");
         }
 
-        public SyncService(IFileSystem fileSystem, ISession session)
+        return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings)!;
+    }
+
+    public async Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
+    {
+        await using (var stream = file.OpenWrite())
         {
-            Folders = new AssetFolderTree(session.Assets, session.App);
+            Write(Convert<T>(sample), stream, $"./{schema}.json");
+        }
+    }
 
-            jsonSerializerSettings = new JsonSerializerSettings
+    public async Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class
+    {
+        await using (var stream = file.OpenWrite())
+        {
+            Write(sample, stream, $"./{schema}.json");
+        }
+    }
+
+    public async Task WriteJsonSchemaAsync<T>(IFile file)
+    {
+        await using (var stream = file.OpenWrite())
+        {
+            await using (var textWriter = new StreamWriter(stream))
             {
-                ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
-            };
+                var jsonSchema = GetSchema<T>();
+                var jsonSchemaType = jsonSchemaGeneratorSettings.SchemaType;
 
-            jsonSerializerSettings.Converters.Add(new StringEnumConverter());
-            jsonSerializerSettings.Formatting = Formatting.Indented;
-            jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                var json = JsonSchemaSerialization.ToJson(
+                    jsonSchema,
+                    jsonSchemaType,
+                    JsonSchema.CreateJsonSerializerContractResolver(jsonSchemaType),
+                    Formatting.Indented);
 
-            jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
+                await textWriter.WriteAsync(json);
+            }
+        }
+    }
+
+    public void Write<T>(T value, Stream stream, string? schemaRef = null) where T : class
+    {
+        using (var textWriter = new StreamWriter(stream))
+        {
+            using (var jsonWriter = new JsonTextWriter(textWriter))
             {
-                FlattenInheritanceHierarchy = true,
-                SchemaType = SchemaType.JsonSchema,
-                SchemaNameGenerator = new DefaultSchemaNameGenerator(),
-                SerializerSettings = jsonSerializerSettings
-            };
-
-            jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());
-            jsonSchemaGeneratorSettings.SchemaProcessors.Add(new GuidFixProcessor());
-
-            jsonSchemaGeneratorSettings.TypeMappers.Add(
-                new PrimitiveTypeMapper(typeof(DynamicData), schema =>
+                if (schemaRef != null)
                 {
-                    schema.Type = JsonObjectType.Object;
-
-                    schema.AdditionalPropertiesSchema = new JsonSchema
+                    var withSchema = new JObject
                     {
-                        Description = "Any."
+                        ["$schema"] = schemaRef
                     };
-                }));
 
-            jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
-
-            FileSystem = fileSystem;
-        }
-
-        public T Read<T>(IFile file, ILogger log)
-        {
-            var jsonText = file.ReadAllText();
-            var jsonSchema = GetSchema<T>();
-
-            var errors = jsonSchema.Validate(jsonText);
-
-            if (errors.Any())
-            {
-                log.WriteLine("File {0} is not valid", file.FullName);
-
-                foreach (var error in errors)
-                {
-                    if (error.HasLineInfo)
+                    foreach (var (key, v) in JObject.FromObject(value, jsonSerializer))
                     {
-                        log.WriteLine("* {0}, Line: {1}, Col: {2}", error, error.LineNumber, error.LinePosition);
+                        withSchema[key] = v;
                     }
-                    else
-                    {
-                        log.WriteLine("* {0}", error);
-                    }
+
+                    jsonSerializer.Serialize(jsonWriter, withSchema);
                 }
-
-                throw new JsonException($"Error reading file {file.FullName}");
-            }
-
-            return JsonConvert.DeserializeObject<T>(jsonText, jsonSerializerSettings)!;
-        }
-
-        public async Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class
-        {
-            await using (var stream = file.OpenWrite())
-            {
-                Write(Convert<T>(sample), stream, $"./{schema}.json");
-            }
-        }
-
-        public async Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class
-        {
-            await using (var stream = file.OpenWrite())
-            {
-                Write(sample, stream, $"./{schema}.json");
-            }
-        }
-
-        public async Task WriteJsonSchemaAsync<T>(IFile file)
-        {
-            await using (var stream = file.OpenWrite())
-            {
-                await using (var textWriter = new StreamWriter(stream))
+                else
                 {
-                    var jsonSchema = GetSchema<T>();
-                    var jsonSchemaType = jsonSchemaGeneratorSettings.SchemaType;
-
-                    var json = JsonSchemaSerialization.ToJson(
-                        jsonSchema,
-                        jsonSchemaType,
-                        JsonSchema.CreateJsonSerializerContractResolver(jsonSchemaType),
-                        Formatting.Indented);
-
-                    await textWriter.WriteAsync(json);
+                    jsonSerializer.Serialize(jsonWriter, value);
                 }
             }
         }
+    }
 
-        public void Write<T>(T value, Stream stream, string? schemaRef = null) where T : class
+    private JsonSchema GetSchema<T>()
+    {
+        var schema = JsonSchema.FromType<T>(jsonSchemaGeneratorSettings);
+
+        schema.AllowAdditionalProperties = true;
+
+        return schema;
+    }
+
+    public T Convert<T>(object value)
+    {
+        if (value.GetType() == typeof(T))
         {
-            using (var textWriter = new StreamWriter(stream))
-            {
-                using (var jsonWriter = new JsonTextWriter(textWriter))
-                {
-                    if (schemaRef != null)
-                    {
-                        var withSchema = new JObject
-                        {
-                            ["$schema"] = schemaRef
-                        };
-
-                        foreach (var (key, v) in JObject.FromObject(value, jsonSerializer))
-                        {
-                            withSchema[key] = v;
-                        }
-
-                        jsonSerializer.Serialize(jsonWriter, withSchema);
-                    }
-                    else
-                    {
-                        jsonSerializer.Serialize(jsonWriter, value);
-                    }
-                }
-            }
+            return (T)value;
         }
 
-        private JsonSchema GetSchema<T>()
+        var memoryStream = new MemoryStream();
+
+        using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
         {
-            var schema = JsonSchema.FromType<T>(jsonSchemaGeneratorSettings);
-
-            schema.AllowAdditionalProperties = true;
-
-            return schema;
+            jsonSerializer.Serialize(writer, value);
         }
 
-        public T Convert<T>(object value)
+        memoryStream.Position = 0;
+
+        using (var reader = new StreamReader(memoryStream))
         {
-            if (value.GetType() == typeof(T))
-            {
-                return (T)value;
-            }
-
-            var memoryStream = new MemoryStream();
-
-            using (var writer = new StreamWriter(memoryStream, leaveOpen: true))
-            {
-                jsonSerializer.Serialize(writer, value);
-            }
-
-            memoryStream.Position = 0;
-
-            using (var reader = new StreamReader(memoryStream))
-            {
-                return (T)jsonSerializer.Deserialize(reader, typeof(T))!;
-            }
+            return (T)jsonSerializer.Deserialize(reader, typeof(T))!;
         }
     }
 }

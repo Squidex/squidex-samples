@@ -11,99 +11,98 @@ using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Assets
+namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
+
+internal sealed class UploadPipeline
 {
-    internal sealed class UploadPipeline
+    private readonly ITargetBlock<AssetModel> pipelineStart;
+    private readonly IDataflowBlock pipelineEnd;
+
+    public Func<AssetModel, FilePath> FilePathProvider { get; set; }
+
+    public Func<AssetModel, Task<FilePath>> FilePathProviderAsync { get; set; }
+
+    public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
     {
-        private readonly ITargetBlock<AssetModel> pipelineStart;
-        private readonly IDataflowBlock pipelineEnd;
+        var tree = new AssetFolderTree(session.Assets, session.App);
 
-        public Func<AssetModel, FilePath> FilePathProvider { get; set; }
-
-        public Func<AssetModel, Task<FilePath>> FilePathProviderAsync { get; set; }
-
-        public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
+        var fileNameStep = new TransformBlock<AssetModel, (AssetModel, FilePath)>(async asset =>
         {
-            var tree = new AssetFolderTree(session.Assets, session.App);
+            FilePath path;
 
-            var fileNameStep = new TransformBlock<AssetModel, (AssetModel, FilePath)>(async asset =>
+            if (FilePathProvider != null)
             {
-                FilePath path;
-
-                if (FilePathProvider != null)
-                {
-                    path = FilePathProvider(asset);
-                }
-                else if (FilePathProviderAsync != null)
-                {
-                    path = await FilePathProviderAsync(asset);
-                }
-                else
-                {
-                    path = new FilePath(asset.Id);
-                }
-
-                return (asset, path);
-            },
-            new ExecutionDataflowBlockOptions
+                path = FilePathProvider(asset);
+            }
+            else if (FilePathProviderAsync != null)
             {
-                MaxDegreeOfParallelism = 1,
-                MaxMessagesPerTask = 1,
-                BoundedCapacity = 1
-            });
-
-            var maxDegreeOfParallelism = fs.CanAccessInParallel ? Environment.ProcessorCount * 2 : 1;
-
-            var uploadStep = new ActionBlock<(AssetModel, FilePath)>(async item =>
+                path = await FilePathProviderAsync(asset);
+            }
+            else
             {
-                var (asset, path) = item;
+                path = new FilePath(asset.Id);
+            }
 
-                var process = $"Uploading {path}";
-
-                try
-                {
-                    var assetFile = fs.GetFile(path);
-
-                    await using (var stream = assetFile.OpenRead())
-                    {
-                        var file = new FileParameter(stream, asset.FileName, asset.MimeType);
-
-                        var result = await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
-
-                        log.ProcessCompleted(process);
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    log.ProcessFailed(process, "File not found.");
-                }
-                catch (Exception ex)
-                {
-                    log.ProcessFailed(process, ex);
-                }
-            }, new ExecutionDataflowBlockOptions
-            {
-                MaxDegreeOfParallelism = maxDegreeOfParallelism,
-                MaxMessagesPerTask = 1,
-                BoundedCapacity = maxDegreeOfParallelism * 2
-            });
-
-            fileNameStep.BidirectionalLinkTo(uploadStep);
-
-            pipelineStart = fileNameStep;
-            pipelineEnd = uploadStep;
-        }
-
-        public Task UploadAsync(AssetModel asset)
+            return (asset, path);
+        },
+        new ExecutionDataflowBlockOptions
         {
-            return pipelineStart.SendAsync(asset);
-        }
+            MaxDegreeOfParallelism = 1,
+            MaxMessagesPerTask = 1,
+            BoundedCapacity = 1
+        });
 
-        public Task CompleteAsync()
+        var maxDegreeOfParallelism = fs.CanAccessInParallel ? Environment.ProcessorCount * 2 : 1;
+
+        var uploadStep = new ActionBlock<(AssetModel, FilePath)>(async item =>
         {
-            pipelineStart.Complete();
+            var (asset, path) = item;
 
-            return pipelineEnd.Completion;
-        }
+            var process = $"Uploading {path}";
+
+            try
+            {
+                var assetFile = fs.GetFile(path);
+
+                await using (var stream = assetFile.OpenRead())
+                {
+                    var file = new FileParameter(stream, asset.FileName, asset.MimeType);
+
+                    var result = await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
+
+                    log.ProcessCompleted(process);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                log.ProcessFailed(process, "File not found.");
+            }
+            catch (Exception ex)
+            {
+                log.ProcessFailed(process, ex);
+            }
+        }, new ExecutionDataflowBlockOptions
+        {
+            MaxDegreeOfParallelism = maxDegreeOfParallelism,
+            MaxMessagesPerTask = 1,
+            BoundedCapacity = maxDegreeOfParallelism * 2
+        });
+
+        fileNameStep.BidirectionalLinkTo(uploadStep);
+
+        pipelineStart = fileNameStep;
+        pipelineEnd = uploadStep;
+    }
+
+    public Task UploadAsync(AssetModel asset)
+    {
+        return pipelineStart.SendAsync(asset);
+    }
+
+    public Task CompleteAsync()
+    {
+        pipelineStart.Complete();
+
+        return pipelineEnd.Completion;
     }
 }

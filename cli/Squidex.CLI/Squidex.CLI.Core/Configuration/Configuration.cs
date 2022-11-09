@@ -5,12 +5,11 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Configuration
-{
-    public sealed class Configuration
-    {
-        public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+namespace Squidex.CLI.Configuration;
 
-        public string? CurrentApp { get; set; }
-    }
+public sealed class Configuration
+{
+    public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+
+    public string? CurrentApp { get; set; }
 }

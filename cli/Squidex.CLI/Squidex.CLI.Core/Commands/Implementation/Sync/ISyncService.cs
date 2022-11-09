@@ -8,43 +8,42 @@
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation.Sync;
+
+public interface ISyncService
 {
-    public interface ISyncService
+    IFileSystem FileSystem { get; }
+
+    AssetFolderTree Folders { get; }
+
+    T Convert<T>(object value);
+
+    T Read<T>(IFile file, ILogger log);
+
+    Task WriteWithSchemaAs<T>(FilePath path, object sample, string schema) where T : class
     {
-        IFileSystem FileSystem { get; }
+        var file = FileSystem.GetFile(path);
 
-        AssetFolderTree Folders { get; }
-
-        T Convert<T>(object value);
-
-        T Read<T>(IFile file, ILogger log);
-
-        Task WriteWithSchemaAs<T>(FilePath path, object sample, string schema) where T : class
-        {
-            var file = FileSystem.GetFile(path);
-
-            return WriteWithSchemaAs<T>(file, sample, schema);
-        }
-
-        Task WriteWithSchema<T>(FilePath path, T sample, string schema) where T : class
-        {
-            var file = FileSystem.GetFile(path);
-
-            return WriteWithSchema(file, sample, schema);
-        }
-
-        Task WriteJsonSchemaAsync<T>(FilePath path)
-        {
-            var file = FileSystem.GetFile(new FilePath("__json").Combine(path));
-
-            return WriteJsonSchemaAsync<T>(file);
-        }
-
-        Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class;
-
-        Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class;
-
-        Task WriteJsonSchemaAsync<T>(IFile file);
+        return WriteWithSchemaAs<T>(file, sample, schema);
     }
+
+    Task WriteWithSchema<T>(FilePath path, T sample, string schema) where T : class
+    {
+        var file = FileSystem.GetFile(path);
+
+        return WriteWithSchema(file, sample, schema);
+    }
+
+    Task WriteJsonSchemaAsync<T>(FilePath path)
+    {
+        var file = FileSystem.GetFile(new FilePath("__json").Combine(path));
+
+        return WriteJsonSchemaAsync<T>(file);
+    }
+
+    Task WriteWithSchemaAs<T>(IFile file, object sample, string schema) where T : class;
+
+    Task WriteWithSchema<T>(IFile file, T sample, string schema) where T : class;
+
+    Task WriteJsonSchemaAsync<T>(IFile file);
 }

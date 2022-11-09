@@ -7,73 +7,72 @@
 
 using System.IO.Compression;
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip;
+
+public sealed class ZipFileSystem : IFileSystem
 {
-    public sealed class ZipFileSystem : IFileSystem
+    private readonly ZipArchive zipArchive;
+    private readonly FileInfo fileInfo;
+
+    public string FullName => fileInfo.FullName;
+
+    public bool CanAccessInParallel => false;
+
+    public ZipFileSystem(FileInfo fileInfo)
     {
-        private readonly ZipArchive zipArchive;
-        private readonly FileInfo fileInfo;
+        zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);
 
-        public string FullName => fileInfo.FullName;
+        this.fileInfo = fileInfo;
+    }
 
-        public bool CanAccessInParallel => false;
+    public Task OpenAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-        public ZipFileSystem(FileInfo fileInfo)
+    public IFile GetFile(FilePath path)
+    {
+        string relativePath = GetRelativePath(path);
+
+        return new ZipFile(zipArchive, relativePath, path.Elements[^1], FullName);
+    }
+
+    public IEnumerable<IFile> GetFiles(FilePath path, string extension)
+    {
+        var relativePath = path.ToString();
+
+        foreach (var entry in zipArchive.Entries)
         {
-            zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);
-
-            this.fileInfo = fileInfo;
-        }
-
-        public Task OpenAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public IFile GetFile(FilePath path)
-        {
-            string relativePath = GetRelativePath(path);
-
-            return new ZipFile(zipArchive, relativePath, path.Elements[^1], FullName);
-        }
-
-        public IEnumerable<IFile> GetFiles(FilePath path, string extension)
-        {
-            var relativePath = path.ToString();
-
-            foreach (var entry in zipArchive.Entries)
+            // Entry is a folder.
+            if (string.IsNullOrWhiteSpace(entry.Name))
             {
-                // Entry is a folder.
-                if (string.IsNullOrWhiteSpace(entry.Name))
-                {
-                    continue;
-                }
-
-                if (entry.FullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(entry.Name, extension))
-                {
-                    yield return new ZipFile(zipArchive, entry.FullName, entry.Name, FullName);
-                }
-            }
-        }
-
-        private static bool MatchsExtension(string fullName, string extension)
-        {
-            if (extension == ".*")
-            {
-                return true;
+                continue;
             }
 
-            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+            if (entry.FullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(entry.Name, extension))
+            {
+                yield return new ZipFile(zipArchive, entry.FullName, entry.Name, FullName);
+            }
+        }
+    }
+
+    private static bool MatchsExtension(string fullName, string extension)
+    {
+        if (extension == ".*")
+        {
+            return true;
         }
 
-        private static string GetRelativePath(FilePath path)
-        {
-            return Path.Combine(path.Elements.ToArray());
-        }
+        return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+    }
 
-        public void Dispose()
-        {
-            zipArchive.Dispose();
-        }
+    private static string GetRelativePath(FilePath path)
+    {
+        return Path.Combine(path.Elements.ToArray());
+    }
+
+    public void Dispose()
+    {
+        zipArchive.Dispose();
     }
 }

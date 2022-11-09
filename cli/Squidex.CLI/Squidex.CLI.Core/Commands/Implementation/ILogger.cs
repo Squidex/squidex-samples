@@ -5,24 +5,23 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation;
+
+public interface ILogger
 {
-    public interface ILogger
-    {
-        void StepStart(string process);
+    void StepStart(string process);
 
-        void StepFailed(string reason);
+    void StepFailed(string reason);
 
-        void StepSuccess(string? details = null);
+    void StepSuccess(string? details = null);
 
-        void StepSkipped(string reason);
+    void StepSkipped(string reason);
 
-        void WriteLine();
+    void WriteLine();
 
-        void WriteLine(string message);
+    void WriteLine(string message);
 
-        void WriteLine(string message, params object?[] args);
+    void WriteLine(string message, params object?[] args);
 
-        ILogLine WriteSameLine();
-    }
+    ILogLine WriteSameLine();
 }

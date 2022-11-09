@@ -8,18 +8,17 @@
 using Newtonsoft.Json;
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Abstract class for events on a schema.
+/// </summary>
+public abstract class EnrichedSchemaEventBase : EnrichedUserEventBase
 {
     /// <summary>
-    /// Abstract class for events on a schema.
+    /// Schema changed.
     /// </summary>
-    public abstract class EnrichedSchemaEventBase : EnrichedUserEventBase
-    {
-        /// <summary>
-        /// Schema changed.
-        /// </summary>
-        [JsonConverter(typeof(NamedIdConverter))]
-        [JsonProperty("schemaId")]
-        public NamedId Schema { get; set; }
-    }
+    [JsonConverter(typeof(NamedIdConverter))]
+    [JsonProperty("schemaId")]
+    public NamedId Schema { get; set; }
 }

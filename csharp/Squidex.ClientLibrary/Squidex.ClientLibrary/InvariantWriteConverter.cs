@@ -7,35 +7,34 @@
 
 using Newtonsoft.Json;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// A JSON converter for invariant fields to convert nested invariant values to flat values when serializing objects to JSON.
+/// </summary>
+/// <seealso cref="JsonConverter" />
+public sealed class InvariantWriteConverter : JsonConverter
 {
-    /// <summary>
-    /// A JSON converter for invariant fields to convert nested invariant values to flat values when serializing objects to JSON.
-    /// </summary>
-    /// <seealso cref="JsonConverter" />
-    public sealed class InvariantWriteConverter : JsonConverter
+    /// <inheritdoc/>
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
-            writer.WriteStartObject();
-            writer.WritePropertyName("iv");
+        writer.WriteStartObject();
+        writer.WritePropertyName("iv");
 
-            serializer.Serialize(writer, value);
+        serializer.Serialize(writer, value);
 
-            writer.WriteEndObject();
-        }
+        writer.WriteEndObject();
+    }
 
-        /// <inheritdoc/>
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
-            return serializer.Deserialize(reader, objectType);
-        }
+    /// <inheritdoc/>
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+    {
+        return serializer.Deserialize(reader, objectType);
+    }
 
-        /// <inheritdoc/>
-        public override bool CanConvert(Type objectType)
-        {
-            return false;
-        }
+    /// <inheritdoc/>
+    public override bool CanConvert(Type objectType)
+    {
+        return false;
     }
 }

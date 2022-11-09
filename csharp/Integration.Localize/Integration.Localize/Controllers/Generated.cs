@@ -15,368 +15,365 @@
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace Integration.Localize.Controllers
+namespace Integration.Localize.Controllers;
+
+using System = global::System;
+
+[System.CodeDom.Compiler.GeneratedCode("NSwag", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+[Microsoft.AspNetCore.Mvc.Route("v{version}")]
+
+public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 {
-    using System = global::System;
+    /// <returns>Service is up</returns>
+    [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("")]
+    public abstract System.Threading.Tasks.Task Anonymous(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    [Microsoft.AspNetCore.Mvc.Route("v{version}")]
+    /// <returns>Service is up</returns>
+    [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("health")]
+    public abstract System.Threading.Tasks.Task Health(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-    public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
-    {
-        /// <returns>Service is up</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("")]
-        public abstract System.Threading.Tasks.Task Anonymous(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <returns>Authentication type definition</returns>
+    [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth")]
+    public abstract System.Threading.Tasks.Task<AuthGetResponse> AuthGET(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>Service is up</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("health")]
-        public abstract System.Threading.Tasks.Task Health(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <param name="body">Payload depends on the authentication flow used by connector.</param>
+    /// <returns>Authorization process initiated successfully</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth")]
+    public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> AuthPOST([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IDictionary<string, string>? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>Authentication type definition</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("auth")]
-        public abstract System.Threading.Tasks.Task<AuthGetResponse> AuthGET(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <returns>User authorized successfully</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/response")]
+    public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> Response([Microsoft.AspNetCore.Mvc.FromBody] AuthResponseRequest? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <param name="body">Payload depends on the authentication flow used by connector.</param>
-        /// <returns>Authorization process initiated successfully</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth")]
-        public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> AuthPOST([Microsoft.AspNetCore.Mvc.FromBody] System.Collections.Generic.IDictionary<string, string>? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <returns>Returns refreshed access credentials</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/refresh")]
+    public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> Refresh(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>User authorized successfully</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/response")]
-        public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> Response([Microsoft.AspNetCore.Mvc.FromBody] AuthResponseRequest? body = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <returns>List of locale codes and names</returns>
+    [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("env")]
+    public abstract System.Threading.Tasks.Task<EnvResponse> Env(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>Returns refreshed access credentials</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("auth/refresh")]
-        public abstract System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> Refresh(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <returns>List of translatable item IDs</returns>
+    [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("cache")]
+    public abstract System.Threading.Tasks.Task<CacheResponse> Cache(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>List of locale codes and names</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("env")]
-        public abstract System.Threading.Tasks.Task<EnvResponse> Env(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <param name="body">List of cache item identifiers</param>
+    /// <returns>List of cache items</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("cache/items")]
+    public abstract System.Threading.Tasks.Task<CacheItemsResponse> Items([Microsoft.AspNetCore.Mvc.FromBody] CacheItemsRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <returns>List of translatable item IDs</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("cache")]
-        public abstract System.Threading.Tasks.Task<CacheResponse> Cache(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <param name="body">List of content items with translations</param>
+    /// <returns>Content successfully updated</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("publish")]
+    public abstract System.Threading.Tasks.Task<PublishResponse> Publish([Microsoft.AspNetCore.Mvc.FromBody] PublishRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <param name="body">List of cache item identifiers</param>
-        /// <returns>List of cache items</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("cache/items")]
-        public abstract System.Threading.Tasks.Task<CacheItemsResponse> Items([Microsoft.AspNetCore.Mvc.FromBody] CacheItemsRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+    /// <param name="body">List of cache item identifiers and required locales</param>
+    /// <returns>List of translatable items</returns>
+    [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translate")]
+    public abstract System.Threading.Tasks.Task<TranslateResponse> Translate([Microsoft.AspNetCore.Mvc.FromBody] TranslateRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <param name="body">List of content items with translations</param>
-        /// <returns>Content successfully updated</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("publish")]
-        public abstract System.Threading.Tasks.Task<PublishResponse> Publish([Microsoft.AspNetCore.Mvc.FromBody] PublishRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+}
 
-        /// <param name="body">List of cache item identifiers and required locales</param>
-        /// <returns>List of translatable items</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("translate")]
-        public abstract System.Threading.Tasks.Task<TranslateResponse> Translate([Microsoft.AspNetCore.Mvc.FromBody] TranslateRequest body, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+/// <summary>
+/// Api key flow contain no additional payload
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthPostRequest : System.Collections.Generic.Dictionary<string, string>
+{
 
-    }
+}
+
+/// <summary>
+/// For apiToken flow, the authorization data object
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthPostResponse : System.Collections.Generic.Dictionary<string, string>
+{
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthGetResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("type")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+    public AuthGetResponseType Type { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthResponseRequest
+{
+    /// <summary>
+    /// 3rd party authorization response query payload
+    /// </summary>
+
+    [System.Text.Json.Serialization.JsonPropertyName("query")]
+    [System.ComponentModel.DataAnnotations.Required]
+    public object Query { get; set; } = new object();
 
     /// <summary>
-    /// Api key flow contain no additional payload
+    /// 3rd party authorization response body payload
     /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthPostRequest : System.Collections.Generic.Dictionary<string, string>
-    {
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("body")]
+    [System.ComponentModel.DataAnnotations.Required]
+    public object Body { get; set; } = new object();
 
     /// <summary>
-    /// For apiToken flow, the authorization data object
+    /// OAuth redirect url
     /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthPostResponse : System.Collections.Generic.Dictionary<string, string>
-    {
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("redirectUrl")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string RedirectUrl { get; set; } = default!;
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthGetResponse
-    {
+}
 
-        [System.Text.Json.Serialization.JsonPropertyName("type")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
-        public AuthGetResponseType Type { get; set; } = default!;
+/// <summary>
+/// The authorization data object
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthResponseResponse : System.Collections.Generic.Dictionary<string, string>
+{
 
-    }
+}
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthResponseRequest
-    {
-        /// <summary>
-        /// 3rd party authorization response query payload
-        /// </summary>
+/// <summary>
+/// The authorization data object
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class AuthRefreshResponse : System.Collections.Generic.Dictionary<string, string>
+{
 
-        [System.Text.Json.Serialization.JsonPropertyName("query")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public object Query { get; set; } = new object();
+}
 
-        /// <summary>
-        /// 3rd party authorization response body payload
-        /// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class EnvResponse
+{
+    /// <summary>
+    /// Locale of original content in 3rd party. Empty string, if cannot be determined.
+    /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("body")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public object Body { get; set; } = new object();
+    [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
+    public string DefaultLocale { get; set; } = default!;
 
-        /// <summary>
-        /// OAuth redirect url
-        /// </summary>
+    [System.Text.Json.Serialization.JsonPropertyName("locales")]
+    public System.Collections.Generic.List<Locale> Locales { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("redirectUrl")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string RedirectUrl { get; set; } = default!;
+    [System.Text.Json.Serialization.JsonPropertyName("cacheItemStructure")]
+    public CacheItemStructure CacheItemStructure { get; set; } = default!;
 
-    }
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class CacheResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class CacheItemsResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<CacheItem> Items { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class CacheItemsRequest
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class PublishRequest
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
+    public string DefaultLocale { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<ContentItem> Items { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class PublishResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("code")]
+    public int Code { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("message")]
+    public string Message { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("updateItems")]
+    public System.Collections.Generic.List<UniqueItemIdentifier> UpdateItems { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class PublishErrorResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("code")]
+    public int Code { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("validationErrors")]
+    public object ValidationErrors { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class TranslateRequest
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
+    public string DefaultLocale { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("locales")]
+    public System.Collections.Generic.List<string> Locales { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class TranslateResponse
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("items")]
+    public System.Collections.Generic.List<ContentItem> Items { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("updateItems")]
+    public System.Collections.Generic.List<UniqueItemIdentifier> UpdateItems { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class UniqueItemIdentifier
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("uniqueId")]
+    [System.ComponentModel.DataAnnotations.Required]
+    [System.ComponentModel.DataAnnotations.StringLength(256, MinimumLength = 1)]
+    public string UniqueId { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("groupId")]
+    [System.ComponentModel.DataAnnotations.Required]
+    [System.ComponentModel.DataAnnotations.StringLength(256, MinimumLength = 1)]
+    public string GroupId { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("metadata")]
+    [System.ComponentModel.DataAnnotations.Required]
+    public UniqueIdMetadata Metadata { get; set; } = new UniqueIdMetadata();
+
+}
+
+/// <summary>
+/// This object with flexible structure will be used to help mapping content items to items in Content Management system
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class UniqueIdMetadata : Dictionary<string, string>
+{
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class Locale
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("name")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string Name { get; set; } = default!;
+
+    [System.Text.Json.Serialization.JsonPropertyName("code")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string Code { get; set; } = default!;
+
+}
+
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class CacheItem : UniqueItemIdentifier
+{
+
+    [System.Text.Json.Serialization.JsonPropertyName("fields")]
+    [System.ComponentModel.DataAnnotations.Required]
+    public System.Collections.Generic.IDictionary<string, string> Fields { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
 
     /// <summary>
-    /// The authorization data object
+    /// 3rd party content entity field description
     /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthResponseResponse : System.Collections.Generic.Dictionary<string, string>
-    {
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("title")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string Title { get; set; } = default!;
 
     /// <summary>
-    /// The authorization data object
+    /// Meaningful title for the 3rd party content entity
     /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class AuthRefreshResponse : System.Collections.Generic.Dictionary<string, string>
-    {
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("groupTitle")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string GroupTitle { get; set; } = default!;
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class EnvResponse
-    {
-        /// <summary>
-        /// Locale of original content in 3rd party. Empty string, if cannot be determined.
-        /// </summary>
+}
 
-        [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
-        public string DefaultLocale { get; set; } = default!;
+/// <summary>
+/// Structure of cache item. Hashmap of field names and matching labels
+/// </summary>
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class CacheItemStructure : Dictionary<string, string>
+{
 
-        [System.Text.Json.Serialization.JsonPropertyName("locales")]
-        public System.Collections.Generic.List<Locale> Locales { get; set; } = default!;
+}
 
-        [System.Text.Json.Serialization.JsonPropertyName("cacheItemStructure")]
-        public CacheItemStructure CacheItemStructure { get; set; } = default!;
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class ContentItem : UniqueItemIdentifier
+{
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("translations")]
+    [System.ComponentModel.DataAnnotations.Required]
+    public System.Collections.Generic.IDictionary<string, string> Translations { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class CacheResponse
-    {
+}
 
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public partial class ApiError
+{
 
-    }
+    [System.Text.Json.Serialization.JsonPropertyName("errorCode")]
+    public int ErrorCode { get; set; } = default!;
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class CacheItemsResponse
-    {
+    [System.Text.Json.Serialization.JsonPropertyName("message")]
+    [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+    public string Message { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<CacheItem> Items { get; set; } = default!;
+    [System.Text.Json.Serialization.JsonPropertyName("details")]
+    public object Details { get; set; } = default!;
 
-    }
+}
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class CacheItemsRequest
-    {
+[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+public enum AuthGetResponseType
+{
 
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
+    [System.Runtime.Serialization.EnumMember(Value = @"apiToken")]
+    ApiToken = 0,
 
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class PublishRequest
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
-        public string DefaultLocale { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<ContentItem> Items { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class PublishResponse
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        public int Code { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("updateItems")]
-        public System.Collections.Generic.List<UniqueItemIdentifier> UpdateItems { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class PublishErrorResponse
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        public int Code { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("validationErrors")]
-        public object ValidationErrors { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class TranslateRequest
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("defaultLocale")]
-        public string DefaultLocale { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("locales")]
-        public System.Collections.Generic.List<string> Locales { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<UniqueItemIdentifier> Items { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class TranslateResponse
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("items")]
-        public System.Collections.Generic.List<ContentItem> Items { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("updateItems")]
-        public System.Collections.Generic.List<UniqueItemIdentifier> UpdateItems { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class UniqueItemIdentifier
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("uniqueId")]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(256, MinimumLength = 1)]
-        public string UniqueId { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("groupId")]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.StringLength(256, MinimumLength = 1)]
-        public string GroupId { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("metadata")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public UniqueIdMetadata Metadata { get; set; } = new UniqueIdMetadata();
-
-    }
-
-    /// <summary>
-    /// This object with flexible structure will be used to help mapping content items to items in Content Management system
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class UniqueIdMetadata : Dictionary<string, string>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class Locale
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("name")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Name { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("code")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Code { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class CacheItem : UniqueItemIdentifier
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("fields")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.IDictionary<string, string> Fields { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
-
-        /// <summary>
-        /// 3rd party content entity field description
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("title")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Title { get; set; } = default!;
-
-        /// <summary>
-        /// Meaningful title for the 3rd party content entity
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("groupTitle")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string GroupTitle { get; set; } = default!;
-
-    }
-
-    /// <summary>
-    /// Structure of cache item. Hashmap of field names and matching labels
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class CacheItemStructure : Dictionary<string, string>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ContentItem : UniqueItemIdentifier
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("translations")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.IDictionary<string, string> Translations { get; set; } = new System.Collections.Generic.Dictionary<string, string>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ApiError
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("errorCode")]
-        public int ErrorCode { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Message { get; set; } = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("details")]
-        public object Details { get; set; } = default!;
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public enum AuthGetResponseType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"apiToken")]
-        ApiToken = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"OAuth")]
-        OAuth = 1,
-
-    }
-
+    [System.Runtime.Serialization.EnumMember(Value = @"OAuth")]
+    OAuth = 1,
 
 }
 

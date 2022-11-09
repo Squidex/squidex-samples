@@ -5,21 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Usage Exceeded Event.
+/// </summary>
+public sealed class EnrichedUsageExceededEvent : EnrichedEvent
 {
     /// <summary>
-    /// Usage Exceeded Event.
+    /// Current calls.
     /// </summary>
-    public sealed class EnrichedUsageExceededEvent : EnrichedEvent
-    {
-        /// <summary>
-        /// Current calls.
-        /// </summary>
-        public long CallsCurrent { get; set; }
+    public long CallsCurrent { get; set; }
 
-        /// <summary>
-        /// Calls limit.
-        /// </summary>
-        public long CallsLimit { get; set; }
-    }
+    /// <summary>
+    /// Calls limit.
+    /// </summary>
+    public long CallsLimit { get; set; }
 }

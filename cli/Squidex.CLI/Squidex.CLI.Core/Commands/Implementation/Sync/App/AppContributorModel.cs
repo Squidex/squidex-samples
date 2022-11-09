@@ -7,11 +7,10 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.App
+namespace Squidex.CLI.Commands.Implementation.Sync.App;
+
+internal sealed class AppContributorModel
 {
-    internal sealed class AppContributorModel
-    {
-        [Required]
-        public string Role { get; set; }
-    }
+    [Required]
+    public string Role { get; set; }
 }

@@ -5,78 +5,77 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Default;
+
+public sealed class DefaultFileSystem : IFileSystem
 {
-    public sealed class DefaultFileSystem : IFileSystem
+    private readonly DirectoryInfo directory;
+
+    public string FullName => directory.FullName;
+
+    public bool Readonly { get; init; }
+
+    public DefaultFileSystem(DirectoryInfo directory)
     {
-        private readonly DirectoryInfo directory;
+        this.directory = directory;
+    }
 
-        public string FullName => directory.FullName;
+    public Task OpenAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-        public bool Readonly { get; init; }
+    public IFile GetFile(FilePath path)
+    {
+        string fullPath = GetFullPath(path);
 
-        public DefaultFileSystem(DirectoryInfo directory)
+        var relativePath = Path.GetRelativePath(directory.FullName, fullPath);
+
+        return new DefaultFile(new FileInfo(fullPath), relativePath)
         {
-            this.directory = directory;
-        }
+            Readonly = Readonly
+        };
+    }
 
-        public Task OpenAsync()
+    public IEnumerable<IFile> GetFiles(FilePath path, string extension)
+    {
+        var fullPath = GetFullPath(path);
+
+        if (Directory.Exists(fullPath))
         {
-            return Task.CompletedTask;
-        }
-
-        public IFile GetFile(FilePath path)
-        {
-            string fullPath = GetFullPath(path);
-
-            var relativePath = Path.GetRelativePath(directory.FullName, fullPath);
-
-            return new DefaultFile(new FileInfo(fullPath), relativePath)
+            foreach (var file in Directory.GetFiles(fullPath, $"*{extension}", SearchOption.AllDirectories))
             {
-                Readonly = Readonly
-            };
-        }
+                var fileInfo = new FileInfo(file);
 
-        public IEnumerable<IFile> GetFiles(FilePath path, string extension)
-        {
-            var fullPath = GetFullPath(path);
-
-            if (Directory.Exists(fullPath))
-            {
-                foreach (var file in Directory.GetFiles(fullPath, $"*{extension}", SearchOption.AllDirectories))
+                if (fileInfo.Exists && MatchsExtension(fileInfo.FullName, extension))
                 {
-                    var fileInfo = new FileInfo(file);
+                    var relativePath = Path.GetRelativePath(directory.FullName, fileInfo.FullName);
 
-                    if (fileInfo.Exists && MatchsExtension(fileInfo.FullName, extension))
+                    yield return new DefaultFile(fileInfo, relativePath)
                     {
-                        var relativePath = Path.GetRelativePath(directory.FullName, fileInfo.FullName);
-
-                        yield return new DefaultFile(fileInfo, relativePath)
-                        {
-                            Readonly = Readonly
-                        };
-                    }
+                        Readonly = Readonly
+                    };
                 }
             }
         }
+    }
 
-        private static bool MatchsExtension(string fullName, string extension)
+    private static bool MatchsExtension(string fullName, string extension)
+    {
+        if (extension == ".*")
         {
-            if (extension == ".*")
-            {
-                return true;
-            }
-
-            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+            return true;
         }
 
-        private string GetFullPath(FilePath path)
-        {
-            return Path.Combine(directory.FullName, Path.Combine(path.Elements.ToArray()));
-        }
+        return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+    }
 
-        public void Dispose()
-        {
-        }
+    private string GetFullPath(FilePath path)
+    {
+        return Path.Combine(directory.FullName, Path.Combine(path.Elements.ToArray()));
+    }
+
+    public void Dispose()
+    {
     }
 }

@@ -11,39 +11,38 @@ using NJsonSchema;
 using NJsonSchema.Generation;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync
+namespace Squidex.CLI.Commands.Implementation.Sync;
+
+public sealed class InheritanceProcessor : ISchemaProcessor
 {
-    public sealed class InheritanceProcessor : ISchemaProcessor
+    public void Process(SchemaProcessorContext context)
     {
-        public void Process(SchemaProcessorContext context)
+        var discriminator = GetDiscriminator(context.ContextualType);
+
+        if (discriminator != null)
         {
-            var discriminator = GetDiscriminator(context.ContextualType);
+            context.Schema.AllowAdditionalProperties = true;
 
-            if (discriminator != null)
+            context.Schema.Properties[discriminator] = new JsonSchemaProperty
             {
-                context.Schema.AllowAdditionalProperties = true;
+                Type = JsonObjectType.String,
+                IsRequired = true
+            };
+        }
+    }
 
-                context.Schema.Properties[discriminator] = new JsonSchemaProperty
-                {
-                    Type = JsonObjectType.String,
-                    IsRequired = true
-                };
-            }
+    private static string? GetDiscriminator(Type type)
+    {
+        var attribute = type.GetCustomAttribute<JsonConverterAttribute>();
+
+        if (attribute != null &&
+            attribute.ConverterType == typeof(JsonInheritanceConverter) &&
+            attribute.ConverterParameters != null &&
+            attribute.ConverterParameters.Length == 1)
+        {
+            return attribute.ConverterParameters[0] as string;
         }
 
-        private static string? GetDiscriminator(Type type)
-        {
-            var attribute = type.GetCustomAttribute<JsonConverterAttribute>();
-
-            if (attribute != null &&
-                attribute.ConverterType == typeof(JsonInheritanceConverter) &&
-                attribute.ConverterParameters != null &&
-                attribute.ConverterParameters.Length == 1)
-            {
-                return attribute.ConverterParameters[0] as string;
-            }
-
-            return type.GetCustomAttribute<InheritanceAttribute>()?.Discriminator;
-        }
+        return type.GetCustomAttribute<InheritanceAttribute>()?.Discriminator;
     }
 }

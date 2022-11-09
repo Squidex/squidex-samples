@@ -7,10 +7,9 @@
 
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
+namespace Squidex.CLI.Commands.Implementation.Sync.Schemas;
+
+internal sealed class SchemaModel : SchemaCreateModel
 {
-    internal sealed class SchemaModel : SchemaCreateModel
-    {
-        public SynchronizeSchemaDto Schema { get; set; }
-    }
+    public SynchronizeSchemaDto Schema { get; set; }
 }

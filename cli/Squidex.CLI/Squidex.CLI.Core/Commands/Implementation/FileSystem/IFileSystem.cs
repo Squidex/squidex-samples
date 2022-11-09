@@ -5,20 +5,19 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem
+namespace Squidex.CLI.Commands.Implementation.FileSystem;
+
+public interface IFileSystem : IDisposable
 {
-    public interface IFileSystem : IDisposable
-    {
-        string FullName { get; }
+    string FullName { get; }
 
-        bool CanWrite => true;
+    bool CanWrite => true;
 
-        bool CanAccessInParallel => false;
+    bool CanAccessInParallel => false;
 
-        Task OpenAsync();
+    Task OpenAsync();
 
-        IFile GetFile(FilePath path);
+    IFile GetFile(FilePath path);
 
-        IEnumerable<IFile> GetFiles(FilePath path, string extension);
-    }
+    IEnumerable<IFile> GetFiles(FilePath path, string extension);
 }

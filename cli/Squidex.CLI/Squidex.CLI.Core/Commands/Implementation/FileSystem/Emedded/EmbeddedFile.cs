@@ -7,68 +7,67 @@
 
 using System.Reflection;
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
+
+public sealed class EmbeddedFile : IFile
 {
-    public sealed class EmbeddedFile : IFile
+    private readonly Assembly assembly;
+
+    public string FullName { get; }
+
+    public string FullLocalName { get; }
+
+    public string Name { get; }
+
+    public bool Exists => CanOpen();
+
+    public EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName)
     {
-        private readonly Assembly assembly;
+        this.assembly = assembly;
 
-        public string FullName { get; }
+        Name = name;
 
-        public string FullLocalName { get; }
+        FullName = fullName;
+        FullLocalName = fullLocalName;
+    }
 
-        public string Name { get; }
+    public Stream OpenRead()
+    {
+        var stream = assembly.GetManifestResourceStream(FullName);
 
-        public bool Exists => CanOpen();
-
-        public EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName)
+        if (stream == null)
         {
-            this.assembly = assembly;
-
-            Name = name;
-
-            FullName = fullName;
-            FullLocalName = fullLocalName;
+            throw new FileNotFoundException(null, FullName);
         }
 
-        public Stream OpenRead()
+        return stream;
+    }
+
+    public Stream OpenWrite()
+    {
+        throw new NotSupportedException();
+    }
+
+    public void Delete()
+    {
+        throw new NotSupportedException();
+    }
+
+    private bool CanOpen()
+    {
+        var stream = assembly.GetManifestResourceStream(FullName);
+
+        if (stream != null)
         {
-            var stream = assembly.GetManifestResourceStream(FullName);
-
-            if (stream == null)
-            {
-                throw new FileNotFoundException(null, FullName);
-            }
-
-            return stream;
+            stream.Dispose();
+            return true;
         }
 
-        public Stream OpenWrite()
-        {
-            throw new NotSupportedException();
-        }
+        return false;
+    }
 
-        public void Delete()
-        {
-            throw new NotSupportedException();
-        }
-
-        private bool CanOpen()
-        {
-            var stream = assembly.GetManifestResourceStream(FullName);
-
-            if (stream != null)
-            {
-                stream.Dispose();
-                return true;
-            }
-
-            return false;
-        }
-
-        public override string ToString()
-        {
-            return FullName;
-        }
+    public override string ToString()
+    {
+        return FullName;
     }
 }

@@ -8,314 +8,313 @@
 using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// Default implementation of the <see cref="ISquidexClientManager"/> interface.
+/// </summary>
+/// <seealso cref="ISquidexClientManager" />
+public sealed class SquidexClientManager : ISquidexClientManager
 {
-    /// <summary>
-    /// Default implementation of the <see cref="ISquidexClientManager"/> interface.
-    /// </summary>
-    /// <seealso cref="ISquidexClientManager" />
-    public sealed class SquidexClientManager : ISquidexClientManager
+    /// <inheritdoc/>
+    public string App
     {
-        /// <inheritdoc/>
-        public string App
+        get { return Options.AppName; }
+    }
+
+    /// <inheritdoc/>
+    public SquidexOptions Options { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SquidexClientManager"/> class with the options.
+    /// </summary>
+    /// <param name="options">The options. Cannot be null.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public SquidexClientManager(SquidexOptions options)
+    {
+        Guard.NotNull(options, nameof(options));
+
+        options.CheckAndFreeze();
+        Options = options;
+    }
+
+    /// <inheritdoc/>
+    public string? GenerateImageUrl(string? id)
+    {
+        if (id == null)
         {
-            get { return Options.AppName; }
+            return null;
         }
 
-        /// <inheritdoc/>
-        public SquidexOptions Options { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SquidexClientManager"/> class with the options.
-        /// </summary>
-        /// <param name="options">The options. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
-        public SquidexClientManager(SquidexOptions options)
+        if (!string.IsNullOrWhiteSpace(Options.AssetCDN))
         {
-            Guard.NotNull(options, nameof(options));
-
-            options.CheckAndFreeze();
-            Options = options;
+            return GenerateUrl(Options.AssetCDN, id);
         }
 
-        /// <inheritdoc/>
-        public string? GenerateImageUrl(string? id)
+        return GenerateUrl(Options.Url, $"api/assets/{id}");
+    }
+
+    /// <inheritdoc/>
+    public string? GenerateImageUrl(IEnumerable<string>? id)
+    {
+        return GenerateImageUrl(id?.FirstOrDefault());
+    }
+
+    /// <inheritdoc />
+    public string? GenerateUrl(string? relativeUrl)
+    {
+        return GenerateUrl(Options.Url, relativeUrl);
+    }
+
+    /// <inheritdoc />
+    public string? GenerateAssetCDNUrl(string relativeUrl)
+    {
+        return GenerateUrl(Options.AssetCDN, relativeUrl);
+    }
+
+    /// <inheritdoc />
+    public string? GenerateContentCDNUrl(string relativeUrl)
+    {
+        return GenerateUrl(Options.ContentCDN, relativeUrl);
+    }
+
+    private static string? GenerateUrl(string baseUrl, string? relativeUrl)
+    {
+        if (relativeUrl == null)
         {
-            if (id == null)
-            {
-                return null;
-            }
-
-            if (!string.IsNullOrWhiteSpace(Options.AssetCDN))
-            {
-                return GenerateUrl(Options.AssetCDN, id);
-            }
-
-            return GenerateUrl(Options.Url, $"api/assets/{id}");
+            return null;
         }
 
-        /// <inheritdoc/>
-        public string? GenerateImageUrl(IEnumerable<string>? id)
+        if (string.IsNullOrWhiteSpace(baseUrl))
         {
-            return GenerateImageUrl(id?.FirstOrDefault());
+            throw new InvalidOperationException("URL is not configured.");
         }
 
-        /// <inheritdoc />
-        public string? GenerateUrl(string? relativeUrl)
+        return $"{baseUrl}{relativeUrl.TrimStart('/')}";
+    }
+
+    /// <inheritdoc/>
+    public IAppsClient CreateAppsClient()
+    {
+        return new AppsClient(Options.ClientProvider)
         {
-            return GenerateUrl(Options.Url, relativeUrl);
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc />
-        public string? GenerateAssetCDNUrl(string relativeUrl)
+    /// <inheritdoc/>
+    public IAssetsClient CreateAssetsClient()
+    {
+        return new AssetsClient(Options.ClientProvider)
         {
-            return GenerateUrl(Options.AssetCDN, relativeUrl);
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc />
-        public string? GenerateContentCDNUrl(string relativeUrl)
+    /// <inheritdoc/>
+    public IBackupsClient CreateBackupsClient()
+    {
+        return new BackupsClient(Options.ClientProvider)
         {
-            return GenerateUrl(Options.ContentCDN, relativeUrl);
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        private static string? GenerateUrl(string baseUrl, string? relativeUrl)
+    /// <inheritdoc/>
+    public ICommentsClient CreateCommentsClient()
+    {
+        return new CommentsClient(Options.ClientProvider)
         {
-            if (relativeUrl == null)
-            {
-                return null;
-            }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
-                throw new InvalidOperationException("URL is not configured.");
-            }
-
-            return $"{baseUrl}{relativeUrl.TrimStart('/')}";
-        }
-
-        /// <inheritdoc/>
-        public IAppsClient CreateAppsClient()
+    /// <inheritdoc/>
+    public IDiagnosticsClient CreateDiagnosticsClient()
+    {
+        return new DiagnosticsClient(Options.ClientProvider)
         {
-            return new AppsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IAssetsClient CreateAssetsClient()
+    /// <inheritdoc/>
+    public IEventConsumersClient CreateEventConsumersClient()
+    {
+        return new EventConsumersClient(Options.ClientProvider)
         {
-            return new AssetsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IBackupsClient CreateBackupsClient()
+    /// <inheritdoc/>
+    public IHistoryClient CreateHistoryClient()
+    {
+        return new HistoryClient(Options.ClientProvider)
         {
-            return new BackupsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ICommentsClient CreateCommentsClient()
+    /// <inheritdoc/>
+    public ILanguagesClient CreateLanguagesClient()
+    {
+        return new LanguagesClient(Options.ClientProvider)
         {
-            return new CommentsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IDiagnosticsClient CreateDiagnosticsClient()
+    /// <inheritdoc/>
+    public IPingClient CreatePingClient()
+    {
+        return new PingClient(Options.ClientProvider)
         {
-            return new DiagnosticsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IEventConsumersClient CreateEventConsumersClient()
+    /// <inheritdoc/>
+    public IPlansClient CreatePlansClient()
+    {
+        return new PlansClient(Options.ClientProvider)
         {
-            return new EventConsumersClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IHistoryClient CreateHistoryClient()
+    /// <inheritdoc/>
+    public IRulesClient CreateRulesClient()
+    {
+        return new RulesClient(Options.ClientProvider)
         {
-            return new HistoryClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ILanguagesClient CreateLanguagesClient()
+    /// <inheritdoc/>
+    public ISchemasClient CreateSchemasClient()
+    {
+        return new SchemasClient(Options.ClientProvider)
         {
-            return new LanguagesClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IPingClient CreatePingClient()
+    /// <inheritdoc/>
+    public ISearchClient CreateSearchClient()
+    {
+        return new SearchClient(Options.ClientProvider)
         {
-            return new PingClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IPlansClient CreatePlansClient()
+    /// <inheritdoc/>
+    public IStatisticsClient CreateStatisticsClient()
+    {
+        return new StatisticsClient(Options.ClientProvider)
         {
-            return new PlansClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IRulesClient CreateRulesClient()
+    /// <inheritdoc/>
+    public ITeamsClient CreateTeamsClient()
+    {
+        return new TeamsClient(Options.ClientProvider)
         {
-            return new RulesClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ISchemasClient CreateSchemasClient()
+    /// <inheritdoc/>
+    public ITemplatesClient CreateTemplatesClient()
+    {
+        return new TemplatesClient(Options.ClientProvider)
         {
-            return new SchemasClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ISearchClient CreateSearchClient()
+    /// <inheritdoc/>
+    public ITranslationsClient CreateTranslationsClient()
+    {
+        return new TranslationsClient(Options.ClientProvider)
         {
-            return new SearchClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public IStatisticsClient CreateStatisticsClient()
+    /// <inheritdoc/>
+    public IUsersClient CreateUsersClient()
+    {
+        return new UsersClient(Options.ClientProvider)
         {
-            return new StatisticsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ITeamsClient CreateTeamsClient()
+    /// <inheritdoc/>
+    public IUserManagementClient CreateUserManagementClient()
+    {
+        return new UserManagementClient(Options.ClientProvider)
         {
-            return new TeamsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+            ReadResponseAsString = Options.ReadResponseAsString
+        };
+    }
 
-        /// <inheritdoc/>
-        public ITemplatesClient CreateTemplatesClient()
-        {
-            return new TemplatesClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+    /// <inheritdoc/>
+    public IExtendableRulesClient CreateExtendableRulesClient(string? appName = null)
+    {
+        return new ExtendableRulesClient(Options, appName ?? Options.AppName, Options.ClientProvider);
+    }
 
-        /// <inheritdoc/>
-        public ITranslationsClient CreateTranslationsClient()
-        {
-            return new TranslationsClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+    /// <inheritdoc/>
+    public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
+    {
+        return CreateContentsClient<TEntity, TData>(Options.AppName, schemaName);
+    }
 
-        /// <inheritdoc/>
-        public IUsersClient CreateUsersClient()
-        {
-            return new UsersClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+    /// <inheritdoc/>
+    public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string appName, string schemaName) where TEntity : Content<TData> where TData : class, new()
+    {
+        return new ContentsClient<TEntity, TData>(Options, appName, schemaName, Options.ClientProvider);
+    }
 
-        /// <inheritdoc/>
-        public IUserManagementClient CreateUserManagementClient()
-        {
-            return new UserManagementClient(Options.ClientProvider)
-            {
-                ReadResponseAsString = Options.ReadResponseAsString
-            };
-        }
+    /// <inheritdoc/>
+    public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
+    {
+        return CreateDynamicContentsClient(Options.AppName, schemaName);
+    }
 
-        /// <inheritdoc/>
-        public IExtendableRulesClient CreateExtendableRulesClient(string? appName = null)
-        {
-            return new ExtendableRulesClient(Options, appName ?? Options.AppName, Options.ClientProvider);
-        }
+    /// <inheritdoc/>
+    public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName)
+    {
+        return new ContentsClient<DynamicContent, DynamicData>(Options, appName, schemaName, Options.ClientProvider);
+    }
 
-        /// <inheritdoc/>
-        public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new()
-        {
-            return CreateContentsClient<TEntity, TData>(Options.AppName, schemaName);
-        }
+    /// <inheritdoc/>
+    public IContentsSharedClient<TEntity, TData> CreateSharedContentsClient<TEntity, TData>(string? appName = null) where TEntity : Content<TData> where TData : class, new()
+    {
+        return new ContentsSharedClient<TEntity, TData>(Options, appName ?? Options.AppName, Options.ClientProvider);
+    }
 
-        /// <inheritdoc/>
-        public IContentsClient<TEntity, TData> CreateContentsClient<TEntity, TData>(string appName, string schemaName) where TEntity : Content<TData> where TData : class, new()
-        {
-            return new ContentsClient<TEntity, TData>(Options, appName, schemaName, Options.ClientProvider);
-        }
+    /// <inheritdoc/>
+    public IContentsSharedClient<DynamicContent, DynamicData> CreateSharedDynamicContentsClient(string? appName = null)
+    {
+        return new ContentsSharedClient<DynamicContent, DynamicData>(Options, appName ?? Options.AppName, Options.ClientProvider);
+    }
 
-        /// <inheritdoc/>
-        public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string schemaName)
-        {
-            return CreateDynamicContentsClient(Options.AppName, schemaName);
-        }
+    /// <inheritdoc/>
+    public HttpClient CreateHttpClient()
+    {
+        return Options.ClientProvider.Get();
+    }
 
-        /// <inheritdoc/>
-        public IContentsClient<DynamicContent, DynamicData> CreateDynamicContentsClient(string appName, string schemaName)
-        {
-            return new ContentsClient<DynamicContent, DynamicData>(Options, appName, schemaName, Options.ClientProvider);
-        }
-
-        /// <inheritdoc/>
-        public IContentsSharedClient<TEntity, TData> CreateSharedContentsClient<TEntity, TData>(string? appName = null) where TEntity : Content<TData> where TData : class, new()
-        {
-            return new ContentsSharedClient<TEntity, TData>(Options, appName ?? Options.AppName, Options.ClientProvider);
-        }
-
-        /// <inheritdoc/>
-        public IContentsSharedClient<DynamicContent, DynamicData> CreateSharedDynamicContentsClient(string? appName = null)
-        {
-            return new ContentsSharedClient<DynamicContent, DynamicData>(Options, appName ?? Options.AppName, Options.ClientProvider);
-        }
-
-        /// <inheritdoc/>
-        public HttpClient CreateHttpClient()
-        {
-            return Options.ClientProvider.Get();
-        }
-
-        /// <inheritdoc/>
-        public void ReturnHttpClient(HttpClient httpClient)
-        {
-            Options.ClientProvider.Return(httpClient);
-        }
+    /// <inheritdoc/>
+    public void ReturnHttpClient(HttpClient httpClient)
+    {
+        Options.ClientProvider.Return(httpClient);
     }
 }

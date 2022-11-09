@@ -5,16 +5,15 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// Holds constants to work with components.
+/// </summary>
+public static class Component
 {
     /// <summary>
-    /// Holds constants to work with components.
+    /// The used discriminator key for components.
     /// </summary>
-    public static class Component
-    {
-        /// <summary>
-        /// The used discriminator key for components.
-        /// </summary>
-        public const string Discriminator = "schemaId";
-    }
+    public const string Discriminator = "schemaId";
 }

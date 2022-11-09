@@ -7,14 +7,13 @@
 
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Schemas
+namespace Squidex.CLI.Commands.Implementation.Sync.Schemas;
+
+internal class SchemaCreateModel
 {
-    internal class SchemaCreateModel
-    {
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public bool IsSingleton { get; set; }
+    public bool IsSingleton { get; set; }
 
-        public SchemaType SchemaType { get; set; }
-    }
+    public SchemaType SchemaType { get; set; }
 }

@@ -12,117 +12,116 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands
+namespace Squidex.CLI.Commands;
+
+public partial class App
 {
-    public partial class App
+    [Command("apps", Description = "Manages apps.")]
+    [Subcommand]
+    public sealed class Apps
     {
-        [Command("apps", Description = "Manages apps.")]
-        [Subcommand]
-        public sealed class Apps
+        private readonly IConfigurationService configuration;
+        private readonly ILogger log;
+
+        public Apps(IConfigurationService configuration, ILogger log)
         {
-            private readonly IConfigurationService configuration;
-            private readonly ILogger log;
+            this.configuration = configuration;
 
-            public Apps(IConfigurationService configuration, ILogger log)
+            this.log = log;
+        }
+
+        [Command("list", Description = "List all schemas.")]
+        public async Task List(ListArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            var apps = await session.Apps.GetAppsAsync();
+
+            if (arguments.Table)
             {
-                this.configuration = configuration;
+                var table = new ConsoleTable("Id", "Name", "LastUpdate");
 
-                this.log = log;
+                foreach (var app in apps)
+                {
+                    table.AddRow(app.Id, app.Name, app.LastModified);
+                }
+
+                table.Write();
+            }
+            else
+            {
+                log.WriteLine(apps.JsonPrettyString());
+            }
+        }
+
+        [Command("create", Description = "Creates a squidex app.")]
+        public async Task Create(CreateArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            var name = arguments.App;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = session.App;
             }
 
-            [Command("list", Description = "List all schemas.")]
-            public async Task List(ListArguments arguments)
+            var request = new CreateAppDto
             {
-                var session = configuration.StartSession(arguments.App);
+                Name = name
+            };
 
-                var apps = await session.Apps.GetAppsAsync();
+            await session.Apps.PostAppAsync(request);
 
-                if (arguments.Table)
-                {
-                    var table = new ConsoleTable("Id", "Name", "LastUpdate");
+            log.WriteLine("> App created.");
+        }
 
-                    foreach (var app in apps)
-                    {
-                        table.AddRow(app.Id, app.Name, app.LastModified);
-                    }
+        [Command("delete", Description = "Delete the app.")]
+        public async Task Delete(DeleteArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
 
-                    table.Write();
-                }
-                else
-                {
-                    log.WriteLine(apps.JsonPrettyString());
-                }
+            var name = arguments.App;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = session.App;
             }
 
-            [Command("create", Description = "Creates a squidex app.")]
-            public async Task Create(CreateArguments arguments)
+            if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
             {
-                var session = configuration.StartSession(arguments.App);
-
-                var name = arguments.App;
-
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = session.App;
-                }
-
-                var request = new CreateAppDto
-                {
-                    Name = name
-                };
-
-                await session.Apps.PostAppAsync(request);
-
-                log.WriteLine("> App created.");
+                throw new CLIException("Confirmed app name does not match.");
             }
 
-            [Command("delete", Description = "Delete the app.")]
-            public async Task Delete(DeleteArguments arguments)
+            await session.Apps.DeleteAppAsync(name);
+
+            log.WriteLine("> App deleted.");
+        }
+
+        public sealed class ListArguments : AppArguments
+        {
+            [Option('t', "table", Description = "Output as table.")]
+            public bool Table { get; set; }
+
+            public sealed class Validator : AbstractValidator<ListArguments>
             {
-                var session = configuration.StartSession(arguments.App);
-
-                var name = arguments.App;
-
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = session.App;
-                }
-
-                if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
-                {
-                    throw new CLIException("Confirmed app name does not match.");
-                }
-
-                await session.Apps.DeleteAppAsync(name);
-
-                log.WriteLine("> App deleted.");
             }
+        }
 
-            public sealed class ListArguments : AppArguments
+        public sealed class CreateArguments : AppArguments
+        {
+            public sealed class Validator : AbstractValidator<CreateArguments>
             {
-                [Option('t', "table", Description = "Output as table.")]
-                public bool Table { get; set; }
-
-                public sealed class Validator : AbstractValidator<ListArguments>
-                {
-                }
             }
+        }
 
-            public sealed class CreateArguments : AppArguments
+        public sealed class DeleteArguments : AppArguments
+        {
+            [Option("confirm", Description = "Confirm the name of the app.")]
+            public string Confirm { get; set; }
+
+            public sealed class Validator : AbstractValidator<DeleteArguments>
             {
-                public sealed class Validator : AbstractValidator<CreateArguments>
-                {
-                }
-            }
-
-            public sealed class DeleteArguments : AppArguments
-            {
-                [Option("confirm", Description = "Confirm the name of the app.")]
-                public string Confirm { get; set; }
-
-                public sealed class Validator : AbstractValidator<DeleteArguments>
-                {
-                }
             }
         }
     }

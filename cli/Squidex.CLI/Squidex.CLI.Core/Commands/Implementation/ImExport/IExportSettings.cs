@@ -5,18 +5,17 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.ImExport
+namespace Squidex.CLI.Commands.Implementation.ImExport;
+
+public interface IExportSettings
 {
-    public interface IExportSettings
-    {
-        string Schema { get; }
+    string Schema { get; }
 
-        string Filter { get; }
+    string Filter { get; }
 
-        string OrderBy { get; }
+    string OrderBy { get; }
 
-        string FullText { get; }
+    string FullText { get; }
 
-        bool Unpublished { get; }
-    }
+    bool Unpublished { get; }
 }

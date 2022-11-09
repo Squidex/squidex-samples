@@ -7,15 +7,14 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Contents
+namespace Squidex.CLI.Commands.Implementation.Sync.Contents;
+
+internal sealed class ContentsModel
 {
-    internal sealed class ContentsModel
-    {
-        [Required]
-        public List<ContentModel> Contents { get; set; }
+    [Required]
+    public List<ContentModel> Contents { get; set; }
 
-        public string? SourceApp { get; set; }
+    public string? SourceApp { get; set; }
 
-        public string? SourceUrl { get; set; }
-    }
+    public string? SourceUrl { get; set; }
 }

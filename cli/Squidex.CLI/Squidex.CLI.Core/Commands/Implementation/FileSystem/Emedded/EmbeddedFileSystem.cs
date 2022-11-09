@@ -7,71 +7,70 @@
 
 using System.Reflection;
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
+
+public sealed class EmbeddedFileSystem : IFileSystem
 {
-    public sealed class EmbeddedFileSystem : IFileSystem
+    private readonly Assembly assembly;
+    private readonly string assemblyPath;
+
+    public string FullName { get; }
+
+    public bool CanWrite => false;
+
+    public EmbeddedFileSystem(Assembly assembly, string assemblyPath)
     {
-        private readonly Assembly assembly;
-        private readonly string assemblyPath;
+        this.assembly = assembly;
+        this.assemblyPath = assemblyPath;
 
-        public string FullName { get; }
+        FullName = $"{assembly.FullName}/{assemblyPath}";
+    }
 
-        public bool CanWrite => false;
+    public Task OpenAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-        public EmbeddedFileSystem(Assembly assembly, string assemblyPath)
+    public IFile GetFile(FilePath path)
+    {
+        var relativePath = GetRelativePath(path);
+
+        return new EmbeddedFile(assembly, path.Elements[^1], relativePath, path.ToString());
+    }
+
+    public IEnumerable<IFile> GetFiles(FilePath path, string extension)
+    {
+        var relativePath = GetRelativePath(path);
+
+        foreach (var fullName in assembly.GetManifestResourceNames())
         {
-            this.assembly = assembly;
-            this.assemblyPath = assemblyPath;
-
-            FullName = $"{assembly.FullName}/{assemblyPath}";
-        }
-
-        public Task OpenAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public IFile GetFile(FilePath path)
-        {
-            var relativePath = GetRelativePath(path);
-
-            return new EmbeddedFile(assembly, path.Elements[^1], relativePath, path.ToString());
-        }
-
-        public IEnumerable<IFile> GetFiles(FilePath path, string extension)
-        {
-            var relativePath = GetRelativePath(path);
-
-            foreach (var fullName in assembly.GetManifestResourceNames())
+            if (fullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(fullName, extension))
             {
-                if (fullName.StartsWith(relativePath, StringComparison.OrdinalIgnoreCase) && MatchsExtension(fullName, extension))
-                {
-                    var segments = fullName.Split('.');
+                var segments = fullName.Split('.');
 
-                    var name = string.Join('.', segments.TakeLast(2));
+                var name = string.Join('.', segments.TakeLast(2));
 
-                    yield return new EmbeddedFile(assembly, name, fullName, fullName);
-                }
+                yield return new EmbeddedFile(assembly, name, fullName, fullName);
             }
         }
+    }
 
-        private static bool MatchsExtension(string fullName, string extension)
+    private static bool MatchsExtension(string fullName, string extension)
+    {
+        if (extension == ".*")
         {
-            if (extension == ".*")
-            {
-                return true;
-            }
-
-            return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+            return true;
         }
 
-        private string GetRelativePath(FilePath path)
-        {
-            return string.Join('.', Enumerable.Repeat(assemblyPath, 1).Concat(path.Elements));
-        }
+        return fullName.EndsWith(extension, StringComparison.OrdinalIgnoreCase);
+    }
 
-        public void Dispose()
-        {
-        }
+    private string GetRelativePath(FilePath path)
+    {
+        return string.Join('.', Enumerable.Repeat(assemblyPath, 1).Concat(path.Elements));
+    }
+
+    public void Dispose()
+    {
     }
 }

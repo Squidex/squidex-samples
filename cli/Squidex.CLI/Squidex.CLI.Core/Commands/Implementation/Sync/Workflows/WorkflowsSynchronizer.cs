@@ -8,238 +8,237 @@
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Workflows
+namespace Squidex.CLI.Commands.Implementation.Sync.Workflows;
+
+public sealed class WorkflowsSynchronizer : ISynchronizer
 {
-    public sealed class WorkflowsSynchronizer : ISynchronizer
+    private const string Ref = "../__json/workflow";
+    private readonly ILogger log;
+
+    public string Name => "Workflows";
+
+    public WorkflowsSynchronizer(ILogger log)
     {
-        private const string Ref = "../__json/workflow";
-        private readonly ILogger log;
+        this.log = log;
+    }
 
-        public string Name => "Workflows";
-
-        public WorkflowsSynchronizer(ILogger log)
+    public Task CleanupAsync(IFileSystem fs)
+    {
+        foreach (var file in GetFiles(fs))
         {
-            this.log = log;
+            file.Delete();
         }
 
-        public Task CleanupAsync(IFileSystem fs)
+        return Task.CompletedTask;
+    }
+
+    public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var current = await session.Apps.GetWorkflowsAsync(session.App);
+
+        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
+
+        await current.Items.OrderBy(x => x.Name).Foreach(async (workflow, i) =>
         {
-            foreach (var file in GetFiles(fs))
+            var workflowName = workflow.Name;
+
+            MapSchemas(workflow, schemaMap);
+
+            await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
             {
-                file.Delete();
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
-        {
-            var current = await session.Apps.GetWorkflowsAsync(session.App);
-
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-            var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
-
-            await current.Items.OrderBy(x => x.Name).Foreach(async (workflow, i) =>
-            {
-                var workflowName = workflow.Name;
-
-                MapSchemas(workflow, schemaMap);
-
-                await log.DoSafeAsync($"Exporting '{workflowName}' ({workflow.Id})", async () =>
-                {
-                    await sync.WriteWithSchemaAs<UpdateWorkflowDto>(new FilePath($"workflows", $"workflow{i}.json"), workflow, Ref);
-                });
+                await sync.WriteWithSchemaAs<UpdateWorkflowDto>(new FilePath($"workflows", $"workflow{i}.json"), workflow, Ref);
             });
+        });
+    }
+
+    public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
+                .ToList();
+
+        writer.Paragraph($"{models.Count} workflow(s).");
+
+        if (models.Count > 0)
+        {
+            var rows = models.Select(x => new object[] { x.Name, string.Join(", ", x.Steps.Select(y => y.Key)), x.Initial }).OrderBy(x => x[0]).ToArray();
+
+            writer.Table(new[] { "Name", "Steps", "Initial" }, rows);
         }
 
-        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+        return Task.CompletedTask;
+    }
+
+    public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var models =
+            GetFiles(sync.FileSystem)
+                .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
+                .ToList();
+
+        if (!models.HasDistinctNames(x => x.Name))
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
-                    .ToList();
-
-            writer.Paragraph($"{models.Count} workflow(s).");
-
-            if (models.Count > 0)
-            {
-                var rows = models.Select(x => new object[] { x.Name, string.Join(", ", x.Steps.Select(y => y.Key)), x.Initial }).OrderBy(x => x[0]).ToArray();
-
-                writer.Table(new[] { "Name", "Steps", "Initial" }, rows);
-            }
-
-            return Task.CompletedTask;
+            log.WriteLine("ERROR: Can only sync workflows when all target workflows have distinct names.");
+            return;
         }
 
-        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+        var current = await session.Apps.GetWorkflowsAsync(session.App);
+
+        if (!current.Items.HasDistinctNames(x => x.Name))
         {
-            var models =
-                GetFiles(sync.FileSystem)
-                    .Select(x => sync.Read<UpdateWorkflowDto>(x, log))
-                    .ToList();
+            log.WriteLine("ERROR: Can only sync workflows when all current workflows have distinct names.");
+            return;
+        }
 
-            if (!models.HasDistinctNames(x => x.Name))
+        var workflowsByName = current.Items.ToDictionary(x => x.Name);
+
+        if (options.Delete)
+        {
+            foreach (var (name, workflow) in workflowsByName.ToList())
             {
-                log.WriteLine("ERROR: Can only sync workflows when all target workflows have distinct names.");
-                return;
-            }
-
-            var current = await session.Apps.GetWorkflowsAsync(session.App);
-
-            if (!current.Items.HasDistinctNames(x => x.Name))
-            {
-                log.WriteLine("ERROR: Can only sync workflows when all current workflows have distinct names.");
-                return;
-            }
-
-            var workflowsByName = current.Items.ToDictionary(x => x.Name);
-
-            if (options.Delete)
-            {
-                foreach (var (name, workflow) in workflowsByName.ToList())
+                if (models.All(x => x.Name == name))
                 {
-                    if (models.All(x => x.Name == name))
+                    await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
                     {
-                        await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
-                        {
-                            await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id);
+                        await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id);
 
-                            workflowsByName.Remove(name);
-                        });
-                    }
+                        workflowsByName.Remove(name);
+                    });
                 }
             }
+        }
 
-            foreach (var workflow in models)
+        foreach (var workflow in models)
+        {
+            if (workflowsByName.ContainsKey(workflow.Name))
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Workflow '{workflow.Name}' creating", async () =>
             {
                 if (workflowsByName.ContainsKey(workflow.Name))
                 {
-                    continue;
+                    throw new CLIException("Name already used.");
                 }
 
-                await log.DoSafeAsync($"Workflow '{workflow.Name}' creating", async () =>
+                var request = new AddWorkflowDto
                 {
-                    if (workflowsByName.ContainsKey(workflow.Name))
-                    {
-                        throw new CLIException("Name already used.");
-                    }
+                    Name = workflow.Name
+                };
 
-                    var request = new AddWorkflowDto
-                    {
-                        Name = workflow.Name
-                    };
+                var created = await session.Apps.PostWorkflowAsync(session.App, request);
 
-                    var created = await session.Apps.PostWorkflowAsync(session.App, request);
+                workflowsByName[workflow.Name] = created.Items.Find(x => x.Name == workflow.Name);
+            });
+        }
 
-                    workflowsByName[workflow.Name] = created.Items.Find(x => x.Name == workflow.Name);
-                });
+        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
+
+        foreach (var workflow in models)
+        {
+            var existing = workflowsByName.GetValueOrDefault(workflow.Name);
+
+            if (existing == null)
+            {
+                return;
             }
 
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
-            var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
+            MapSchemas(workflow, schemaMap);
 
-            foreach (var workflow in models)
+            await log.DoSafeAsync($"Workflow '{workflow.Name}' updating", async () =>
             {
-                var existing = workflowsByName.GetValueOrDefault(workflow.Name);
+                await session.Apps.PutWorkflowAsync(session.App, existing.Id, workflow);
+            });
+        }
+    }
 
-                if (existing == null)
-                {
-                    return;
-                }
+    private void MapSchemas(WorkflowDto workflow, Dictionary<string, string> schemaMap)
+    {
+        var schemaIds = new List<string>();
 
-                MapSchemas(workflow, schemaMap);
+        foreach (var schema in workflow.SchemaIds)
+        {
+            if (!schemaMap.TryGetValue(schema, out var found))
+            {
+                log.WriteLine($"Schema {schema} not found.");
 
-                await log.DoSafeAsync($"Workflow '{workflow.Name}' updating", async () =>
-                {
-                    await session.Apps.PutWorkflowAsync(session.App, existing.Id, workflow);
-                });
+                schemaIds.Add(schema);
+            }
+            else
+            {
+                schemaIds.Add(found);
             }
         }
 
-        private void MapSchemas(WorkflowDto workflow, Dictionary<string, string> schemaMap)
+        workflow.SchemaIds = schemaIds;
+    }
+
+    private void MapSchemas(UpdateWorkflowDto workflow, Dictionary<string, string> schemaMap)
+    {
+        var schemaIds = new List<string>();
+
+        foreach (var schema in workflow.SchemaIds)
         {
-            var schemaIds = new List<string>();
-
-            foreach (var schema in workflow.SchemaIds)
+            if (!schemaMap.TryGetValue(schema, out var found))
             {
-                if (!schemaMap.TryGetValue(schema, out var found))
-                {
-                    log.WriteLine($"Schema {schema} not found.");
+                log.WriteLine($"Schema {schema} not found.");
 
-                    schemaIds.Add(schema);
-                }
-                else
-                {
-                    schemaIds.Add(found);
-                }
+                schemaIds.Add(schema);
             }
-
-            workflow.SchemaIds = schemaIds;
-        }
-
-        private void MapSchemas(UpdateWorkflowDto workflow, Dictionary<string, string> schemaMap)
-        {
-            var schemaIds = new List<string>();
-
-            foreach (var schema in workflow.SchemaIds)
+            else
             {
-                if (!schemaMap.TryGetValue(schema, out var found))
-                {
-                    log.WriteLine($"Schema {schema} not found.");
-
-                    schemaIds.Add(schema);
-                }
-                else
-                {
-                    schemaIds.Add(found);
-                }
-            }
-
-            workflow.SchemaIds = schemaIds;
-        }
-
-        private static IEnumerable<IFile> GetFiles(IFileSystem fs)
-        {
-            foreach (var file in fs.GetFiles(new FilePath("workflows"), ".json"))
-            {
-                if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
-                {
-                    yield return file;
-                }
+                schemaIds.Add(found);
             }
         }
 
-        public async Task GenerateSchemaAsync(ISyncService sync)
-        {
-            await sync.WriteJsonSchemaAsync<UpdateWorkflowDto>(new FilePath("workflow.json"));
+        workflow.SchemaIds = schemaIds;
+    }
 
-            var sample = new UpdateWorkflowDto
+    private static IEnumerable<IFile> GetFiles(IFileSystem fs)
+    {
+        foreach (var file in fs.GetFiles(new FilePath("workflows"), ".json"))
+        {
+            if (!file.Name.StartsWith("__", StringComparison.OrdinalIgnoreCase))
             {
-                Name = "my-workflow",
-                Steps = new Dictionary<string, WorkflowStepDto>
+                yield return file;
+            }
+        }
+    }
+
+    public async Task GenerateSchemaAsync(ISyncService sync)
+    {
+        await sync.WriteJsonSchemaAsync<UpdateWorkflowDto>(new FilePath("workflow.json"));
+
+        var sample = new UpdateWorkflowDto
+        {
+            Name = "my-workflow",
+            Steps = new Dictionary<string, WorkflowStepDto>
+            {
+                ["Draft"] = new WorkflowStepDto
                 {
-                    ["Draft"] = new WorkflowStepDto
+                    Color = "#ff0000",
+                    Transitions = new Dictionary<string, WorkflowTransitionDto>
                     {
-                        Color = "#ff0000",
-                        Transitions = new Dictionary<string, WorkflowTransitionDto>
-                        {
-                            ["Published"] = new WorkflowTransitionDto()
-                        }
-                    },
-                    ["Published"] = new WorkflowStepDto
-                    {
-                        Color = "#00ff00",
-                        Transitions = new Dictionary<string, WorkflowTransitionDto>
-                        {
-                            ["Draft"] = new WorkflowTransitionDto()
-                        },
-                        NoUpdate = true
+                        ["Published"] = new WorkflowTransitionDto()
                     }
                 },
-                Initial = "Draft"
-            };
+                ["Published"] = new WorkflowStepDto
+                {
+                    Color = "#00ff00",
+                    Transitions = new Dictionary<string, WorkflowTransitionDto>
+                    {
+                        ["Draft"] = new WorkflowTransitionDto()
+                    },
+                    NoUpdate = true
+                }
+            },
+            Initial = "Draft"
+        };
 
-            await sync.WriteWithSchema(new FilePath("workflows", "__workflow.json"), sample, Ref);
-        }
+        await sync.WriteWithSchema(new FilePath("workflows", "__workflow.json"), sample, Ref);
     }
 }

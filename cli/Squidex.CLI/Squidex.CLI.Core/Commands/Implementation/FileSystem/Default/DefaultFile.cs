@@ -5,59 +5,58 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem.Default
+namespace Squidex.CLI.Commands.Implementation.FileSystem.Default;
+
+public sealed class DefaultFile : IFile
 {
-    public sealed class DefaultFile : IFile
+    private readonly FileInfo fileInfo;
+
+    public string FullName => fileInfo.FullName;
+
+    public string FullLocalName { get; }
+
+    public string Name => fileInfo.Name;
+
+    public bool Exists => fileInfo.Exists;
+
+    public bool Readonly { get; init; }
+
+    public DefaultFile(FileInfo fileInfo, string fullLocalName)
     {
-        private readonly FileInfo fileInfo;
+        this.fileInfo = fileInfo;
 
-        public string FullName => fileInfo.FullName;
+        FullLocalName = fullLocalName;
+    }
 
-        public string FullLocalName { get; }
+    public Stream OpenRead()
+    {
+        return fileInfo.OpenRead();
+    }
 
-        public string Name => fileInfo.Name;
-
-        public bool Exists => fileInfo.Exists;
-
-        public bool Readonly { get; init; }
-
-        public DefaultFile(FileInfo fileInfo, string fullLocalName)
+    public void Delete()
+    {
+        if (Readonly)
         {
-            this.fileInfo = fileInfo;
-
-            FullLocalName = fullLocalName;
+            throw new InvalidOperationException("The file system is in readonly mode.");
         }
 
-        public Stream OpenRead()
+        fileInfo.Delete();
+    }
+
+    public Stream OpenWrite()
+    {
+        if (Readonly)
         {
-            return fileInfo.OpenRead();
+            throw new InvalidOperationException("The file system is in readonly mode.");
         }
 
-        public void Delete()
-        {
-            if (Readonly)
-            {
-                throw new InvalidOperationException("The file system is in readonly mode.");
-            }
+        Directory.CreateDirectory(fileInfo.Directory!.FullName);
 
-            fileInfo.Delete();
-        }
+        return new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write);
+    }
 
-        public Stream OpenWrite()
-        {
-            if (Readonly)
-            {
-                throw new InvalidOperationException("The file system is in readonly mode.");
-            }
-
-            Directory.CreateDirectory(fileInfo.Directory!.FullName);
-
-            return new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write);
-        }
-
-        public override string ToString()
-        {
-            return FullName;
-        }
+    public override string ToString()
+    {
+        return FullName;
     }
 }

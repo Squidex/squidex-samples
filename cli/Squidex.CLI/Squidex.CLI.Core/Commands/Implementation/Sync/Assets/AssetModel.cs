@@ -7,29 +7,28 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.Assets
+namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
+
+internal sealed class AssetModel
 {
-    internal sealed class AssetModel
-    {
-        [Required]
-        public string Id { get; set; }
+    [Required]
+    public string Id { get; set; }
 
-        [Required]
-        public string MimeType { get; set; }
+    [Required]
+    public string MimeType { get; set; }
 
-        [Required]
-        public string FileName { get; set; }
+    [Required]
+    public string FileName { get; set; }
 
-        public string? FileHash { get; set; }
+    public string? FileHash { get; set; }
 
-        public string? FolderPath { get; set; }
+    public string? FolderPath { get; set; }
 
-        public string? Slug { get; set; }
+    public string? Slug { get; set; }
 
-        public List<string>? Tags { get; set; }
+    public List<string>? Tags { get; set; }
 
-        public Dictionary<string, object>? Metadata { get; set; }
+    public Dictionary<string, object>? Metadata { get; set; }
 
-        public bool IsProtected { get; set; }
-    }
+    public bool IsProtected { get; set; }
 }

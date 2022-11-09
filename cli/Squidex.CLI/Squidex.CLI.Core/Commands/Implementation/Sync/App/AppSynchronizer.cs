@@ -8,389 +8,388 @@
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary.Management;
 
-namespace Squidex.CLI.Commands.Implementation.Sync.App
+namespace Squidex.CLI.Commands.Implementation.Sync.App;
+
+public sealed class AppSynchronizer : ISynchronizer
 {
-    public sealed class AppSynchronizer : ISynchronizer
+    private const string Ref = "__json/app";
+    private readonly ILogger log;
+
+    public string Name => "App";
+
+    public AppSynchronizer(ILogger log)
     {
-        private const string Ref = "__json/app";
-        private readonly ILogger log;
+        this.log = log;
+    }
 
-        public string Name => "App";
+    public Task CleanupAsync(IFileSystem fs)
+    {
+        return Task.CompletedTask;
+    }
 
-        public AppSynchronizer(ILogger log)
+    public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var model = new AppModel
         {
-            this.log = log;
-        }
+            Contributors = new Dictionary<string, AppContributorModel>()
+        };
 
-        public Task CleanupAsync(IFileSystem fs)
+        await log.DoSafeAsync("Exporting clients", async () =>
+        {
+            var clients = await session.Apps.GetClientsAsync(session.App);
+
+            model.Clients = new Dictionary<string, AppClientModel>();
+
+            foreach (var client in clients.Items)
+            {
+                model.Clients[client.Name] = client.ToModel();
+            }
+        });
+
+        await log.DoSafeAsync("Exporting languages", async () =>
+        {
+            var languages = await session.Apps.GetLanguagesAsync(session.App);
+
+            model.Languages = new Dictionary<string, UpdateLanguageDto>();
+
+            foreach (var language in languages.Items)
+            {
+                model.Languages[language.Iso2Code] = language.ToModel();
+            }
+        });
+
+        await log.DoSafeAsync("Exporting Roles", async () =>
+        {
+            var roles = await session.Apps.GetRolesAsync(session.App);
+
+            model.Roles = new Dictionary<string, AppRoleModel>();
+
+            foreach (var role in roles.Items.Where(x => !x.IsDefaultRole))
+            {
+                model.Roles[role.Name] = role.ToModel();
+            }
+        });
+
+        await log.DoSafeAsync("Exporting asset scripts", async () =>
+        {
+            var assetScripts = await session.Apps.GetAssetScriptsAsync(session.App);
+
+            model.AssetScripts = assetScripts.ToModel();
+        });
+
+        await sync.WriteWithSchema(new FilePath("app.json"), model, Ref);
+    }
+
+    public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+    {
+        var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
+
+        if (!appFile.Exists)
         {
             return Task.CompletedTask;
         }
 
-        public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
+        var model = sync.Read<AppModel>(appFile, log);
+
+        if (model.Clients.Count > 0)
         {
-            var model = new AppModel
+            var rows = model.Clients.Select(x => new object?[] { x.Key, x.Value.Name, x.Value.Role }).OrderBy(x => x[0]).ToArray();
+
+            writer.H3("Clients");
+            writer.Paragraph($"{rows.Length} client(s).");
+            writer.Table(new[] { "Name", "Label", "Role" }, rows);
+        }
+
+        if (model.Roles.Count > 0)
+        {
+            var rows = model.Roles.Select(x => new object[] { x.Key, x.Value.Permissions.Count }).OrderBy(x => x[0]).ToArray();
+
+            writer.H3("Roles");
+            writer.Paragraph($"{rows.Length} role(s).");
+            writer.Table(new[] { "Name", "Permissions" }, rows);
+        }
+
+        if (model.Contributors.Count > 0)
+        {
+            var rows = model.Contributors.Select(x => new object[] { x.Key, x.Value.Role }).OrderBy(x => x[0]).ToArray();
+
+            writer.H3("Contributors");
+            writer.Paragraph($"{rows.Length} contributor(s).");
+            writer.Table(new[] { "Id", "Role" }, rows);
+        }
+
+        if (model.Languages.Count > 0)
+        {
+            var rows = model.Languages.Select(x => new object[] { x.Key, x.Value.IsMaster == true ? "y" : "n" }).OrderBy(x => x[0]).ToArray();
+
+            writer.H3("Languages");
+            writer.Paragraph($"{rows.Length} language(s).");
+            writer.Table(new[] { "Code", "Master" }, rows);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
+    {
+        var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
+
+        if (!appFile.Exists)
+        {
+            log.WriteLine("App settings synchronization skipped: {0} does not exist", appFile.FullName);
+            return;
+        }
+
+        var model = sync.Read<AppModel>(appFile, log);
+
+        await SynchronizeClientsAsync(model, options, session);
+        await SynchronizeRolesAsync(model, options, session);
+        await SynchronizeContributorsAsync(model, session);
+        await SynchronizeLanguagesAsync(model, options, session);
+        await SynchronizeAssetScriptsAsync(model, session);
+    }
+
+    private async Task SynchronizeContributorsAsync(AppModel model, ISession session)
+    {
+        foreach (var (email, value) in model.Contributors)
+        {
+            await log.DoSafeAsync($"Contributor '{email}' creating", async () =>
             {
-                Contributors = new Dictionary<string, AppContributorModel>()
-            };
+                var request = new AssignContributorDto { ContributorId = email, Role = value.Role, Invite = true };
 
-            await log.DoSafeAsync("Exporting clients", async () =>
-            {
-                var clients = await session.Apps.GetClientsAsync(session.App);
-
-                model.Clients = new Dictionary<string, AppClientModel>();
-
-                foreach (var client in clients.Items)
-                {
-                    model.Clients[client.Name] = client.ToModel();
-                }
+                await session.Apps.PostContributorAsync(session.App, request);
             });
-
-            await log.DoSafeAsync("Exporting languages", async () =>
-            {
-                var languages = await session.Apps.GetLanguagesAsync(session.App);
-
-                model.Languages = new Dictionary<string, UpdateLanguageDto>();
-
-                foreach (var language in languages.Items)
-                {
-                    model.Languages[language.Iso2Code] = language.ToModel();
-                }
-            });
-
-            await log.DoSafeAsync("Exporting Roles", async () =>
-            {
-                var roles = await session.Apps.GetRolesAsync(session.App);
-
-                model.Roles = new Dictionary<string, AppRoleModel>();
-
-                foreach (var role in roles.Items.Where(x => !x.IsDefaultRole))
-                {
-                    model.Roles[role.Name] = role.ToModel();
-                }
-            });
-
-            await log.DoSafeAsync("Exporting asset scripts", async () =>
-            {
-                var assetScripts = await session.Apps.GetAssetScriptsAsync(session.App);
-
-                model.AssetScripts = assetScripts.ToModel();
-            });
-
-            await sync.WriteWithSchema(new FilePath("app.json"), model, Ref);
         }
+    }
 
-        public Task DescribeAsync(ISyncService sync, MarkdownWriter writer)
+    private async Task SynchronizeClientsAsync(AppModel model, SyncOptions options, ISession session)
+    {
+        var current = await session.Apps.GetClientsAsync(session.App);
+
+        if (options.Delete)
         {
-            var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
-
-            if (!appFile.Exists)
+            foreach (var client in current.Items)
             {
-                return Task.CompletedTask;
-            }
+                var generatedClientId = $"{session.App}:{client.Id}";
 
-            var model = sync.Read<AppModel>(appFile, log);
-
-            if (model.Clients.Count > 0)
-            {
-                var rows = model.Clients.Select(x => new object?[] { x.Key, x.Value.Name, x.Value.Role }).OrderBy(x => x[0]).ToArray();
-
-                writer.H3("Clients");
-                writer.Paragraph($"{rows.Length} client(s).");
-                writer.Table(new[] { "Name", "Label", "Role" }, rows);
-            }
-
-            if (model.Roles.Count > 0)
-            {
-                var rows = model.Roles.Select(x => new object[] { x.Key, x.Value.Permissions.Count }).OrderBy(x => x[0]).ToArray();
-
-                writer.H3("Roles");
-                writer.Paragraph($"{rows.Length} role(s).");
-                writer.Table(new[] { "Name", "Permissions" }, rows);
-            }
-
-            if (model.Contributors.Count > 0)
-            {
-                var rows = model.Contributors.Select(x => new object[] { x.Key, x.Value.Role }).OrderBy(x => x[0]).ToArray();
-
-                writer.H3("Contributors");
-                writer.Paragraph($"{rows.Length} contributor(s).");
-                writer.Table(new[] { "Id", "Role" }, rows);
-            }
-
-            if (model.Languages.Count > 0)
-            {
-                var rows = model.Languages.Select(x => new object[] { x.Key, x.Value.IsMaster == true ? "y" : "n" }).OrderBy(x => x[0]).ToArray();
-
-                writer.H3("Languages");
-                writer.Paragraph($"{rows.Length} language(s).");
-                writer.Table(new[] { "Code", "Master" }, rows);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public async Task ImportAsync(ISyncService sync, SyncOptions options, ISession session)
-        {
-            var appFile = sync.FileSystem.GetFile(new FilePath("app.json"));
-
-            if (!appFile.Exists)
-            {
-                log.WriteLine("App settings synchronization skipped: {0} does not exist", appFile.FullName);
-                return;
-            }
-
-            var model = sync.Read<AppModel>(appFile, log);
-
-            await SynchronizeClientsAsync(model, options, session);
-            await SynchronizeRolesAsync(model, options, session);
-            await SynchronizeContributorsAsync(model, session);
-            await SynchronizeLanguagesAsync(model, options, session);
-            await SynchronizeAssetScriptsAsync(model, session);
-        }
-
-        private async Task SynchronizeContributorsAsync(AppModel model, ISession session)
-        {
-            foreach (var (email, value) in model.Contributors)
-            {
-                await log.DoSafeAsync($"Contributor '{email}' creating", async () =>
-                {
-                    var request = new AssignContributorDto { ContributorId = email, Role = value.Role, Invite = true };
-
-                    await session.Apps.PostContributorAsync(session.App, request);
-                });
-            }
-        }
-
-        private async Task SynchronizeClientsAsync(AppModel model, SyncOptions options, ISession session)
-        {
-            var current = await session.Apps.GetClientsAsync(session.App);
-
-            if (options.Delete)
-            {
-                foreach (var client in current.Items)
-                {
-                    var generatedClientId = $"{session.App}:{client.Id}";
-
-                    if (model.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId, StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    await log.DoSafeAsync($"Client '{client.Id}' deleting", async () =>
-                    {
-                        await session.Apps.DeleteClientAsync(session.App, client.Id);
-                    });
-                }
-            }
-
-            foreach (var (clientId, _) in model.Clients)
-            {
-                var existing = current.Items.Find(x => x.Id == clientId);
-
-                if (existing != null)
+                if (model.Clients.ContainsKey(client.Id) || session.ClientId.Equals(generatedClientId, StringComparison.Ordinal))
                 {
                     continue;
                 }
 
-                await log.DoSafeAsync($"Client '{clientId}' creating", async () =>
+                await log.DoSafeAsync($"Client '{client.Id}' deleting", async () =>
                 {
-                    var request = new CreateClientDto { Id = clientId };
-
-                    current = await session.Apps.PostClientAsync(session.App, request);
-                });
-            }
-
-            foreach (var (clientId, client) in model.Clients)
-            {
-                var existing = current.Items.Find(x => x.Id == clientId);
-
-                if (existing == null || client.JsonEquals(existing))
-                {
-                    continue;
-                }
-
-                if (!options.UpdateCurrentClient && session.ClientId.Equals(clientId, StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                await log.DoSafeAsync($"Client '{clientId}' updating", async () =>
-                {
-                    var request = client.ToUpdate();
-
-                    await session.Apps.PutClientAsync(session.App, clientId, request);
+                    await session.Apps.DeleteClientAsync(session.App, client.Id);
                 });
             }
         }
 
-        private async Task SynchronizeLanguagesAsync(AppModel model, SyncOptions options, ISession session)
+        foreach (var (clientId, _) in model.Clients)
         {
-            var current = await session.Apps.GetLanguagesAsync(session.App);
+            var existing = current.Items.Find(x => x.Id == clientId);
 
-            if (options.Delete)
+            if (existing != null)
             {
-                foreach (var language in current.Items)
-                {
-                    if (model.Languages.ContainsKey(language.Iso2Code))
-                    {
-                        continue;
-                    }
-
-                    await log.DoSafeAsync($"Language '{language.Iso2Code}' deleting", async () =>
-                    {
-                        await session.Apps.DeleteLanguageAsync(session.App, language.Iso2Code);
-                    });
-                }
+                continue;
             }
 
-            foreach (var (isoCode, _) in model.Languages)
+            await log.DoSafeAsync($"Client '{clientId}' creating", async () =>
             {
-                var existing = current.Items.Find(x => x.Iso2Code == isoCode);
+                var request = new CreateClientDto { Id = clientId };
 
-                if (existing != null)
-                {
-                    continue;
-                }
-
-                await log.DoSafeAsync($"Language '{isoCode}' creating", async () =>
-                {
-                    var request = new AddLanguageDto { Language = isoCode };
-
-                    current = await session.Apps.PostLanguageAsync(session.App, request);
-                });
-            }
-
-            foreach (var (isoCode, language) in model.Languages)
-            {
-                var existing = current.Items.Find(x => x.Iso2Code == isoCode);
-
-                if (existing == null || language.JsonEquals(existing))
-                {
-                    continue;
-                }
-
-                await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
-                {
-                    await session.Apps.PutLanguageAsync(session.App, isoCode, language);
-                });
-            }
-        }
-
-        private async Task SynchronizeRolesAsync(AppModel model, SyncOptions options, ISession session)
-        {
-            var current = await session.Apps.GetRolesAsync(session.App);
-
-            if (options.Delete)
-            {
-                foreach (var role in current.Items)
-                {
-                    if (model.Roles.ContainsKey(role.Name) ||
-                        role.IsDefaultRole ||
-                        role.NumClients > 0 ||
-                        role.NumContributors > 0)
-                    {
-                        continue;
-                    }
-
-                    await log.DoSafeAsync($"Role '{role.Name}' deleting", async () =>
-                    {
-                        await session.Apps.DeleteRoleAsync(session.App, role.Name);
-                    });
-                }
-            }
-
-            foreach (var (roleName, _) in model.Roles)
-            {
-                var existing = current.Items.Find(x => x.Name == roleName);
-
-                if (existing != null)
-                {
-                    continue;
-                }
-
-                await log.DoSafeAsync($"Role '{roleName}' creating", async () =>
-                {
-                    var request = new AddRoleDto { Name = roleName };
-
-                    current = await session.Apps.PostRoleAsync(session.App, request);
-                });
-            }
-
-            foreach (var (roleName, role) in model.Roles)
-            {
-                var existing = current.Items.Find(x => x.Name == roleName);
-
-                if (existing == null || existing.IsDefaultRole)
-                {
-                    continue;
-                }
-
-                await log.DoSafeAsync($"Role '{roleName}' updating", async () =>
-                {
-                    var request = role.ToUpdate();
-
-                    await session.Apps.PutRoleAsync(session.App, roleName, request);
-                });
-            }
-        }
-
-        private async Task SynchronizeAssetScriptsAsync(AppModel model, ISession session)
-        {
-            if (model.AssetScripts == null)
-            {
-                return;
-            }
-
-            await log.DoSafeAsync("Asset scripts updating", async () =>
-            {
-                var request = model.AssetScripts?.ToUpdate() ?? new UpdateAssetScriptsDto();
-
-                await session.Apps.PutAssetScriptsAsync(session.App, request);
+                current = await session.Apps.PostClientAsync(session.App, request);
             });
         }
 
-        public async Task GenerateSchemaAsync(ISyncService sync)
+        foreach (var (clientId, client) in model.Clients)
         {
-            await sync.WriteJsonSchemaAsync<AppModel>(new FilePath("app.json"));
+            var existing = current.Items.Find(x => x.Id == clientId);
 
-            var sample = new AppModel
+            if (existing == null || client.JsonEquals(existing))
             {
-                Roles = new Dictionary<string, AppRoleModel>
-                {
-                    ["custom"] = new AppRoleModel
-                    {
-                        Permissions = new List<string>
-                        {
-                            "schemas.*"
-                        }
-                    }
-                },
-                Clients = new Dictionary<string, AppClientModel>
-                {
-                    ["test"] = new AppClientModel
-                    {
-                        Role = "Owner"
-                    }
-                },
-                Languages = new Dictionary<string, UpdateLanguageDto>
-                {
-                    ["en"] = new UpdateLanguageDto
-                    {
-                        IsMaster = true
-                    }
-                },
-                Contributors = new Dictionary<string, AppContributorModel>
-                {
-                    ["sebastian@squidex.io"] = new AppContributorModel
-                    {
-                        Role = "Owner"
-                    }
-                },
-                AssetScripts = new AssetScriptsModel()
-            };
+                continue;
+            }
 
-            await sync.WriteWithSchema(new FilePath("__app.json"), sample, Ref);
+            if (!options.UpdateCurrentClient && session.ClientId.Equals(clientId, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Client '{clientId}' updating", async () =>
+            {
+                var request = client.ToUpdate();
+
+                await session.Apps.PutClientAsync(session.App, clientId, request);
+            });
         }
+    }
+
+    private async Task SynchronizeLanguagesAsync(AppModel model, SyncOptions options, ISession session)
+    {
+        var current = await session.Apps.GetLanguagesAsync(session.App);
+
+        if (options.Delete)
+        {
+            foreach (var language in current.Items)
+            {
+                if (model.Languages.ContainsKey(language.Iso2Code))
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Language '{language.Iso2Code}' deleting", async () =>
+                {
+                    await session.Apps.DeleteLanguageAsync(session.App, language.Iso2Code);
+                });
+            }
+        }
+
+        foreach (var (isoCode, _) in model.Languages)
+        {
+            var existing = current.Items.Find(x => x.Iso2Code == isoCode);
+
+            if (existing != null)
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Language '{isoCode}' creating", async () =>
+            {
+                var request = new AddLanguageDto { Language = isoCode };
+
+                current = await session.Apps.PostLanguageAsync(session.App, request);
+            });
+        }
+
+        foreach (var (isoCode, language) in model.Languages)
+        {
+            var existing = current.Items.Find(x => x.Iso2Code == isoCode);
+
+            if (existing == null || language.JsonEquals(existing))
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
+            {
+                await session.Apps.PutLanguageAsync(session.App, isoCode, language);
+            });
+        }
+    }
+
+    private async Task SynchronizeRolesAsync(AppModel model, SyncOptions options, ISession session)
+    {
+        var current = await session.Apps.GetRolesAsync(session.App);
+
+        if (options.Delete)
+        {
+            foreach (var role in current.Items)
+            {
+                if (model.Roles.ContainsKey(role.Name) ||
+                    role.IsDefaultRole ||
+                    role.NumClients > 0 ||
+                    role.NumContributors > 0)
+                {
+                    continue;
+                }
+
+                await log.DoSafeAsync($"Role '{role.Name}' deleting", async () =>
+                {
+                    await session.Apps.DeleteRoleAsync(session.App, role.Name);
+                });
+            }
+        }
+
+        foreach (var (roleName, _) in model.Roles)
+        {
+            var existing = current.Items.Find(x => x.Name == roleName);
+
+            if (existing != null)
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Role '{roleName}' creating", async () =>
+            {
+                var request = new AddRoleDto { Name = roleName };
+
+                current = await session.Apps.PostRoleAsync(session.App, request);
+            });
+        }
+
+        foreach (var (roleName, role) in model.Roles)
+        {
+            var existing = current.Items.Find(x => x.Name == roleName);
+
+            if (existing == null || existing.IsDefaultRole)
+            {
+                continue;
+            }
+
+            await log.DoSafeAsync($"Role '{roleName}' updating", async () =>
+            {
+                var request = role.ToUpdate();
+
+                await session.Apps.PutRoleAsync(session.App, roleName, request);
+            });
+        }
+    }
+
+    private async Task SynchronizeAssetScriptsAsync(AppModel model, ISession session)
+    {
+        if (model.AssetScripts == null)
+        {
+            return;
+        }
+
+        await log.DoSafeAsync("Asset scripts updating", async () =>
+        {
+            var request = model.AssetScripts?.ToUpdate() ?? new UpdateAssetScriptsDto();
+
+            await session.Apps.PutAssetScriptsAsync(session.App, request);
+        });
+    }
+
+    public async Task GenerateSchemaAsync(ISyncService sync)
+    {
+        await sync.WriteJsonSchemaAsync<AppModel>(new FilePath("app.json"));
+
+        var sample = new AppModel
+        {
+            Roles = new Dictionary<string, AppRoleModel>
+            {
+                ["custom"] = new AppRoleModel
+                {
+                    Permissions = new List<string>
+                    {
+                        "schemas.*"
+                    }
+                }
+            },
+            Clients = new Dictionary<string, AppClientModel>
+            {
+                ["test"] = new AppClientModel
+                {
+                    Role = "Owner"
+                }
+            },
+            Languages = new Dictionary<string, UpdateLanguageDto>
+            {
+                ["en"] = new UpdateLanguageDto
+                {
+                    IsMaster = true
+                }
+            },
+            Contributors = new Dictionary<string, AppContributorModel>
+            {
+                ["sebastian@squidex.io"] = new AppContributorModel
+                {
+                    Role = "Owner"
+                }
+            },
+            AssetScripts = new AssetScriptsModel()
+        };
+
+        await sync.WriteWithSchema(new FilePath("__app.json"), sample, Ref);
     }
 }

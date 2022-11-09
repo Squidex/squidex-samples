@@ -8,73 +8,72 @@
 using Microsoft.AspNetCore.Mvc;
 using Squidex.ClientLibrary;
 
-namespace Integration.Localize.Controllers
+namespace Integration.Localize.Controllers;
+
+public partial class DefaultController : ControllerBase
 {
-    public partial class DefaultController : ControllerBase
+    public override async Task<PublishResponse> Publish([FromBody] PublishRequest body,
+        CancellationToken cancellationToken = default)
     {
-        public override async Task<PublishResponse> Publish([FromBody] PublishRequest body,
-            CancellationToken cancellationToken = default)
+        var clientManager = BuildClientManager();
+
+        if (body.Items.Count == 0)
         {
-            var clientManager = BuildClientManager();
+            return new PublishResponse();
+        }
 
-            if (body.Items.Count == 0)
+        var contentClient = clientManager.CreateDynamicContentsClient(body.Items[0].Metadata[MetaFields.SchemaName]);
+
+        var ordered = body.Items.OrderBy(x => x.GroupId);
+
+        foreach (var batch in ordered.Batch(200))
+        {
+            var update = new BulkUpdate
             {
-                return new PublishResponse();
-            }
+                Jobs = new List<BulkUpdateJob>(),
+                DoNotScript = true,
+                DoNotValidate = false,
+                DoNotValidateWorkflow = false,
+                OptimizeValidation = true
+            };
 
-            var contentClient = clientManager.CreateDynamicContentsClient(body.Items[0].Metadata[MetaFields.SchemaName]);
-
-            var ordered = body.Items.OrderBy(x => x.GroupId);
-
-            foreach (var batch in ordered.Batch(200))
+            foreach (var content in batch.GroupBy(x => x.GroupId))
             {
-                var update = new BulkUpdate
+                var contentId = content.Key;
+
+                var data = new Dictionary<string, IDictionary<string, string>>();
+
+                foreach (var field in content)
                 {
-                    Jobs = new List<BulkUpdateJob>(),
-                    DoNotScript = true,
-                    DoNotValidate = false,
-                    DoNotValidateWorkflow = false,
-                    OptimizeValidation = true
+                    data[field.Metadata[MetaFields.ContentField]] = field.Translations;
+                }
+
+                var job = new BulkUpdateJob
+                {
+                    Id = contentId,
+                    // We only make a patch to not update the other fields.
+                    Type = BulkUpdateType.Patch,
+                    // The schema is needed to resolve the data.
+                    Schema = content.First().Metadata[MetaFields.SchemaName],
+                    Data = data,
                 };
 
-                foreach (var content in batch.GroupBy(x => x.GroupId))
-                {
-                    var contentId = content.Key;
-
-                    var data = new Dictionary<string, IDictionary<string, string>>();
-
-                    foreach (var field in content)
-                    {
-                        data[field.Metadata[MetaFields.ContentField]] = field.Translations;
-                    }
-
-                    var job = new BulkUpdateJob
-                    {
-                        Id = contentId,
-                        // We only make a patch to not update the other fields.
-                        Type = BulkUpdateType.Patch,
-                        // The schema is needed to resolve the data.
-                        Schema = content.First().Metadata[MetaFields.SchemaName],
-                        Data = data,
-                    };
-
-                    update.Jobs.Add(job);
-                }
-
-                var response = await contentClient.BulkUpdateAsync(update, cancellationToken);
-
-                var error = response.Find(x => x.Error != null)?.Error;
-
-                if (error != null)
-                {
-                    throw new SquidexException(error.Message, 400, error);
-                }
+                update.Jobs.Add(job);
             }
 
-            return new PublishResponse
+            var response = await contentClient.BulkUpdateAsync(update, cancellationToken);
+
+            var error = response.Find(x => x.Error != null)?.Error;
+
+            if (error != null)
             {
-                Code = 200
-            };
+                throw new SquidexException(error.Message, 400, error);
+            }
         }
+
+        return new PublishResponse
+        {
+            Code = 200
+        };
     }
 }

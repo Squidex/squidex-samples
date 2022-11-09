@@ -5,16 +5,15 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Interface IEnrichedEntityEvent.
+/// </summary>
+public interface IEnrichedEntityEvent
 {
     /// <summary>
-    /// Interface IEnrichedEntityEvent.
+    /// Id.
     /// </summary>
-    public interface IEnrichedEntityEvent
-    {
-        /// <summary>
-        /// Id.
-        /// </summary>
-        string Id { get; }
-    }
+    string Id { get; }
 }

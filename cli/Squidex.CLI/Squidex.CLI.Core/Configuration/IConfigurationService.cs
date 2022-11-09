@@ -7,20 +7,19 @@
 
 using Squidex.CLI.Commands.Implementation;
 
-namespace Squidex.CLI.Configuration
+namespace Squidex.CLI.Configuration;
+
+public interface IConfigurationService
 {
-    public interface IConfigurationService
-    {
-        Configuration GetConfiguration();
+    Configuration GetConfiguration();
 
-        void Upsert(string entry, ConfiguredApp appConfig);
+    void Upsert(string entry, ConfiguredApp appConfig);
 
-        void Reset();
+    void Reset();
 
-        void Remove(string entry);
+    void Remove(string entry);
 
-        void UseApp(string entry);
+    void UseApp(string entry);
 
-        ISession StartSession(string app, bool emulate = false);
-    }
+    ISession StartSession(string app, bool emulate = false);
 }

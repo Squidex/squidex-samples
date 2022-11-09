@@ -8,56 +8,55 @@
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 
-namespace Squidex.CLI.Commands.Models
+namespace Squidex.CLI.Commands.Models;
+
+public sealed class SchemaWithRefs<T> where T : class
 {
-    public sealed class SchemaWithRefs<T> where T : class
+    public T Schema { get; set; }
+
+    public Dictionary<string, string> ReferencedSchemas { get; set; }
+
+    public SchemaWithRefs()
     {
-        public T Schema { get; set; }
+    }
 
-        public Dictionary<string, string> ReferencedSchemas { get; set; }
+    public SchemaWithRefs(T schema)
+    {
+        Schema = schema;
 
-        public SchemaWithRefs()
+        ReferencedSchemas = new Dictionary<string, string>();
+    }
+
+    public static SchemaWithRefs<T> Parse(string json)
+    {
+        try
         {
+            var imported = JsonConvert.DeserializeObject<SchemaWithRefs<T>>(json)!;
+
+            if (imported.Schema != null && imported.ReferencedSchemas != null)
+            {
+                return imported;
+            }
+
+            return ParseDirectly(json);
         }
-
-        public SchemaWithRefs(T schema)
-        {
-            Schema = schema;
-
-            ReferencedSchemas = new Dictionary<string, string>();
-        }
-
-        public static SchemaWithRefs<T> Parse(string json)
+        catch
         {
             try
             {
-                var imported = JsonConvert.DeserializeObject<SchemaWithRefs<T>>(json)!;
-
-                if (imported.Schema != null && imported.ReferencedSchemas != null)
-                {
-                    return imported;
-                }
-
                 return ParseDirectly(json);
             }
-            catch
+            catch (IOException ex)
             {
-                try
-                {
-                    return ParseDirectly(json);
-                }
-                catch (IOException ex)
-                {
-                    throw new CLIException($"Cannot deserialize schema: {ex.Message}");
-                }
+                throw new CLIException($"Cannot deserialize schema: {ex.Message}");
             }
         }
+    }
 
-        private static SchemaWithRefs<T> ParseDirectly(string json)
-        {
-            var schema = JsonConvert.DeserializeObject<T>(json)!;
+    private static SchemaWithRefs<T> ParseDirectly(string json)
+    {
+        var schema = JsonConvert.DeserializeObject<T>(json)!;
 
-            return new SchemaWithRefs<T>(schema);
-        }
+        return new SchemaWithRefs<T>(schema);
     }
 }

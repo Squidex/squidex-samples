@@ -5,46 +5,45 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// Base class for options.
+/// </summary>
+public abstract class OptionsBase
 {
+    private bool isFrozen;
+
     /// <summary>
-    /// Base class for options.
+    /// Indicates whether the options are frozen.
     /// </summary>
-    public abstract class OptionsBase
+    public bool IsFrozen => isFrozen;
+
+    /// <summary>
+    /// Sets a value if not frozen.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <param name="target">The target field.</param>
+    /// <param name="value">The value.</param>
+    protected void Set<T>(ref T target, T value)
     {
-        private bool isFrozen;
+        ThrowIfFrozen();
+        target = value;
+    }
 
-        /// <summary>
-        /// Indicates whether the options are frozen.
-        /// </summary>
-        public bool IsFrozen => isFrozen;
+    /// <summary>
+    /// Frezes the options.
+    /// </summary>
+    protected void Freeze()
+    {
+        isFrozen = true;
+    }
 
-        /// <summary>
-        /// Sets a value if not frozen.
-        /// </summary>
-        /// <typeparam name="T">The type of the value.</typeparam>
-        /// <param name="target">The target field.</param>
-        /// <param name="value">The value.</param>
-        protected void Set<T>(ref T target, T value)
+    private void ThrowIfFrozen()
+    {
+        if (isFrozen)
         {
-            ThrowIfFrozen();
-            target = value;
-        }
-
-        /// <summary>
-        /// Frezes the options.
-        /// </summary>
-        protected void Freeze()
-        {
-            isFrozen = true;
-        }
-
-        private void ThrowIfFrozen()
-        {
-            if (isFrozen)
-            {
-                throw new InvalidOperationException("Options are frozen and cannot be changed.");
-            }
+            throw new InvalidOperationException("Options are frozen and cannot be changed.");
         }
     }
 }

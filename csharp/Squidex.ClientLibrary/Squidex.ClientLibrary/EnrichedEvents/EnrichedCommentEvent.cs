@@ -5,21 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.EnrichedEvents
+namespace Squidex.ClientLibrary.EnrichedEvents;
+
+/// <summary>
+/// Event generated from a comment.
+/// </summary>
+public sealed class EnrichedCommentEvent : EnrichedUserEventBase
 {
     /// <summary>
-    /// Event generated from a comment.
+    /// Comment's text.
     /// </summary>
-    public sealed class EnrichedCommentEvent : EnrichedUserEventBase
-    {
-        /// <summary>
-        /// Comment's text.
-        /// </summary>
-        public string Text { get; set; }
+    public string Text { get; set; }
 
-        /// <summary>
-        /// Url of the content commented.
-        /// </summary>
-        public Uri Url { get; set; }
-    }
+    /// <summary>
+    /// Url of the content commented.
+    /// </summary>
+    public Uri Url { get; set; }
 }

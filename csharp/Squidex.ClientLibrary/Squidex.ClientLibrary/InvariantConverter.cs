@@ -7,58 +7,57 @@
 
 using Newtonsoft.Json;
 
-namespace Squidex.ClientLibrary
+namespace Squidex.ClientLibrary;
+
+/// <summary>
+/// A JSON converter to for invariant fields to convert nested invariant values to flat values.
+/// </summary>
+/// <seealso cref="JsonConverter" />
+public sealed class InvariantConverter : JsonConverter
 {
-    /// <summary>
-    /// A JSON converter to for invariant fields to convert nested invariant values to flat values.
-    /// </summary>
-    /// <seealso cref="JsonConverter" />
-    public sealed class InvariantConverter : JsonConverter
+    /// <inheritdoc/>
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        writer.WriteStartObject();
+        writer.WritePropertyName("iv");
+
+        serializer.Serialize(writer, value);
+
+        writer.WriteEndObject();
+    }
+
+    /// <inheritdoc/>
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+    {
+        if (reader.TokenType == JsonToken.Null)
         {
-            writer.WriteStartObject();
-            writer.WritePropertyName("iv");
-
-            serializer.Serialize(writer, value);
-
-            writer.WriteEndObject();
+            return null;
         }
 
-        /// <inheritdoc/>
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        reader.Read();
+
+        if (reader.TokenType == JsonToken.EndObject)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return null;
-            }
-
-            reader.Read();
-
-            if (reader.TokenType == JsonToken.EndObject)
-            {
-                // empty object
-                return null;
-            }
-            else if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value?.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new JsonSerializationException("Property must have a invariant language property.");
-            }
-
-            reader.Read();
-
-            var result = serializer.Deserialize(reader, objectType);
-
-            reader.Read();
-
-            return result;
+            // empty object
+            return null;
+        }
+        else if (reader.TokenType != JsonToken.PropertyName || !string.Equals(reader.Value?.ToString(), "iv", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new JsonSerializationException("Property must have a invariant language property.");
         }
 
-        /// <inheritdoc/>
-        public override bool CanConvert(Type objectType)
-        {
-            return false;
-        }
+        reader.Read();
+
+        var result = serializer.Deserialize(reader, objectType);
+
+        reader.Read();
+
+        return result;
+    }
+
+    /// <inheritdoc/>
+    public override bool CanConvert(Type objectType)
+    {
+        return false;
     }
 }

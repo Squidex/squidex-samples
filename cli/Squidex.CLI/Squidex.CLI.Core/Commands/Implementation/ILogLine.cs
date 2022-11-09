@@ -5,14 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Commands.Implementation
+namespace Squidex.CLI.Commands.Implementation;
+
+public interface ILogLine : IDisposable
 {
-    public interface ILogLine : IDisposable
-    {
-        bool CanWriteToSameLine { get; }
+    bool CanWriteToSameLine { get; }
 
-        void WriteLine(string message);
+    void WriteLine(string message);
 
-        void WriteLine(string message, params object[] args);
-    }
+    void WriteLine(string message, params object[] args);
 }

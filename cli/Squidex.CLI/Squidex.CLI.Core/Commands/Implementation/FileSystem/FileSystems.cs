@@ -10,84 +10,83 @@ using Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
 using Squidex.CLI.Commands.Implementation.FileSystem.Git;
 using Squidex.CLI.Commands.Implementation.FileSystem.Zip;
 
-namespace Squidex.CLI.Commands.Implementation.FileSystem
+namespace Squidex.CLI.Commands.Implementation.FileSystem;
+
+public static class FileSystems
 {
-    public static class FileSystems
+    private const string AssemblyPrefix = "assembly://";
+
+    public static async Task<IFileSystem> CreateAsync(string path, DirectoryInfo workingDirectory)
     {
-        private const string AssemblyPrefix = "assembly://";
+        IFileSystem? fileSystem = null;
 
-        public static async Task<IFileSystem> CreateAsync(string path, DirectoryInfo workingDirectory)
+        if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
         {
-            IFileSystem? fileSystem = null;
-
-            if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
+            switch (uri.Scheme)
             {
-                switch (uri.Scheme)
-                {
-                    case "https" when uri.LocalPath.TrimEnd('/').EndsWith(".git", StringComparison.Ordinal):
-                        var query = uri.ParseQueryString();
+                case "https" when uri.LocalPath.TrimEnd('/').EndsWith(".git", StringComparison.Ordinal):
+                    var query = uri.ParseQueryString();
 
-                        query.TryGetValue("folder", out var folder);
+                    query.TryGetValue("folder", out var folder);
 
-                        var repositoryUrl = $"{uri.Scheme}://{uri.Host}/{uri.LocalPath.TrimEnd('/')}";
+                    var repositoryUrl = $"{uri.Scheme}://{uri.Host}/{uri.LocalPath.TrimEnd('/')}";
 
-                        fileSystem = new GitFileSystem(repositoryUrl, folder, query.ContainsKey("skip-pull"), workingDirectory);
-                        break;
-                    case "file":
-                        fileSystem = OpenFolder(uri.LocalPath);
-                        break;
-                    case "assembly":
-                        fileSystem = OpenAssembly(uri.LocalPath.Replace('/', '.'));
-                        break;
-                }
+                    fileSystem = new GitFileSystem(repositoryUrl, folder, query.ContainsKey("skip-pull"), workingDirectory);
+                    break;
+                case "file":
+                    fileSystem = OpenFolder(uri.LocalPath);
+                    break;
+                case "assembly":
+                    fileSystem = OpenAssembly(uri.LocalPath.Replace('/', '.'));
+                    break;
+            }
+        }
+        else
+        {
+            if (path.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+            {
+                fileSystem = OpenZip(path);
+            }
+            else if (path.StartsWith(AssemblyPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                fileSystem = OpenAssembly(path[AssemblyPrefix.Length..]);
             }
             else
             {
-                if (path.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
-                {
-                    fileSystem = OpenZip(path);
-                }
-                else if (path.StartsWith(AssemblyPrefix, StringComparison.OrdinalIgnoreCase))
-                {
-                    fileSystem = OpenAssembly(path[AssemblyPrefix.Length..]);
-                }
-                else
-                {
-                    fileSystem = OpenFolder(path);
-                }
+                fileSystem = OpenFolder(path);
             }
-
-            if (fileSystem == null)
-            {
-                throw new InvalidOperationException($"Cannot open file system at {path}.");
-            }
-
-            await fileSystem.OpenAsync();
-
-            return fileSystem;
         }
 
-        private static IFileSystem OpenAssembly(string path)
+        if (fileSystem == null)
         {
-            var cleanedPath = path.Replace('/', '.');
-
-            return new EmbeddedFileSystem(typeof(FileSystems).Assembly, cleanedPath);
+            throw new InvalidOperationException($"Cannot open file system at {path}.");
         }
 
-        private static IFileSystem OpenFolder(string path)
-        {
-            var directory = Directory.CreateDirectory(path);
+        await fileSystem.OpenAsync();
 
-            return new DefaultFileSystem(directory);
-        }
+        return fileSystem;
+    }
 
-        private static IFileSystem OpenZip(string path)
-        {
-            var file = new FileInfo(path);
+    private static IFileSystem OpenAssembly(string path)
+    {
+        var cleanedPath = path.Replace('/', '.');
 
-            Directory.CreateDirectory(file.Directory!.FullName);
+        return new EmbeddedFileSystem(typeof(FileSystems).Assembly, cleanedPath);
+    }
 
-            return new ZipFileSystem(file);
-        }
+    private static IFileSystem OpenFolder(string path)
+    {
+        var directory = Directory.CreateDirectory(path);
+
+        return new DefaultFileSystem(directory);
+    }
+
+    private static IFileSystem OpenZip(string path)
+    {
+        var file = new FileInfo(path);
+
+        Directory.CreateDirectory(file.Directory!.FullName);
+
+        return new ZipFileSystem(file);
     }
 }
