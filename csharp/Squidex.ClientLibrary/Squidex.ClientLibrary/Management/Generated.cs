@@ -23882,14 +23882,14 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public FieldNames FieldsInLists { get; set; } = new FieldNames();
+        public System.Collections.Generic.List<string> FieldsInLists { get; set; } = new System.Collections.Generic.List<string>();
 
         /// <summary>
         /// The name of fields that are used in content references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public FieldNames FieldsInReferences { get; set; } = new FieldNames();
+        public System.Collections.Generic.List<string> FieldsInReferences { get; set; } = new System.Collections.Generic.List<string>();
 
         /// <summary>
         /// The field rules.
@@ -24012,12 +24012,6 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class FieldNames : System.Collections.Generic.List<string>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class FieldRuleDto
     {
         /// <summary>
@@ -24091,13 +24085,13 @@ namespace Squidex.ClientLibrary.Management
         /// The name of fields that are used in content lists.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public FieldNames FieldsInLists { get; set; }
+        public System.Collections.Generic.List<string> FieldsInLists { get; set; }
 
         /// <summary>
         /// The name of fields that are used in content references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public FieldNames FieldsInReferences { get; set; }
+        public System.Collections.Generic.List<string> FieldsInReferences { get; set; }
 
     }
 
@@ -24182,13 +24176,13 @@ namespace Squidex.ClientLibrary.Management
         /// The names of the fields that should be used in references.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInReferences", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public FieldNames FieldsInReferences { get; set; }
+        public System.Collections.Generic.List<string> FieldsInReferences { get; set; }
 
         /// <summary>
         /// The names of the fields that should be shown in lists, including meta fields.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldsInLists", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public FieldNames FieldsInLists { get; set; }
+        public System.Collections.Generic.List<string> FieldsInLists { get; set; }
 
         /// <summary>
         /// Optional fields.
