@@ -11,7 +11,7 @@ namespace Squidex.ClientLibrary.ServiceExtensions;
 
 internal sealed class OptionsValidator : IValidateOptions<SquidexServiceOptions>
 {
-    public ValidateOptionsResult Validate(string name, SquidexServiceOptions options)
+    public ValidateOptionsResult Validate(string? name, SquidexServiceOptions options)
     {
         try
         {
