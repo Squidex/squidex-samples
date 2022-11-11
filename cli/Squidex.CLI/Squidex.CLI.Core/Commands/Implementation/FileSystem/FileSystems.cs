@@ -16,7 +16,7 @@ public static class FileSystems
 {
     private const string AssemblyPrefix = "assembly://";
 
-    public static async Task<IFileSystem> CreateAsync(string path, DirectoryInfo workingDirectory)
+    public static async Task<IFileSystem> CreateAsync(string path)
     {
         IFileSystem? fileSystem = null;
 
@@ -25,13 +25,7 @@ public static class FileSystems
             switch (uri.Scheme)
             {
                 case "https" when uri.LocalPath.TrimEnd('/').EndsWith(".git", StringComparison.Ordinal):
-                    var query = uri.ParseQueryString();
-
-                    query.TryGetValue("folder", out var folder);
-
-                    var repositoryUrl = $"{uri.Scheme}://{uri.Host}/{uri.LocalPath.TrimEnd('/')}";
-
-                    fileSystem = new GitFileSystem(repositoryUrl, folder, query.ContainsKey("skip-pull"), workingDirectory);
+                    fileSystem = new GitFileSystem(uri);
                     break;
                 case "file":
                     fileSystem = OpenFolder(uri.LocalPath);

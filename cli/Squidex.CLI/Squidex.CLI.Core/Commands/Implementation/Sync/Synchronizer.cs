@@ -28,7 +28,7 @@ public sealed class Synchronizer
 
     public async Task Describe(string path, ISession session)
     {
-        using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
+        using (var fs = await FileSystems.CreateAsync(path))
         {
             if (!fs.CanWrite)
             {
@@ -74,7 +74,7 @@ public sealed class Synchronizer
 
     public async Task ExportAsync(string path, SyncOptions options, ISession session)
     {
-        using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
+        using (var fs = await FileSystems.CreateAsync(path))
         {
             if (!fs.CanWrite)
             {
@@ -113,7 +113,7 @@ public sealed class Synchronizer
 
     public async Task ImportAsync(string path, SyncOptions options, ISession session)
     {
-        using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
+        using (var fs = await FileSystems.CreateAsync(path))
         {
             var selectedSynchronizers = GetSynchronizers(options.Targets);
             var selectedCount = selectedSynchronizers.Count;
@@ -154,7 +154,7 @@ public sealed class Synchronizer
 
     public async Task GenerateTemplateAsync(string path, ISession session)
     {
-        using (var fs = await FileSystems.CreateAsync(path, session.WorkingDirectory))
+        using (var fs = await FileSystems.CreateAsync(path))
         {
             if (!fs.CanWrite)
             {

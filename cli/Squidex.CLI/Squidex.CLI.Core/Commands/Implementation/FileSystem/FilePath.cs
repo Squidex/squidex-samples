@@ -28,6 +28,11 @@ public sealed class FilePath
         return new FilePath(Elements.Concat(path.Elements).ToArray());
     }
 
+    public static implicit operator FilePath(string path)
+    {
+        return Create(path);
+    }
+
     public override string ToString()
     {
         return Path.Combine(Elements);

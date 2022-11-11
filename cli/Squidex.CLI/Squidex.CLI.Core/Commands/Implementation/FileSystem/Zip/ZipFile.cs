@@ -21,7 +21,15 @@ public sealed class ZipFile : IFile
 
     public string Name { get; }
 
-    public bool Exists => entry != null;
+    public long Size
+    {
+        get => entry?.Length ?? 0;
+    }
+
+    public bool Exists
+    {
+        get => entry != null;
+    }
 
     public ZipFile(ZipArchive archive, string archivePath, string name, string filePath)
     {

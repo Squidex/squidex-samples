@@ -17,7 +17,15 @@ public sealed class DefaultFile : IFile
 
     public string Name => fileInfo.Name;
 
-    public bool Exists => fileInfo.Exists;
+    public long Size
+    {
+        get => fileInfo.Length;
+    }
+
+    public bool Exists
+    {
+        get => fileInfo.Exists;
+    }
 
     public bool Readonly { get; init; }
 

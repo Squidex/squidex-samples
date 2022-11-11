@@ -17,6 +17,8 @@ public interface IFile
 
     bool Exists { get; }
 
+    long Size { get; }
+
     Stream OpenRead();
 
     Stream OpenWrite();

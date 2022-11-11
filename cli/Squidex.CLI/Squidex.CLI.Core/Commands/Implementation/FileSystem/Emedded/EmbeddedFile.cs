@@ -19,7 +19,15 @@ public sealed class EmbeddedFile : IFile
 
     public string Name { get; }
 
-    public bool Exists => CanOpen();
+    public long Size
+    {
+        get => GetSize();
+    }
+
+    public bool Exists
+    {
+        get => CanOpen();
+    }
 
     public EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName)
     {
@@ -59,11 +67,28 @@ public sealed class EmbeddedFile : IFile
 
         if (stream != null)
         {
+            var canOpen = true;
+
             stream.Dispose();
-            return true;
+            return canOpen;
         }
 
         return false;
+    }
+
+    private long GetSize()
+    {
+        var stream = assembly.GetManifestResourceStream(FullName);
+
+        if (stream != null)
+        {
+            var size = stream.Length;
+
+            stream.Dispose();
+            return size;
+        }
+
+        return 0;
     }
 
     public override string ToString()

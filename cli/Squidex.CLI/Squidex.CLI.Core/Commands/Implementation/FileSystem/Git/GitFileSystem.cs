@@ -13,11 +13,10 @@ namespace Squidex.CLI.Commands.Implementation.FileSystem.Git;
 
 public sealed class GitFileSystem : IFileSystem
 {
-    private readonly string gitUrl;
-    private readonly string? gitFolder;
-    private readonly bool skipPull;
-    private readonly DirectoryInfo workingDirectory;
+    private readonly string sourceUrl;
+    private readonly string? sourceDir;
     private DefaultFileSystem inner;
+    private DirectoryInfo? cloneDirectory;
 
     public string FullName
     {
@@ -29,17 +28,24 @@ public sealed class GitFileSystem : IFileSystem
         }
     }
 
-    public void Dispose()
+    public string Url
     {
-        inner?.Dispose();
+        get => sourceUrl;
     }
 
-    public GitFileSystem(string gitUrl, string? gitFolder, bool skipPull, DirectoryInfo workingDirectory)
+    public string? Folder
     {
-        this.gitUrl = gitUrl;
-        this.gitFolder = gitFolder;
-        this.skipPull = skipPull;
-        this.workingDirectory = workingDirectory;
+        get => sourceDir;
+    }
+
+    public GitFileSystem(Uri uri)
+    {
+        var query = uri.ParseQueryString();
+
+        query.TryGetValue("folder", out var folder);
+
+        sourceUrl = $"{uri.Scheme}://{uri.Host}/{uri.LocalPath.TrimEnd('/')}";
+        sourceDir = folder;
     }
 
     public IFile GetFile(FilePath path)
@@ -58,31 +64,16 @@ public sealed class GitFileSystem : IFileSystem
 
     public Task OpenAsync()
     {
-        var repositoryName = GetRepositoryName(gitUrl);
+        var repositoryName = GetRepositoryName(sourceUrl);
 
-        var repositoriesFolder = workingDirectory.CreateDirectory("repositories");
-        var repositoryFolder = repositoriesFolder.GetDirectory(repositoryName);
+        var repositoryPath = Path.Combine(Path.GetTempPath(), $"repository_{Path.GetRandomFileName()}_{repositoryName}");
+        var repositoryFolder = Directory.CreateDirectory(repositoryPath);
 
-        if (repositoryFolder.Exists)
+        Repository.Clone(sourceUrl, repositoryFolder.FullName);
+
+        if (!string.IsNullOrWhiteSpace(sourceDir))
         {
-            if (!skipPull)
-            {
-                using (var repository = new Repository(repositoryFolder.FullName))
-                {
-                    var signature = new Signature("cli", "cli@squidex.io", DateTimeOffset.UtcNow);
-
-                    LibGit2Sharp.Commands.Pull(repository, signature, new PullOptions());
-                }
-            }
-        }
-        else
-        {
-            Repository.Clone(gitUrl, repositoryFolder.FullName);
-        }
-
-        if (!string.IsNullOrWhiteSpace(gitFolder))
-        {
-            repositoryFolder = repositoryFolder.GetDirectory(gitFolder);
+            repositoryFolder = repositoryFolder.GetDirectory(sourceDir);
         }
 
         inner = new DefaultFileSystem(repositoryFolder)
@@ -90,10 +81,12 @@ public sealed class GitFileSystem : IFileSystem
             Readonly = true
         };
 
+        cloneDirectory = repositoryFolder;
+
         return Task.CompletedTask;
     }
 
-    private string GetRepositoryName(string path)
+    private static string GetRepositoryName(string path)
     {
         string name;
 
@@ -129,5 +122,42 @@ public sealed class GitFileSystem : IFileSystem
         {
             throw new InvalidOperationException("File system has not been opened yet.");
         }
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            DeleteDirectory(cloneDirectory?.FullName);
+        }
+        finally
+        {
+            inner?.Dispose();
+        }
+    }
+
+    private static void DeleteDirectory(string? directoryPath)
+    {
+        if (directoryPath == null || !Directory.Exists(directoryPath))
+        {
+            return;
+        }
+
+        var directories = Directory.GetDirectories(directoryPath);
+
+        foreach (var file in Directory.GetFiles(directoryPath))
+        {
+            File.SetAttributes(file, FileAttributes.Normal);
+            File.Delete(file);
+        }
+
+        foreach (var dir in directories)
+        {
+            DeleteDirectory(dir);
+        }
+
+        File.SetAttributes(directoryPath, FileAttributes.Normal);
+
+        Directory.Delete(directoryPath, false);
     }
 }

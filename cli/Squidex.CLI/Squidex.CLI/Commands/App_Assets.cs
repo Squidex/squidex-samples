@@ -40,7 +40,7 @@ public partial class App
 
             var assets = session.Assets;
 
-            using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
+            using (var fs = await FileSystems.CreateAsync(arguments.Path))
             {
                 var folders = new AssetFolderTree(session.Assets, session.App);
 
@@ -118,7 +118,7 @@ public partial class App
 
             var assets = session.Assets;
 
-            using (var fs = await FileSystems.CreateAsync(arguments.Path, session.WorkingDirectory))
+            using (var fs = await FileSystems.CreateAsync(arguments.Path))
             {
                 var folderTree = new AssetFolderTree(session.Assets, session.App);
                 var folderNames = new HashSet<string>();
