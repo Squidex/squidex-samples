@@ -100,9 +100,13 @@ internal sealed class ProgressHandlerAdapter : IProgressHandler
 
                 return new SquidexManagementException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, exception);
             case 404:
-                return new SquidexManagementException("App not found.", status, string.Empty, NullHeaders, exception);
+                var responseText1 = await response.Content.ReadAsStringAsync();
+
+                return new SquidexManagementException("App not found.", status, responseText1, NullHeaders, exception);
             default:
-                return new SquidexManagementException($"Exception with unexpected status ({status}): {exception.Message}.", status, string.Empty, NullHeaders, exception);
+                var responseText2 = await response.Content.ReadAsStringAsync();
+
+                return new SquidexManagementException($"Exception with unexpected status ({status}): {exception.Message}.", status, responseText2, NullHeaders, exception);
         }
     }
 }
