@@ -21,6 +21,16 @@ public partial class FileParameter
     /// </summary>
     public long? ContentLength { get; set; }
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public FileParameter(Stream data, string fileName, string contentType, int? contentLength)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+    {
+        Data = data;
+        FileName = fileName;
+        ContentType = contentType;
+        ContentLength = contentLength;
+    }
+
     /// <summary>
     /// Creates a new file parameter from a file info object.
     /// </summary>

@@ -164,7 +164,7 @@ public struct AssetUploadOptions
     public IAssetProgressHandler? ProgressHandler { get; set; }
 
 #pragma warning disable MA0102 // Make member readonly
-    internal UploadOptions ToOptions(FileParameter file, AssetsClient client)
+    internal UploadOptions ToOptions(AssetsClient client)
 #pragma warning restore MA0102 // Make member readonly
     {
         var result = new UploadOptions

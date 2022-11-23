@@ -125,7 +125,7 @@ public partial class AssetsClient
         var httpClient = _httpClientProvider.Get();
         try
         {
-            await httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(file, this), cancellationToken);
+            await httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(this), cancellationToken);
         }
         finally
         {
