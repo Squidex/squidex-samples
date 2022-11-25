@@ -1,0 +1,29 @@
+{
+  "name": "sample-compose",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-page/editor": "^5.2.0",
+    "@react-page/plugins-image": "^5.2.0",
+    "@react-page/plugins-slate": "^5.2.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^6.4.3",
+    "sort-by": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3"
+  }
+}
