@@ -25,6 +25,8 @@ class RefreshListener {
 
     constructor(api: ApiContextType, isActive: boolean) {
         if (isActive) {
+            console.log('Subscribe to updates.');
+            
             this.init(api);
         }
     }

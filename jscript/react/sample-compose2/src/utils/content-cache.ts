@@ -10,13 +10,13 @@ export class ContentCache {
     ) {
     }
 
-    public get(id: string | undefined) {
+    public get(id: string | undefined, needsReload = false) {
         if (!id) {
             return Deferred.value(null).promise;
         }
 
-        if (!this.cache[id]) {
-            this.load([id]);
+        if (!this.cache[id] || needsReload) {
+            this.load([id], needsReload);
         }
 
         return this.cache[id].promise;
@@ -36,12 +36,12 @@ export class ContentCache {
         }
     }
 
-    public async load(ids: string[] | undefined) {
+    public async load(ids: string[] | undefined, needsReload = false) {
         if (!isStringArray(ids) || ids.length === 0) {
             return;
         }
 
-        const unloaded = ids.filter(id => !this.cache[id]);
+        const unloaded = ids.filter(id => needsReload || !this.cache[id]);
 
         if (unloaded.length === 0) {
             return;

@@ -5,7 +5,7 @@ import { CellPlugin, CellPluginComponentProps, lazyLoad } from '@react-page/edit
 import { connectField, HTMLFieldProps } from 'uniforms';
 import { ContentType, useEditorContext } from './editor-context';
 import { useEffect, useState } from 'react';
-import { CancellablePromise } from '../../utils';
+import { CancellablePromise, useRefresh } from '../../utils';
 
 type Data = {
     // The content ID.
@@ -37,9 +37,10 @@ const ContentHtmLRenderer = (props: CellPluginComponentProps<Data> & SchemaProps
     const { contentType, data } = props;
     const { contentCache } = useEditorContext();
     const [contentItem, setContentItem] = useState<any>(undefined);
+    const needsReload = useRefresh(data.id ? [data.id] : []);
 
     useEffect(() => {
-        const promise = new CancellablePromise(contentCache.get(data.id));
+        const promise = new CancellablePromise(contentCache.get(data.id, needsReload > 0));
 
         promise.then(content => {
             setContentItem(content);
@@ -48,7 +49,7 @@ const ContentHtmLRenderer = (props: CellPluginComponentProps<Data> & SchemaProps
         return () => {
             promise.cancel();
         };
-    }, [data.id, contentCache]);
+    }, [data.id, contentCache, needsReload]);
 
     if (contentItem) {
         const ContentRenderer = contentType.renderer;

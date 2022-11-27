@@ -12,7 +12,7 @@ export const PagePage = () => {
             }`;
     
         const response = await fetcher(`api/content/${api.appName}/graphql`, { query });
-        const result = response.data.queryPagesContents.items[0];
+        const result = response.data.queryPagesContents[0];
     
         // This hook also returns a list of IDs. All the IDs are monitored using a GraphQL subscription.
         return { result, ids: [result?.id] };
