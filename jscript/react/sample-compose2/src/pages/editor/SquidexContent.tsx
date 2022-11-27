@@ -2,13 +2,22 @@ import { Button } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import FilterIcon from '@mui/icons-material/Filter';
 import { CellPlugin, CellPluginComponentProps, lazyLoad } from '@react-page/editor';
-import { connectField } from 'uniforms';
-import { EditorContext, EditorContextType } from './EditorContext';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { connectField, HTMLFieldProps } from 'uniforms';
+import { ContentType, useEditorContext } from './editor-context';
+import { useEffect, useState } from 'react';
+import { CancellablePromise } from '../../utils';
 
 type Data = {
     // The content ID.
     id?: string;
+}
+
+type SchemaProps = {
+    // The name of the schema.
+    schema: string;
+
+    // The content type.
+    contentType: ContentType;
 }
 
 const ContentIcon = lazyLoad(() => import('@mui/icons-material/ContentCopy'));
@@ -24,36 +33,33 @@ export const iconStyle: React.CSSProperties = {
     maxHeight: 64,
 };
 
-const ContentHtmLRendererInner = ({ id, state }: { id?: string, state: EditorContextType }) => {
+const ContentHtmLRenderer = (props: CellPluginComponentProps<Data> & SchemaProps) => {
+    const { contentType, data } = props;
+    const { contentCache } = useEditorContext();
     const [contentItem, setContentItem] = useState<any>(undefined);
-    const loaderPromise = useRef<any>();
-
-    const ContentRenderer = useMemo(() => {
-        if (!contentItem) {
-            return null;
-        } else {
-            return state.contentRenderers[contentItem.schemaName];
-        }
-    }, [contentItem, state.contentRenderers]);
 
     useEffect(() => {
-        const loader = loaderPromise.current = state.contentCache.get(id);
+        const promise = new CancellablePromise(contentCache.get(data.id));
 
-        loader.then(content => {
-            if (loaderPromise.current === loader) {
-                setContentItem(content);
-            }
+        promise.then(content => {
+            setContentItem(content);
         });
-    }, [id, state]);
 
-    if (ContentRenderer && contentItem) {
+        return () => {
+            promise.cancel();
+        };
+    }, [data.id, contentCache]);
+
+    if (contentItem) {
+        const ContentRenderer = contentType.renderer;
+
         return (
             <ContentRenderer content={contentItem} />
         )
     } else {
         return (
             <div>
-                <div className="react-page-plugins-content-image-placeholder">
+                <div className='react-page-plugins-content-image-placeholder'>
                     <ContentIcon style={iconStyle} />
                 </div>
             </div>
@@ -61,79 +67,66 @@ const ContentHtmLRendererInner = ({ id, state }: { id?: string, state: EditorCon
     }
 };
 
-const ContentHtmlRenderer = (props: CellPluginComponentProps<Data>) => {
-    const { id } = props.data;
+type ContentPickerProps = HTMLFieldProps<string, HTMLDivElement, SchemaProps>;
+
+const ContentPicker = connectField<ContentPickerProps>(props => {
+    const { onChange, schema, value } = props;
+    const { contentCache, field } = useEditorContext();
+
+    const select = () => {
+        field?.pickContents([schema], (contents) => {
+            if (contents.length > 0) {
+                const content = contents[0];
+
+                contentCache.set(content.id, content);
+                onChange(content.id);
+            }
+        });
+    };
+
+    const unselect = () => {
+        onChange(undefined);
+    }
 
     return (
         <div>
-            <EditorContext.Consumer>
-                {state =>
-                    <ContentHtmLRendererInner id={id} state={state} />
-                }
-            </EditorContext.Consumer>
+            {!value ? (
+                <Button variant='contained' color='primary' onClick={select}>
+                    <FilterIcon /> <span style={{ marginLeft: '.5rem' }}>Select Content</span>
+                </Button>
+            ) : (
+                <Button variant='contained' color='secondary' onClick={unselect}>
+                    <ClearIcon />
+                </Button>
+            )}
         </div>
-    );
-};
-
-const ImageUploadField = connectField(({ value, onChange }) => {
-    return (
-        <EditorContext.Consumer>
-            {({ contentCache, contentRenderers, field }) => {
-                const change: ((value: string | undefined) => void) = onChange as any;
-
-                const select = () => {
-                    const schemas = Object.keys(contentRenderers);
-
-                    field?.pickContents(schemas, (contents) => {
-                        if (contents.length > 0) {
-                            const content = contents[0];
-
-                            contentCache.set(content.id, content);
-                            change(content.id);
-                        }
-                    });
-                };
-
-                const unselect = () => {
-                    change(undefined);
-                }
-
-                return (
-                    <div>
-                        {!value ? (
-                            <Button variant='contained' color='primary' onClick={select}>
-                                <FilterIcon /> <span style={{ marginLeft: '.5rem' }}>Select Content</span>
-                            </Button>
-                        ) : (
-                            <Button variant='contained' color='secondary' onClick={unselect}>
-                                <ClearIcon />
-                            </Button>
-                        )}
-                    </div>
-                );
-            }}
-        </EditorContext.Consumer>
     );
 });
 
-export const squidexContent: CellPlugin<Data> = {
-    Renderer: ContentHtmlRenderer,
-    id: 'squidexContent',
-    title: 'Squidex Content',
-    description: 'Picks an content from Squidex',
-    version: 1,
-    controls: {
-        type: 'autoform',
-        schema: {
-            properties: {
-                id: {
-                    type: 'string',
-                    uniforms: {
-                        label: 'ID',
-                        component: ImageUploadField,
+export function squidexContent(schema: string, contentType: ContentType): CellPlugin<Data> {
+    return {
+        id: `squidexContent_${schema}`,
+        title: `Squidex ${contentType.name} Content`,
+        description: `Picks an ${contentType.name} content from Squidex`,
+        version: 1,
+        controls: {
+            type: 'autoform',
+            schema: {
+                properties: {
+                    id: {
+                        type: 'string',
+                        uniforms: {
+                            label: 'ID',
+                            component: props => (
+                                <ContentPicker {...props} schema={schema} contentType={contentType} />
+                            ),
+                        }
                     }
                 }
-            }
+            },
         },
-    },
-};
+        Renderer: props => (
+            <ContentHtmLRenderer {...props} schema={schema} contentType={contentType} />
+        ),
+    }
+}
