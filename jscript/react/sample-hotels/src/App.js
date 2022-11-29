@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Redirect, Route, Link } from 'react-router-dom';
-import { HotelSite, HotelsSite, PageSite, PostSite, PostsSite, TopNav } from './components';
+import { HotelSite, HotelsSite, PageSite, PostSite, PostsSite, SubscribePage, TopNav } from './components';
 
 function App() {
     return (
@@ -32,6 +32,9 @@ function App() {
                     </Route>
                     <Route path='/pages/:slug/'>
                         <PageSite />
+                    </Route>
+                    <Route path='/subscribe'>
+                        <SubscribePage />
                     </Route>
                     <Route render={_ =>
                         <Redirect to='/blog' />

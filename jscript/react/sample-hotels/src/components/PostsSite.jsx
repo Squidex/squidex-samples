@@ -1,7 +1,7 @@
 import React from 'react';
-import { Post } from './Post.js';
-import { getPosts, getPostsIds } from './../service';
-import { useRefresh } from './hooks.js';
+import { Post } from './Post';
+import { getPosts, getPostsIds } from '../service';
+import { useRefresh } from './hooks';
 
 export const PostsSite = () => {
     const [posts, setPosts] = React.useState();

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Hotel } from './Hotel.js';
-import { getHotel } from './../service';
-import { useRefresh } from './hooks.js';
+import { Hotel } from './Hotel';
+import { getHotel } from '../service';
+import { useRefresh } from './hooks';
 
 export const HotelSite = () => {
     const { id } = useParams();
