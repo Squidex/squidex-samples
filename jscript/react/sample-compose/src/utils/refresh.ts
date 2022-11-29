@@ -1,6 +1,6 @@
 import { createClient } from 'graphql-ws';
-import React, { useMemo } from 'react';
-import { ApiContextType, useApiContext } from './api-context';
+import React, { createContext, useContext } from 'react';
+import { ApiContextType } from './api-context';
 
 class Subscription {
     constructor(
@@ -17,29 +17,11 @@ class Subscription {
     }
 }
 
-const ACTIVE = window.location.search?.indexOf('preview=1') >= 0 || !!window.parent;
-
-class RefreshListener {
+export class RefreshListener {
     private readonly subscriptions: Subscription[] = [];
-    private static readonly INSTANCES: { [appName: string]: RefreshListener } = {};
 
-    constructor(api: ApiContextType, isActive: boolean) {
-        if (isActive) {
-            console.log('Subscribe to updates.');
-            
-            this.init(api);
-        }
-    }
-
-    public static create(api: ApiContextType) {
-        let listener = RefreshListener.INSTANCES[api.appName!];
-
-        if (!listener) {
-            listener = new RefreshListener(api, ACTIVE);
-            RefreshListener.INSTANCES[api.appName!] = listener;
-        }
-
-        return listener;
+    constructor(api: ApiContextType) {
+         this.init(api);
     }
 
     public add(subscription: Subscription) {
@@ -95,14 +77,21 @@ class RefreshListener {
     }
 }
 
+export type RefreshContextType = {
+    // The refresh listener.
+    listener?: RefreshListener | null;
+}
+
+export const RefreshContext = createContext<RefreshContextType>({} as any);
+
+export function useRefreshContext() {
+    return useContext(RefreshContext);
+}
+
 export function useRefresh(ids?: string[]) {
-    const apiContext = useApiContext();
+    const listener = useRefreshContext()?.listener;
     const [updateIds, setUpdateIds] = React.useState<string[]>([]);
     const [updateNeeded, setUpdateNeeded] = React.useState(0);
-
-    const listener = useMemo(() => {
-        return RefreshListener.create(apiContext);
-    }, [apiContext]);
 
     React.useEffect(() => {
         setUpdateIds(previous => {
@@ -115,6 +104,10 @@ export function useRefresh(ids?: string[]) {
     }, [ids]);
 
     React.useEffect(() => {
+        if (!listener) {
+            return;
+        }
+
         if (!updateIds || updateIds.length === 0 || !updateIds[0]) {
             return;
         }
@@ -126,7 +119,7 @@ export function useRefresh(ids?: string[]) {
         listener.add(subscription);
 
         return () => {
-            listener.remove(subscription);
+            listener!.remove(subscription);
         };
     }, [listener, updateIds]);
 

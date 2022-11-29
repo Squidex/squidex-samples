@@ -1,4 +1,4 @@
-class EditorPlugin {
+declare class EditorPlugin {
     /**
      * Get the current context.
      */
@@ -29,7 +29,7 @@ class EditorPlugin {
     clean(): void; 
 }
 
-class SquidexFormField {
+declare class SquidexFormField {
     /**
      * Get the current value.
      */
@@ -127,6 +127,14 @@ class SquidexFormField {
      * @param {function} callback The callback to invoke when the dialog is completed or closed.
      */
     pickAssets(callback: (assets: any[]) => void): void;
+
+    /**
+     * Shows the dialog to pick contents.
+     * 
+     * @param {string} schemas: The list of schema names.
+     * @param {function} callback The callback to invoke when the dialog is completed or closed.
+     */
+    pickContents(schemas: string[], callback: (assets: any[]) => void): void;
 
     /**
      * Register an function that is called when the field is initialized.

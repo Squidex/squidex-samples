@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ApiContext, createDefaultApiContext } from './utils';
+import { RefreshContext, createDefaultApiContext, ApiContext, RefreshListener } from './utils';
 import { EditorPage } from './pages/editor/EditorPage';
 import { ErrorPage } from './pages/error/ErrorPage';
 import { HotelPage } from './pages/hotel/HotelPage';
@@ -55,12 +55,19 @@ const router = createBrowserRouter([
     }
 ]);
 
-const apiSetup = createDefaultApiContext();
+const TOGGLE_PREVIEW = true; // window.location.search?.indexOf('preview=1') >= 0 || !!window.parent;
+const TOGGLE_TEST = true; // window.location.search?.indexOf('test=1') > 0;
+
+const api = createDefaultApiContext(TOGGLE_TEST);
+
+const listener = TOGGLE_PREVIEW ? new RefreshListener(api) : undefined;
 
 ReactDOM.render(
     <React.StrictMode>
-        <ApiContext.Provider value={apiSetup}>
-            <RouterProvider router={router} />
-        </ApiContext.Provider>
+        <RefreshContext.Provider value={{ listener }}>
+            <ApiContext.Provider value={api}>
+                <RouterProvider router={router} />
+            </ApiContext.Provider>
+        </RefreshContext.Provider>
     </React.StrictMode>,
     document.getElementById('root') as HTMLElement)

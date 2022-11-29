@@ -1,5 +1,19 @@
 import { createContext, useContext } from 'react';
 
+export type ApiConfig = {
+    // The URL to the api.
+    apiUrl: string;
+
+    // The name of the app.
+    appName: string;
+
+    // The client ID.
+    clientId: string;
+
+    // The client secret.
+    clientSecret: string;
+}
+
 export type ApiContextType = {
     // The URL to the api.
     apiUrl: string;
@@ -17,20 +31,6 @@ export function useApiContext() {
     return useContext(ApiContext);
 }
 
-const PROD = window.location.search?.indexOf('prod=1') > 0;
-
-export const CONFIG = PROD ? {
-    url: 'https://cloud.squidex.io',
-    appName: 'hotels',
-    clientId: 'hotels:default',
-    clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
-} : {
-    url:  'https://localhost:5001',
-    appName: 'hotels',
-    clientId: 'hotels:default',
-    clientSecret: 'pwiw7ui7gx3xmgcftvdp9rygvr1aos7t2ssmh2k0rfcx'
-};
-
 function getBearerToken() {
     return localStorage.getItem('token');
 }
@@ -39,7 +39,7 @@ function setBearerToken(token: string) {
     localStorage.setItem('token', token);
 }
 
-export async function fetchBearerToken(force: boolean) {
+export async function fetchBearerToken(config: ApiConfig, force: boolean) {
     // Check if we have already a bearer token in local store.
     let token: string | null = null;
     
@@ -51,10 +51,10 @@ export async function fetchBearerToken(force: boolean) {
         return token;
     }
 
-    const body = `grant_type=client_credentials&scope=squidex-api&client_id=${CONFIG.clientId}&client_secret=${CONFIG.clientSecret}`;
+    const body = `grant_type=client_credentials&scope=squidex-api&client_id=${config.clientId}&client_secret=${config.clientSecret}`;
 
     // Get the bearer token. Ensure that we use a client id with readonly permissions.
-    const response = await fetch(`${CONFIG.url}/identity-server/connect/token`, { 
+    const response = await fetch(`${config.apiUrl}/identity-server/connect/token`, { 
         method: 'POST', 
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -78,6 +78,18 @@ export async function fetchBearerToken(force: boolean) {
     return token!;
 }
 
-export function createDefaultApiContext(): ApiContextType {
-    return {  apiUrl: CONFIG.url, appName: CONFIG.appName, accessToken: fetchBearerToken };   
+export function createDefaultApiContext(test: boolean): ApiContextType {
+    const config: ApiConfig = !test ? {
+        apiUrl: 'https://cloud.squidex.io',
+        appName: 'hotels',
+        clientId: 'hotels:default',
+        clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
+    } : {
+        apiUrl:  'https://localhost:5001',
+        appName: 'hotels',
+        clientId: 'hotels:default',
+        clientSecret: 'pwiw7ui7gx3xmgcftvdp9rygvr1aos7t2ssmh2k0rfcx'
+    };
+
+    return { ...config, accessToken: force => fetchBearerToken(config, force) };   
 }

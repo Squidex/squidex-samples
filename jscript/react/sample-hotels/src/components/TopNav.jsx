@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { getPages } from './../service';
+import { getPages } from '../service';
 
 export const TopNav = () => {
     const [pages, setPages] = React.useState([]);

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Post } from './Post.js';
-import { getPost, getPostsIds } from './../service';
-import { useRefresh } from './hooks.js';
+import { Post } from './Post';
+import { getPost, getPostsIds } from '../service';
+import { useRefresh } from './hooks';
 
 export const PostSite = () => {
     const { id } = useParams();

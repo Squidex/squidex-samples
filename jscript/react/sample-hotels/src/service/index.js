@@ -9,9 +9,9 @@ export const CONFIG = !DEV ? {
     clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec='
 } : {
     url:  'https://localhost:5001',
-    appName: 'hotels3',
-    clientId: 'hotels3:default',
-    clientSecret: 'hevj7xpxuhk3ofoqb9lqa3d2oxctzrxctruic7tz124x'
+    appName: 'hotels',
+    clientId: 'hotels:default',
+    clientSecret: 'pwiw7ui7gx3xmgcftvdp9rygvr1aos7t2ssmh2k0rfcx'
 };
 
 function getBearerToken() {

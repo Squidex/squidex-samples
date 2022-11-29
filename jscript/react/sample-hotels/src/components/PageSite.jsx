@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Page } from './Page.js';
-import { getPage } from './../service';
-import { useRefresh } from './hooks.js';
+import { Page } from './Page';
+import { getPage } from '../service';
+import { useRefresh } from './hooks';
 
 export const PageSite = () => {
     const { slug } = useParams();

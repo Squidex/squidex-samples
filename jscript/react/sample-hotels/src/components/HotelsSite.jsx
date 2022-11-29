@@ -1,7 +1,7 @@
 import React from 'react';
-import { Hotel } from './Hotel.js';
+import { Hotel } from './Hotel';
 import { getHotels } from './../service';
-import { useRefresh } from './hooks.js';
+import { useRefresh } from './hooks';
 
 export const HotelsSite = () => {
     const [hotels, setHotels] = React.useState();
