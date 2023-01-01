@@ -44,6 +44,8 @@ public static class Program
 
         var code = codeGenerator.GenerateFile();
 
+        code = code.Replace("13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v10.0.0.0))", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))");
+
         File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", code);
     }
 
