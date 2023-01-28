@@ -16,15 +16,29 @@ public abstract class Content<T> : Entity where T : class, new()
 {
     private const string LinkStart = "/api/content/";
 
-    private string status = string.Empty;
-
     /// <summary>
     /// The new status when this content item has an unpublished, new version.
     /// </summary>
     /// <value>
     /// The new status.
     /// </value>
-    public string NewStatus { get; set; }
+    public string NewStatus { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the status of the content item.
+    /// </summary>
+    /// <value>
+    /// The status of the content item.
+    /// </value>
+    public string Status { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets current status about the version currently being edited.
+    /// </summary>
+    /// <value>
+    /// The status of the content item.
+    /// </value>
+    public string EditingStatus => !string.IsNullOrWhiteSpace(NewStatus) ? NewStatus : Status;
 
     /// <summary>
     /// Gets the data of the content item.
@@ -40,13 +54,7 @@ public abstract class Content<T> : Entity where T : class, new()
     /// <value>
     /// The name of the app where this content belongs to.
     /// </value>
-    public string AppName
-    {
-        get
-        {
-            return GetDetails().App;
-        }
-    }
+    public string AppName => GetDetails().App;
 
     /// <summary>
     /// Gets the name of the schema where this content belongs to.
@@ -54,31 +62,7 @@ public abstract class Content<T> : Entity where T : class, new()
     /// <value>
     /// The name of the app schema this content belongs to.
     /// </value>
-    public string SchemaName
-    {
-        get
-        {
-            return GetDetails().Schema;
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the status of the content item.
-    /// </summary>
-    /// <value>
-    /// The status of the content item.
-    /// </value>
-    public string Status
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(NewStatus) ? NewStatus : status;
-        }
-        set
-        {
-            status = value;
-        }
-    }
+    public string SchemaName => GetDetails().Schema;
 
     private (string App, string Schema) GetDetails()
     {
