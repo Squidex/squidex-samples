@@ -111,7 +111,7 @@ public sealed partial class App
             [Operand("folder", Description = "The target folder to synchronize.")]
             public string Folder { get; set; }
 
-            [Option('t', "targets", Description = "The targets to sync, e.g. 'contents' or 'schemas'. Use 'sync targets' to view all targets.")]
+            [Option('t', "targets", Description = "The targets to sync, e.g. ‘sync in -t contents -t schemas’. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
             [Option("language", Description = "The content language to synchronize.")]
@@ -164,7 +164,7 @@ public sealed partial class App
             [Operand("folder", Description = "The target folder to synchronize.")]
             public string Folder { get; set; }
 
-            [Option('t', "targets", Description = "The targets to sync, e.g. 'contents' or 'schemas'. Use 'sync targets' to view all targets.")]
+            [Option('t', "targets", Description = "The targets to sync, e.g. ‘sync out -t contents -t schemas’. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
             [Option("describe", Description = "Create a README.md file.")]
