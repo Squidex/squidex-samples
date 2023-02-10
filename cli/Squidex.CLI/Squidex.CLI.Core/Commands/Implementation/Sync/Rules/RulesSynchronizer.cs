@@ -18,6 +18,8 @@ public sealed class RulesSynchronizer : ISynchronizer
 
     public string Name => "Rules";
 
+    public string Description => "Synchronizes all rules, but not rule events.";
+
     public RulesSynchronizer(ILogger log)
     {
         this.log = log;

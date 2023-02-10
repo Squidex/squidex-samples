@@ -26,7 +26,7 @@ internal sealed class RuleModel
     public DynamicRuleAction Action { get; set; }
 
     [JsonIgnore]
-    public RuleAction TypedAction
+    public RuleActionDto TypedAction
     {
         set
         {

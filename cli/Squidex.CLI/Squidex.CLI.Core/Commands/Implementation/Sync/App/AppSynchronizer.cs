@@ -17,6 +17,8 @@ public sealed class AppSynchronizer : ISynchronizer
 
     public string Name => "App";
 
+    public string Description => "Synchronize all app settings: clients, contributors, roles, languages and asset scripts. But not: workflows.";
+
     public AppSynchronizer(ILogger log)
     {
         this.log = log;

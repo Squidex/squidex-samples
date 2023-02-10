@@ -18,6 +18,8 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
     public string Name => "Contents";
 
+    public string Description => "Synchronizes all content items across all schemas.";
+
     public ContentsSynchronizer(ILogger log)
     {
         this.log = log;

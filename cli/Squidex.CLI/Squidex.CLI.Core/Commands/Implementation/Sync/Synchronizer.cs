@@ -21,9 +21,9 @@ public sealed class Synchronizer
         this.log = log;
     }
 
-    public IEnumerable<string> GetTargets()
+    public IEnumerable<(string Name, string Description)> GetTargets()
     {
-        return GetSynchronizers().Select(x => x.Name);
+        return GetSynchronizers().Select(x => (x.Name, x.Description));
     }
 
     public async Task Describe(string path, ISession session)

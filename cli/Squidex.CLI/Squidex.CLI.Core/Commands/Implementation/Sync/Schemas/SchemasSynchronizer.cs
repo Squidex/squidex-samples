@@ -21,6 +21,8 @@ public sealed class SchemasSynchronizer : ISynchronizer
 
     public string Name => "Schemas";
 
+    public string Description => "Synchronizes all schemas, but not the content.";
+
     public SchemasSynchronizer(ILogger log)
     {
         this.log = log;

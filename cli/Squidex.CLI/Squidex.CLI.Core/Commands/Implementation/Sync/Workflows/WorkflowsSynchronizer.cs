@@ -17,6 +17,8 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
 
     public string Name => "Workflows";
 
+    public string Description => "Synchronizes all workflows from the app settings.";
+
     public WorkflowsSynchronizer(ILogger log)
     {
         this.log = log;

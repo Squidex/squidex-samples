@@ -15,6 +15,8 @@ public interface ISynchronizer
 
     string Name { get; }
 
+    string Description { get; }
+
     Task CleanupAsync(IFileSystem fs);
 
     Task DescribeAsync(ISyncService sync, MarkdownWriter writer);

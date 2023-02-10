@@ -6,11 +6,13 @@
 // ==========================================================================
 
 using CommandDotNet;
+using ConsoleTables;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
+using static Squidex.CLI.Commands.App;
 
 namespace Squidex.CLI.Commands;
 
@@ -80,10 +82,14 @@ public sealed partial class App
         [Command("targets", Description = "List all targets.")]
         public void Targets()
         {
-            foreach (var target in synchronizer.GetTargets())
+            var table = new ConsoleTable("Name", "Description");
+
+            foreach (var (name, description) in synchronizer.GetTargets())
             {
-                log.WriteLine("- {0}", target.ToLowerInvariant());
+                table.AddRow(name.ToLowerInvariant(), description);
             }
+
+            table.Write();
         }
 
         public sealed class NewArgument : AppArguments
@@ -105,7 +111,7 @@ public sealed partial class App
             [Operand("folder", Description = "The target folder to synchronize.")]
             public string Folder { get; set; }
 
-            [Option('t', "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules.")]
+            [Option('t', "targets", Description = "The targets to sync, e.g. 'contents' or 'schemas'. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
             [Option("language", Description = "The content language to synchronize.")]
@@ -158,7 +164,7 @@ public sealed partial class App
             [Operand("folder", Description = "The target folder to synchronize.")]
             public string Folder { get; set; }
 
-            [Option('t', "targets", Description = "The targets to sync, e.g. schemas, workflows, app, rules, contents.")]
+            [Option('t', "targets", Description = "The targets to sync, e.g. 'contents' or 'schemas'. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
             [Option("describe", Description = "Create a README.md file.")]

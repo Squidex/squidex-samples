@@ -19,6 +19,8 @@ public sealed class AssetsSynchronizer : ISynchronizer
 
     public string Name => "Assets";
 
+    public string Description => "Synchronizes all assets and creates asset folders if they do not exist yet.";
+
     public AssetsSynchronizer(ILogger log)
     {
         this.log = log;
