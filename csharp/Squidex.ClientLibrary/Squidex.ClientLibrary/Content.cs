@@ -12,7 +12,22 @@ namespace Squidex.ClientLibrary;
 /// </summary>
 /// <typeparam name="T">The type for the data structure.</typeparam>
 /// <seealso cref="Entity" />
-public abstract class Content<T> : Entity where T : class, new()
+public abstract class Content<T> : ContentBase where T : class, new()
+{
+    /// <summary>
+    /// Gets the data of the content item.
+    /// </summary>
+    /// <value>
+    /// The data of the content item. Cannot be replaced.
+    /// </value>
+    public T Data { get; } = new T();
+}
+
+/// <summary>
+/// Represents a content item.
+/// </summary>
+/// <seealso cref="Entity" />
+public abstract class ContentBase : Entity
 {
     private const string LinkStart = "/api/content/";
 
@@ -39,14 +54,6 @@ public abstract class Content<T> : Entity where T : class, new()
     /// The status of the content item.
     /// </value>
     public string EditingStatus => !string.IsNullOrWhiteSpace(NewStatus) ? NewStatus : Status;
-
-    /// <summary>
-    /// Gets the data of the content item.
-    /// </summary>
-    /// <value>
-    /// The data of the content item. Cannot be replaced.
-    /// </value>
-    public T Data { get; } = new T();
 
     /// <summary>
     /// Gets the name of the app where this content belongs to.
