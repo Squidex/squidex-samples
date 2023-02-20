@@ -3258,8 +3258,8 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/{app}/usages/calls/{fromDate}/{toDate}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
             try
@@ -3307,16 +3307,6 @@ namespace Squidex.ClientLibrary.Management
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -3370,8 +3360,8 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/teams/{team}/usages/calls/{fromDate}/{toDate}");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
             try
@@ -3411,16 +3401,6 @@ namespace Squidex.ClientLibrary.Management
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -3662,8 +3642,8 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/{app}/usages/storage/{fromDate}/{toDate}");
             urlBuilder_.Replace("{app}", System.Uri.EscapeDataString(ConvertToString(app, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
             try
@@ -3705,16 +3685,6 @@ namespace Squidex.ClientLibrary.Management
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -3774,8 +3744,8 @@ namespace Squidex.ClientLibrary.Management
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/teams/{team}/usages/storage/{fromDate}/{toDate}");
             urlBuilder_.Replace("{team}", System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{fromDate}", System.Uri.EscapeDataString(fromDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{toDate}", System.Uri.EscapeDataString(toDate.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClientProvider.Get();
             try
@@ -3815,16 +3785,6 @@ namespace Squidex.ClientLibrary.Management
                                 throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexManagementException<ErrorDto>("Range between from date and to date is not valid or has more than 100 days.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -23570,6 +23530,30 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("scheduledTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ScheduledTo { get; set; }
 
+        /// <summary>
+        /// The ID of the referencing content item.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("referencing", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Referencing { get; set; }
+
+        /// <summary>
+        /// The ID of the reference content item.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("references", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string References { get; set; }
+
+        /// <summary>
+        /// The optional odata query.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("oData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OData { get; set; }
+
+        /// <summary>
+        /// The optional json query.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("q", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Q { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
@@ -25011,18 +24995,19 @@ namespace Squidex.ClientLibrary.Management
         /// The number of completed executions.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("numSucceeded", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int NumSucceeded { get; set; }
+        public long NumSucceeded { get; set; }
 
         /// <summary>
         /// The number of failed executions.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("numFailed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int NumFailed { get; set; }
+        public long NumFailed { get; set; }
 
         /// <summary>
         /// The date and time when the rule was executed the last time.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastExecuted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Removed when migrated to new rule statistics.")]
         public System.DateTimeOffset? LastExecuted { get; set; }
 
     }
@@ -25069,7 +25054,13 @@ namespace Squidex.ClientLibrary.Management
         /// The schema settings.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("schemas", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<ContentChangedRuleTriggerSchemaDto> Schemas { get; set; }
+        public System.Collections.Generic.List<SchemaCondition> Schemas { get; set; }
+
+        /// <summary>
+        /// The schema references.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("referencedSchemas", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<SchemaCondition> ReferencedSchemas { get; set; }
 
         /// <summary>
         /// Determines whether the trigger should handle all content changes events.
@@ -25080,17 +25071,11 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ContentChangedRuleTriggerSchemaDto
+    public partial class SchemaCondition
     {
-        /// <summary>
-        /// The ID of the schema.
-        /// </summary>
         [Newtonsoft.Json.JsonProperty("schemaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SchemaId { get; set; }
 
-        /// <summary>
-        /// Javascript condition when to trigger.
-        /// </summary>
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Condition { get; set; }
 
@@ -25881,6 +25866,13 @@ namespace Squidex.ClientLibrary.Management
         [Newtonsoft.Json.JsonProperty("eventId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Guid EventId { get; set; }
+
+        /// <summary>
+        /// The the unique id of the simulated event.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("uniqueId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string UniqueId { get; set; }
 
         /// <summary>
         /// The name of the event.
