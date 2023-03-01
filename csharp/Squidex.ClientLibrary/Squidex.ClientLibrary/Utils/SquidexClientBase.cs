@@ -16,8 +16,6 @@ namespace Squidex.ClientLibrary.Utils;
 /// <seealso cref="IDisposable" />
 public abstract class SquidexClientBase
 {
-    private readonly IHttpClientProvider httpClientProvider;
-
     /// <summary>
     /// Gets the name of the App.
     /// </summary>
@@ -34,6 +32,11 @@ public abstract class SquidexClientBase
     /// </value>
     public SquidexOptions Options { get; }
 
+    /// <summary>
+    /// The http client provider.
+    /// </summary>
+    protected IHttpClientProvider HttpClientProvider { get; }
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
     protected internal SquidexClientBase(SquidexOptions options, string appName, IHttpClientProvider httpClientProvider)
     {
@@ -47,13 +50,13 @@ public abstract class SquidexClientBase
         // Just pass in the options to have direct access to them.
         Options = options;
 
-        this.httpClientProvider = httpClientProvider;
+        HttpClientProvider = httpClientProvider;
     }
 
     protected internal async Task RequestAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context,
         CancellationToken ct)
     {
-        var httpClient = httpClientProvider.Get();
+        var httpClient = HttpClientProvider.Get();
         try
         {
             using (var request = BuildRequest(method, path, content, context))
@@ -66,14 +69,14 @@ public abstract class SquidexClientBase
         }
         finally
         {
-            httpClientProvider.Return(httpClient);
+            HttpClientProvider.Return(httpClient);
         }
     }
 
     protected internal async Task<Stream> RequestStreamAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context,
         CancellationToken ct)
     {
-        var httpClient = httpClientProvider.Get();
+        var httpClient = HttpClientProvider.Get();
         try
         {
             using (var request = BuildRequest(method, path, content, context))
@@ -90,14 +93,14 @@ public abstract class SquidexClientBase
         }
         finally
         {
-            httpClientProvider.Return(httpClient);
+            HttpClientProvider.Return(httpClient);
         }
     }
 
     protected internal async Task<T> RequestJsonAsync<T>(HttpMethod method, string path, HttpContent? content, QueryContext? context,
         CancellationToken ct)
     {
-        var httpClient = httpClientProvider.Get();
+        var httpClient = HttpClientProvider.Get();
         try
         {
             using (var request = BuildRequest(method, path, content, context))
@@ -112,7 +115,7 @@ public abstract class SquidexClientBase
         }
         finally
         {
-            httpClientProvider.Return(httpClient);
+            HttpClientProvider.Return(httpClient);
         }
     }
 

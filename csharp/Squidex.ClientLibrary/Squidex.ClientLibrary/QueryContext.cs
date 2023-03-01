@@ -57,6 +57,14 @@ public sealed class QueryContext
     public bool IsUnpublished { get; private set; }
 
     /// <summary>
+    /// Gets a value indicating whether scripting will be skipped.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if scripting will be skipped; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsNotScripting { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether the Content CDN will not be used.
     /// </summary>
     /// <value>
@@ -126,6 +134,18 @@ public sealed class QueryContext
     public QueryContext WithoutCDN(bool value = true)
     {
         return Clone(c => c.IsNotUsingCDN = value);
+    }
+
+    /// <summary>
+    /// Creates a new copy of the context object and defines whether scripting will be skipped.
+    /// </summary>
+    /// <param name="value">if set to <c>true</c> scripting will be skipped.</param>
+    /// <returns>
+    /// The new query context.
+    /// </returns>
+    public QueryContext WithoutScripting(bool value = true)
+    {
+        return Clone(c => c.IsNotScripting = value);
     }
 
     /// <summary>
@@ -214,6 +234,11 @@ public sealed class QueryContext
         if (IsNotQueryingSlowTotal)
         {
             headers.TryAddWithoutValidation("X-NoSlowTotal", "true");
+        }
+
+        if (IsNotScripting)
+        {
+            headers.TryAddWithoutValidation("X-NoScripting", "true");
         }
 
         if (Languages != null)
