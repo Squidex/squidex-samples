@@ -10,9 +10,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace Squidex.CLI.Commands.Implementation;
+namespace Squidex.CLI.Commands.Implementation.Utils;
 
-public static class Extensions
+internal static class Extensions
 {
     private static readonly Regex QueryRegex = new Regex(@"[?&](\w[\w.]*)=([^?&]+)");
 
@@ -57,7 +57,7 @@ public static class Extensions
 
     public static string Sha256Base64(this string value)
     {
-        return Sha256Base64(Encoding.UTF8.GetBytes(value));
+        return Encoding.UTF8.GetBytes(value).Sha256Base64();
     }
 
     public static string Sha256Base64(this byte[] bytes)

@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using System.Security.Cryptography;
+using Squidex.CLI.Commands.Implementation.Utils;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem;
 

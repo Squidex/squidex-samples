@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace Squidex.CLI.Commands.Implementation.Utils;
 
-public static class SimpleMapper
+internal static class SimpleMapper
 {
     private sealed class StringConversionPropertyMapper : PropertyMapper
     {

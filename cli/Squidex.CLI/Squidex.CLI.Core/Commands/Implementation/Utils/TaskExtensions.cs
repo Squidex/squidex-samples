@@ -9,7 +9,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Squidex.CLI.Commands.Implementation.Utils;
 
-public static class TaskExtensions
+internal static class TaskExtensions
 {
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
     public static async void BidirectionalLinkTo<T>(this ISourceBlock<T> source, ITargetBlock<T> target)

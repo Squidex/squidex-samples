@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Squidex.CLI;
 
-public static class Helper
+internal static class Helper
 {
     private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings();
     private static readonly JsonSerializer Serializer;

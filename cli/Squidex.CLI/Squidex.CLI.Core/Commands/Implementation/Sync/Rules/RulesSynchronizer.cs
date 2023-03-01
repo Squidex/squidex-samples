@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation.FileSystem;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Management;
 
@@ -189,9 +190,10 @@ public sealed class RulesSynchronizer : ISynchronizer
 
         foreach (var rule in current.Items)
         {
-            if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
+            if (rule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
             {
-                MapSchemas(contentTrigger, map);
+                MapSchemas(contentTrigger.Schemas, map);
+                MapSchemas(contentTrigger.ReferencedSchemas, map);
             }
         }
     }
@@ -204,16 +206,22 @@ public sealed class RulesSynchronizer : ISynchronizer
 
         foreach (var newRule in models)
         {
-            if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger && contentTrigger.Schemas != null)
+            if (newRule.Trigger is ContentChangedRuleTriggerDto contentTrigger)
             {
-                MapSchemas(contentTrigger, map);
+                MapSchemas(contentTrigger.Schemas, map);
+                MapSchemas(contentTrigger.ReferencedSchemas, map);
             }
         }
     }
 
-    private void MapSchemas(ContentChangedRuleTriggerDto dto, Dictionary<string, string> schemaMap)
+    private void MapSchemas(List<SchemaCondition>? schemas, Dictionary<string, string> schemaMap)
     {
-        foreach (var schema in dto.Schemas)
+        if (schemas == null)
+        {
+            return;
+        }
+
+        foreach (var schema in schemas)
         {
             if (!schemaMap.TryGetValue(schema.SchemaId!, out var found))
             {

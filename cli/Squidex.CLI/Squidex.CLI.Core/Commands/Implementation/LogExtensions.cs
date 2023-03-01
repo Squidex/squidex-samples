@@ -9,7 +9,7 @@ using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation;
 
-public static class LogExtensions
+internal static class LogExtensions
 {
     private static readonly SemaphoreSlim LockObject = new SemaphoreSlim(1);
 

@@ -7,6 +7,7 @@
 
 using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Configuration;
 

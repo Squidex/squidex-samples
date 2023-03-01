@@ -7,6 +7,7 @@
 
 using LibGit2Sharp;
 using Squidex.CLI.Commands.Implementation.FileSystem.Default;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.Text;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Git;

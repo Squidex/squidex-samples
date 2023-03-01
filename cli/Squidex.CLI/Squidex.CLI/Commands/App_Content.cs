@@ -13,6 +13,7 @@ using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.CLI.Commands.Implementation.TestData;
+using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
