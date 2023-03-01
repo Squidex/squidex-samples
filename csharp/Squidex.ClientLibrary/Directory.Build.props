@@ -5,10 +5,10 @@
     <Copyright>MIT</Copyright>
     <Description>ClientLibrary for Squidex Headless CMS</Description>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-	  <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <IncludeSymbols>true</IncludeSymbols>
-	  <LangVersion>latest</LangVersion>
-	  <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <PackageIcon>logo-squared.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Squidex/squidex/</PackageProjectUrl>
