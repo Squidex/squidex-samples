@@ -8,3 +8,4 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("sq")]
+[assembly: InternalsVisibleTo("Squidex.CLI")]
