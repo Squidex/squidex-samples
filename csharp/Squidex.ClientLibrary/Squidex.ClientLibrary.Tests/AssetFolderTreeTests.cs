@@ -19,7 +19,7 @@ public class AssetFolderTreeTests
 
     public AssetFolderTreeTests()
     {
-        sut = new AssetFolderTree(assets, "my-app");
+        sut = new AssetFolderTree(assets);
     }
 
     [Theory]
@@ -54,7 +54,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>(),
@@ -64,7 +64,7 @@ public class AssetFolderTreeTests
                 }
             });
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>(),
@@ -77,7 +77,7 @@ public class AssetFolderTreeTests
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
         Assert.Equal("folder2", await sut.GetPathAsync(folder2.Id));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedTwiceExactly();
     }
 
@@ -98,7 +98,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>(),
@@ -112,7 +112,7 @@ public class AssetFolderTreeTests
         Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -133,7 +133,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>
@@ -149,7 +149,7 @@ public class AssetFolderTreeTests
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
         Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -170,7 +170,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>
@@ -184,7 +184,7 @@ public class AssetFolderTreeTests
         Assert.Equal(folder1.Id, await sut.GetIdAsync("folder1"));
         Assert.Equal(folder2.Id, await sut.GetIdAsync("folder2"));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -205,7 +205,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>
@@ -221,7 +221,7 @@ public class AssetFolderTreeTests
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
         Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 
@@ -242,7 +242,7 @@ public class AssetFolderTreeTests
             FolderName = "folder2"
         };
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
             .Returns(new AssetFoldersDto
             {
                 Items = new List<AssetFolderDto>
@@ -252,7 +252,7 @@ public class AssetFolderTreeTests
                 Path = new List<AssetFolderDto>()
             });
 
-        A.CallTo(() => assets.PostAssetFolderAsync("my-app",
+        A.CallTo(() => assets.PostAssetFolderAsync(
                 A<CreateAssetFolderDto>.That.Matches(x => x.FolderName == "folder2" && x.ParentId == RootId),
                 A<CancellationToken>._))
             .Returns(folder2);
@@ -260,7 +260,7 @@ public class AssetFolderTreeTests
         Assert.Equal(folder1.Id, await sut.GetIdAsync("folder1"));
         Assert.Equal(folder2.Id, await sut.GetIdAsync("folder2"));
 
-        A.CallTo(() => assets.GetAssetFoldersAsync("my-app", A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
+        A.CallTo(() => assets.GetAssetFoldersAsync(A<string>._, A<AssetFolderScope?>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 }

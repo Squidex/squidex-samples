@@ -5,7 +5,7 @@
 {% if UseBaseUrl and GenerateBaseUrlProperty -%}
     private string _baseUrl = "{{ BaseUrl }}";
 {% endif -%}
-    private Squidex.ClientLibrary.Configuration.IHttpClientProvider _httpClientProvider;
+    private Squidex.ClientLibrary.SquidexOptions _options;
 {% if UseRequestAndResponseSerializationSettings -%}
     private System.Lazy<{{ JsonSerializerSettingsType }}> _requestSettings;
     private System.Lazy<{{ JsonSerializerSettingsType }}> _responseSettings;
@@ -13,9 +13,9 @@
     private System.Lazy<{{ JsonSerializerSettingsType }}> _settings;
 {% endif -%}
 
-    public {{ Class }}(Squidex.ClientLibrary.Configuration.IHttpClientProvider httpClientProvider)
+    public {{ Class }}(Squidex.ClientLibrary.SquidexOptions options)
     {
-        _httpClientProvider = httpClientProvider;
+        _options = options;
 {% if UseRequestAndResponseSerializationSettings -%}
         _requestSettings = new System.Lazy<{{ JsonSerializerSettingsType }}>(() => CreateSerializerSettings(true));
         _responseSettings = new System.Lazy<{{ JsonSerializerSettingsType }}>(() => CreateSerializerSettings(false));
@@ -119,6 +119,7 @@
 {%     endif -%}
         var urlBuilder_ = new System.Text.StringBuilder();
         urlBuilder_.Append({% if UseBaseUrl %}BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/{% else %}"{% endif %}{{ operation.Path }}{% if operation.HasQueryParameters %}?{% endif %}");
+        urlBuilder_.Replace("app", _options.AppName);
 {%     for parameter in operation.PathParameters -%}
 {%         if parameter.IsOptional -%}
         if ({{ parameter.VariableName }} != null)
@@ -143,7 +144,7 @@
         urlBuilder_.Length--;
 {%     endif -%}
 
-        var client_ = _httpClientProvider.Get();
+        var client_ = _options.ClientProvider.Get();
         try
         {
 {%     if UseHttpRequestMessageCreationMethod -%}
@@ -152,12 +153,6 @@
             using (var request_ = new System.Net.Http.HttpRequestMessage())
 {%     endif -%}
             {
-{% for parameter in operation.Parameters %}
-{% if parameter.VariableName == "app" %}
-                request_.Headers.TryAddWithoutValidation(SpecialHeaders.AppName, app);
-{% endif -%}
-{% endfor -%}
-
 {%     for parameter in operation.HeaderParameters %}
 {%         if parameter.IsRequired -%}
                 if ({{ parameter.VariableName }} == null)
@@ -365,7 +360,6 @@
         }
         finally
         {
-            _httpClientProvider.Return(client_);
         }
     }
 

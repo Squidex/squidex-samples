@@ -21,7 +21,7 @@ public static class ImportHelper
 {
     public static async Task ImportAsync(this ISession session, IImportSettings setting, ILogger log, IEnumerable<DynamicData> datas)
     {
-        var contents = session.Contents(setting.Schema);
+        var contents = session.Client.DynamicContents(setting.Schema);
 
         var totalWritten = 0;
 

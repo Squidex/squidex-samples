@@ -24,7 +24,7 @@ internal sealed class UploadPipeline
 
     public UploadPipeline(ISession session, ILogger log, IFileSystem fs)
     {
-        var tree = new AssetFolderTree(session.Assets, session.App);
+        var tree = new AssetFolderTree(session.Client.Assets);
 
         var fileNameStep = new TransformBlock<AssetModel, (AssetModel, FilePath)>(async asset =>
         {
@@ -68,7 +68,7 @@ internal sealed class UploadPipeline
                 {
                     var file = new FileParameter(stream, asset.FileName, asset.MimeType);
 
-                    var result = await session.Assets.PostUpsertAssetAsync(session.App, asset.Id, null, true, file);
+                    var result = await session.Client.Assets.PostUpsertAssetAsync(asset.Id, null, true, file);
 
                     log.ProcessCompleted(process);
                 }

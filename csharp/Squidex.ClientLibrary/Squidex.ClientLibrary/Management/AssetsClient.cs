@@ -17,19 +17,17 @@ public partial interface IAssetsClient
     /// <summary>
     /// Gets the upload progress.
     /// </summary>
-    /// <param name="app">The name of the app.</param>
     /// <param name="fileId">The file id of the upload.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>
     /// The upload progress in bytes.
     /// </returns>
-    Task<long> GetUploadProgressAsync(string app, string fileId,
+    Task<long> GetUploadProgressAsync(string fileId,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Upload a new asset using tus protocol.
     /// </summary>
-    /// <param name="app">The name of the app.</param>
     /// <param name="file">The file to upload.</param>
     /// <param name="options">Optional arguments.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -37,24 +35,22 @@ public partial interface IAssetsClient
     /// Task for completion.
     /// </returns>
     /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-    Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
+    Task UploadAssetAsync(FileParameter file, AssetUploadOptions options = default,
         CancellationToken cancellationToken = default);
 
     /// <summary>Get assets.</summary>
-    /// <param name="app">The name of the app.</param>
     /// <param name="query">The optional asset query.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
     /// <returns>
     /// Assets returned.
     /// </returns>
     /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-    Task<AssetsDto> GetAssetsAsync(string app, AssetQuery? query = null,
+    Task<AssetsDto> GetAssetsAsync(AssetQuery? query = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get assets.
     /// </summary>
-    /// <param name="app">The name of the app.</param>
     /// <param name="callback">The callback that is invoke for each asset.</param>
     /// <param name="batchSize">The number of assets per request.</param>
     /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -62,13 +58,12 @@ public partial interface IAssetsClient
     /// Assets returned.
     /// </returns>
     /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-    Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200,
+    Task GetAllAsync(Func<AssetDto, Task> callback, int batchSize = 200,
         CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get assets.
     /// </summary>
-    /// <param name="app">The name of the app.</param>
     /// <param name="callback">The callback that is invoke for each asset.</param>
     /// <param name="query">The optional asset query.</param>
     /// <param name="batchSize">The number of assets per request.</param>
@@ -77,7 +72,7 @@ public partial interface IAssetsClient
     /// Assets returned.
     /// </returns>
     /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-    Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200,
+    Task GetAllByQueryAsync(Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200,
         CancellationToken cancellationToken = default);
 }
 
@@ -96,59 +91,47 @@ public partial class AssetsClient
     }
 
     /// <inheritdoc />
-    public async Task<long> GetUploadProgressAsync(string app, string fileId,
+    public async Task<long> GetUploadProgressAsync(string fileId,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(fileId, nameof(fileId));
 
-        var url = $"api/apps/{app}/assets/tus/";
+        var url = $"api/apps/{_options.AppName}/assets/tus/";
 
-        var httpClient = _httpClientProvider.Get();
-        try
-        {
-            return await httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
-        }
-        finally
-        {
-            _httpClientProvider.Return(httpClient);
-        }
+        var httpClient = _options.ClientProvider.Get();
+
+        return await httpClient.GetUploadProgressAsync(url, fileId, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task UploadAssetAsync(string app, FileParameter file, AssetUploadOptions options = default,
+    public async Task UploadAssetAsync(FileParameter file, AssetUploadOptions options = default,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(file, nameof(file));
 
-        var url = $"api/apps/{app}/assets/tus";
+        var url = $"api/apps/{_options.AppName}/assets/tus";
 
-        var httpClient = _httpClientProvider.Get();
-        try
-        {
-            await httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(this), cancellationToken);
-        }
-        finally
-        {
-            _httpClientProvider.Return(httpClient);
-        }
+        var httpClient = _options.ClientProvider.Get();
+
+        await httpClient.UploadWithProgressAsync(url, file.ToUploadFile(), options.ToOptions(this), cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task<AssetsDto> GetAssetsAsync(string app, AssetQuery? query = null,
+    public Task<AssetsDto> GetAssetsAsync(AssetQuery? query = null,
         CancellationToken cancellationToken = default)
     {
-        return GetAssetsAsync(app, query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
+        return GetAssetsAsync(query?.Top, query?.Skip, query?.OrderBy, query?.Filter, query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), cancellationToken);
     }
 
     /// <inheritdoc />
-    public Task GetAllAsync(string app, Func<AssetDto, Task> callback, int batchSize = 200,
+    public Task GetAllAsync(Func<AssetDto, Task> callback, int batchSize = 200,
         CancellationToken cancellationToken = default)
     {
-        return GetAllByQueryAsync(app, callback, null, batchSize, cancellationToken);
+        return GetAllByQueryAsync(callback, null, batchSize, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task GetAllByQueryAsync(string app, Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200,
+    public async Task GetAllByQueryAsync(Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200,
         CancellationToken cancellationToken = default)
     {
         Guard.Between(batchSize, 10, 10_000, nameof(batchSize));
@@ -163,7 +146,7 @@ public partial class AssetsClient
         {
             var isAnyAdded = false;
 
-            var getResult = await GetAssetsAsync(app, query, cancellationToken);
+            var getResult = await GetAssetsAsync(query, cancellationToken);
 
             foreach (var item in getResult.Items)
             {

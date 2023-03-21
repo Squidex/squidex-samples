@@ -24,20 +24,15 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ContentsClient{TEntity, TData}"/> class
-    /// with the name of the schema, the options from the <see cref="SquidexClientManager"/> and the HTTP client.
+    /// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
     /// </summary>
-    /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
-    /// <param name="appName">Name of the app. Cannot be null or empty.</param>
+    /// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
     /// <param name="schemaName">Name of the schema. Cannot be null or empty.</param>
-    /// <param name="httpClientProvider">The HTTP client provider. Cannot be null.</param>
     /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="schemaName"/> is null.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="httpClientProvider"/> is null.</exception>
-    /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
     /// <exception cref="ArgumentException"><paramref name="schemaName"/> is empty.</exception>
-    public ContentsClient(SquidexOptions options, string appName, string schemaName, IHttpClientProvider httpClientProvider)
-        : base(options, appName, httpClientProvider)
+    public ContentsClient(SquidexOptions options, string schemaName)
+        : base(options)
     {
         Guard.NotNullOrEmpty(schemaName, nameof(schemaName));
 
@@ -91,56 +86,50 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
         context = (context ?? QueryContext.Default).WithoutTotal();
 
-        var httpClient = HttpClientProvider.Get();
-        try
+        var httpClient = Options.ClientProvider.Get();
+
+        using (var request = BuildRequest(HttpMethod.Get, BuildUrl($"stream?skip={skip}", false), null, context))
         {
-            using (var request = BuildRequest(HttpMethod.Get, BuildUrl($"stream?skip={skip}", false), null, context))
+            using (var response = await httpClient.SendAsync(request, ct))
             {
-                using (var response = await httpClient.SendAsync(request, ct))
-                {
-                    await EnsureResponseIsValidAsync(response);
+                await EnsureResponseIsValidAsync(response);
 
 #if NETSTANDARD2_0 || NETCOREAPP3_1
-                    using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
 #else
-                    using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct)))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct)))
+#endif
+                {
+                    string? line;
+#if NET7_0_OR_GREATER
+                    while ((line = await reader.ReadLineAsync(ct)) != null)
+#else
+                    while ((line = await reader.ReadLineAsync()) != null)
 #endif
                     {
-                        string? line;
-#if NET7_0_OR_GREATER
-                        while ((line = await reader.ReadLineAsync(ct)) != null)
-#else
-                        while ((line = await reader.ReadLineAsync()) != null)
-#endif
+                        ct.ThrowIfCancellationRequested();
+
+                        if (string.IsNullOrWhiteSpace(line))
                         {
-                            ct.ThrowIfCancellationRequested();
+                            continue;
+                        }
 
-                            if (string.IsNullOrWhiteSpace(line))
-                            {
-                                continue;
-                            }
+                        const string Prefix = "data: ";
 
-                            const string Prefix = "data: ";
-
-                            if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
-                            {
-                                throw new SquidexException("Line does not start with data prefix.", 0, null);
-                            }
+                        if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
+                        {
+                            throw new SquidexException("Line does not start with data prefix.", 0, null);
+                        }
 
 #pragma warning disable IDE0057 // Use range operator
-                            var contentJson = line.Substring(Prefix.Length);
+                        var contentJson = line.Substring(Prefix.Length);
 #pragma warning restore IDE0057 // Use range operator
-                            var contentItem = contentJson.FromJson<TEntity>();
+                        var contentItem = contentJson.FromJson<TEntity>();
 
-                            await callback(contentItem);
-                        }
+                        await callback(contentItem);
                     }
                 }
             }
-        }
-        finally
-        {
-            HttpClientProvider.Return(httpClient);
         }
     }
 
@@ -169,15 +158,6 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
 
         return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{id}/?version={version}", true, context), null, context, ct);
-    }
-
-    /// <inheritdoc/>
-    public Task<TData> GetDataAsync(string id, int version, QueryContext? context = null,
-         CancellationToken ct = default)
-    {
-        Guard.NotNullOrEmpty(id, nameof(id));
-
-        return RequestJsonAsync<TData>(HttpMethod.Get, BuildUrl($"{id}/{version}", true, context), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -372,11 +352,11 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         if (ShouldUseCDN(query, context))
         {
-            return $"{Options.ContentCDN}{AppName}/{SchemaName}/{path}";
+            return $"{Options.ContentCDN}{Options.AppName}/{SchemaName}/{path}";
         }
         else
         {
-            return $"api/content/{AppName}/{SchemaName}/{path}";
+            return $"api/content/{Options.AppName}/{SchemaName}/{path}";
         }
     }
 

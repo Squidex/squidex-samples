@@ -15,7 +15,7 @@ public static class ExportHelper
     {
         var ctx = QueryContext.Default.Unpublished(settings.Unpublished);
 
-        var contents = session.Contents(settings.Schema);
+        var contents = session.Client.DynamicContents(settings.Schema);
 
         var total = 0L;
         var totalRead = 0;

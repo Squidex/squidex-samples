@@ -37,9 +37,9 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
 
     public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
     {
-        var current = await session.Apps.GetWorkflowsAsync(session.App);
+        var current = await session.Client.Apps.GetWorkflowsAsync();
 
-        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemas = await session.Client.Schemas.GetSchemasAsync();
         var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
         await current.Items.OrderBy(x => x.Name).Foreach(async (workflow, i) =>
@@ -87,7 +87,7 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
             return;
         }
 
-        var current = await session.Apps.GetWorkflowsAsync(session.App);
+        var current = await session.Client.Apps.GetWorkflowsAsync();
 
         if (!current.Items.HasDistinctNames(x => x.Name))
         {
@@ -105,7 +105,7 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
                 {
                     await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
                     {
-                        await session.Apps.DeleteWorkflowAsync(session.App, workflow.Id);
+                        await session.Client.Apps.DeleteWorkflowAsync(workflow.Id);
 
                         workflowsByName.Remove(name);
                     });
@@ -132,13 +132,13 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
                     Name = workflow.Name
                 };
 
-                var created = await session.Apps.PostWorkflowAsync(session.App, request);
+                var created = await session.Client.Apps.PostWorkflowAsync(request);
 
                 workflowsByName[workflow.Name] = created.Items.Find(x => x.Name == workflow.Name);
             });
         }
 
-        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemas = await session.Client.Schemas.GetSchemasAsync();
         var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
 
         foreach (var workflow in models)
@@ -154,7 +154,7 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
 
             await log.DoSafeAsync($"Workflow '{workflow.Name}' updating", async () =>
             {
-                await session.Apps.PutWorkflowAsync(session.App, existing.Id, workflow);
+                await session.Client.Apps.PutWorkflowAsync(existing.Id, workflow);
             });
         }
     }

@@ -37,14 +37,14 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
     public async Task ExportAsync(ISyncService sync, SyncOptions options, ISession session)
     {
-        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemas = await session.Client.Schemas.GetSchemasAsync();
         var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
         var context = QueryContext.Default.Unpublished().IgnoreFallback();
 
         foreach (var schema in schemas.Items)
         {
-            var client = session.Contents(schema.Name);
+            var client = session.Client.DynamicContents(schema.Name);
 
             var contents = new List<ContentModel>();
             var contentBatch = 0;
@@ -114,7 +114,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
             GetFiles(sync.FileSystem)
                 .Select(x => (x, sync.Read<ContentsModel>(x, log)));
 
-        var schemas = await session.Schemas.GetSchemasAsync(session.App);
+        var schemas = await session.Client.Schemas.GetSchemasAsync();
         var schemaMap = schemas.Items.ToDictionary(x => x.Name, x => x.Id);
 
         var mapper = new Extensions.Mapper(session.Url, session.App, options.Languages);
@@ -125,7 +125,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
             {
                 mapper.Map(model);
 
-                var client = session.Contents(model.Contents[0].Schema);
+                var client = session.Client.DynamicContents(model.Contents[0].Schema);
 
                 var request = new BulkUpdate
                 {

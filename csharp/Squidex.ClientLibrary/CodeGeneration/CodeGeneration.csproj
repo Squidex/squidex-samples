@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Client.Class.ReadObjectResponse.liquid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Client.Class.liquid">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

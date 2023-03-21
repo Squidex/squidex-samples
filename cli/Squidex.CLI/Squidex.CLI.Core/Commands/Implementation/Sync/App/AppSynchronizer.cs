@@ -39,7 +39,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
         await log.DoSafeAsync("Exporting clients", async () =>
         {
-            var clients = await session.Apps.GetClientsAsync(session.App);
+            var clients = await session.Client.Apps.GetClientsAsync();
 
             model.Clients = new Dictionary<string, AppClientModel>();
 
@@ -51,7 +51,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
         await log.DoSafeAsync("Exporting languages", async () =>
         {
-            var languages = await session.Apps.GetLanguagesAsync(session.App);
+            var languages = await session.Client.Apps.GetLanguagesAsync();
 
             model.Languages = new Dictionary<string, UpdateLanguageDto>();
 
@@ -63,7 +63,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
         await log.DoSafeAsync("Exporting Roles", async () =>
         {
-            var roles = await session.Apps.GetRolesAsync(session.App);
+            var roles = await session.Client.Apps.GetRolesAsync();
 
             model.Roles = new Dictionary<string, AppRoleModel>();
 
@@ -75,7 +75,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
         await log.DoSafeAsync("Exporting asset scripts", async () =>
         {
-            var assetScripts = await session.Apps.GetAssetScriptsAsync(session.App);
+            var assetScripts = await session.Client.Apps.GetAssetScriptsAsync();
 
             model.AssetScripts = assetScripts.ToModel();
         });
@@ -160,14 +160,14 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = new AssignContributorDto { ContributorId = email, Role = value.Role, Invite = true };
 
-                await session.Apps.PostContributorAsync(session.App, request);
+                await session.Client.Apps.PostContributorAsync(request);
             });
         }
     }
 
     private async Task SynchronizeClientsAsync(AppModel model, SyncOptions options, ISession session)
     {
-        var current = await session.Apps.GetClientsAsync(session.App);
+        var current = await session.Client.Apps.GetClientsAsync();
 
         if (options.Delete)
         {
@@ -182,7 +182,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
                 await log.DoSafeAsync($"Client '{client.Id}' deleting", async () =>
                 {
-                    await session.Apps.DeleteClientAsync(session.App, client.Id);
+                    await session.Client.Apps.DeleteClientAsync(client.Id);
                 });
             }
         }
@@ -200,7 +200,7 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = new CreateClientDto { Id = clientId };
 
-                current = await session.Apps.PostClientAsync(session.App, request);
+                current = await session.Client.Apps.PostClientAsync(request);
             });
         }
 
@@ -222,14 +222,14 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = client.ToUpdate();
 
-                await session.Apps.PutClientAsync(session.App, clientId, request);
+                await session.Client.Apps.PutClientAsync(clientId, request);
             });
         }
     }
 
     private async Task SynchronizeLanguagesAsync(AppModel model, SyncOptions options, ISession session)
     {
-        var current = await session.Apps.GetLanguagesAsync(session.App);
+        var current = await session.Client.Apps.GetLanguagesAsync();
 
         if (options.Delete)
         {
@@ -242,7 +242,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
                 await log.DoSafeAsync($"Language '{language.Iso2Code}' deleting", async () =>
                 {
-                    await session.Apps.DeleteLanguageAsync(session.App, language.Iso2Code);
+                    await session.Client.Apps.DeleteLanguageAsync(language.Iso2Code);
                 });
             }
         }
@@ -260,7 +260,7 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = new AddLanguageDto { Language = isoCode };
 
-                current = await session.Apps.PostLanguageAsync(session.App, request);
+                current = await session.Client.Apps.PostLanguageAsync(request);
             });
         }
 
@@ -275,14 +275,14 @@ public sealed class AppSynchronizer : ISynchronizer
 
             await log.DoSafeAsync($"Language '{isoCode}' updating", async () =>
             {
-                await session.Apps.PutLanguageAsync(session.App, isoCode, language);
+                await session.Client.Apps.PutLanguageAsync(isoCode, language);
             });
         }
     }
 
     private async Task SynchronizeRolesAsync(AppModel model, SyncOptions options, ISession session)
     {
-        var current = await session.Apps.GetRolesAsync(session.App);
+        var current = await session.Client.Apps.GetRolesAsync();
 
         if (options.Delete)
         {
@@ -298,7 +298,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
                 await log.DoSafeAsync($"Role '{role.Name}' deleting", async () =>
                 {
-                    await session.Apps.DeleteRoleAsync(session.App, role.Name);
+                    await session.Client.Apps.DeleteRoleAsync(role.Name);
                 });
             }
         }
@@ -316,7 +316,7 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = new AddRoleDto { Name = roleName };
 
-                current = await session.Apps.PostRoleAsync(session.App, request);
+                current = await session.Client.Apps.PostRoleAsync(request);
             });
         }
 
@@ -333,7 +333,7 @@ public sealed class AppSynchronizer : ISynchronizer
             {
                 var request = role.ToUpdate();
 
-                await session.Apps.PutRoleAsync(session.App, roleName, request);
+                await session.Client.Apps.PutRoleAsync(roleName, request);
             });
         }
     }
@@ -349,7 +349,7 @@ public sealed class AppSynchronizer : ISynchronizer
         {
             var request = model.AssetScripts?.ToUpdate() ?? new UpdateAssetScriptsDto();
 
-            await session.Apps.PutAssetScriptsAsync(session.App, request);
+            await session.Client.Apps.PutAssetScriptsAsync(request);
         });
     }
 

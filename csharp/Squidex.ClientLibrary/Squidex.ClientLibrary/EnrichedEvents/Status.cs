@@ -7,7 +7,7 @@
 
 using System.ComponentModel;
 
-namespace Squidex.ClientLibrary;
+namespace Squidex.ClientLibrary.EnrichedEvents;
 
 /// <summary>
 /// Default status strings.

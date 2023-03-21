@@ -5,19 +5,27 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Google.Protobuf.WellKnownTypes;
+using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Configuration;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.CLI.Configuration;
 
-public sealed class GetOnlyHttpClientFactory : IHttpClientFactory
+public sealed class GetOnlyHttpClientProvider : StaticHttpClientProvider
 {
-    public HttpClient? CreateHttpClient(HttpMessageHandler messageHandler)
+    public GetOnlyHttpClientProvider(SquidexOptions options)
+        : base(options)
     {
-        return new GetOnlyHttpClient(messageHandler);
     }
 
-    public HttpMessageHandler? CreateHttpMessageHandler(HttpMessageHandler inner)
+    protected override HttpMessageHandler CreateMessageHandler(SquidexOptions options)
     {
-        return null;
+        var baseHandler = base.CreateMessageHandler(options);
+
+        return new GetOnlyHttpMessageHandler
+        {
+            InnerHandler = baseHandler
+        };
     }
 }

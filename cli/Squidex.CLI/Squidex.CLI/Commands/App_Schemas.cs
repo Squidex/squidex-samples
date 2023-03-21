@@ -39,7 +39,7 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var schemas = await session.Schemas.GetSchemasAsync(session.App);
+            var schemas = await session.Client.Schemas.GetSchemasAsync();
 
             if (arguments.Table)
             {
@@ -63,11 +63,11 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var schema = await session.Schemas.GetSchemaAsync(session.App, arguments.Name);
+            var schema = await session.Client.Schemas.GetSchemaAsync(arguments.Name);
 
             if (arguments.WithReferencedNames)
             {
-                var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
+                var allSchemas = await session.Client.Schemas.GetSchemasAsync();
 
                 var result = new SchemaWithRefs<SchemaDto>(schema).EnrichSchemaNames(allSchemas.Items);
 
@@ -118,7 +118,7 @@ public partial class App
             SchemaDto? targetSchema;
             try
             {
-                targetSchema = await session.Schemas.GetSchemaAsync(session.App, schemaName);
+                targetSchema = await session.Client.Schemas.GetSchemaAsync(schemaName);
             }
             catch
             {
@@ -131,14 +131,14 @@ public partial class App
 
                 if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
                 {
-                    var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
+                    var allSchemas = await session.Client.Schemas.GetSchemasAsync();
 
                     request.AdjustReferences(allSchemas.Items);
                 }
 
                 request.Schema.Name = schemaName;
 
-                await session.Schemas.PostSchemaAsync(session.App, request.Schema);
+                await session.Client.Schemas.PostSchemaAsync(request.Schema);
 
                 log.WriteLine("> Created schema because it does not exists in the target system.");
             }
@@ -148,7 +148,7 @@ public partial class App
 
                 if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
                 {
-                    var allSchemas = await session.Schemas.GetSchemasAsync(session.App);
+                    var allSchemas = await session.Client.Schemas.GetSchemasAsync();
 
                     request.AdjustReferences(allSchemas.Items);
                 }
@@ -156,7 +156,7 @@ public partial class App
                 request.Schema.NoFieldDeletion = arguments.NoFieldDeletion;
                 request.Schema.NoFieldRecreation = arguments.NoFieldRecreation;
 
-                await session.Schemas.PutSchemaSyncAsync(session.App, schemaName, request.Schema);
+                await session.Client.Schemas.PutSchemaSyncAsync(schemaName, request.Schema);
 
                 log.WriteLine("> Synchronized schema");
             }

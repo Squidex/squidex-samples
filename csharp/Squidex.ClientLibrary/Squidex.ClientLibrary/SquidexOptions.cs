@@ -10,7 +10,7 @@ using Squidex.ClientLibrary.Configuration;
 namespace Squidex.ClientLibrary;
 
 /// <summary>
-/// The options to configure <see cref="SquidexClientManager"/>.
+/// The options to configure <see cref="SquidexClient"/>.
 /// </summary>
 public class SquidexOptions : OptionsBase
 {
@@ -21,13 +21,11 @@ public class SquidexOptions : OptionsBase
     private string contentCDN;
     private string assetCDN;
     private bool readResponseAsString;
+    private bool ignoreSelfSignedCertificates;
     private IAuthenticator authenticator;
-    private IHttpConfigurator configurator;
     private IHttpClientProvider clientProvider;
-    private IHttpClientFactory clientFactory;
-    private TimeSpan httpClientTimeout;
+    private TimeSpan? timeout;
     private TimeSpan tokenRetryTime = TimeSpan.FromHours(1);
-    private IReadOnlyDictionary<string, AppCredentials>? appCredentials;
 
     /// <summary>
     /// Gets or sets the URL to the Squidex installation.
@@ -127,6 +125,18 @@ public class SquidexOptions : OptionsBase
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether self signed certifcates are accepted.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if signed certifcates are accepted; otherwise, <c>false</c>.
+    /// </value>
+    public bool IgnoreSelfSignedCertificates
+    {
+        get => ignoreSelfSignedCertificates;
+        set => Set(ref ignoreSelfSignedCertificates, value);
+    }
+
+    /// <summary>
     /// Gets or sets the authenticator.
     /// </summary>
     /// <value>
@@ -137,32 +147,6 @@ public class SquidexOptions : OptionsBase
     {
         get => authenticator;
         set => Set(ref authenticator, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the configurator that can be used to make changes to the HTTP requests.
-    /// </summary>
-    /// <value>
-    /// The configurator.
-    /// </value>
-    /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
-    public IHttpConfigurator Configurator
-    {
-        get => configurator;
-        set => Set(ref configurator, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the client factory.
-    /// </summary>
-    /// <value>
-    /// The client factory.
-    /// </value>
-    /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
-    public IHttpClientFactory ClientFactory
-    {
-        get => clientFactory;
-        set => Set(ref clientFactory, value);
     }
 
     /// <summary>
@@ -185,10 +169,10 @@ public class SquidexOptions : OptionsBase
     /// The HTTP client timeout.
     /// </value>
     /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
-    public TimeSpan HttpClientTimeout
+    public TimeSpan? Timeout
     {
-        get => httpClientTimeout;
-        set => Set(ref httpClientTimeout, value);
+        get => timeout;
+        set => Set(ref timeout, value);
     }
 
     /// <summary>
@@ -202,19 +186,6 @@ public class SquidexOptions : OptionsBase
     {
         get => tokenRetryTime;
         set => Set(ref tokenRetryTime, value);
-    }
-
-    /// <summary>
-    /// Gets or sets credentials for specific apps.
-    /// </summary>
-    /// <value>
-    /// The app credentials.
-    /// </value>
-    /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
-    public IReadOnlyDictionary<string, AppCredentials>? AppCredentials
-    {
-        get => appCredentials;
-        set => Set(ref appCredentials, value);
     }
 
     /// <summary>
@@ -261,19 +232,9 @@ public class SquidexOptions : OptionsBase
         }
 
 #pragma warning disable IDE0074 // Use compound assignment
-        if (configurator == null)
+        if (timeout == TimeSpan.Zero)
         {
-            configurator = NoopHttpConfigurator.Instance;
-        }
-
-        if (clientFactory == null)
-        {
-            clientFactory = NoopHttpConfigurator.Instance;
-        }
-
-        if (httpClientTimeout == TimeSpan.Zero)
-        {
-            httpClientTimeout = TimeSpan.FromSeconds(100);
+            timeout = TimeSpan.FromSeconds(100);
         }
 
         if (authenticator == null)
@@ -288,23 +249,7 @@ public class SquidexOptions : OptionsBase
                 throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
             }
 
-            if (appCredentials != null)
-            {
-                var newCredentials = new Dictionary<string, AppCredentials>(StringComparer.OrdinalIgnoreCase);
-
-                foreach (var kvp in appCredentials)
-                {
-                    kvp.Value.CheckAndFreeze();
-
-                    newCredentials[kvp.Key.ToLowerInvariant()] = kvp.Value;
-                }
-
-                appCredentials = newCredentials;
-            }
-
-            var squidexAuthenticator = new Authenticator(this);
-
-            authenticator = new CachingAuthenticator(squidexAuthenticator);
+            authenticator = new CachingAuthenticator(new Authenticator(this));
         }
 
         if (clientProvider == null)

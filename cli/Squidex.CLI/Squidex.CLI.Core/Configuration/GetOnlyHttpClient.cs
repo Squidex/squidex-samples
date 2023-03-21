@@ -9,14 +9,10 @@ using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Configuration;
 
-public sealed class GetOnlyHttpClient : HttpClient
+public sealed class GetOnlyHttpMessageHandler : DelegatingHandler
 {
-    public GetOnlyHttpClient(HttpMessageHandler messageHandler)
-        : base(messageHandler)
-    {
-    }
-
-    public override HttpResponseMessage Send(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override HttpResponseMessage Send(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         if (request.Method != HttpMethod.Get)
         {
@@ -26,7 +22,8 @@ public sealed class GetOnlyHttpClient : HttpClient
         return base.Send(request, cancellationToken);
     }
 
-    public override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         if (request.Method != HttpMethod.Get)
         {

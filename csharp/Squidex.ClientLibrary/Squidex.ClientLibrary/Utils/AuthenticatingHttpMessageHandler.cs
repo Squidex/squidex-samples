@@ -15,18 +15,18 @@ namespace Squidex.ClientLibrary.Utils;
 /// </summary>
 public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
 {
-    private readonly IAuthenticator authenticator;
+    private readonly SquidexOptions options;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AuthenticatingHttpMessageHandler"/> class with the authenticator.
     /// </summary>
-    /// <param name="authenticator">The authenticator. Cannot be null.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="authenticator"/> is null.</exception>
-    public AuthenticatingHttpMessageHandler(IAuthenticator authenticator)
+    /// <param name="options">The options. Cannot be null.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public AuthenticatingHttpMessageHandler(SquidexOptions options)
     {
-        Guard.NotNull(authenticator, nameof(authenticator));
+        Guard.NotNull(options, nameof(options));
 
-        this.authenticator = authenticator;
+        this.options = options;
     }
 
     /// <inheritdoc/>
@@ -38,20 +38,18 @@ public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
             return base.SendAsync(request, cancellationToken);
         }
 
-        if (!authenticator.ShouldIntercept(request))
+        if (!options.Authenticator.ShouldIntercept(request))
         {
             return base.SendAsync(request, cancellationToken);
         }
 
-        var appName = GetAppName(request);
-
-        return InterceptAsync(request, appName, true, cancellationToken);
+        return InterceptAsync(request, true, cancellationToken);
     }
 
-    private async Task<HttpResponseMessage> InterceptAsync(HttpRequestMessage request, string appName, bool retry,
+    private async Task<HttpResponseMessage> InterceptAsync(HttpRequestMessage request, bool retry,
         CancellationToken cancellationToken)
     {
-        var token = await authenticator.GetBearerTokenAsync(appName, cancellationToken);
+        var token = await options.Authenticator.GetBearerTokenAsync(options.AppName, cancellationToken);
 
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -59,28 +57,14 @@ public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
 
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            await authenticator.RemoveTokenAsync(appName, token, cancellationToken);
+            await options.Authenticator.RemoveTokenAsync(options.AppName, token, cancellationToken);
 
             if (retry)
             {
-                return await InterceptAsync(request, appName, false, cancellationToken);
+                return await InterceptAsync(request, false, cancellationToken);
             }
         }
 
         return response;
-    }
-
-    private static string GetAppName(HttpRequestMessage request)
-    {
-        var appName = string.Empty;
-
-        if (request.Headers.TryGetValues(SpecialHeaders.AppName, out var appValues))
-        {
-            request.Headers.Remove(SpecialHeaders.AppName);
-
-            appName = appValues.FirstOrDefault() ?? string.Empty;
-        }
-
-        return appName;
     }
 }

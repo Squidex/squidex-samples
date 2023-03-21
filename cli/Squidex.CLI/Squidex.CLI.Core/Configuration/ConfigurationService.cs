@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration;
 
@@ -168,14 +167,14 @@ public sealed class ConfigurationService : IConfigurationService
         {
             var options = CreateOptions(app, emulate);
 
-            return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
+            return new Session(WorkingDirectory, new SquidexClient(options));
         }
 
         if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
         {
             var options = CreateOptions(app, emulate);
 
-            return new Session(app.Name, WorkingDirectory, new SquidexClientManager(options));
+            return new Session(WorkingDirectory, new SquidexClient(options));
         }
 
         throw new CLIException("Cannot find valid configuration.");
@@ -185,21 +184,17 @@ public sealed class ConfigurationService : IConfigurationService
     {
         var options = new SquidexOptions
         {
+            IgnoreSelfSignedCertificates = app.IgnoreSelfSigned,
             AppName = app.Name,
             ClientId = app.ClientId,
             ClientSecret = app.ClientSecret,
             Url = app.ServiceUrl,
-            HttpClientTimeout = TimeSpan.FromHours(1)
+            Timeout = TimeSpan.FromHours(1)
         };
-
-        if (app.IgnoreSelfSigned)
-        {
-            options.Configurator = AcceptAllCertificatesConfigurator.Instance;
-        }
 
         if (emulate)
         {
-            options.ClientFactory = new GetOnlyHttpClientFactory();
+            options.ClientProvider = new GetOnlyHttpClientProvider(options);
         }
 
         return options;

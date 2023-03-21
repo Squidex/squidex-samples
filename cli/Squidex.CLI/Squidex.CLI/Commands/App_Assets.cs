@@ -38,11 +38,9 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var assets = session.Assets;
-
             using (var fs = await FileSystems.CreateAsync(arguments.Path))
             {
-                var folders = new AssetFolderTree(session.Assets, session.App);
+                var folders = new AssetFolderTree(session.Client.Assets);
 
                 var assetQuery = new AssetQuery();
 
@@ -58,7 +56,7 @@ public partial class App
                     assetQuery.ParentId = await folders.GetIdAsync(targetFolder);
                     assetQuery.Filter = $"fileName eq '{file.Name}'";
 
-                    var existings = await assets.GetAssetsAsync(session.App, assetQuery);
+                    var existings = await session.Client.Assets.GetAssetsAsync(assetQuery);
                     var existing = existings.Items.FirstOrDefault();
 
                     var fileHash = file.GetFileHash();
@@ -79,13 +77,13 @@ public partial class App
                         }
                         else if (existing != null)
                         {
-                            await assets.PutAssetContentAsync(session.App, existing.Id, fileParameter);
+                            await session.Client.Assets.PutAssetContentAsync(existing.Id, fileParameter);
 
                             log.StepSuccess("Existing Asset");
                         }
                         else
                         {
-                            var result = await assets.PostAssetAsync(session.App, assetQuery.ParentId, null, arguments.Duplicate, fileParameter);
+                            var result = await session.Client.Assets.PostAssetAsync(assetQuery.ParentId, null, arguments.Duplicate, fileParameter);
 
                             if (result._meta?.IsDuplicate == "true")
                             {
@@ -116,11 +114,9 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var assets = session.Assets;
-
             using (var fs = await FileSystems.CreateAsync(arguments.Path))
             {
-                var folderTree = new AssetFolderTree(session.Assets, session.App);
+                var folderTree = new AssetFolderTree(session.Client.Assets);
                 var folderNames = new HashSet<string>();
 
                 var parentId = await folderTree.GetIdAsync(arguments.TargetFolder);
@@ -148,7 +144,7 @@ public partial class App
 
                 try
                 {
-                    await assets.GetAllByQueryAsync(session.App, async asset =>
+                    await session.Client.Assets.GetAllByQueryAsync(async asset =>
                     {
                         await downloadPipeline.DownloadAsync(asset);
                     },

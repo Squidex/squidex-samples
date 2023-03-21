@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation;
 
@@ -22,17 +21,5 @@ public interface ISession
 
     DirectoryInfo WorkingDirectory { get; }
 
-    IAppsClient Apps { get; }
-
-    IAssetsClient Assets { get; }
-
-    IBackupsClient Backups { get; }
-
-    ISchemasClient Schemas { get; }
-
-    IExtendableRulesClient Rules { get; }
-
-    IContentsClient<TEntity, TData> Contents<TEntity, TData>(string schemaName) where TEntity : Content<TData> where TData : class, new();
-
-    IContentsClient<DynamicContent, DynamicData> Contents(string schemaName);
+    ISquidexClient Client { get; }
 }
