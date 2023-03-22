@@ -79,6 +79,6 @@ public class StaticHttpClientProvider : IHttpClientProvider
     /// <inheritdoc />
     public HttpClient Get()
     {
-        return staticHttpClient ??= CreateHttpClient(options);
+        return staticHttpClient ?? CreateHttpClient(options);
     }
 }

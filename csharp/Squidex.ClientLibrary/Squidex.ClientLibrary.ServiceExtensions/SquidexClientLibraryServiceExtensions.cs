@@ -25,7 +25,7 @@ public static class SquidexClientLibraryServiceExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configure">A callback to configure Squidex.</param>
     /// <returns>The service collection that was passed in.</returns>
-    public static IServiceCollection AddSquidexClient(this IServiceCollection services, Action<SquidexServiceOptions>? configure)
+    public static IServiceCollection AddSquidexClient(this IServiceCollection services, Action<SquidexServiceOptions>? configure = null)
     {
         return services.AddSquidexClient(Options.Options.DefaultName, configure);
     }
@@ -37,7 +37,7 @@ public static class SquidexClientLibraryServiceExtensions
     /// <param name="name">The name of the client.</param>
     /// <param name="configure">A callback to configure Squidex.</param>
     /// <returns>The service collection that was passed in.</returns>
-    public static IServiceCollection AddSquidexClient(this IServiceCollection services, string name, Action<SquidexServiceOptions>? configure)
+    public static IServiceCollection AddSquidexClient(this IServiceCollection services, string name, Action<SquidexServiceOptions>? configure = null)
     {
         if (configure != null)
         {
