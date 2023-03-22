@@ -29,7 +29,7 @@ public sealed class AuthorImporter
 
     public AuthorImporter(ISession session, ILogger log)
     {
-        client = session.Contents<AuthorContent, AuthorData>("author");
+        client = session.Client.Contents<AuthorContent, AuthorData>("author");
 
         this.log = log;
     }

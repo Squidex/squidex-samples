@@ -64,7 +64,7 @@ public sealed class DownloadPipeline
 
                 if (assetHash == null || !string.Equals(asset.FileHash, assetHash, StringComparison.Ordinal))
                 {
-                    var response = await session.Assets.GetAssetContentBySlugAsync(session.App, asset.Id, string.Empty);
+                    var response = await session.Client.Assets.GetAssetContentBySlugAsync(asset.Id, string.Empty);
 
                     await using (response.Stream)
                     {

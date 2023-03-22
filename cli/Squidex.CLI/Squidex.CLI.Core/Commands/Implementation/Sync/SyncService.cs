@@ -42,7 +42,7 @@ public sealed class SyncService : ISyncService
 
     public SyncService(IFileSystem fileSystem, ISession session)
     {
-        Folders = new AssetFolderTree(session.Assets, session.App);
+        Folders = new AssetFolderTree(session.Client.Assets);
 
         jsonSerializerSettings = new JsonSerializerSettings
         {

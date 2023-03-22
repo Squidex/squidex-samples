@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Squidex.ClientLibrary.ServiceExtensions;
 
-internal sealed class OptionsValidator : IValidateOptions<SquidexServiceOptions>
+internal sealed class SquidexOptionsValidator : IValidateOptions<SquidexServiceOptions>
 {
     public ValidateOptionsResult Validate(string? name, SquidexServiceOptions options)
     {

@@ -17,22 +17,12 @@ public class BasicClientServiceTests
     {
         var sut = CreateSut();
 
-        var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+        var result = await sut.DynamicContents("blog").GetAsync();
 
         Assert.NotEmpty(result.Items);
     }
 
-    [Fact]
-    public async Task Should_query_content_with_overriden_credentials()
-    {
-        var sut = CreateSutWithOverridenCredentials();
-
-        var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
-
-        Assert.NotEmpty(result.Items);
-    }
-
-    private static ISquidexClientManager CreateSut()
+    private static ISquidexClient CreateSut()
     {
         var sut =
            new ServiceCollection()
@@ -44,32 +34,7 @@ public class BasicClientServiceTests
                    options.Url = "https://cloud.squidex.io";
                })
                .BuildServiceProvider()
-               .GetRequiredService<ISquidexClientManager>();
-
-        return sut;
-    }
-
-    private static ISquidexClientManager CreateSutWithOverridenCredentials()
-    {
-        var sut =
-           new ServiceCollection()
-               .AddSquidexClient(options =>
-               {
-                   options.AppName = "squidex-website";
-                   options.ClientId = "INVALID";
-                   options.ClientSecret = "INVALID";
-                   options.AppCredentials = new Dictionary<string, AppCredentials>
-                   {
-                       ["squidex-website"] = new AppCredentials
-                       {
-                           ClientId = "squidex-website:default",
-                           ClientSecret = "QGgqxd7bDHBTEkpC6fj8sbdPWgZrPrPfr3xzb3LKoec=",
-                       }
-                   };
-                   options.Url = "https://cloud.squidex.io";
-               })
-               .BuildServiceProvider()
-               .GetRequiredService<ISquidexClientManager>();
+               .GetRequiredService<ISquidexClient>();
 
         return sut;
     }
@@ -97,13 +62,13 @@ public class BasicClientServiceTests
                         return counts;
                     }).Services
                .BuildServiceProvider()
-               .GetRequiredService<ISquidexClientManager>();
+               .GetRequiredService<ISquidexClient>();
 
         for (var i = 0; i < 10; i++)
         {
             try
             {
-                await sut.CreatePingClient().GetAppPingAsync("app");
+                await sut.Ping.GetAppPingAsync();
             }
             catch
             {

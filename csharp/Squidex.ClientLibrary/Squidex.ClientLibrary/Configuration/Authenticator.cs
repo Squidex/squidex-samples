@@ -56,43 +56,31 @@ public class Authenticator : IAuthenticator
         CancellationToken ct)
     {
         var httpClient = options.ClientProvider.Get();
-        try
+
+        var clientId = options.ClientId;
+        var clientSecret = options.ClientSecret;
+
+        ThrowFromPreviousAttempt(clientId, clientSecret);
+
+        var httpRequest = BuildRequest(clientId, clientSecret);
+
+        using (var response = await httpClient.SendAsync(httpRequest, ct))
         {
-            var clientId = options.ClientId;
-            var clientSecret = options.ClientSecret;
-
-            if (options.AppCredentials != null && options.AppCredentials.TryGetValue(appName, out var credentials))
+            if (!response.IsSuccessStatusCode)
             {
-                clientId = credentials.ClientId;
-                clientSecret = credentials.ClientSecret;
+                var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+
+                StorePreviousAttempt(clientId, clientSecret, exception);
+                throw exception;
             }
-
-            ThrowFromPreviousAttempt(clientId, clientSecret);
-
-            var httpRequest = BuildRequest(clientId, clientSecret);
-
-            using (var response = await httpClient.SendAsync(httpRequest, ct))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
-
-                    StorePreviousAttempt(clientId, clientSecret, exception);
-                    throw exception;
-                }
 #if NET5_0_OR_GREATER
-                var jsonString = await response.Content.ReadAsStringAsync(ct);
+            var jsonString = await response.Content.ReadAsStringAsync(ct);
 #else
-                var jsonString = await response.Content.ReadAsStringAsync();
+            var jsonString = await response.Content.ReadAsStringAsync();
 #endif
-                var jsonToken = JToken.Parse(jsonString);
+            var jsonToken = JToken.Parse(jsonString);
 
-                return jsonToken["access_token"]!.ToString();
-            }
-        }
-        finally
-        {
-            options.ClientProvider.Return(httpClient);
+            return jsonToken["access_token"]!.ToString();
         }
     }
 

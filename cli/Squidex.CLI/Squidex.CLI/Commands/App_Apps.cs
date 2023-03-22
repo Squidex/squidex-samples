@@ -35,7 +35,7 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var apps = await session.Apps.GetAppsAsync();
+            var apps = await session.Client.Apps.GetAppsAsync();
 
             if (arguments.Table)
             {
@@ -71,7 +71,7 @@ public partial class App
                 Name = name
             };
 
-            await session.Apps.PostAppAsync(request);
+            await session.Client.Apps.PostAppAsync(request);
 
             log.WriteLine("> App created.");
         }
@@ -93,7 +93,7 @@ public partial class App
                 throw new CLIException("Confirmed app name does not match.");
             }
 
-            await session.Apps.DeleteAppAsync(name);
+            await session.Client.Apps.DeleteAppAsync();
 
             log.WriteLine("> App deleted.");
         }

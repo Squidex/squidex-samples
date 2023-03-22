@@ -20,23 +20,19 @@ public sealed class AssetFolderTree
     private static readonly string RootId = Guid.Empty.ToString();
     private readonly Dictionary<string, AssetFolderNode> nodes = new Dictionary<string, AssetFolderNode>();
     private readonly IAssetsClient assetsClient;
-    private readonly string appName;
     private readonly AssetFolderNode rootNode = new AssetFolderNode(RootId, string.Empty, string.Empty);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssetFolderTree"/> class.
     /// </summary>
     /// <param name="assetsClient">The assets client. Cannot be null.</param>
-    /// <param name="appName">The app name. Cannot be null.</param>
-    public AssetFolderTree(IAssetsClient assetsClient, string appName)
+    public AssetFolderTree(IAssetsClient assetsClient)
     {
         Guard.NotNull(assetsClient, nameof(assetsClient));
-        Guard.NotNull(appName, nameof(appName));
 
         nodes[RootId] = rootNode;
 
         this.assetsClient = assetsClient;
-        this.appName = appName;
     }
 
     /// <summary>
@@ -140,7 +136,7 @@ public sealed class AssetFolderTree
             ParentId = current.Id
         };
 
-        var folder = await assetsClient.PostAssetFolderAsync(appName, request);
+        var folder = await assetsClient.PostAssetFolderAsync(request);
 
         current = TryAdd(current, folder.Id, name);
         current.HasBeenQueried = true;
@@ -155,7 +151,7 @@ public sealed class AssetFolderTree
             return node;
         }
 
-        var folders = await assetsClient.GetAssetFoldersAsync(appName, id);
+        var folders = await assetsClient.GetAssetFoldersAsync(id);
 
         var current = rootNode;
 

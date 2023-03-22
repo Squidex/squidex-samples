@@ -42,8 +42,8 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var taskForSchema = session.Schemas.GetSchemaAsync(session.App, arguments.Schema);
-            var taskForLanguages = session.Apps.GetLanguagesAsync(session.App);
+            var taskForSchema = session.Client.Schemas.GetSchemaAsync(arguments.Schema);
+            var taskForLanguages = session.Client.Apps.GetLanguagesAsync();
 
             await Task.WhenAll(
                 taskForSchema,

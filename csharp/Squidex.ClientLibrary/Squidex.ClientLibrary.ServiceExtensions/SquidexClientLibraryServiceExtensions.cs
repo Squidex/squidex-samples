@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Options;
-using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.ServiceExtensions;
 using Squidex.ClientLibrary.Utils;
 
@@ -21,72 +20,48 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class SquidexClientLibraryServiceExtensions
 {
     /// <summary>
-    /// The name of the HTTP client.
-    /// </summary>
-    public const string ClientName = "SquidexClient";
-
-    /// <summary>
     /// Adds the Squidex client manager to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configure">A callback to configure Squidex.</param>
     /// <returns>The service collection that was passed in.</returns>
-    public static IServiceCollection AddSquidexClient(this IServiceCollection services, Action<SquidexServiceOptions>? configure)
+    public static IServiceCollection AddSquidexClient(this IServiceCollection services, Action<SquidexServiceOptions>? configure = null)
     {
-        if (configure != null)
-        {
-            services.Configure(configure);
-        }
-
-        services.AddOptions<SquidexServiceOptions>()
-            .PostConfigure<IServiceProvider>((options, c) =>
-            {
-                options.ClientProvider = new HttpClientProvider(c.GetRequiredService<IHttpClientFactory>(), ClientName);
-            });
-
-        services.TryAddSingleton<IValidateOptions<SquidexServiceOptions>,
-              OptionsValidator>();
-
-        AddSquidexHttpClient(services, null);
-
-        services.TryAddSingleton<ISquidexClientManager>(
-            c => new SquidexClientManager(c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value));
-
-        services.AddSquidexClient(m => m.CreateAppsClient());
-        services.AddSquidexClient(m => m.CreateAssetsClient());
-        services.AddSquidexClient(m => m.CreateBackupsClient());
-        services.AddSquidexClient(m => m.CreateCommentsClient());
-        services.AddSquidexClient(m => m.CreateDiagnosticsClient());
-        services.AddSquidexClient(m => m.CreateEventConsumersClient());
-        services.AddSquidexClient(m => m.CreateExtendableRulesClient());
-        services.AddSquidexClient(m => m.CreateCommentsClient());
-        services.AddSquidexClient(m => m.CreateHistoryClient());
-        services.AddSquidexClient(m => m.CreateLanguagesClient());
-        services.AddSquidexClient(m => m.CreatePingClient());
-        services.AddSquidexClient(m => m.CreatePlansClient());
-        services.AddSquidexClient(m => m.CreateRulesClient());
-        services.AddSquidexClient(m => m.CreateSchemasClient());
-        services.AddSquidexClient(m => m.CreateSearchClient());
-        services.AddSquidexClient(m => m.CreateStatisticsClient());
-        services.AddSquidexClient(m => m.CreateTeamsClient());
-        services.AddSquidexClient(m => m.CreateTemplatesClient());
-        services.AddSquidexClient(m => m.CreateTranslationsClient());
-        services.AddSquidexClient(m => m.CreateUserManagementClient());
-        services.AddSquidexClient(m => m.CreateUsersClient());
-
-        return services;
+        return services.AddSquidexClient(Options.Options.DefaultName, configure);
     }
 
     /// <summary>
-    /// Adds the Squidex client to the service collection.
+    /// Adds the Squidex client manager to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="provider">A callback to provider the client from the manager.</param>
+    /// <param name="name">The name of the client.</param>
+    /// <param name="configure">A callback to configure Squidex.</param>
     /// <returns>The service collection that was passed in.</returns>
-    /// <typeparam name="TClient">The type of the client to register.</typeparam>
-    public static IServiceCollection AddSquidexClient<TClient>(this IServiceCollection services, Func<ISquidexClientManager, TClient> provider) where TClient : class
+    public static IServiceCollection AddSquidexClient(this IServiceCollection services, string name, Action<SquidexServiceOptions>? configure = null)
     {
-        services.TryAddSingleton(c => provider(c.GetRequiredService<ISquidexClientManager>()));
+        if (configure != null)
+        {
+            services.Configure(name, configure);
+        }
+
+        services.AddOptions<SquidexServiceOptions>(name)
+            .PostConfigure<IHttpClientFactory>((options, c) =>
+            {
+                var clientName = ClientName(name);
+
+                options.ClientProvider = new HttpClientProvider(() => c.CreateClient(clientName));
+            });
+
+        services.TryAddSingleton<IValidateOptions<SquidexServiceOptions>,
+            SquidexOptionsValidator>();
+
+        services.TryAddSingleton<ISquidexClientProvider,
+            SquidexClientProvider>();
+
+        services.TryAddSingleton(
+            c => c.GetRequiredService<ISquidexClientProvider>().Get());
+
+        services.AddSquidexHttpClient(name);
 
         return services;
     }
@@ -99,13 +74,25 @@ public static class SquidexClientLibraryServiceExtensions
     /// <returns>The http client builder to make more customizatons.</returns>
     public static IHttpClientBuilder AddSquidexHttpClient(this IServiceCollection services, Action<IServiceProvider, HttpClient>? configure = null)
     {
-        return services.AddHttpClient(ClientName, (c, httpClient) =>
-        {
-            var options = c.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
+        return services.AddSquidexHttpClient(Options.Options.DefaultName, configure);
+    }
 
-            if (options.ConfigureHttpClientWithTimeout)
+    /// <summary>
+    /// Adds the Squidex client to the service collection.
+    /// </summary>
+    /// <param name="services">The service collection to configure.</param>
+    /// <param name="name">The name of the client.</param>
+    /// <param name="configure">The callback to configure the HTTP client.</param>
+    /// <returns>The http client builder to make more customizatons.</returns>
+    public static IHttpClientBuilder AddSquidexHttpClient(this IServiceCollection services, string name, Action<IServiceProvider, HttpClient>? configure = null)
+    {
+        return services.AddHttpClient(ClientName(name), (c, httpClient) =>
+        {
+            var options = c.GetRequiredService<IOptionsMonitor<SquidexServiceOptions>>().Get(name);
+
+            if (options.ConfigureHttpClientWithTimeout && options.Timeout != null)
             {
-                httpClient.Timeout = options.HttpClientTimeout;
+                httpClient.Timeout = options.Timeout.Value;
             }
 
             if (options.ConfigureHttpClientWithUrl)
@@ -133,7 +120,7 @@ public static class SquidexClientLibraryServiceExtensions
     {
         var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
 
-        builder.AdditionalHandlers.Add(new AuthenticatingHttpMessageHandler(options.Authenticator));
+        builder.AdditionalHandlers.Add(new AuthenticatingHttpMessageHandler(options));
     }
 
     /// <summary>
@@ -144,6 +131,11 @@ public static class SquidexClientLibraryServiceExtensions
     {
         var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
 
-        builder.PrimaryHandler = new AuthenticatingHttpMessageHandler(options.Authenticator);
+        builder.PrimaryHandler = new AuthenticatingHttpMessageHandler(options);
+    }
+
+    internal static string ClientName(string name)
+    {
+        return $"SquidexHttpClient_{name}";
     }
 }

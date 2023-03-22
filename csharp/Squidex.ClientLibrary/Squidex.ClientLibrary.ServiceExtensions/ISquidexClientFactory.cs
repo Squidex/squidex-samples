@@ -5,21 +5,27 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary.Configuration;
+namespace Squidex.ClientLibrary.ServiceExtensions;
 
 /// <summary>
-/// Optional interface to create new <see cref="HttpClient"/> instances.
+/// Provides a client.
 /// </summary>
-/// <remarks>
-/// Implement this class if you have custom requirements how the HTTP requests need to be done.
-/// </remarks>
-public interface IHttpClientProvider
+public interface ISquidexClientProvider
 {
     /// <summary>
-    /// Creates the HTTP client from the message.
+    /// Gets the default client.
     /// </summary>
     /// <returns>
-    /// The HTTP client.
+    /// The default client.
     /// </returns>
-    HttpClient Get();
+    ISquidexClient Get();
+
+    /// <summary>
+    /// Gets the client with the given name.
+    /// </summary>
+    /// <param name="name">The client name.</param>
+    /// <returns>
+    /// The client with the given name.
+    /// </returns>
+    ISquidexClient Get(string name);
 }

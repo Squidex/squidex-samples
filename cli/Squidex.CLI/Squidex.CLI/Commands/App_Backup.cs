@@ -36,7 +36,7 @@ public sealed partial class App
 
             var backupStarted = DateTime.UtcNow.AddMinutes(-5);
 
-            await session.Backups.PostBackupAsync(session.App);
+            await session.Client.Backups.PostBackupAsync();
 
             log.WriteLine("Backup started, waiting for completion...");
 
@@ -46,7 +46,7 @@ public sealed partial class App
             {
                 while (!tcs.Token.IsCancellationRequested)
                 {
-                    var backups = await session.Backups.GetBackupsAsync(session.App, tcs.Token);
+                    var backups = await session.Client.Backups.GetBackupsAsync(tcs.Token);
                     var backup = backups.Items.Find(x => x.Started >= backupStarted);
 
                     if (backup?.Stopped != null)
@@ -69,7 +69,7 @@ public sealed partial class App
 
                 await using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
                 {
-                    using (var download = await session.Backups.GetBackupContentAsync(session.App, foundBackup.Id))
+                    using (var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id))
                     {
                         await download.Stream.CopyToAsync(fs);
                     }
@@ -79,7 +79,7 @@ public sealed partial class App
                 {
                     log.WriteLine("Removing backup from app...");
 
-                    await session.Backups.DeleteBackupAsync(session.App, foundBackup.Id);
+                    await session.Client.Backups.DeleteBackupAsync(foundBackup.Id);
                 }
 
                 log.WriteLine("> Backup completed and downloaded");

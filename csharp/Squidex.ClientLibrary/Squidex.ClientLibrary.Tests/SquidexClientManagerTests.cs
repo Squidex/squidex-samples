@@ -6,16 +6,15 @@
 // ==========================================================================
 
 using Microsoft.Extensions.DependencyInjection;
+using Squidex.ClientLibrary.ServiceExtensions;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests;
 
 public class SquidexClientManagerTests
 {
-    [Theory]
-    [InlineData("https://cloud.squidex.io")]
-    [InlineData("https://cloud.squidex.io/")]
-    public void Should_build_client_manager_from_service(string url)
+    [Fact]
+    public void Should_build_client_from_service()
     {
         var sut =
             new ServiceCollection()
@@ -23,15 +22,62 @@ public class SquidexClientManagerTests
                 {
                     options.AppName = "app";
                     options.ClientId = "id";
-                    options.ClientSecret = "secet";
-                    options.Url = url;
+                    options.ClientSecret = "secret";
+                    options.Url = "https://custom.squidex.io";
                 })
                 .BuildServiceProvider()
-                .GetRequiredService<ISquidexClientManager>();
+                .GetRequiredService<ISquidexClient>();
 
-        var result = sut.GenerateUrl("relative/url");
+        Assert.Equal("https://custom.squidex.io/", sut.Options.Url);
+    }
 
-        Assert.Equal("https://cloud.squidex.io/relative/url", result);
+    [Fact]
+    public void Should_build_client_from_service_with_custom_options()
+    {
+        var sut =
+            new ServiceCollection()
+                .AddSquidexClient(null)
+                .Configure<SquidexServiceOptions>(options =>
+                {
+                    options.AppName = "app";
+                    options.ClientId = "id";
+                    options.ClientSecret = "secret";
+                    options.Url = "https://custom.squidex.io";
+                })
+                .BuildServiceProvider()
+                .GetRequiredService<ISquidexClient>();
+
+        Assert.Equal("https://custom.squidex.io/", sut.Options.Url);
+    }
+
+    [Fact]
+    public void Should_build_client_from_named_service()
+    {
+        var provider =
+            new ServiceCollection()
+                .AddSquidexClient(null)
+                .Configure<SquidexServiceOptions>(options =>
+                {
+                    options.AppName = "app";
+                    options.ClientId = "id";
+                    options.ClientSecret = "secret";
+                    options.Url = "https://custom1.squidex.io";
+                })
+                .Configure<SquidexServiceOptions>("named", options =>
+                {
+                    options.AppName = "app";
+                    options.ClientId = "id";
+                    options.ClientSecret = "secret";
+                    options.Url = "https://custom2.squidex.io";
+                })
+                .BuildServiceProvider()
+                .GetRequiredService<ISquidexClientProvider>();
+
+        var sut1 = provider.Get();
+        var sut2 = provider.Get("named");
+
+        Assert.Equal("https://custom1.squidex.io/", sut1.Options.Url);
+        Assert.Equal("https://custom2.squidex.io/", sut2.Options.Url);
     }
 
     [Theory]
@@ -122,19 +168,19 @@ public class SquidexClientManagerTests
         Assert.Throws<InvalidOperationException>(() => sut.GenerateAssetCDNUrl("relative/url"));
     }
 
-    private static SquidexClientManager BuildClientManager(Action<SquidexOptions>? configure = null)
+    private static SquidexClient BuildClientManager(Action<SquidexOptions>? configure = null)
     {
         var options = new SquidexOptions
         {
             AppName = "app",
             ClientId = "id",
-            ClientSecret = "secet",
+            ClientSecret = "secret",
             Url = "https://squidex.io"
         };
 
         configure?.Invoke(options);
 
-        var sut = new SquidexClientManager(options);
+        var sut = new SquidexClient(options);
 
         return sut;
     }

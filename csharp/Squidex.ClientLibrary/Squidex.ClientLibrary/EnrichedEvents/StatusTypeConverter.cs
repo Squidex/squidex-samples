@@ -8,7 +8,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Squidex.ClientLibrary;
+namespace Squidex.ClientLibrary.EnrichedEvents;
 
 /// <summary>
 /// Converter for the Status.

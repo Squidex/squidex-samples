@@ -30,10 +30,5 @@ public class SquidexOptionsTests
         Assert.Equal("My-App", options.AppName);
         Assert.Equal("My-ClientId", options.ClientId);
         Assert.Equal("My-ClientSecret", options.ClientSecret);
-
-        var appCredentials = options.AppCredentials!["My-App2"];
-
-        Assert.Equal("My-ClientId2", appCredentials.ClientId);
-        Assert.Equal("My-ClientSecret2", appCredentials.ClientSecret);
     }
 }

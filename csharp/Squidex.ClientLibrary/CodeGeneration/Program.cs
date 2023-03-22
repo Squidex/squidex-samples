@@ -18,9 +18,22 @@ namespace CodeGeneration;
 
 public static class Program
 {
-    public static void Main()
+    public static async Task Main()
     {
-        var document = OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json").Result;
+        var document = await OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json");
+
+        foreach (var operation in document.Operations)
+        {
+            var parameters = operation.Operation.Parameters;
+
+            foreach (var parameter in parameters.ToList())
+            {
+                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
+                {
+                    parameters.Remove(parameter);
+                }
+            }
+        }
 
         var generatorSettings = new CSharpClientGeneratorSettings();
         generatorSettings.ExceptionClass = "SquidexManagementException";

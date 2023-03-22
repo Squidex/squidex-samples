@@ -12,11 +12,11 @@ namespace Squidex.ClientLibrary.Tests;
 
 public class BasicClientTests
 {
-    private readonly ISquidexClientManager sut;
+    private readonly ISquidexClient sut;
 
     public BasicClientTests()
     {
-        sut = new SquidexClientManager(new SquidexOptions
+        sut = new SquidexClient(new SquidexOptions
         {
             AppName = "squidex-website",
             ClientId = "squidex-website:reader",
@@ -27,23 +27,19 @@ public class BasicClientTests
     [Fact(Skip = "No permissions.")]
     public async Task Should_make_ping_api_request()
     {
-        var pingClient = sut.CreatePingClient();
-
-        await pingClient.GetAppPingAsync("squidex-website");
+        await sut.Ping.GetAppPingAsync();
     }
 
     [Fact]
     public async Task Should_make_ping_request()
     {
-        var pingClient = sut.CreatePingClient();
-
-        await pingClient.GetPingAsync();
+        await sut.Ping.GetPingAsync();
     }
 
     [Fact]
     public async Task Should_get_content()
     {
-        var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+        var result = await sut.DynamicContents("blog").GetAsync();
 
         Assert.NotEmpty(result.Items);
     }
@@ -53,7 +49,7 @@ public class BasicClientTests
     {
         ((CachingAuthenticator)sut.Options.Authenticator).SetToCache(sut.Options.AppName, "TOKEN", DateTime.MaxValue);
 
-        var result = await sut.CreateDynamicContentsClient("blog").GetAsync();
+        var result = await sut.DynamicContents("blog").GetAsync();
 
         Assert.NotEmpty(result.Items);
     }

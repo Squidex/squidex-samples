@@ -23,17 +23,12 @@ public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IC
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ContentsSharedClient{TEntity, TData}"/> class
-    /// with the name of the schema, the options from the <see cref="SquidexClientManager"/> and the HTTP client.
+    /// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
     /// </summary>
-    /// <param name="options">The options from the <see cref="SquidexClientManager"/>. Cannot be null.</param>
-    /// <param name="appName">Name of the app. Cannot be null or empty.</param>
-    /// <param name="httpClientProvider">The HTTP client provider. Cannot be null.</param>
+    /// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
     /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="appName"/> is null.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="httpClientProvider"/> is null.</exception>
-    /// <exception cref="ArgumentException"><paramref name="appName"/> is empty.</exception>
-    public ContentsSharedClient(SquidexOptions options, string appName, IHttpClientProvider httpClientProvider)
-        : base(options, appName, httpClientProvider)
+    public ContentsSharedClient(SquidexOptions options)
+        : base(options)
     {
     }
 
@@ -107,11 +102,11 @@ public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IC
     {
         if (ShouldUseCDN(query, context))
         {
-            return $"{Options.ContentCDN}{AppName}/{path}";
+            return $"{Options.ContentCDN}{Options.AppName}/{path}";
         }
         else
         {
-            return $"api/content/{AppName}/{path}";
+            return $"api/content/{Options.AppName}/{path}";
         }
     }
 

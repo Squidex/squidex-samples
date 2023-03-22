@@ -12,9 +12,10 @@ namespace Squidex.ClientLibrary.Configuration;
 /// <summary>
 /// Provides a static instance.
 /// </summary>
-public sealed class StaticHttpClientProvider : IHttpClientProvider
+public class StaticHttpClientProvider : IHttpClientProvider
 {
-    private readonly HttpClient staticHttpClient;
+    private readonly SquidexOptions options;
+    private HttpClient? staticHttpClient;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StaticHttpClientProvider"/> class.
@@ -24,45 +25,60 @@ public sealed class StaticHttpClientProvider : IHttpClientProvider
     {
         Guard.NotNull(options, nameof(options));
 
-        staticHttpClient = CreateClient(options);
+        this.options = options;
     }
 
-    private static HttpClient CreateClient(SquidexOptions options)
+    /// <summary>
+    /// Creates the client from the options.
+    /// </summary>
+    /// <param name="options">The options.</param>
+    /// <returns>
+    /// The created HTTP client.
+    /// </returns>
+    protected virtual HttpClient CreateHttpClient(SquidexOptions options)
     {
-        var handler = new HttpClientHandler();
+        var messageHandler = CreateMessageHandler(options);
 
-        options.Configurator.Configure(handler);
-
-        HttpMessageHandler messageHandler = new AuthenticatingHttpMessageHandler(options.Authenticator)
+        var httpClient = new HttpClient(messageHandler, false)
         {
-            InnerHandler = handler
+            BaseAddress = new Uri(options.Url, UriKind.Absolute)
         };
 
-        messageHandler = options.ClientFactory.CreateHttpMessageHandler(messageHandler) ?? messageHandler;
-
-        var httpClient =
-            options.ClientFactory.CreateHttpClient(messageHandler) ??
-                new HttpClient(messageHandler, false);
-
-        // Apply this setting afterwards, to override the value from the client factory.
-        httpClient.BaseAddress = new Uri(options.Url, UriKind.Absolute);
-
-        // Also override timeout when create from factory.
-        httpClient.Timeout = options.HttpClientTimeout;
-
-        options.Configurator.Configure(httpClient);
+        if (options.Timeout != null)
+        {
+            httpClient.Timeout = options.Timeout.Value;
+        }
 
         return httpClient;
+    }
+
+    /// <summary>
+    /// Creates the client handler from the options.
+    /// </summary>
+    /// <param name="options">The options.</param>
+    /// <returns>
+    /// The created HTTP client handler.
+    /// </returns>
+    protected virtual HttpMessageHandler CreateMessageHandler(SquidexOptions options)
+    {
+        var innerHandler = new HttpClientHandler();
+
+        if (options.IgnoreSelfSignedCertificates)
+        {
+            innerHandler.ServerCertificateCustomValidationCallback = (_, _, _, _) => true;
+        }
+
+        var messageHandler = new AuthenticatingHttpMessageHandler(options)
+        {
+            InnerHandler = innerHandler
+        };
+
+        return messageHandler;
     }
 
     /// <inheritdoc />
     public HttpClient Get()
     {
-        return staticHttpClient;
-    }
-
-    /// <inheritdoc />
-    public void Return(HttpClient httpClient)
-    {
+        return staticHttpClient ?? CreateHttpClient(options);
     }
 }
