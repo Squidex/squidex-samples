@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
         
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3.4.0
 
     - name: setup zip
-      uses: montudor/action-zip@v0.1.0
+      uses: montudor/action-zip@v1.0.0
  
     - name: setup dotnet
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3.0.3
       with:
         dotnet-version: 7.0.x
 

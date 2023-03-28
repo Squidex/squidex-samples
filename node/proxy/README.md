@@ -1,7 +1,5 @@
 # Squidex Proxy
 
-![Docker Pulls](https://img.shields.io/docker/pulls/squidex/node-proxy)
-
 This node application works as a small proxy server in front of Squidex for high availability. 
 
 The goal is to make our clients and architecture more resilient in case something goes wrong.
