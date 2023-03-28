@@ -46,6 +46,7 @@
                         async function loadData(id) {
                             const context = field.getContext();
 
+                            // The asset is marked as protected so we need to add the access token.
                             const url = `${context.apiUrl}/assets/${context.appName}/${id}?access_token=${context.user.accessToken}`; 
 
                             const response = await fetch(url);
@@ -78,9 +79,10 @@
                 const context = field.getContext();
 
                 const body = new FormData();
-                body.append('file', new Blob([JSON.stringify(formData, null, 4)], { type: 'text/json' }));
+                body.append('file', new Blob([JSON.stringify(formData, null, 4)], { type: 'application/json' }));
 
                 if (formId) {
+                    // If we already have an ID, we make a put request to update the content.
                     async function save() {
                         setSaving(true);
 
@@ -105,6 +107,7 @@
                         setSaving(true);
 
                         try {
+                            // We could also upload all assets to a folder if we add the parentId query string.
                             const response = await fetch(`${context.apiUrl}/apps/${context.appName}/assets`, {
                                 method: 'POST',
                                 headers: {
@@ -113,8 +116,21 @@
                                 body
                             });
 
+                            // Mark the asset as protected.
+                            await fetch(`${context.apiUrl}/apps/${context.appName}/assets/${formId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    Authorization: context.user.authorization,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    isProtected: true
+                                })
+                            });
+
                             const result = await response.json();
 
+                            // Store the ID of the created asset in the field.
                             field.valueChanged([result.id]);
                         } finally {
                             setTimeout(() => {
