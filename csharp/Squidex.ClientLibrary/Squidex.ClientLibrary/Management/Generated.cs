@@ -20803,202 +20803,14 @@ namespace Squidex.ClientLibrary.Management
         /// The value for the setting.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
         public object Value { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ContentsDto : Resource
-    {
-        /// <summary>
-        /// The total number of content items.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Total { get; set; }
-
-        /// <summary>
-        /// The content items.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<ContentDto> Items { get; set; } = new System.Collections.Generic.List<ContentDto>();
-
-        /// <summary>
-        /// The possible statuses.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("statuses", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<StatusInfoDto> Statuses { get; set; } = new System.Collections.Generic.List<StatusInfoDto>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ContentDto : Resource
-    {
-        /// <summary>
-        /// The if of the content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The user that has created the content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string CreatedBy { get; set; }
-
-        /// <summary>
-        /// The user that has updated the content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string LastModifiedBy { get; set; }
-
-        /// <summary>
-        /// The data of the content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public object Data { get; set; }
-
-        /// <summary>
-        /// The reference data for the frontend UI.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("referenceData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ContentData ReferenceData { get; set; }
-
-        /// <summary>
-        /// The date and time when the content item has been created.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Created { get; set; }
-
-        /// <summary>
-        /// The date and time when the content item has been modified last.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset LastModified { get; set; }
-
-        /// <summary>
-        /// The status of the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// The new status of the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("newStatus", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string NewStatus { get; set; }
-
-        /// <summary>
-        /// The color of the status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("statusColor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string StatusColor { get; set; }
-
-        /// <summary>
-        /// The color of the new status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("newStatusColor", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string NewStatusColor { get; set; }
-
-        /// <summary>
-        /// The UI token.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editToken", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EditToken { get; set; }
-
-        /// <summary>
-        /// The scheduled status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("scheduleJob", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ScheduleJobDto ScheduleJob { get; set; }
-
-        /// <summary>
-        /// The ID of the schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SchemaId { get; set; }
-
-        /// <summary>
-        /// The name of the schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SchemaName { get; set; }
-
-        /// <summary>
-        /// The display name of the schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaDisplayName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string SchemaDisplayName { get; set; }
-
-        /// <summary>
-        /// The reference fields.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("referenceFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<FieldDto> ReferenceFields { get; set; }
-
-        /// <summary>
-        /// Indicates whether the content is deleted.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isDeleted", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsDeleted { get; set; }
-
-        /// <summary>
-        /// The version of the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("version", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Version { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ContentData : System.Collections.Generic.Dictionary<string, ContentFieldData>
-    {
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, object>
     {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ScheduleJobDto
-    {
-        /// <summary>
-        /// The ID of the schedule job.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The new status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// The target date and time when the content should be scheduled.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("dueTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset DueTime { get; set; }
-
-        /// <summary>
-        /// The color of the scheduled status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Color { get; set; }
-
-        /// <summary>
-        /// The user who schedule the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("scheduledBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string ScheduledBy { get; set; }
 
     }
 
@@ -21159,6 +20971,7 @@ namespace Squidex.ClientLibrary.Management
         /// The preview mode for the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("previewMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AssetPreviewMode PreviewMode { get; set; }
 
@@ -21345,6 +21158,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BooleanFieldEditor Editor { get; set; }
 
@@ -21445,6 +21259,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DateTimeFieldEditor Editor { get; set; }
 
@@ -21494,6 +21309,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public GeolocationFieldEditor Editor { get; set; }
 
@@ -21568,6 +21384,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public NumberFieldEditor Editor { get; set; }
 
@@ -21646,6 +21463,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ReferencesFieldEditor Editor { get; set; }
 
@@ -21787,6 +21605,7 @@ namespace Squidex.ClientLibrary.Management
         /// How the string content should be interpreted.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("contentType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StringContentType ContentType { get; set; }
 
@@ -21794,6 +21613,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StringFieldEditor Editor { get; set; }
 
@@ -21899,6 +21719,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TagsFieldEditor Editor { get; set; }
 
@@ -21926,6 +21747,7 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public UIFieldEditor Editor { get; set; }
 
@@ -22022,343 +21844,6 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class StatusInfoDto
-    {
-        /// <summary>
-        /// The name of the status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// The color of the status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("color", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Color { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class QueryDto
-    {
-        /// <summary>
-        /// The optional list of ids to query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("ids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> Ids { get; set; }
-
-        /// <summary>
-        /// The optional odata query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("oData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OData { get; set; }
-
-        /// <summary>
-        /// The optional json query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("q", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object Q { get; set; }
-
-        /// <summary>
-        /// The parent id (for assets).
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ParentId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class BulkResultDto
-    {
-        /// <summary>
-        /// The error when the bulk job failed.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ErrorDto Error { get; set; }
-
-        /// <summary>
-        /// The index of the bulk job where the result belongs to. The order can change.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("jobIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int JobIndex { get; set; }
-
-        /// <summary>
-        /// The ID of the entity that has been handled successfully or not.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The ID of the entity that has been handled successfully or not.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use \'id\' field now.")]
-        public string ContentId { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ImportContentsDto
-    {
-        /// <summary>
-        /// The data to import.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("datas", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<ContentData> Datas { get; set; } = new System.Collections.Generic.List<ContentData>();
-
-        /// <summary>
-        /// True to automatically publish the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use bulk endpoint now.")]
-        public bool Publish { get; set; }
-
-        /// <summary>
-        /// True to turn off scripting for faster inserts. Default: true.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("doNotScript", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool DoNotScript { get; set; }
-
-        /// <summary>
-        /// True to turn off costly validation: Unique checks, asset checks and reference checks. Default: true.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("optimizeValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool OptimizeValidation { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class BulkUpdateContentsDto
-    {
-        /// <summary>
-        /// The contents to update or insert.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("jobs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<BulkUpdateContentsJobDto> Jobs { get; set; } = new System.Collections.Generic.List<BulkUpdateContentsJobDto>();
-
-        /// <summary>
-        /// True to automatically publish the content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use \'jobs.status\' fields now.")]
-        public bool Publish { get; set; }
-
-        /// <summary>
-        /// True to turn off scripting for faster inserts. Default: true.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("doNotScript", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool DoNotScript { get; set; }
-
-        /// <summary>
-        /// True to turn off validation for faster inserts. Default: false.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("doNotValidate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool DoNotValidate { get; set; }
-
-        /// <summary>
-        /// True to turn off validation of workflow rules. Default: false.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("doNotValidateWorkflow", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool DoNotValidateWorkflow { get; set; }
-
-        /// <summary>
-        /// True to check referrers of deleted contents.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CheckReferrers { get; set; }
-
-        /// <summary>
-        /// True to turn off costly validation: Unique checks, asset checks and reference checks. Default: true.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("optimizeValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool OptimizeValidation { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class BulkUpdateContentsJobDto
-    {
-        /// <summary>
-        /// An optional query to identify the content to update.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public QueryJsonDto Query { get; set; }
-
-        /// <summary>
-        /// An optional ID of the content to update.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The data of the content when type is set to 'Upsert', 'Create', 'Update' or 'Patch.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("data", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ContentData Data { get; set; }
-
-        /// <summary>
-        /// The new status when the type is set to 'ChangeStatus' or 'Upsert'.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// The due time.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("dueTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueTime { get; set; }
-
-        /// <summary>
-        /// The update type.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public BulkUpdateContentType Type { get; set; }
-
-        /// <summary>
-        /// The optional schema id or name.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Schema { get; set; }
-
-        /// <summary>
-        /// Makes the update as patch.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("patch", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Patch { get; set; }
-
-        /// <summary>
-        /// True to delete the content permanently.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("permanent", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Permanent { get; set; }
-
-        /// <summary>
-        /// The number of expected items. Set it to a higher number to update multiple items when a query is defined.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("expectedCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long ExpectedCount { get; set; }
-
-        /// <summary>
-        /// The expected version.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("expectedVersion", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long ExpectedVersion { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class QueryJsonDto
-    {
-        [Newtonsoft.Json.JsonProperty("filter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object Filter { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("fullText", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FullText { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("skip", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Skip { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("take", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Take { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("random", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Random { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("top", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Top { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("sort", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<SortNode> Sort { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class SortNode
-    {
-        [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public PropertyPath Path { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("order", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public SortOrder Order { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class PropertyPath : System.Collections.Generic.List<string>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public enum SortOrder
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Ascending")]
-        Ascending = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Descending")]
-        Descending = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public enum BulkUpdateContentType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Upsert")]
-        Upsert = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ChangeStatus")]
-        ChangeStatus = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Create")]
-        Create = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Delete")]
-        Delete = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Patch")]
-        Patch = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Update")]
-        Update = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Validate")]
-        Validate = 6,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial class ChangeStatusDto
-    {
-        /// <summary>
-        /// The new status.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// The due time.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("dueTime", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueTime { get; set; }
-
-        /// <summary>
-        /// True to check referrers of this content.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("checkReferrers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CheckReferrers { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class AllContentsByPostDto
     {
         /// <summary>
@@ -22406,6 +21891,36 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class BulkResultDto
+    {
+        /// <summary>
+        /// The error when the bulk job failed.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ErrorDto Error { get; set; }
+
+        /// <summary>
+        /// The index of the bulk job where the result belongs to. The order can change.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("jobIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int JobIndex { get; set; }
+
+        /// <summary>
+        /// The ID of the entity that has been handled successfully or not.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The ID of the entity that has been handled successfully or not.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use \'id\' field now.")]
+        public string ContentId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class UsersDto : Resource
     {
         /// <summary>
@@ -22430,21 +21945,21 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the user.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The email of the user. Unique value.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Email { get; set; }
 
         /// <summary>
         /// The display name (usually first name and last name) of the user.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("displayName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -22540,6 +22055,7 @@ namespace Squidex.ClientLibrary.Management
         /// The result of the translation.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TranslationResultCode Result { get; set; }
 
@@ -22607,7 +22123,8 @@ namespace Squidex.ClientLibrary.Management
         /// The event consumers.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<TemplateDto> Items { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<TemplateDto> Items { get; set; } = new System.Collections.Generic.List<TemplateDto>();
 
     }
 
@@ -22618,21 +22135,21 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the template.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The title of the template.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title { get; set; }
 
         /// <summary>
         /// The description of the template.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         /// <summary>
@@ -22650,7 +22167,7 @@ namespace Squidex.ClientLibrary.Management
         /// The details of the template.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Details { get; set; }
 
     }
@@ -22686,21 +22203,21 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the user that contributes to the app.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("contributorId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ContributorId { get; set; }
 
         /// <summary>
         /// The display name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("contributorName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ContributorName { get; set; }
 
         /// <summary>
         /// The email address.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("contributorEmail", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ContributorEmail { get; set; }
 
         /// <summary>
@@ -22718,6 +22235,7 @@ namespace Squidex.ClientLibrary.Management
         /// Indicates whether the user has been invited.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("isInvited", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string IsInvited { get; set; }
 
     }
@@ -22753,13 +22271,14 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the team.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The name of the team.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
@@ -22772,12 +22291,14 @@ namespace Squidex.ClientLibrary.Management
         /// The timestamp when the team has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The timestamp when the team has been modified last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModified { get; set; }
 
         /// <summary>
@@ -22890,6 +22411,7 @@ namespace Squidex.ClientLibrary.Management
         /// The date when the usage was tracked.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Date { get; set; }
 
@@ -22937,6 +22459,7 @@ namespace Squidex.ClientLibrary.Management
         /// The date when the usage was tracked.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Date { get; set; }
 
@@ -22961,7 +22484,7 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the search result.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
@@ -23011,6 +22534,7 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the schema.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
@@ -23039,6 +22563,7 @@ namespace Squidex.ClientLibrary.Management
         /// The type of the schema.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public SchemaType Type { get; set; }
 
@@ -23072,12 +22597,14 @@ namespace Squidex.ClientLibrary.Management
         /// The date and time when the schema has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The date and time when the schema has been modified last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModified { get; set; }
 
         /// <summary>
@@ -23118,7 +22645,8 @@ namespace Squidex.ClientLibrary.Management
         /// The field rules.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fieldRules", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<FieldRuleDto> FieldRules { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<FieldRuleDto> FieldRules { get; set; } = new System.Collections.Generic.List<FieldRuleDto>();
 
         /// <summary>
         /// The list of fields.
@@ -23349,7 +22877,8 @@ namespace Squidex.ClientLibrary.Management
         /// The schemas.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<SchemaDto> Items { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<SchemaDto> Items { get; set; } = new System.Collections.Generic.List<SchemaDto>();
 
     }
 
@@ -23368,6 +22897,7 @@ namespace Squidex.ClientLibrary.Management
         /// The type of the schema.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public SchemaType Type { get; set; }
 
@@ -23628,14 +23158,14 @@ namespace Squidex.ClientLibrary.Management
         /// Describes the action or trigger type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         /// <summary>
         /// The label for the action or trigger type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Display { get; set; }
 
         /// <summary>
@@ -23686,14 +23216,14 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the editor.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The label to use.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("display", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Display { get; set; }
 
         /// <summary>
@@ -23780,32 +23310,35 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the rule.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The user that has created the rule.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
 
         /// <summary>
         /// The user that has updated the rule.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
 
         /// <summary>
         /// The date and time when the rule has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The date and time when the rule has been modified last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModified { get; set; }
 
         /// <summary>
@@ -23923,6 +23456,7 @@ namespace Squidex.ClientLibrary.Management
     public partial class SchemaCondition
     {
         [Newtonsoft.Json.JsonProperty("schemaId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string SchemaId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -24018,12 +23552,14 @@ namespace Squidex.ClientLibrary.Management
         /// The optional custom document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the entry.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Delete { get; set; }
 
     }
@@ -24049,6 +23585,7 @@ namespace Squidex.ClientLibrary.Management
         /// Leave it empty to use the full event as body.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Payload { get; set; }
 
     }
@@ -24067,6 +23604,7 @@ namespace Squidex.ClientLibrary.Management
         /// An optional client name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Client { get; set; }
 
     }
@@ -24092,6 +23630,7 @@ namespace Squidex.ClientLibrary.Management
         /// An optional client name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Client { get; set; }
 
         /// <summary>
@@ -24137,6 +23676,7 @@ namespace Squidex.ClientLibrary.Management
         /// The optional title when creating new topics.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title { get; set; }
 
         /// <summary>
@@ -24174,24 +23714,28 @@ namespace Squidex.ClientLibrary.Management
         /// The optional username.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Username { get; set; }
 
         /// <summary>
         /// The optional password.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Password { get; set; }
 
         /// <summary>
         /// The optional custom document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Delete { get; set; }
 
     }
@@ -24303,18 +23847,21 @@ namespace Squidex.ClientLibrary.Management
         /// The original home of this content, if it was originally published elsewhere.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("canonicalUrl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CanonicalUrl { get; set; }
 
         /// <summary>
         /// The optional comma separated list of tags.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Tags { get; set; }
 
         /// <summary>
         /// Optional publication id.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("publicationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PublicationId { get; set; }
 
         /// <summary>
@@ -24346,12 +23893,14 @@ namespace Squidex.ClientLibrary.Management
         /// The optional url to attach to the notification.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Url { get; set; }
 
         /// <summary>
         /// An optional client name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Client { get; set; }
 
     }
@@ -24377,24 +23926,28 @@ namespace Squidex.ClientLibrary.Management
         /// The optional username.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Username { get; set; }
 
         /// <summary>
         /// The optional password.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Password { get; set; }
 
         /// <summary>
         /// The optional custom document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Delete { get; set; }
 
     }
@@ -24461,18 +24014,21 @@ namespace Squidex.ClientLibrary.Management
         /// Set the Name of the hub method received by the customer.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("methodName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string MethodName { get; set; }
 
         /// <summary>
         /// Define target users or groups by id or name. One item per line. Not needed for Broadcast action.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("target", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Target { get; set; }
 
         /// <summary>
         /// Leave it empty to use the full event as body.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Payload { get; set; }
 
     }
@@ -24565,12 +24121,14 @@ namespace Squidex.ClientLibrary.Management
         /// The optional custom document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Delete { get; set; }
 
     }
@@ -24597,24 +24155,28 @@ namespace Squidex.ClientLibrary.Management
         /// Leave it empty to use the full event as body.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Payload { get; set; }
 
         /// <summary>
         /// The mime type of the payload.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("payloadType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PayloadType { get; set; }
 
         /// <summary>
         /// The message headers in the format '[Key]=[Value]', one entry per line.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("headers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Headers { get; set; }
 
         /// <summary>
         /// The shared secret that is used to calculate the payload signature.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string SharedSecret { get; set; }
 
     }
@@ -24692,17 +24254,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class SimulatedRuleEventsDto : Resource
     {
         /// <summary>
+        /// The total number of simulated rule events.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+
+        /// <summary>
         /// The simulated rule events.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.List<SimulatedRuleEventDto> Items { get; set; } = new System.Collections.Generic.List<SimulatedRuleEventDto>();
-
-        /// <summary>
-        /// The total number of simulated rule events.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Total { get; set; }
 
     }
 
@@ -24814,17 +24376,17 @@ namespace Squidex.ClientLibrary.Management
     public partial class RuleEventsDto : Resource
     {
         /// <summary>
+        /// The total number of rule events.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+
+        /// <summary>
         /// The rule events.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.List<RuleEventDto> Items { get; set; } = new System.Collections.Generic.List<RuleEventDto>();
-
-        /// <summary>
-        /// The total number of rule events.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long Total { get; set; }
 
     }
 
@@ -24835,26 +24397,28 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The time when the event has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The description.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
         /// <summary>
         /// The name of the event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("eventName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EventName { get; set; }
 
         /// <summary>
@@ -24879,6 +24443,7 @@ namespace Squidex.ClientLibrary.Management
         /// The result of the event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public RuleResult Result { get; set; }
 
@@ -24886,6 +24451,7 @@ namespace Squidex.ClientLibrary.Management
         /// The result of the job.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("jobResult", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public RuleJobResult JobResult { get; set; }
 
@@ -24968,6 +24534,7 @@ namespace Squidex.ClientLibrary.Management
         /// The reason why the plan cannot be changed.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("locked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public PlansLockedReason Locked { get; set; }
 
@@ -24980,21 +24547,21 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the plan.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The name of the plan.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The monthly costs of the plan.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("costs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Costs { get; set; }
 
         /// <summary>
@@ -25051,12 +24618,15 @@ namespace Squidex.ClientLibrary.Management
     public partial class ReferralInfo
     {
         [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Code { get; set; }
 
         [Newtonsoft.Json.JsonProperty("earned", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Earned { get; set; }
 
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Condition { get; set; }
 
     }
@@ -25133,14 +24703,14 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the feature.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The description text.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Text { get; set; }
 
     }
@@ -25152,21 +24722,21 @@ namespace Squidex.ClientLibrary.Management
         /// The iso code of the language.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("iso2Code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Iso2Code { get; set; }
 
         /// <summary>
         /// The english name of the language.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("englishName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EnglishName { get; set; }
 
         /// <summary>
         /// The native name of the language.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("nativeName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string NativeName { get; set; }
 
     }
@@ -25178,33 +24748,35 @@ namespace Squidex.ClientLibrary.Management
         /// The message for the event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Message { get; set; }
 
         /// <summary>
         /// The type of the original event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("eventType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EventType { get; set; }
 
         /// <summary>
         /// The user who called the action.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("actor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Actor { get; set; }
 
         /// <summary>
         /// Gets a unique id for the event.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("eventId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EventId { get; set; }
 
         /// <summary>
         /// The time when the event happened.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
@@ -25222,7 +24794,8 @@ namespace Squidex.ClientLibrary.Management
         /// The event consumers.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<EventConsumerDto> Items { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<EventConsumerDto> Items { get; set; } = new System.Collections.Generic.List<EventConsumerDto>();
 
     }
 
@@ -25269,6 +24842,35 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial class QueryDto
+    {
+        /// <summary>
+        /// The optional list of ids to query.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("ids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> Ids { get; set; }
+
+        /// <summary>
+        /// The optional odata query.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("oData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string OData { get; set; }
+
+        /// <summary>
+        /// The optional json query.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("q", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Q { get; set; }
+
+        /// <summary>
+        /// The parent id (for assets).
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ParentId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))")]
     public partial class CommentsDto
     {
         /// <summary>
@@ -25304,27 +24906,28 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the comment.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The time when the comment was created or updated last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("time", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Time { get; set; }
 
         /// <summary>
         /// The user who created or updated the comment.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string User { get; set; }
 
         /// <summary>
         /// The text of the comment.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("text", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Text { get; set; }
 
         /// <summary>
@@ -25372,12 +24975,14 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the backup job.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The time when the job has been started.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("started", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Started { get; set; }
 
         /// <summary>
@@ -25402,6 +25007,7 @@ namespace Squidex.ClientLibrary.Management
         /// The status of the operation.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public JobStatus Status { get; set; }
 
@@ -25432,7 +25038,7 @@ namespace Squidex.ClientLibrary.Management
         /// The uri to load from.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Uri Url { get; set; }
 
         /// <summary>
@@ -25446,6 +25052,7 @@ namespace Squidex.ClientLibrary.Management
         /// The time when the job has been started.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("started", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Started { get; set; }
 
         /// <summary>
@@ -25458,6 +25065,7 @@ namespace Squidex.ClientLibrary.Management
         /// The status of the operation.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public JobStatus Status { get; set; }
 
@@ -25571,19 +25179,21 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The ID of the parent folder. Empty for files without parent.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ParentId { get; set; }
 
         /// <summary>
         /// The folder name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("folderName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FolderName { get; set; }
 
         /// <summary>
@@ -25687,19 +25297,21 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The ID of the parent folder. Empty for files without parent.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ParentId { get; set; }
 
         /// <summary>
         /// The file name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fileName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FileName { get; set; }
 
         /// <summary>
@@ -25718,28 +25330,28 @@ namespace Squidex.ClientLibrary.Management
         /// The slug.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("slug", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Slug { get; set; }
 
         /// <summary>
         /// The mime type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("mimeType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string MimeType { get; set; }
 
         /// <summary>
         /// The file type.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("fileType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FileType { get; set; }
 
         /// <summary>
         /// The formatted text representation of the metadata.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("metadataText", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string MetadataText { get; set; }
 
         /// <summary>
@@ -25758,9 +25370,8 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The asset tags.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<string> Tags { get; set; } = new System.Collections.Generic.List<string>();
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> Tags { get; set; }
 
         /// <summary>
         /// The size of the file in bytes.
@@ -25778,6 +25389,7 @@ namespace Squidex.ClientLibrary.Management
         /// The type of the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AssetType Type { get; set; }
 
@@ -25785,26 +25397,28 @@ namespace Squidex.ClientLibrary.Management
         /// The user that has created the schema.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("createdBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; }
 
         /// <summary>
         /// The user that has updated the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModifiedBy", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastModifiedBy { get; set; }
 
         /// <summary>
         /// The date and time when the asset has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The date and time when the asset has been modified last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModified { get; set; }
 
         /// <summary>
@@ -25849,6 +25463,7 @@ namespace Squidex.ClientLibrary.Management
         /// Indicates whether the asset is a duplicate.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("isDuplicate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string IsDuplicate { get; set; }
 
     }
@@ -25859,9 +25474,8 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The contents to update or insert.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("jobs", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<BulkUpdateAssetsJobDto> Jobs { get; set; } = new System.Collections.Generic.List<BulkUpdateAssetsJobDto>();
+        [Newtonsoft.Json.JsonProperty("jobs", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<BulkUpdateAssetsJobDto> Jobs { get; set; }
 
         /// <summary>
         /// True to check referrers of deleted assets.
@@ -26129,21 +25743,21 @@ namespace Squidex.ClientLibrary.Management
         /// The client id.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The client secret.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("secret", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Secret { get; set; }
 
         /// <summary>
         /// The client name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
@@ -26240,14 +25854,14 @@ namespace Squidex.ClientLibrary.Management
         /// The iso code of the language.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("iso2Code", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Iso2Code { get; set; }
 
         /// <summary>
         /// The english name of the language.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("englishName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EnglishName { get; set; }
 
         /// <summary>
@@ -26325,7 +25939,7 @@ namespace Squidex.ClientLibrary.Management
         /// The role name.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
@@ -26399,13 +26013,14 @@ namespace Squidex.ClientLibrary.Management
         /// The ID of the app.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
         /// The name of the app.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
         public string Name { get; set; }
 
@@ -26431,12 +26046,14 @@ namespace Squidex.ClientLibrary.Management
         /// The timestamp when the app has been created.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("created", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset Created { get; set; }
 
         /// <summary>
         /// The timestamp when the app has been modified last.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("lastModified", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModified { get; set; }
 
         /// <summary>
@@ -26449,7 +26066,8 @@ namespace Squidex.ClientLibrary.Management
         /// The permission level of the user.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> Permissions { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<string> Permissions { get; set; } = new System.Collections.Generic.List<string>();
 
         /// <summary>
         /// Indicates if the user can access the api.
@@ -26570,14 +26188,14 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the suggestion.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The regex pattern.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("regex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Regex { get; set; }
 
         /// <summary>
@@ -26595,14 +26213,14 @@ namespace Squidex.ClientLibrary.Management
         /// The name of the editor.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// The url to the editor.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Url { get; set; }
 
     }
@@ -26676,8 +26294,7 @@ namespace Squidex.ClientLibrary.Management
         /// The workflow steps.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, WorkflowStepDto> Steps { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowStepDto>();
+        public System.Collections.Generic.Dictionary<string, WorkflowStepDto> Steps { get; set; }
 
         /// <summary>
         /// The schema ids.
@@ -26700,8 +26317,7 @@ namespace Squidex.ClientLibrary.Management
         /// The transitions.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("transitions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, WorkflowTransitionDto> Transitions { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowTransitionDto>();
+        public System.Collections.Generic.Dictionary<string, WorkflowTransitionDto> Transitions { get; set; }
 
         /// <summary>
         /// The optional color.
