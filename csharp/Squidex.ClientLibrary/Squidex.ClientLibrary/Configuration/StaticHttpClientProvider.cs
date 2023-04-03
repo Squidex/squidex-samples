@@ -15,6 +15,7 @@ namespace Squidex.ClientLibrary.Configuration;
 public class StaticHttpClientProvider : IHttpClientProvider
 {
     private readonly SquidexOptions options;
+    private HttpClient staticHttpClient;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StaticHttpClientProvider"/> class.
@@ -78,6 +79,6 @@ public class StaticHttpClientProvider : IHttpClientProvider
     /// <inheritdoc />
     public HttpClient Get()
     {
-        return staticHttpClient ?? CreateHttpClient(options);
+        return staticHttpClient ??= CreateHttpClient(options);
     }
 }
