@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.ClientLibrary.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.CLI.Core", "Squidex.CLI.Core\Squidex.CLI.Core.csproj", "{2E2862C3-F689-4A93-8C27-48536E03C4C5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Squidex.ClientLibrary.ServiceExtensions", "..\..\csharp\Squidex.ClientLibrary\Squidex.ClientLibrary.ServiceExtensions\Squidex.ClientLibrary.ServiceExtensions.csproj", "{E226A98A-E0A6-47E2-AB75-03D6354E703D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{2E2862C3-F689-4A93-8C27-48536E03C4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E2862C3-F689-4A93-8C27-48536E03C4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E2862C3-F689-4A93-8C27-48536E03C4C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E226A98A-E0A6-47E2-AB75-03D6354E703D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E226A98A-E0A6-47E2-AB75-03D6354E703D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E226A98A-E0A6-47E2-AB75-03D6354E703D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E226A98A-E0A6-47E2-AB75-03D6354E703D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

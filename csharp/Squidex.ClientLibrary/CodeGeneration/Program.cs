@@ -22,7 +22,14 @@ public static class Program
     {
         var document = await OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json");
 
-        SchemaCleaner.Clean(document);
+        SchemaCleaner.AddExtensions(document);
+
+        // We write a more complete schema for fern code generation.
+        File.WriteAllText("openapi.json", document.ToJson());
+
+        // This cleanup is only needed for .NET.
+        SchemaCleaner.RemoveAppName(document);
+        SchemaCleaner.RemoveUnusedSchemas(document);
 
         var generatorSettings = new CSharpClientGeneratorSettings();
         generatorSettings.ExceptionClass = "SquidexManagementException";
@@ -47,7 +54,7 @@ public static class Program
                 .GenerateFile();
 
         // Use a static version to keep the changes low.
-        sourceCode = sourceCode.Replace("13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v10.0.0.0))", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))");
+        sourceCode = sourceCode.Replace("13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v12.0.0.0))", "13.17.0.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v9.0.0.0))");
 
         File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", sourceCode);
     }

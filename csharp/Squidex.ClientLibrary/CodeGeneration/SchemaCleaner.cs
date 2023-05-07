@@ -7,12 +7,44 @@
 
 using NJsonSchema;
 using NSwag;
+using Squidex.Text;
 
 namespace CodeGeneration;
 
 internal static class SchemaCleaner
 {
-    public static void Clean(OpenApiDocument document)
+    public static void AddExtensions(OpenApiDocument document)
+    {
+        static void AddExtensions(OpenApiOperation operation)
+        {
+            operation.ExtensionData ??= new Dictionary<string, object>();
+            operation.ExtensionData["x-fern-sdk-group-name"] = operation.Tags[0].ToCamelCase();
+            operation.ExtensionData["x-fern-sdk-method-name"] = operation.OperationId.Split('_').Last().ToCamelCase();
+        }
+
+        foreach (var description in document.Operations.ToList())
+        {
+            AddExtensions(description.Operation);
+        }
+    }
+
+    public static void RemoveAppName(OpenApiDocument document)
+    {
+        foreach (var description in document.Operations.ToList())
+        {
+            var parameters = description.Operation.Parameters;
+
+            foreach (var parameter in parameters.ToList())
+            {
+                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
+                {
+                    parameters.Remove(parameter);
+                }
+            }
+        }
+    }
+
+    public static void RemoveUnusedSchemas(OpenApiDocument document)
     {
         var usedRefs = new Dictionary<JsonSchema, int>();
 
@@ -44,16 +76,6 @@ internal static class SchemaCleaner
 
         foreach (var description in document.Operations.ToList())
         {
-            var parameters = description.Operation.Parameters;
-
-            foreach (var parameter in parameters.ToList())
-            {
-                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
-                {
-                    parameters.Remove(parameter);
-                }
-            }
-
             HandleOperation(description.Operation, AddSchema);
         }
 
