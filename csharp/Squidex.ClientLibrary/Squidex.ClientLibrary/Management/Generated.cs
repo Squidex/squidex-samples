@@ -15806,15 +15806,15 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{app}", _options.AppName);
             if (parentId != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (id != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("id") + "=").Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (duplicate != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -15835,7 +15835,7 @@ namespace Squidex.ClientLibrary.Management
                         var content_file_ = new System.Net.Http.StreamContent(file.Data);
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
-                        content_.Add(content_file_, "File", file.FileName ?? "File");
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -16142,11 +16142,11 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (parentId != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("parentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (duplicate != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("duplicate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(duplicate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -16167,7 +16167,7 @@ namespace Squidex.ClientLibrary.Management
                         var content_file_ = new System.Net.Http.StreamContent(file.Data);
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
-                        content_.Add(content_file_, "File", file.FileName ?? "File");
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -16384,11 +16384,11 @@ namespace Squidex.ClientLibrary.Management
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             if (checkReferrers != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("CheckReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("checkReferrers") + "=").Append(System.Uri.EscapeDataString(ConvertToString(checkReferrers, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (permanent != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("Permanent") + "=").Append(System.Uri.EscapeDataString(ConvertToString(permanent, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+                urlBuilder_.Append(System.Uri.EscapeDataString("permanent") + "=").Append(System.Uri.EscapeDataString(ConvertToString(permanent, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -20992,6 +20992,12 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string FolderId { get; set; }
+
+        /// <summary>
+        /// The preview format.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("previewFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PreviewFormat { get; set; }
 
         /// <summary>
         /// The minimum allowed items for the field value.

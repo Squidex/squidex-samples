@@ -44,6 +44,12 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
         foreach (var schema in schemas.Items)
         {
+            if (!schema.IsPublished)
+            {
+                log.ProcessSkipped($"Exporting {schema.Name}.", "Not published.");
+                continue;
+            }
+
             var client = session.Client.DynamicContents(schema.Name);
 
             var contents = new List<ContentModel>();
