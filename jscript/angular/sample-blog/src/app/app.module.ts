@@ -32,7 +32,7 @@ const Client = new SquidexClient({
         AppRoutingModule
     ],
     providers: [
-        { provider: SquidexClient, useValue: Client }
+        { provide: SquidexClient, useValue: Client }
     ],
     bootstrap: [AppComponent]
 })
