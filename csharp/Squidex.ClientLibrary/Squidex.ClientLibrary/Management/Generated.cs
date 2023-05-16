@@ -14507,12 +14507,14 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">Optional number of items to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter.</param>
+        /// <param name="x_NoTotal">Do not return the total amount.</param>
+        /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(double? top = null, double? skip = null, string orderby = null, string filter = null, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -14536,9 +14538,11 @@ namespace Squidex.ClientLibrary.Management
         /// Get all assets for the app.
         /// </remarks>
         /// <param name="query">The required query object.</param>
+        /// <param name="x_NoTotal">Do not return the total amount.</param>
+        /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -15675,12 +15679,14 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">Optional number of items to skip.</param>
         /// <param name="orderby">Optional OData order definition.</param>
         /// <param name="filter">Optional OData filter.</param>
+        /// <param name="x_NoTotal">Do not return the total amount.</param>
+        /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="ids">The optional asset ids.</param>
         /// <param name="q">The optional json query.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(double? top = null, double? skip = null, string orderby = null, string filter = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(double? top = null, double? skip = null, string orderby = null, string filter = null, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, string parentId = null, string ids = null, string q = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/{app}/assets?");
@@ -15720,6 +15726,12 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    if (x_NoTotal != null)
+                        request_.Headers.TryAddWithoutValidation("X-NoTotal", ConvertToString(x_NoTotal, System.Globalization.CultureInfo.InvariantCulture));
+
+                    if (x_NoSlowTotal != null)
+                        request_.Headers.TryAddWithoutValidation("X-NoSlowTotal", ConvertToString(x_NoSlowTotal, System.Globalization.CultureInfo.InvariantCulture));
                     request_.Method = new System.Net.Http.HttpMethod("GET");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -15933,9 +15945,11 @@ namespace Squidex.ClientLibrary.Management
         /// Get all assets for the app.
         /// </remarks>
         /// <param name="query">The required query object.</param>
+        /// <param name="x_NoTotal">Do not return the total amount.</param>
+        /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
         /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (query == null)
                 throw new System.ArgumentNullException("query");
@@ -15949,6 +15963,12 @@ namespace Squidex.ClientLibrary.Management
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+
+                    if (x_NoTotal != null)
+                        request_.Headers.TryAddWithoutValidation("X-NoTotal", ConvertToString(x_NoTotal, System.Globalization.CultureInfo.InvariantCulture));
+
+                    if (x_NoSlowTotal != null)
+                        request_.Headers.TryAddWithoutValidation("X-NoSlowTotal", ConvertToString(x_NoSlowTotal, System.Globalization.CultureInfo.InvariantCulture));
                     var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(query, _settings.Value);
                     var content_ = new System.Net.Http.StringContent(json_);
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
@@ -20971,7 +20991,6 @@ namespace Squidex.ClientLibrary.Management
         /// The preview mode for the asset.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("previewMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AssetPreviewMode PreviewMode { get; set; }
 
@@ -21164,7 +21183,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BooleanFieldEditor Editor { get; set; }
 
@@ -21265,7 +21283,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public DateTimeFieldEditor Editor { get; set; }
 
@@ -21315,7 +21332,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public GeolocationFieldEditor Editor { get; set; }
 
@@ -21390,7 +21406,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public NumberFieldEditor Editor { get; set; }
 
@@ -21469,7 +21484,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ReferencesFieldEditor Editor { get; set; }
 
@@ -21611,7 +21625,6 @@ namespace Squidex.ClientLibrary.Management
         /// How the string content should be interpreted.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("contentType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StringContentType ContentType { get; set; }
 
@@ -21619,7 +21632,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StringFieldEditor Editor { get; set; }
 
@@ -21725,7 +21737,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public TagsFieldEditor Editor { get; set; }
 
@@ -21753,7 +21764,6 @@ namespace Squidex.ClientLibrary.Management
         /// The editor that is used to manage this field.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public UIFieldEditor Editor { get; set; }
 
@@ -22903,7 +22913,6 @@ namespace Squidex.ClientLibrary.Management
         /// The type of the schema.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public SchemaType Type { get; set; }
 
@@ -23557,15 +23566,13 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional custom document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the entry.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Delete { get; set; }
 
     }
@@ -23590,8 +23597,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// Leave it empty to use the full event as body.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Payload { get; set; }
 
     }
@@ -23609,8 +23615,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// An optional client name.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Client { get; set; }
 
     }
@@ -23681,8 +23686,7 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional title when creating new topics.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Title { get; set; }
 
         /// <summary>
@@ -23719,29 +23723,25 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional username.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
 
         /// <summary>
         /// The optional password.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Password { get; set; }
 
         /// <summary>
         /// The optional custom document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Delete { get; set; }
 
     }
@@ -23852,22 +23852,19 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The original home of this content, if it was originally published elsewhere.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("canonicalUrl", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("canonicalUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CanonicalUrl { get; set; }
 
         /// <summary>
         /// The optional comma separated list of tags.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Tags { get; set; }
 
         /// <summary>
         /// Optional publication id.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("publicationId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("publicationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PublicationId { get; set; }
 
         /// <summary>
@@ -23898,15 +23895,13 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional url to attach to the notification.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Url { get; set; }
 
         /// <summary>
         /// An optional client name.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("client", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Client { get; set; }
 
     }
@@ -23931,29 +23926,25 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional username.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
 
         /// <summary>
         /// The optional password.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Password { get; set; }
 
         /// <summary>
         /// The optional custom document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Delete { get; set; }
 
     }
@@ -24019,22 +24010,19 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// Set the Name of the hub method received by the customer.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("methodName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("methodName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string MethodName { get; set; }
 
         /// <summary>
         /// Define target users or groups by id or name. One item per line. Not needed for Broadcast action.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("target", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("target", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Target { get; set; }
 
         /// <summary>
         /// Leave it empty to use the full event as body.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Payload { get; set; }
 
     }
@@ -24126,15 +24114,13 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// The optional custom document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("document", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Document { get; set; }
 
         /// <summary>
         /// The condition when to delete the document.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("delete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Delete { get; set; }
 
     }
@@ -24160,29 +24146,25 @@ namespace Squidex.ClientLibrary.Management
         /// <summary>
         /// Leave it empty to use the full event as body.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Payload { get; set; }
 
         /// <summary>
         /// The mime type of the payload.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("payloadType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("payloadType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PayloadType { get; set; }
 
         /// <summary>
         /// The message headers in the format '[Key]=[Value]', one entry per line.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("headers", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("headers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Headers { get; set; }
 
         /// <summary>
         /// The shared secret that is used to calculate the payload signature.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonProperty("sharedSecret", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SharedSecret { get; set; }
 
     }
@@ -26288,6 +26270,7 @@ namespace Squidex.ClientLibrary.Management
         /// The workflow id.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; }
 
         /// <summary>
@@ -26300,7 +26283,8 @@ namespace Squidex.ClientLibrary.Management
         /// The workflow steps.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.Dictionary<string, WorkflowStepDto> Steps { get; set; }
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.Dictionary<string, WorkflowStepDto> Steps { get; set; } = new System.Collections.Generic.Dictionary<string, WorkflowStepDto>();
 
         /// <summary>
         /// The schema ids.
@@ -26312,6 +26296,7 @@ namespace Squidex.ClientLibrary.Management
         /// The initial step.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("initial", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Initial { get; set; }
 
     }
