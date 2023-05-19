@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@squidex/squidex": "^1.0.0-rc2",
     "core-js": "^3.4.4",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3"

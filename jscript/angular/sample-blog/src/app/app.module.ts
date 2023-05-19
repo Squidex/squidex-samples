@@ -1,7 +1,6 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { SquidexClient } from '@squidex/squidex';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageSiteComponent } from './page-site/page-site.component';
@@ -11,9 +10,12 @@ import { PostComponent } from './post/post.component';
 import { PostsSiteComponent } from './posts-site/posts-site.component';
 import { TopNavComponent } from './top-nav/top-nav.component';
 
-import { Config, DefaultConfig } from './services/config';
-
-import { AuthInterceptor } from './services/auth.interceptor';
+const Client = new SquidexClient({
+    appName: 'sample-blog',
+    clientId: 'sample-blog:blog',
+    clientSecret: 'ZxmQGgouOUmyVU4fh38QOCqKja3IH1vPu1dUx40KDec=',
+    environment: 'https://cloud.squidex.io',
+});
 
 @NgModule({
     declarations: [
@@ -27,12 +29,10 @@ import { AuthInterceptor } from './services/auth.interceptor';
     ],
     imports: [
         BrowserModule,
-        HttpClientModule,
         AppRoutingModule
     ],
     providers: [
-        { provide: Config, useValue: DefaultConfig },
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+        { provide: SquidexClient, useValue: Client }
     ],
     bootstrap: [AppComponent]
 })

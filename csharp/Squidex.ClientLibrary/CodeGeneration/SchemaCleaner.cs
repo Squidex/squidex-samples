@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Google.LongRunning;
 using NJsonSchema;
 using NSwag;
 using Squidex.Text;
@@ -20,12 +21,30 @@ internal static class SchemaCleaner
             operation.ExtensionData ??= new Dictionary<string, object>();
             operation.ExtensionData["x-fern-sdk-group-name"] = operation.Tags[0].ToCamelCase();
             operation.ExtensionData["x-fern-sdk-method-name"] = operation.OperationId.Split('_').Last().ToCamelCase();
+
+            foreach (var parameter in operation.Parameters)
+            {
+                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
+                {
+                    parameter.ExtensionData ??= new Dictionary<string, object>();
+                    parameter.ExtensionData["x-fern-sdk-variable"] = "appName";
+                }
+            }
         }
 
-        foreach (var description in document.Operations.ToList())
+        foreach (var description in document.Operations)
         {
             AddExtensions(description.Operation);
         }
+
+        document.ExtensionData ??= new Dictionary<string, object>();
+        document.ExtensionData["x-fern-sdk-variables"] = new
+        {
+            appName = new
+            {
+                type = "string"
+            }
+        };
     }
 
     public static void RemoveAppName(OpenApiDocument document)

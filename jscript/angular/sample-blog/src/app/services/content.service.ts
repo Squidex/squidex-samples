@@ -1,9 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-import { Config } from './config';
+import { SquidexClient } from '@squidex/squidex';
+import { from, Observable } from 'rxjs';
 
 export interface Post {
     id: string;
@@ -24,59 +21,48 @@ export interface Page {
 })
 export class ContentService {
     constructor(
-        private readonly httpClient: HttpClient,
-        private readonly config: Config
+        private readonly client: SquidexClient,
     ) {
     }
 
     public getPosts(): Observable<{ total: number, posts: Post[] }> {
-        const url = this.config.buildUrl(`api/content/{app}/posts`);
+        return from((async () => {
+            const { total, items } = await this.client.contents.getContents('posts');
 
-        return this.httpClient.get<any>(url)
-            .pipe(map(payload => {
-                const { total, items } = payload;
-
-                return { total, posts: items.map((x: any) => parsePost(x)) };
-            })
-        );
+            return { total, posts: items.map((x: any) => parsePost(x)) };
+        })());
     }
 
     public getPages(): Observable<{ total: number, pages: Page[] }> {
-        const url = this.config.buildUrl(`api/content/{app}/pages`);
+        return from((async () => {
+            const { total, items } = await this.client.contents.getContents('pages');
 
-        return this.httpClient.get<any>(url)
-            .pipe(map(payload => {
-                const { total, items } = payload;
-
-                return { total, pages: items.map((x: any) => parsePage(x)) };
-            })
-        );
+            return { total, pages: items.map((x: any) => parsePage(x)) };
+        })());
     }
 
     public getPost(id: string): Observable<Page | null> {
-        const url = this.config.buildUrl(`api/content/{app}/posts/${id}`);
-
-        return this.httpClient.get<any>(url)
-            .pipe(map(payload => {
-                return parsePost(payload);
-            })
-        );
+        return from((async () => {
+            try {
+                const item = await this.client.contents.getContent('pages', id);
+    
+                return parsePost(item);
+            } catch {
+                return null;
+            }
+        })());
     }
 
     public getPage(slug: string): Observable<Page | null> {
-        const url = this.config.buildUrl(`api/content/{app}/pages?$filter=data/slug/iv eq '${slug}'`);
+        return from((async () => {
+            const { items } = await this.client.contents.getContents('pages', { filter: `data/slug/iv eq '${slug}'` });
 
-        return this.httpClient.get<any>(url)
-            .pipe(map(payload => {
-                const { items } = payload;
+            if (items.length === 0) {
+                return null;
+            }
 
-                if (items.length === 0) {
-                    return null;
-                }
-
-                return parsePage(items[0]);
-            })
-        );
+            return parsePage(items[0]);
+        })());
     }
 }
 
