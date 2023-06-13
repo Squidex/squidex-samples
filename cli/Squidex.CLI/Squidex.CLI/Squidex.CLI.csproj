@@ -14,21 +14,21 @@
     <None Remove="Commands\Implementation\OpenLibrary\Structure\schemas\author.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommandDotNet" Version="7.0.1" />
-    <PackageReference Include="CommandDotNet.FluentValidation" Version="6.0.1" />
+    <PackageReference Include="CommandDotNet" Version="7.0.2" />
+    <PackageReference Include="CommandDotNet.FluentValidation" Version="6.0.2" />
     <PackageReference Include="ConsoleTables" Version="2.4.2" />
     <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="5.0.1" />
     <PackageReference Include="CoreTweet" Version="1.0.0.483" />
-    <PackageReference Include="CsvHelper" Version="30.0.0" />
-    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0182" />
-    <PackageReference Include="Meziantou.Analyzer" Version="1.0.746">
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
+    <PackageReference Include="Meziantou.Analyzer" Version="2.0.60">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NJsonSchema" Version="10.8.0" />
+    <PackageReference Include="NJsonSchema" Version="10.9.0" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" PrivateAssets="all" />
-    <PackageReference Include="Slugify.Core" Version="3.0.0" />
-    <PackageReference Include="Squidex.Text" Version="4.13.0" />
+    <PackageReference Include="Slugify.Core" Version="4.0.1" />
+    <PackageReference Include="Squidex.Text" Version="5.5.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="7.0.0" />
   </ItemGroup>
