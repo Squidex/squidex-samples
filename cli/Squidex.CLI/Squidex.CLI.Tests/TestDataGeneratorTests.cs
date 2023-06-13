@@ -17,7 +17,7 @@ public class TestDataGeneratorTests
     [Fact]
     public void Should_generate_datetime_between_min_and_max()
     {
-        var minValue = DateTime.UtcNow.AddDays(12);
+        var minValue = DateTimeOffset.UtcNow.AddDays(12);
         var maxValue = minValue.AddDays(10);
 
         var values =
@@ -43,7 +43,7 @@ public class TestDataGeneratorTests
     [Fact]
     public void Should_generate_datetime_before_max()
     {
-        var minValue = DateTime.UtcNow.AddDays(-10);
+        var minValue = DateTimeOffset.UtcNow.AddDays(-10);
         var maxValue = minValue.AddDays(30);
 
         var values =
