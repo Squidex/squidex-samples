@@ -192,6 +192,8 @@ public sealed class ConfigurationService : IConfigurationService
             Timeout = TimeSpan.FromHours(1)
         };
 
+        options.UseFallbackSerializer();
+
         if (emulate)
         {
             options.ClientProvider = new GetOnlyHttpClientProvider(options);

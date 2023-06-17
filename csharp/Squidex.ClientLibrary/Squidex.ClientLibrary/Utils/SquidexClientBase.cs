@@ -5,9 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Configuration;
-using Squidex.ClientLibrary.Management;
-
 namespace Squidex.ClientLibrary.Utils;
 
 /// <summary>
@@ -103,12 +100,12 @@ public abstract class SquidexClientBase
 
             if (statusCode == 404)
             {
-                throw new SquidexException("The app, schema or entity does not exist.", statusCode, null);
+                throw new SquidexException("The app, schema or entity does not exist.", statusCode);
             }
 
             if (statusCode == 429)
             {
-                throw new SquidexException("Too many requests, please upgrade your subscription.", statusCode, null);
+                throw new SquidexException("Too many requests, please upgrade your subscription.", statusCode);
             }
 
             var message = await response.Content.ReadAsStringAsync();
@@ -140,7 +137,7 @@ public abstract class SquidexClientBase
                 }
             }
 
-            throw new SquidexException(message, statusCode, details);
+            throw new SquidexException<ErrorDto>(message, statusCode, details);
         }
     }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

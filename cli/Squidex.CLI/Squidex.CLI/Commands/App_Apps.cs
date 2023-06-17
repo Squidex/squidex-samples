@@ -10,7 +10,7 @@ using ConsoleTables;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands;
 

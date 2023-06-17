@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Google.LongRunning;
 using NJsonSchema;
 using NSwag;
 using Squidex.Text;

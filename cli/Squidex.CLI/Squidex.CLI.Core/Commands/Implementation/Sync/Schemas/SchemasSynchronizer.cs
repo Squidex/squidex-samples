@@ -7,7 +7,7 @@
 
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Utils;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 

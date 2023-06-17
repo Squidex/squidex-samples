@@ -5,8 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Management;
-
 namespace Squidex.ClientLibrary;
 
 /// <summary>

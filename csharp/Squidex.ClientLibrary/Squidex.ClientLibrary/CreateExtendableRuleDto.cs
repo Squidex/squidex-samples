@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Newtonsoft.Json.Linq;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.ClientLibrary;
 

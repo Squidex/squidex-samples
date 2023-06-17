@@ -5,7 +5,9 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Newtonsoft.Json;
 using Squidex.ClientLibrary.Configuration;
+using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;
 
@@ -186,6 +188,25 @@ public class SquidexOptions : OptionsBase
     {
         get => tokenRetryTime;
         set => Set(ref tokenRetryTime, value);
+    }
+
+    /// <summary>
+    /// The default serializer settings.
+    /// </summary>
+    public JsonSerializerSettings SerializerSettings { get; private set; } = new JsonSerializerSettings();
+
+    /// <summary>
+    /// Use fallback serializers for older versions.
+    /// </summary>
+    /// <returns>
+    /// The options instance.
+    /// </returns>
+    public SquidexOptions UseFallbackSerializer()
+    {
+        SerializerSettings.Converters.Add(ListFallbackConverter.Clients);
+        SerializerSettings.Converters.Add(ListFallbackConverter.Languages);
+        SerializerSettings.Converters.Add(ListFallbackConverter.Schemas);
+        return this;
     }
 
     /// <summary>

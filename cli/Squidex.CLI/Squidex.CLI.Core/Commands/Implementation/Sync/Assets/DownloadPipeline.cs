@@ -8,7 +8,7 @@
 using System.Threading.Tasks.Dataflow;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Utils;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
 
@@ -64,7 +64,7 @@ public sealed class DownloadPipeline
 
                 if (assetHash == null || !string.Equals(asset.FileHash, assetHash, StringComparison.Ordinal))
                 {
-                    var response = await session.Client.Assets.GetAssetContentBySlugAsync(asset.Id, string.Empty);
+                    var response = await GetAssetAsync(session, asset);
 
                     await using (response.Stream)
                     {
@@ -96,6 +96,20 @@ public sealed class DownloadPipeline
 
         pipelineStart = fileNameStep;
         pipelineEnd = downloadStep;
+    }
+
+    private static async Task<FileResponse> GetAssetAsync(ISession session, AssetDto asset)
+    {
+        try
+        {
+            return await session.Client.Assets.GetAssetContentBySlugAsync(asset.Id, string.Empty);
+        }
+        catch (SquidexException ex) when (ex.StatusCode == 404)
+        {
+#pragma warning disable CS0612 // Type or member is obsolete
+            return await session.Client.Assets.GetAssetContentAsync(asset.Id);
+#pragma warning restore CS0612 // Type or member is obsolete
+        }
     }
 
     public Task DownloadAsync(AssetDto asset)

@@ -8,7 +8,6 @@
 using Newtonsoft.Json.Linq;
 using Slugify;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.TestData;
 

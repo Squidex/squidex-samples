@@ -6,7 +6,7 @@
 // ==========================================================================
 
 using Squidex.CLI.Commands.Implementation.FileSystem;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
 

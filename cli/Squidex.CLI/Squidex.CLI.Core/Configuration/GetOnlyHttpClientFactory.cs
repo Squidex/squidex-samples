@@ -5,10 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Google.Protobuf.WellKnownTypes;
 using Squidex.ClientLibrary;
 using Squidex.ClientLibrary.Configuration;
-using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.CLI.Configuration;
 

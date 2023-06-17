@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Newtonsoft.Json;
-using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary.EnrichedEvents;

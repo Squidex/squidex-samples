@@ -5,19 +5,20 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.ClientLibrary;
+using NJsonSchema;
+using NJsonSchema.CodeGeneration.CSharp;
 
-/// <summary>
-/// The result set of rules.
-/// </summary>
-/// <seealso cref="Resource" />
-public sealed class ExtendableRules : Resource
+namespace CodeGeneration;
+
+public sealed class CustomPropertyNameGenerator : CSharpPropertyNameGenerator
 {
-    /// <summary>
-    /// Gets or sets the rules.
-    /// </summary>
-    /// <value>
-    /// The rules.
-    /// </value>
-    public List<ExtendableRuleDto> Items { get; set; }
+    public override string Generate(JsonSchemaProperty property)
+    {
+        if (property.Name == "_links")
+        {
+            return "Links";
+        }
+
+        return base.Generate(property);
+    }
 }

@@ -9,7 +9,7 @@ using CommandDotNet;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands;
 
@@ -34,7 +34,7 @@ public sealed partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var backupStarted = DateTime.UtcNow.AddMinutes(-5);
+            var backupStarted = DateTimeOffset.UtcNow.AddMinutes(-5);
 
             await session.Client.Backups.PostBackupAsync();
 

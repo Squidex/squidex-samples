@@ -7,7 +7,7 @@
 
 using Squidex.Assets;
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 internal sealed class ProgressHandlerAdapter : IProgressHandler
 {
@@ -44,7 +44,7 @@ internal sealed class ProgressHandlerAdapter : IProgressHandler
 
         if (asset == null)
         {
-            var exception = new SquidexManagementException("Response was null which was not expected.", 0, string.Empty, NullHeaders, null);
+            var exception = new SquidexException("Response was null which was not expected.", 0, string.Empty, NullHeaders, null);
 
             await inner.OnFailedAsync(new AssetUploadExceptionEvent(@event.FileId, exception), ct);
             return;
@@ -61,12 +61,12 @@ internal sealed class ProgressHandlerAdapter : IProgressHandler
         await inner.OnFailedAsync(new AssetUploadExceptionEvent(@event.FileId, exception), ct);
     }
 
-    private async Task<SquidexManagementException> ParseExceptionAsync(HttpResponseMessage? response, Exception exception,
+    private async Task<SquidexException> ParseExceptionAsync(HttpResponseMessage? response, Exception exception,
         CancellationToken ct)
     {
         if (response == null)
         {
-            return new SquidexManagementException("Failed with internal exception", 0, string.Empty, NullHeaders, exception);
+            return new SquidexException("Failed with internal exception", 0, string.Empty, NullHeaders, exception);
         }
 
         var status = (int)response.StatusCode;
@@ -77,36 +77,36 @@ internal sealed class ProgressHandlerAdapter : IProgressHandler
 
                 if (errorDto == null)
                 {
-                    return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
+                    return new SquidexException("Response was null which was not expected.", status, text, NullHeaders, exception);
                 }
 
-                return new SquidexManagementException<ErrorDto>("Asset request not valid.", status, text, NullHeaders, errorDto, exception);
+                return new SquidexException<ErrorDto>("Asset request not valid.", status, text, NullHeaders, errorDto, exception);
             case 413:
                 (errorDto, text) = await client.ReadObjectResponseCoreAsync<ErrorDto>(response, NullHeaders, ct);
 
                 if (errorDto == null)
                 {
-                    return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
+                    return new SquidexException("Response was null which was not expected.", status, text, NullHeaders, exception);
                 }
 
-                return new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status, text, NullHeaders, errorDto, exception);
+                return new SquidexException<ErrorDto>("Asset exceeds the maximum upload size.", status, text, NullHeaders, errorDto, exception);
             case 500:
                 (errorDto, text) = await client.ReadObjectResponseCoreAsync<ErrorDto>(response, NullHeaders, ct);
 
                 if (errorDto == null)
                 {
-                    return new SquidexManagementException("Response was null which was not expected.", status, text, NullHeaders, exception);
+                    return new SquidexException("Response was null which was not expected.", status, text, NullHeaders, exception);
                 }
 
-                return new SquidexManagementException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, exception);
+                return new SquidexException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, exception);
             case 404:
                 var responseText1 = await response.Content.ReadAsStringAsync();
 
-                return new SquidexManagementException("App not found.", status, responseText1, NullHeaders, exception);
+                return new SquidexException("App not found.", status, responseText1, NullHeaders, exception);
             default:
                 var responseText2 = await response.Content.ReadAsStringAsync();
 
-                return new SquidexManagementException($"Exception with unexpected status ({status}): {exception.Message}.", status, responseText2, NullHeaders, exception);
+                return new SquidexException($"Exception with unexpected status ({status}): {exception.Message}.", status, responseText2, NullHeaders, exception);
         }
     }
 }

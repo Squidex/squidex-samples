@@ -63,7 +63,7 @@ internal sealed class Cache<TKey, TValue> where TKey : notnull
             return;
         }
 
-        Set(key, value, DateTime.UtcNow + expires);
+        Set(key, value, DateTimeOffset.UtcNow + expires);
     }
 
     private void Cleanup()
@@ -75,7 +75,7 @@ internal sealed class Cache<TKey, TValue> where TKey : notnull
 
         List<TKey>? keysToRemove = null;
 
-        var now = DateTime.UtcNow;
+        var now = DateTimeOffset.UtcNow;
 
         foreach (var kvp in items)
         {

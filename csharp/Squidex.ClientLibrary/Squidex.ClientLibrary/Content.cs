@@ -73,7 +73,7 @@ public abstract class ContentBase : Entity
 
     private (string App, string Schema) GetDetails()
     {
-        if (!Links.TryGetValue("self", out var self))
+        if (Links == null || !Links.TryGetValue("self", out var self))
         {
             throw new InvalidOperationException("Content has no self link.");
         }

@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System.Runtime.Serialization.Formatters.Binary;
-using Squidex.ClientLibrary.Management;
 using Xunit;
 
 namespace Squidex.ClientLibrary.Tests;
@@ -16,7 +15,7 @@ public class SquidexExceptionTests
     [Fact]
     public void Should_serialize_simple_exception()
     {
-        var source = new SquidexException("Message", 0, null);
+        var source = new SquidexException("Message");
 
         var serialized = SerializeAndDeserialize(source);
 
@@ -26,7 +25,7 @@ public class SquidexExceptionTests
     [Fact]
     public void Should_serialize_with_status_code()
     {
-        var source = new SquidexException("Message", 404, null);
+        var source = new SquidexException("Message", 404);
 
         var serialized = SerializeAndDeserialize(source);
 
@@ -41,14 +40,14 @@ public class SquidexExceptionTests
             Message = "My Error"
         };
 
-        var source = new SquidexException("Message", 0, details);
+        var source = new SquidexException<ErrorDto>("Message", 0, details);
 
         var serialized = SerializeAndDeserialize(source);
 
-        Assert.Equal(details.Message, serialized.Details?.Message);
+        Assert.Equal(details.Message, serialized.Result?.Message);
     }
 
-    private static SquidexException SerializeAndDeserialize(SquidexException source)
+    private static T SerializeAndDeserialize<T>(T source) where T : notnull
     {
         var formatter = new BinaryFormatter();
 
@@ -59,7 +58,7 @@ public class SquidexExceptionTests
 
             stream.Position = 0;
 
-            return (SquidexException)formatter.Deserialize(stream);
+            return (T)formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
         }
     }

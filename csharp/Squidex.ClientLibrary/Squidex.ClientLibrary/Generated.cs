@@ -14,7 +14,7 @@
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 #pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
-namespace Squidex.ClientLibrary.Management
+namespace Squidex.ClientLibrary
 {
     using System = global::System;
 
@@ -30,7 +30,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">The number of users to skip.</param>
         /// <param name="take">The number of users to return.</param>
         /// <returns>Users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UsersDto> GetUsersAsync(string query = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -39,7 +39,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The user object that needs to be added.</param>
         /// <returns>User created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> PostUserAsync(CreateUserDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -48,7 +48,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <returns>User returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> GetUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -58,7 +58,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the user.</param>
         /// <param name="request">The user object that needs to be updated.</param>
         /// <returns>User created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> PutUserAsync(string id, UpdateUserDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -67,7 +67,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to delete.</param>
         /// <returns>User deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -76,7 +76,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to lock.</param>
         /// <returns>User locked.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> LockUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -85,7 +85,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to unlock.</param>
         /// <returns>User unlocked.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> UnlockUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -104,7 +104,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -125,7 +125,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">The number of users to skip.</param>
         /// <param name="take">The number of users to return.</param>
         /// <returns>Users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UsersDto> GetUsersAsync(string query = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -179,7 +179,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UsersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -189,14 +189,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -217,7 +217,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The user object that needs to be added.</param>
         /// <returns>User created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> PostUserAsync(CreateUserDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -265,7 +265,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -275,9 +275,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("User request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("User request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -285,14 +285,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -313,7 +313,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <returns>User returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> GetUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -358,7 +358,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -366,7 +366,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -374,14 +374,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -403,7 +403,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the user.</param>
         /// <param name="request">The user object that needs to be updated.</param>
         /// <returns>User created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> PutUserAsync(string id, UpdateUserDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -455,7 +455,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -465,15 +465,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("User request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("User request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -481,14 +481,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -509,7 +509,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to delete.</param>
         /// <returns>User deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -558,15 +558,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -574,9 +574,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -584,14 +584,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -612,7 +612,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to lock.</param>
         /// <returns>User locked.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> LockUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -658,7 +658,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -668,15 +668,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -684,9 +684,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -694,14 +694,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -722,7 +722,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user to unlock.</param>
         /// <returns>User unlocked.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> UnlockUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -768,7 +768,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -778,15 +778,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("User is the current user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -794,9 +794,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -804,14 +804,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -857,7 +857,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -876,7 +876,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -936,7 +936,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the user resources.
         /// </summary>
         /// <returns>User resources returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ResourcesDto> GetUserResourcesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -948,7 +948,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="query">The query to search the user by email address. Case invariant.</param>
         /// <returns>Users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> GetUsersAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -957,7 +957,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user (GUID).</param>
         /// <returns>User found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserDto> GetUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -966,7 +966,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user (GUID).</param>
         /// <returns>User found and image or fallback returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetUserPictureAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -985,7 +985,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -1003,7 +1003,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the user resources.
         /// </summary>
         /// <returns>User resources returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ResourcesDto> GetUserResourcesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1044,7 +1044,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ResourcesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1054,14 +1054,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1085,7 +1085,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="query">The query to search the user by email address. Case invariant.</param>
         /// <returns>Users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> GetUsersAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1131,7 +1131,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<UserDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1141,14 +1141,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1169,7 +1169,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user (GUID).</param>
         /// <returns>User found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<UserDto> GetUserAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -1214,7 +1214,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1222,7 +1222,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -1230,14 +1230,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1258,7 +1258,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the user (GUID).</param>
         /// <returns>User found and image or fallback returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FileResponse> GetUserPictureAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -1309,7 +1309,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("User not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -1317,14 +1317,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1370,7 +1370,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -1389,7 +1389,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -1450,7 +1450,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The translation request.</param>
         /// <returns>Text translated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -1469,7 +1469,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -1488,7 +1488,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The translation request.</param>
         /// <returns>Text translated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -1536,7 +1536,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TranslationDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1546,9 +1546,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -1556,14 +1556,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1609,7 +1609,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -1628,7 +1628,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -1688,7 +1688,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all templates.
         /// </summary>
         /// <returns>Templates returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TemplatesDto> GetTemplatesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1697,7 +1697,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="name">The name of the template.</param>
         /// <returns>Template returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TemplateDetailsDto> GetTemplateAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -1716,7 +1716,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -1734,7 +1734,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all templates.
         /// </summary>
         /// <returns>Templates returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TemplatesDto> GetTemplatesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -1775,7 +1775,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TemplatesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1785,14 +1785,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1813,7 +1813,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="name">The name of the template.</param>
         /// <returns>Template returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TemplateDetailsDto> GetTemplateAsync(string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (name == null)
@@ -1858,7 +1858,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TemplateDetailsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -1866,7 +1866,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Template not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Template not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -1874,14 +1874,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -1927,7 +1927,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -1946,7 +1946,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -2007,7 +2007,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Contributors returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> GetContributorsAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2017,7 +2017,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="request">Contributor object that needs to be added to the team.</param>
         /// <returns>Contributor assigned to team.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> PostContributorAsync(string team, AssignContributorDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2026,7 +2026,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2036,7 +2036,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="id">The ID of the contributor.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> DeleteContributorAsync(string team, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2048,7 +2048,7 @@ namespace Squidex.ClientLibrary.Management
         /// <br/>You will retrieve all teams, where you are assigned as a contributor.
         /// </remarks>
         /// <returns>Teams returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TeamDto>> GetTeamsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2061,7 +2061,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">The team object that needs to be added to Squidex.</param>
         /// <returns>Team created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TeamDto> PostTeamAsync(CreateTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2070,7 +2070,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The name of the team.</param>
         /// <returns>Teams returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TeamDto> GetTeamAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2080,7 +2080,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The name of the team to update.</param>
         /// <param name="request">The values to update.</param>
         /// <returns>Team updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TeamDto> PutTeamAsync(string team, UpdateTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -2099,7 +2099,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -2118,7 +2118,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Contributors returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> GetContributorsAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2163,7 +2163,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2171,7 +2171,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -2179,14 +2179,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2208,7 +2208,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="request">Contributor object that needs to be added to the team.</param>
         /// <returns>Contributor assigned to team.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> PostContributorAsync(string team, AssignContributorDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2260,7 +2260,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2270,15 +2270,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Contributor request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Contributor request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -2286,14 +2286,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2314,7 +2314,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2359,7 +2359,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2367,7 +2367,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Contributor or team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Contributor or team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -2375,9 +2375,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -2385,14 +2385,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2414,7 +2414,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="id">The ID of the contributor.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> DeleteContributorAsync(string team, string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2463,7 +2463,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2471,7 +2471,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Contributor or team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Contributor or team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -2479,9 +2479,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -2489,14 +2489,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2520,7 +2520,7 @@ namespace Squidex.ClientLibrary.Management
         /// <br/>You will retrieve all teams, where you are assigned as a contributor.
         /// </remarks>
         /// <returns>Teams returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TeamDto>> GetTeamsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -2561,7 +2561,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<TeamDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2571,14 +2571,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2603,7 +2603,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">The team object that needs to be added to Squidex.</param>
         /// <returns>Team created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TeamDto> PostTeamAsync(CreateTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -2651,7 +2651,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2661,9 +2661,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Team request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Team request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 409)
@@ -2671,9 +2671,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Team name is already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Team name is already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -2681,14 +2681,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2709,7 +2709,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The name of the team.</param>
         /// <returns>Teams returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TeamDto> GetTeamAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2754,7 +2754,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2762,7 +2762,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -2770,14 +2770,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2799,7 +2799,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The name of the team to update.</param>
         /// <param name="request">The values to update.</param>
         /// <returns>Team updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<TeamDto> PutTeamAsync(string team, UpdateTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -2851,7 +2851,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<TeamDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -2861,15 +2861,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Team request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Team request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -2877,14 +2877,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -2930,7 +2930,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -2949,7 +2949,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -3009,7 +3009,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get api calls as log file.
         /// </summary>
         /// <returns>Usage tracking results returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<LogDownloadDto> GetLogAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3019,7 +3019,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>API call returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CallsUsageDtoDto> GetUsagesAsync(System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3030,7 +3030,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>API call returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CallsUsageDtoDto> GetUsagesForTeamAsync(string team, System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3038,7 +3038,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get total asset size.
         /// </summary>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CurrentStorageDto> GetCurrentStorageSizeAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3047,7 +3047,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CurrentStorageDto> GetTeamCurrentStorageSizeForTeamAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3057,7 +3057,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<StorageUsagePerDateDto>> GetStorageSizesAsync(System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3068,7 +3068,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<StorageUsagePerDateDto>> GetStorageSizesForTeamAsync(string team, System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -3087,7 +3087,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -3105,7 +3105,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get api calls as log file.
         /// </summary>
         /// <returns>Usage tracking results returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<LogDownloadDto> GetLogAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3146,7 +3146,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<LogDownloadDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3154,7 +3154,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3162,14 +3162,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3191,7 +3191,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>API call returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CallsUsageDtoDto> GetUsagesAsync(System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (fromDate == null)
@@ -3240,7 +3240,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CallsUsageDtoDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3248,7 +3248,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3256,14 +3256,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3286,7 +3286,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>API call returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CallsUsageDtoDto> GetUsagesForTeamAsync(string team, System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -3339,7 +3339,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CallsUsageDtoDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3347,7 +3347,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3355,14 +3355,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3382,7 +3382,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get total asset size.
         /// </summary>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CurrentStorageDto> GetCurrentStorageSizeAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3423,7 +3423,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CurrentStorageDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3431,7 +3431,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3439,14 +3439,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3467,7 +3467,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CurrentStorageDto> GetTeamCurrentStorageSizeForTeamAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -3512,7 +3512,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CurrentStorageDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3520,7 +3520,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3528,14 +3528,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3557,7 +3557,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<StorageUsagePerDateDto>> GetStorageSizesAsync(System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (fromDate == null)
@@ -3606,7 +3606,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<StorageUsagePerDateDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3614,7 +3614,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3622,14 +3622,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3652,7 +3652,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="fromDate">The from date.</param>
         /// <param name="toDate">The to date.</param>
         /// <returns>Storage usage returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<StorageUsagePerDateDto>> GetStorageSizesForTeamAsync(string team, System.DateTimeOffset fromDate, System.DateTimeOffset toDate, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -3705,7 +3705,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<StorageUsagePerDateDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3713,7 +3713,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3721,14 +3721,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -3774,7 +3774,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -3793,7 +3793,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -3854,7 +3854,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="query">The search query.</param>
         /// <returns>Search results returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSearchResultsAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -3873,7 +3873,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -3892,7 +3892,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="query">The search query.</param>
         /// <returns>Search results returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSearchResultsAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -3938,7 +3938,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<SearchResultDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -3946,7 +3946,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -3954,14 +3954,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -4007,7 +4007,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -4026,7 +4026,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -4088,7 +4088,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PostFieldAsync(string schema, AddFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4099,7 +4099,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PostNestedFieldAsync(string schema, long parentId, AddFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4109,7 +4109,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request that contains the field names.</param>
         /// <returns>Schema UI fields defined.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutSchemaUIFieldsAsync(string schema, ConfigureUIFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4119,7 +4119,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request that contains the field ids.</param>
         /// <returns>Schema fields reordered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutSchemaFieldOrderingAsync(string schema, ReorderFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4130,7 +4130,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="request">The request that contains the field ids.</param>
         /// <returns>Schema fields reordered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutNestedFieldOrderingAsync(string schema, long parentId, ReorderFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4141,7 +4141,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the field to update.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutFieldAsync(string schema, long id, UpdateFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4151,7 +4151,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> DeleteFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4163,7 +4163,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the field to update.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutNestedFieldAsync(string schema, long parentId, long id, UpdateFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4174,7 +4174,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> DeleteNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4187,7 +4187,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to lock.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> LockFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4201,7 +4201,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to lock.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> LockNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4214,7 +4214,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to hide.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> HideFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4228,7 +4228,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to hide.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> HideNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4241,7 +4241,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to show.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> ShowFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4255,7 +4255,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to show.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> ShowNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4268,7 +4268,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to enable.</param>
         /// <returns>Schema field enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> EnableFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4282,7 +4282,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to enable.</param>
         /// <returns>Schema field enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> EnableNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4295,7 +4295,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> DisableFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4309,7 +4309,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> DisableNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4317,7 +4317,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get schemas.
         /// </summary>
         /// <returns>Schemas returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemasDto> GetSchemasAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4326,7 +4326,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The schema object that needs to be added to the app.</param>
         /// <returns>Schema created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PostSchemaAsync(CreateSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4335,7 +4335,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to retrieve.</param>
         /// <returns>Schema found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> GetSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4345,7 +4345,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutSchemaAsync(string schema, UpdateSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4354,7 +4354,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to delete.</param>
         /// <returns>Schema deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4364,7 +4364,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutSchemaSyncAsync(string schema, SynchronizeSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4374,7 +4374,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutCategoryAsync(string schema, ChangeCategoryDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4384,7 +4384,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The preview urls for the schema.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutPreviewUrlsAsync(string schema, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4394,7 +4394,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema scripts object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutScriptsAsync(string schema, SchemaScriptsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4404,7 +4404,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema rules object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PutRulesAsync(string schema, ConfigureFieldRulesDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4413,7 +4413,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to publish.</param>
         /// <returns>Schema published.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> PublishSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4422,7 +4422,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to unpublish.</param>
         /// <returns>Schema unpublished.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchemaDto> UnpublishSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -4441,7 +4441,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -4461,7 +4461,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PostFieldAsync(string schema, AddFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -4513,7 +4513,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -4523,15 +4523,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 409)
@@ -4539,9 +4539,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -4549,14 +4549,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -4579,7 +4579,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PostNestedFieldAsync(string schema, long parentId, AddFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -4635,7 +4635,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -4645,9 +4645,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 409)
@@ -4655,15 +4655,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -4671,14 +4671,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -4700,7 +4700,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request that contains the field names.</param>
         /// <returns>Schema UI fields defined.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutSchemaUIFieldsAsync(string schema, ConfigureUIFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -4752,7 +4752,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -4762,15 +4762,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -4778,14 +4778,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -4807,7 +4807,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request that contains the field ids.</param>
         /// <returns>Schema fields reordered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutSchemaFieldOrderingAsync(string schema, ReorderFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -4859,7 +4859,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -4869,15 +4869,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -4885,14 +4885,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -4915,7 +4915,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="request">The request that contains the field ids.</param>
         /// <returns>Schema fields reordered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutNestedFieldOrderingAsync(string schema, long parentId, ReorderFieldsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -4971,7 +4971,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -4981,15 +4981,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -4997,14 +4997,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5027,7 +5027,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the field to update.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutFieldAsync(string schema, long id, UpdateFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5083,7 +5083,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5093,15 +5093,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5109,14 +5109,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5138,7 +5138,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> DeleteFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5187,7 +5187,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5197,15 +5197,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5213,14 +5213,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5244,7 +5244,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the field to update.</param>
         /// <param name="request">The field object that needs to be added to the schema.</param>
         /// <returns>Schema field updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutNestedFieldAsync(string schema, long parentId, long id, UpdateFieldDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5304,7 +5304,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5314,15 +5314,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5330,14 +5330,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5360,7 +5360,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> DeleteNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5413,7 +5413,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5423,15 +5423,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5439,14 +5439,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5471,7 +5471,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to lock.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> LockFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5521,7 +5521,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5531,15 +5531,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5547,14 +5547,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5580,7 +5580,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to lock.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> LockNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5634,7 +5634,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5644,15 +5644,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Field, schema, or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Field, schema, or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5660,14 +5660,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5692,7 +5692,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to hide.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> HideFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5742,7 +5742,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5752,15 +5752,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5768,14 +5768,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5801,7 +5801,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to hide.</param>
         /// <returns>Schema field hidden.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> HideNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5855,7 +5855,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5865,15 +5865,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Field, schema, or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Field, schema, or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5881,14 +5881,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -5913,7 +5913,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to show.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> ShowFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -5963,7 +5963,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -5973,15 +5973,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -5989,14 +5989,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6022,7 +6022,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to show.</param>
         /// <returns>Schema field shown.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> ShowNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6076,7 +6076,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6086,15 +6086,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6102,14 +6102,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6134,7 +6134,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to enable.</param>
         /// <returns>Schema field enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> EnableFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6184,7 +6184,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6194,15 +6194,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6210,14 +6210,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6243,7 +6243,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to enable.</param>
         /// <returns>Schema field enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> EnableNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6297,7 +6297,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6307,15 +6307,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6323,14 +6323,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6355,7 +6355,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> DisableFieldAsync(string schema, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6405,7 +6405,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6415,15 +6415,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6431,14 +6431,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6464,7 +6464,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The parent field id.</param>
         /// <param name="id">The ID of the field to disable.</param>
         /// <returns>Schema field disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> DisableNestedFieldAsync(string schema, long parentId, long id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6518,7 +6518,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6528,15 +6528,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema field request not valid or field locked.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema, field or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema, field or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6544,14 +6544,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6571,7 +6571,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get schemas.
         /// </summary>
         /// <returns>Schemas returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemasDto> GetSchemasAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -6612,7 +6612,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemasDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6620,7 +6620,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6628,14 +6628,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6656,7 +6656,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The schema object that needs to be added to the app.</param>
         /// <returns>Schema created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PostSchemaAsync(CreateSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -6704,7 +6704,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6714,9 +6714,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 409)
@@ -6724,9 +6724,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema name already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -6734,14 +6734,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6762,7 +6762,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to retrieve.</param>
         /// <returns>Schema found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> GetSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6807,7 +6807,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6815,7 +6815,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6823,14 +6823,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6852,7 +6852,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutSchemaAsync(string schema, UpdateSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -6904,7 +6904,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -6914,15 +6914,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -6930,14 +6930,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -6958,7 +6958,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to delete.</param>
         /// <returns>Schema deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7005,7 +7005,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -7013,9 +7013,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -7023,14 +7023,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7052,7 +7052,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutSchemaSyncAsync(string schema, SynchronizeSchemaDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7104,7 +7104,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7114,15 +7114,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -7130,14 +7130,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7159,7 +7159,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutCategoryAsync(string schema, ChangeCategoryDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7211,7 +7211,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7221,15 +7221,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -7237,14 +7237,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7266,7 +7266,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The preview urls for the schema.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutPreviewUrlsAsync(string schema, System.Collections.Generic.IDictionary<string, string> request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7318,7 +7318,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7328,15 +7328,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -7344,14 +7344,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7373,7 +7373,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema scripts object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutScriptsAsync(string schema, SchemaScriptsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7425,7 +7425,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7435,15 +7435,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -7451,14 +7451,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7480,7 +7480,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The schema rules object that needs to updated.</param>
         /// <returns>Schema updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PutRulesAsync(string schema, ConfigureFieldRulesDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7532,7 +7532,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7542,15 +7542,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Schema request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -7558,14 +7558,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7586,7 +7586,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to publish.</param>
         /// <returns>Schema published.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> PublishSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7632,7 +7632,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7640,7 +7640,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -7648,9 +7648,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -7658,14 +7658,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7686,7 +7686,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="schema">The name of the schema to unpublish.</param>
         /// <returns>Schema unpublished.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SchemaDto> UnpublishSchemaAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
@@ -7732,7 +7732,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SchemaDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -7740,7 +7740,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Schema or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -7748,9 +7748,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -7758,14 +7758,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -7811,7 +7811,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -7830,7 +7830,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -7890,7 +7890,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get supported rule actions.
         /// </summary>
         /// <returns>Rule actions returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, RuleElementDto>> GetActionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7898,7 +7898,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get rules.
         /// </summary>
         /// <returns>Rules returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RulesDto> GetRulesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7907,7 +7907,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The rule object that needs to be added to the app.</param>
         /// <returns>Rule created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RuleDto> PostRuleAsync(CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7915,7 +7915,7 @@ namespace Squidex.ClientLibrary.Management
         /// Cancel the current run.
         /// </summary>
         /// <returns>Rule run cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteRuleRunAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7925,7 +7925,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the rule to update.</param>
         /// <param name="request">The rule object that needs to be added to the app.</param>
         /// <returns>Rule updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RuleDto> PutRuleAsync(string id, UpdateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7934,7 +7934,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to delete.</param>
         /// <returns>Rule deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7943,7 +7943,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to enable.</param>
         /// <returns>Rule enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RuleDto> EnableRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7952,7 +7952,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to disable.</param>
         /// <returns>Rule disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RuleDto> DisableRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7961,7 +7961,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to disable.</param>
         /// <returns>Rule triggered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task TriggerRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7971,7 +7971,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the rule to run.</param>
         /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
         /// <returns>Rule started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7980,7 +7980,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to cancel.</param>
         /// <returns>Rule events cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteRuleEventsAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7989,7 +7989,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulatePOSTAsync(CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7998,7 +7998,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8009,7 +8009,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">The number of events to skip.</param>
         /// <param name="take">The number of events to take.</param>
         /// <returns>Rule events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RuleEventsDto> GetEventsAsync(string ruleId = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8017,7 +8017,7 @@ namespace Squidex.ClientLibrary.Management
         /// Cancels all events.
         /// </summary>
         /// <returns>Events cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteEventsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8026,7 +8026,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The event to enqueue.</param>
         /// <returns>Rule enqueued.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PutEventAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8035,7 +8035,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The event to cancel.</param>
         /// <returns>Rule event cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteEventAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8043,7 +8043,7 @@ namespace Squidex.ClientLibrary.Management
         /// Provide a list of all event types that are used in rules.
         /// </summary>
         /// <returns>Rule events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8052,7 +8052,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="type">The type name of the event.</param>
         /// <returns>Rule event type found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<object> GetEventSchemaAsync(string type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -8071,7 +8071,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -8089,7 +8089,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get supported rule actions.
         /// </summary>
         /// <returns>Rule actions returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, RuleElementDto>> GetActionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8130,7 +8130,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, RuleElementDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8140,14 +8140,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8167,7 +8167,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get rules.
         /// </summary>
         /// <returns>Rules returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RulesDto> GetRulesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8208,7 +8208,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RulesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8216,7 +8216,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -8224,14 +8224,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8252,7 +8252,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The rule object that needs to be added to the app.</param>
         /// <returns>Rule created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RuleDto> PostRuleAsync(CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -8300,7 +8300,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8310,15 +8310,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Rule request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Rule request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -8326,14 +8326,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8353,7 +8353,7 @@ namespace Squidex.ClientLibrary.Management
         /// Cancel the current run.
         /// </summary>
         /// <returns>Rule run cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteRuleRunAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -8398,9 +8398,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8408,14 +8408,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8437,7 +8437,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the rule to update.</param>
         /// <param name="request">The rule object that needs to be added to the app.</param>
         /// <returns>Rule updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RuleDto> PutRuleAsync(string id, UpdateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8489,7 +8489,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8499,15 +8499,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Rule request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Rule request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -8515,14 +8515,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8543,7 +8543,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to delete.</param>
         /// <returns>Rule deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8590,7 +8590,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -8598,9 +8598,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8608,14 +8608,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8636,7 +8636,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to enable.</param>
         /// <returns>Rule enabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RuleDto> EnableRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8682,7 +8682,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8690,7 +8690,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -8698,9 +8698,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8708,14 +8708,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8736,7 +8736,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to disable.</param>
         /// <returns>Rule disabled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RuleDto> DisableRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8782,7 +8782,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RuleDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -8790,7 +8790,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -8798,9 +8798,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8808,14 +8808,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8836,7 +8836,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to disable.</param>
         /// <returns>Rule triggered.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task TriggerRuleAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8884,7 +8884,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -8892,9 +8892,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8902,14 +8902,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -8931,7 +8931,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the rule to run.</param>
         /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
         /// <returns>Rule started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -8986,9 +8986,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -8996,14 +8996,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9024,7 +9024,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to cancel.</param>
         /// <returns>Rule events cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteRuleEventsAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -9073,9 +9073,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -9083,14 +9083,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9111,7 +9111,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulatePOSTAsync(CreateRuleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -9159,7 +9159,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SimulatedRuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -9167,7 +9167,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -9175,9 +9175,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -9185,14 +9185,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9213,7 +9213,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the rule to simulate.</param>
         /// <returns>Rule simulated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<SimulatedRuleEventsDto> SimulateGETAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -9258,7 +9258,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<SimulatedRuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -9266,7 +9266,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -9274,14 +9274,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9304,7 +9304,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="skip">The number of events to skip.</param>
         /// <param name="take">The number of events to take.</param>
         /// <returns>Rule events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RuleEventsDto> GetEventsAsync(string ruleId = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9358,7 +9358,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RuleEventsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -9366,7 +9366,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -9374,14 +9374,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9401,7 +9401,7 @@ namespace Squidex.ClientLibrary.Management
         /// Cancels all events.
         /// </summary>
         /// <returns>Events cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteEventsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9446,9 +9446,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -9456,14 +9456,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9484,7 +9484,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The event to enqueue.</param>
         /// <returns>Rule enqueued.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PutEventAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -9532,7 +9532,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App or rule event not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App or rule event not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -9540,9 +9540,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -9550,14 +9550,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9578,7 +9578,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The event to cancel.</param>
         /// <returns>Rule event cancelled.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteEventAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -9625,7 +9625,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App or rule event not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App or rule event not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -9633,9 +9633,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -9643,14 +9643,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9670,7 +9670,7 @@ namespace Squidex.ClientLibrary.Management
         /// Provide a list of all event types that are used in rules.
         /// </summary>
         /// <returns>Rule events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -9711,7 +9711,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -9721,14 +9721,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9749,7 +9749,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="type">The type name of the event.</param>
         /// <returns>Rule event type found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<object> GetEventSchemaAsync(string type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (type == null)
@@ -9794,7 +9794,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<object>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -9802,7 +9802,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Rule event not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Rule event not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -9810,14 +9810,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -9863,7 +9863,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -9882,7 +9882,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -9942,7 +9942,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app plan information.
         /// </summary>
         /// <returns>App plan information returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PlansDto> GetPlansAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9951,7 +9951,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Plan object that needs to be changed.</param>
         /// <returns>Plan changed or redirect url returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PlanChangedDto> PutPlanAsync(ChangePlanDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9960,7 +9960,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The name of the team.</param>
         /// <returns>Team plan information returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PlansDto> GetTeamPlansAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9970,7 +9970,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The name of the team.</param>
         /// <param name="request">Plan object that needs to be changed.</param>
         /// <returns>Plan changed or redirect url returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<PlanChangedDto> PutTeamPlanAsync(string team, ChangePlanDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -9989,7 +9989,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -10007,7 +10007,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app plan information.
         /// </summary>
         /// <returns>App plan information returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<PlansDto> GetPlansAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10048,7 +10048,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<PlansDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10056,7 +10056,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -10064,14 +10064,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10092,7 +10092,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Plan object that needs to be changed.</param>
         /// <returns>Plan changed or redirect url returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<PlanChangedDto> PutPlanAsync(ChangePlanDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -10140,7 +10140,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<PlanChangedDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10150,15 +10150,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Plan not owned by user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Plan not owned by user.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -10166,14 +10166,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10194,7 +10194,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="team">The name of the team.</param>
         /// <returns>Team plan information returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<PlansDto> GetTeamPlansAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -10239,7 +10239,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<PlansDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10247,7 +10247,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -10255,14 +10255,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10284,7 +10284,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The name of the team.</param>
         /// <param name="request">Plan object that needs to be changed.</param>
         /// <returns>Plan changed or redirect url returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<PlanChangedDto> PutTeamPlanAsync(string team, ChangePlanDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -10336,7 +10336,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<PlanChangedDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10344,7 +10344,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -10352,9 +10352,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -10362,14 +10362,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10415,7 +10415,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -10434,7 +10434,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -10494,7 +10494,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get API information.
         /// </summary>
         /// <returns>Infos returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10505,7 +10505,7 @@ namespace Squidex.ClientLibrary.Management
         /// Can be used to test, if the Squidex API is alive and responding.
         /// </remarks>
         /// <returns>Service ping successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task GetPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10516,7 +10516,7 @@ namespace Squidex.ClientLibrary.Management
         /// Can be used to test, if the Squidex API is alive and responding.
         /// </remarks>
         /// <returns>Service ping successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task GetAppPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -10535,7 +10535,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -10553,7 +10553,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get API information.
         /// </summary>
         /// <returns>Infos returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10594,7 +10594,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10604,14 +10604,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10634,7 +10634,7 @@ namespace Squidex.ClientLibrary.Management
         /// Can be used to test, if the Squidex API is alive and responding.
         /// </remarks>
         /// <returns>Service ping successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task GetPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10679,14 +10679,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10709,7 +10709,7 @@ namespace Squidex.ClientLibrary.Management
         /// Can be used to test, if the Squidex API is alive and responding.
         /// </remarks>
         /// <returns>Service ping successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task GetAppPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10754,14 +10754,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -10807,7 +10807,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -10826,7 +10826,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -10887,7 +10887,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="version">The latest received version.</param>
         /// <returns>Latest features returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FeaturesDto> GetNewsAsync(int? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -10906,7 +10906,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -10925,7 +10925,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="version">The latest received version.</param>
         /// <returns>Latest features returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FeaturesDto> GetNewsAsync(int? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -10971,7 +10971,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<FeaturesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -10981,14 +10981,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11034,7 +11034,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11053,7 +11053,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11116,7 +11116,7 @@ namespace Squidex.ClientLibrary.Management
         /// Provide a list of supported language codes, following the ISO2Code standard.
         /// </remarks>
         /// <returns>Supported language codes returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LanguageDto>> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -11135,7 +11135,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -11156,7 +11156,7 @@ namespace Squidex.ClientLibrary.Management
         /// Provide a list of supported language codes, following the ISO2Code standard.
         /// </remarks>
         /// <returns>Supported language codes returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LanguageDto>> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11197,7 +11197,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<LanguageDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11207,14 +11207,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11260,7 +11260,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11279,7 +11279,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11340,7 +11340,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="channel">The name of the channel.</param>
         /// <returns>Events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HistoryEventDto>> GetAppHistoryAsync(string channel = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11350,7 +11350,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="channel">The name of the channel.</param>
         /// <returns>Events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HistoryEventDto>> GetTeamHistoryAsync(string team, string channel = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -11369,7 +11369,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -11388,7 +11388,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="channel">The name of the channel.</param>
         /// <returns>Events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HistoryEventDto>> GetAppHistoryAsync(string channel = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11434,7 +11434,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<HistoryEventDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11442,7 +11442,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -11450,14 +11450,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11479,7 +11479,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="team">The ID of the team.</param>
         /// <param name="channel">The name of the channel.</param>
         /// <returns>Events returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HistoryEventDto>> GetTeamHistoryAsync(string team, string channel = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -11529,7 +11529,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<HistoryEventDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11537,7 +11537,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Team not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Team not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -11545,14 +11545,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11598,7 +11598,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -11617,7 +11617,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -11677,7 +11677,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get event consumers.
         /// </summary>
         /// <returns>Event consumers returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<EventConsumersDto> GetEventConsumersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11686,7 +11686,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer started asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<EventConsumerDto> StartEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11695,7 +11695,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer stopped asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<EventConsumerDto> StopEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11704,7 +11704,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer resetted asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<EventConsumerDto> ResetEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -11723,7 +11723,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -11741,7 +11741,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get event consumers.
         /// </summary>
         /// <returns>Event consumers returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EventConsumersDto> GetEventConsumersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -11782,7 +11782,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11792,14 +11792,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11820,7 +11820,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer started asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EventConsumerDto> StartEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (consumerName == null)
@@ -11866,7 +11866,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11874,7 +11874,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Event consumer not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Event consumer not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -11882,9 +11882,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -11892,14 +11892,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -11920,7 +11920,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer stopped asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EventConsumerDto> StopEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (consumerName == null)
@@ -11966,7 +11966,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -11974,7 +11974,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Event consumer not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Event consumer not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -11982,9 +11982,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -11992,14 +11992,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12020,7 +12020,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="consumerName">The name of the event consumer.</param>
         /// <returns>Event consumer resetted asynchronously.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<EventConsumerDto> ResetEventConsumerAsync(string consumerName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (consumerName == null)
@@ -12066,7 +12066,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<EventConsumerDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -12074,7 +12074,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Event consumer not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Event consumer not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -12082,9 +12082,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -12092,14 +12092,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12145,7 +12145,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -12164,7 +12164,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -12224,7 +12224,7 @@ namespace Squidex.ClientLibrary.Management
         /// Creates a dump and writes it into storage..
         /// </summary>
         /// <returns>Dump created successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task GetDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12232,7 +12232,7 @@ namespace Squidex.ClientLibrary.Management
         /// Creates a gc dump and writes it into storage.
         /// </summary>
         /// <returns>Dump created successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task GetGCDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -12251,7 +12251,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -12269,7 +12269,7 @@ namespace Squidex.ClientLibrary.Management
         /// Creates a dump and writes it into storage..
         /// </summary>
         /// <returns>Dump created successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task GetDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -12314,9 +12314,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Not configured.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Not configured.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -12324,14 +12324,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12351,7 +12351,7 @@ namespace Squidex.ClientLibrary.Management
         /// Creates a gc dump and writes it into storage.
         /// </summary>
         /// <returns>Dump created successful.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task GetGCDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -12396,9 +12396,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Not configured.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Not configured.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -12406,14 +12406,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12459,7 +12459,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -12478,7 +12478,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -12539,7 +12539,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="resource">The path to the resource.</param>
         /// <returns>Watching users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetWatchingUsersAsync(string resource, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12552,7 +12552,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="version">The current version.</param>
         /// <returns>Comments returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CommentsDto> GetCommentsAsync(string commentsId, long? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12562,7 +12562,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12573,7 +12573,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentId">The ID of the comment.</param>
         /// <param name="request">The comment object that needs to updated.</param>
         /// <returns>Comment updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PutCommentAsync(string commentsId, string commentId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12583,7 +12583,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="commentId">The ID of the comment.</param>
         /// <returns>Comment deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteCommentAsync(string commentsId, string commentId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -12602,7 +12602,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -12621,7 +12621,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="resource">The path to the resource.</param>
         /// <returns>Watching users returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetWatchingUsersAsync(string resource, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -12663,7 +12663,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -12671,7 +12671,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -12679,14 +12679,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12711,7 +12711,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="version">The current version.</param>
         /// <returns>Comments returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CommentsDto> GetCommentsAsync(string commentsId, long? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (commentsId == null)
@@ -12761,7 +12761,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CommentsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -12769,7 +12769,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -12777,14 +12777,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12806,7 +12806,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="request">The comment object that needs to created.</param>
         /// <returns>Comment created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CommentDto> PostCommentAsync(string commentsId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (commentsId == null)
@@ -12858,7 +12858,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CommentDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -12868,15 +12868,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Comment request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Comment request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -12884,14 +12884,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -12914,7 +12914,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentId">The ID of the comment.</param>
         /// <param name="request">The comment object that needs to updated.</param>
         /// <returns>Comment updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PutCommentAsync(string commentsId, string commentId, UpsertCommentDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (commentsId == null)
@@ -12974,15 +12974,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Comment request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Comment request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Comment or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Comment or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -12990,14 +12990,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13019,7 +13019,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="commentsId">The ID of the comments.</param>
         /// <param name="commentId">The ID of the comment.</param>
         /// <returns>Comment deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteCommentAsync(string commentsId, string commentId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (commentsId == null)
@@ -13070,7 +13070,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Comment or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Comment or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -13078,9 +13078,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -13088,14 +13088,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13141,7 +13141,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -13160,7 +13160,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -13225,7 +13225,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="userId">The user id.</param>
         /// <param name="version">The current version.</param>
         /// <returns>All comments returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13235,7 +13235,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="userId">The user id.</param>
         /// <param name="commentId">The ID of the comment.</param>
         /// <returns>Comment deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -13254,7 +13254,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -13277,7 +13277,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="userId">The user id.</param>
         /// <param name="version">The current version.</param>
         /// <returns>All comments returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<CommentsDto> GetNotificationsAsync(string userId, long? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (userId == null)
@@ -13327,7 +13327,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<CommentsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -13337,14 +13337,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13366,7 +13366,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="userId">The user id.</param>
         /// <param name="commentId">The ID of the comment.</param>
         /// <returns>Comment deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteCommentAsync(string userId, string commentId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (userId == null)
@@ -13417,7 +13417,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Comment not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Comment not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -13425,9 +13425,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -13435,14 +13435,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13488,7 +13488,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -13507,7 +13507,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -13568,7 +13568,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the backup.</param>
         /// <returns>Backup found and content returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetBackupContentAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13577,7 +13577,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the backup to delete.</param>
         /// <returns>Backup deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteBackupAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13588,7 +13588,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="appId">The ID of the app.</param>
         /// <param name="app">The name of the app.</param>
         /// <returns>Backup found and content returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetBackupContentV2Async(string id, string appId = null, string app = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13596,7 +13596,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all backup jobs.
         /// </summary>
         /// <returns>Backups returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<BackupJobsDto> GetBackupsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13604,7 +13604,7 @@ namespace Squidex.ClientLibrary.Management
         /// Start a new backup.
         /// </summary>
         /// <returns>Backup started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PostBackupAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13612,7 +13612,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get current restore status.
         /// </summary>
         /// <returns>Status returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13621,7 +13621,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -13640,7 +13640,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -13659,7 +13659,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the backup.</param>
         /// <returns>Backup found and content returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FileResponse> GetBackupContentAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -13710,7 +13710,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Backup or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Backup or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -13718,14 +13718,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13746,7 +13746,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the backup to delete.</param>
         /// <returns>Backup deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteBackupAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -13793,7 +13793,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Backup or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Backup or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -13801,9 +13801,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -13811,14 +13811,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13841,7 +13841,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="appId">The ID of the app.</param>
         /// <param name="app">The name of the app.</param>
         /// <returns>Backup found and content returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FileResponse> GetBackupContentV2Async(string id, string appId = null, string app = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -13901,7 +13901,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Backup or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Backup or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -13909,14 +13909,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -13936,7 +13936,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all backup jobs.
         /// </summary>
         /// <returns>Backups returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<BackupJobsDto> GetBackupsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -13977,7 +13977,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<BackupJobsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -13985,7 +13985,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -13993,14 +13993,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14020,7 +14020,7 @@ namespace Squidex.ClientLibrary.Management
         /// Start a new backup.
         /// </summary>
         /// <returns>Backup started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PostBackupAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -14066,15 +14066,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Backup contingent reached.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Backup contingent reached.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -14082,14 +14082,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14109,7 +14109,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get current restore status.
         /// </summary>
         /// <returns>Status returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -14150,7 +14150,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RestoreJobDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -14160,14 +14160,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14188,7 +14188,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The backup to restore.</param>
         /// <returns>Restore operation started.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -14240,9 +14240,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -14250,14 +14250,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14303,7 +14303,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -14322,7 +14322,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -14398,7 +14398,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="force">True to force a new resize even if it already stored.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14421,7 +14421,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="force">True to force a new resize even if it already stored.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         [System.Obsolete]
         System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
@@ -14435,7 +14435,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="scope">The scope of the query.</param>
         /// <returns>Asset folders returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string parentId = null, AssetFolderScope? scope = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14444,7 +14444,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The asset folder object that needs to be added to the App.</param>
         /// <returns>Asset folder created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetFolderDto> PostAssetFolderAsync(CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14454,7 +14454,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderAsync(string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14463,7 +14463,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the asset folder to delete.</param>
         /// <returns>Asset folder deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAssetFolderAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14473,7 +14473,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder moved.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderParentAsync(string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14484,7 +14484,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all tags for assets.
         /// </remarks>
         /// <returns>Assets tags returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, int>> GetTagsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14494,7 +14494,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="name">The tag to return.</param>
         /// <param name="request">The required request object.</param>
         /// <returns>Asset tag renamed and new tags returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, int>> PutTagAsync(string name, RenameTagDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14514,7 +14514,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="x_NoTotal">Do not return the total amount.</param>
         /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string parentId = null, string ids = null, string q = null, double? top = null, double? skip = null, string orderby = null, string filter = null, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14528,7 +14528,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The optional custom asset id.</param>
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14542,7 +14542,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="x_NoTotal">Do not return the total amount.</param>
         /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14551,7 +14551,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14565,7 +14565,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14575,7 +14575,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
         /// <returns>Asset updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> PutAssetAsync(string id, AnnotateAssetDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14586,7 +14586,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="checkReferrers">True to check referrers of this asset.</param>
         /// <param name="permanent">True to delete the asset permanently.</param>
         /// <returns>Asset deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAssetAsync(string id, bool? checkReferrers = null, bool? permanent = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14595,7 +14595,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The bulk update request.</param>
         /// <returns>Assets created, update or delete.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BulkResultDto>> BulkUpdateAssetsAsync(BulkUpdateAssetsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14607,7 +14607,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="id">The ID of the asset.</param>
         /// <returns>Asset updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14617,7 +14617,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
         /// <returns>Asset moved.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string id, MoveAssetDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -14636,7 +14636,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -14670,7 +14670,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="force">True to force a new resize even if it already stored.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (idOrSlug == null)
@@ -14779,7 +14779,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -14787,14 +14787,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14829,7 +14829,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="force">True to force a new resize even if it already stored.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
@@ -14938,7 +14938,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -14946,14 +14946,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -14978,7 +14978,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="scope">The scope of the query.</param>
         /// <returns>Asset folders returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string parentId = null, AssetFolderScope? scope = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -15028,7 +15028,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFoldersDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15036,7 +15036,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15044,14 +15044,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15072,7 +15072,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The asset folder object that needs to be added to the App.</param>
         /// <returns>Asset folder created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetFolderDto> PostAssetFolderAsync(CreateAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -15120,7 +15120,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15130,15 +15130,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15146,14 +15146,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15175,7 +15175,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderAsync(string id, RenameAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -15227,7 +15227,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15237,15 +15237,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset folder or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset folder or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15253,14 +15253,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15281,7 +15281,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the asset folder to delete.</param>
         /// <returns>Asset folder deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteAssetFolderAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -15328,7 +15328,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset folder or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset folder or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -15336,9 +15336,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -15346,14 +15346,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15375,7 +15375,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset folder.</param>
         /// <param name="request">The asset folder object that needs to updated.</param>
         /// <returns>Asset folder moved.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetFolderDto> PutAssetFolderParentAsync(string id, MoveAssetFolderDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -15427,7 +15427,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetFolderDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15437,15 +15437,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset folder request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset folder or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset folder or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15453,14 +15453,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15483,7 +15483,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get all tags for assets.
         /// </remarks>
         /// <returns>Assets tags returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, int>> GetTagsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -15524,7 +15524,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, int>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15532,7 +15532,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15540,14 +15540,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15569,7 +15569,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="name">The tag to return.</param>
         /// <param name="request">The required request object.</param>
         /// <returns>Asset tag renamed and new tags returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, int>> PutTagAsync(string name, RenameTagDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (name == null)
@@ -15621,7 +15621,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.IDictionary<string, int>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15629,7 +15629,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -15637,9 +15637,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -15647,14 +15647,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15686,7 +15686,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="x_NoTotal">Do not return the total amount.</param>
         /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string parentId = null, string ids = null, string q = null, double? top = null, double? skip = null, string orderby = null, string filter = null, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -15762,7 +15762,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15770,7 +15770,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15778,14 +15778,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15811,7 +15811,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The optional custom asset id.</param>
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -15880,7 +15880,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -15890,9 +15890,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 413)
@@ -15900,15 +15900,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -15916,14 +15916,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -15949,7 +15949,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="x_NoTotal">Do not return the total amount.</param>
         /// <param name="x_NoSlowTotal">Do not return the total amount, if it would be slow.</param>
         /// <returns>Assets returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsPostAsync(QueryDto query, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (query == null)
@@ -16003,7 +16003,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16011,7 +16011,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -16019,9 +16019,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -16029,14 +16029,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16057,7 +16057,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the asset to retrieve.</param>
         /// <returns>Asset found.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> GetAssetAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16102,7 +16102,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16110,7 +16110,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16118,14 +16118,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16151,7 +16151,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="parentId">The optional parent folder id.</param>
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16220,7 +16220,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16230,9 +16230,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 413)
@@ -16240,15 +16240,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16256,14 +16256,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16285,7 +16285,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
         /// <returns>Asset updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> PutAssetAsync(string id, AnnotateAssetDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16337,7 +16337,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16347,15 +16347,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16363,14 +16363,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16393,7 +16393,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="checkReferrers">True to check referrers of this asset.</param>
         /// <param name="permanent">True to delete the asset permanently.</param>
         /// <returns>Asset deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteAssetAsync(string id, bool? checkReferrers = null, bool? permanent = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16449,7 +16449,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -16457,9 +16457,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -16467,14 +16467,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16495,7 +16495,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The bulk update request.</param>
         /// <returns>Assets created, update or delete.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<BulkResultDto>> BulkUpdateAssetsAsync(BulkUpdateAssetsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -16543,7 +16543,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<BulkResultDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16553,15 +16553,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Assets request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Assets request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16569,14 +16569,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16600,7 +16600,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="id">The ID of the asset.</param>
         /// <returns>Asset updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16660,7 +16660,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16670,9 +16670,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 413)
@@ -16680,15 +16680,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset exceeds the maximum upload size.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16696,14 +16696,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16725,7 +16725,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the asset.</param>
         /// <param name="request">The asset object that needs to updated.</param>
         /// <returns>Asset moved.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetDto> PutAssetParentAsync(string id, MoveAssetDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -16777,7 +16777,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -16787,15 +16787,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Asset or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Asset or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -16803,14 +16803,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -16856,7 +16856,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -16875,7 +16875,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -16935,7 +16935,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app asset scripts.
         /// </summary>
         /// <returns>Asset scripts returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetScriptsDto> GetAssetScriptsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16944,7 +16944,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>Asset scripts updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AssetScriptsDto> PutAssetScriptsAsync(UpdateAssetScriptsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16955,7 +16955,7 @@ namespace Squidex.ClientLibrary.Management
         /// Gets all configured clients for the app with the specified name.
         /// </remarks>
         /// <returns>Clients returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ClientsDto> GetClientsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16968,7 +16968,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">Client object that needs to be added to the app.</param>
         /// <returns>Client created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ClientsDto> PostClientAsync(CreateClientDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16981,7 +16981,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the client that must be updated.</param>
         /// <param name="request">Client object that needs to be updated.</param>
         /// <returns>Client updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ClientsDto> PutClientAsync(string id, UpdateClientDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16993,7 +16993,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="id">The ID of the client that must be deleted.</param>
         /// <returns>Client deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ClientsDto> DeleteClientAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17001,7 +17001,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app contributors.
         /// </summary>
         /// <returns>Contributors returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> GetContributorsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17010,7 +17010,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Contributor object that needs to be added to the app.</param>
         /// <returns>Contributor assigned to app.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> PostContributorAsync(AssignContributorDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17018,7 +17018,7 @@ namespace Squidex.ClientLibrary.Management
         /// Remove yourself.
         /// </summary>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17027,7 +17027,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the contributor.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ContributorsDto> DeleteContributorAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17035,7 +17035,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app image.
         /// </summary>
         /// <returns>App image found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> GetImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17043,7 +17043,7 @@ namespace Squidex.ClientLibrary.Management
         /// Upload the app image.
         /// </summary>
         /// <returns>App image uploaded.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17051,7 +17051,7 @@ namespace Squidex.ClientLibrary.Management
         /// Remove the app image.
         /// </summary>
         /// <returns>App image removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> DeleteImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17059,7 +17059,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app languages.
         /// </summary>
         /// <returns>Languages returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppLanguagesDto> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17068,7 +17068,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The language to add to the app.</param>
         /// <returns>Language created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppLanguagesDto> PostLanguageAsync(AddLanguageDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17078,7 +17078,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="language">The language to update.</param>
         /// <param name="request">The language object.</param>
         /// <returns>Language updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppLanguagesDto> PutLanguageAsync(string language, UpdateLanguageDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17087,7 +17087,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="language">The language to delete from the app.</param>
         /// <returns>Language deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppLanguagesDto> DeleteLanguageAsync(string language, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17095,7 +17095,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app roles.
         /// </summary>
         /// <returns>Roles returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RolesDto> GetRolesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17104,7 +17104,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Role object that needs to be added to the app.</param>
         /// <returns>Role created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RolesDto> PostRoleAsync(AddRoleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17112,7 +17112,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app permissions.
         /// </summary>
         /// <returns>App permissions returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetPermissionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17122,7 +17122,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="roleName">The name of the role to be updated.</param>
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string roleName, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17131,7 +17131,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="roleName">The name of the role.</param>
         /// <returns>Role deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<RolesDto> DeleteRoleAsync(string roleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17143,7 +17143,7 @@ namespace Squidex.ClientLibrary.Management
         /// <br/>You will retrieve all apps, where you are assigned as a contributor.
         /// </remarks>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetAppsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17156,7 +17156,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17169,7 +17169,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetTeamAppsAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17177,7 +17177,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get an app by name.
         /// </summary>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> GetAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17186,7 +17186,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> PutAppAsync(UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17194,7 +17194,7 @@ namespace Squidex.ClientLibrary.Management
         /// Delete the app.
         /// </summary>
         /// <returns>App deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17203,7 +17203,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The team information.</param>
         /// <returns>App transferred.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppDto> PutAppTeamAsync(TransferToTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17211,7 +17211,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app settings.
         /// </summary>
         /// <returns>App settings returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppSettingsDto> GetSettingsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17220,7 +17220,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<AppSettingsDto> PutSettingsAsync(UpdateAppSettingsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17228,7 +17228,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app workflow.
         /// </summary>
         /// <returns>Workflows returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<WorkflowsDto> GetWorkflowsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17237,7 +17237,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The new workflow.</param>
         /// <returns>Workflow created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<WorkflowsDto> PostWorkflowAsync(AddWorkflowDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17247,7 +17247,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the workflow to update.</param>
         /// <param name="request">The new workflow.</param>
         /// <returns>Workflow updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<WorkflowsDto> PutWorkflowAsync(string id, UpdateWorkflowDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17256,7 +17256,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the workflow to update.</param>
         /// <returns>Workflow deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<WorkflowsDto> DeleteWorkflowAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
@@ -17275,7 +17275,7 @@ namespace Squidex.ClientLibrary.Management
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings();
+            var settings = _options.SerializerSettings;
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -17293,7 +17293,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app asset scripts.
         /// </summary>
         /// <returns>Asset scripts returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetScriptsDto> GetAssetScriptsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -17334,7 +17334,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetScriptsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17342,7 +17342,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17350,14 +17350,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17378,7 +17378,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>Asset scripts updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AssetScriptsDto> PutAssetScriptsAsync(UpdateAssetScriptsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -17426,7 +17426,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AssetScriptsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17436,15 +17436,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Asset request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17452,14 +17452,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17482,7 +17482,7 @@ namespace Squidex.ClientLibrary.Management
         /// Gets all configured clients for the app with the specified name.
         /// </remarks>
         /// <returns>Clients returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ClientsDto> GetClientsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -17523,7 +17523,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17531,7 +17531,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17539,14 +17539,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17571,7 +17571,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">Client object that needs to be added to the app.</param>
         /// <returns>Client created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ClientsDto> PostClientAsync(CreateClientDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -17619,7 +17619,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17629,15 +17629,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Client request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Client request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17645,14 +17645,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17677,7 +17677,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the client that must be updated.</param>
         /// <param name="request">Client object that needs to be updated.</param>
         /// <returns>Client updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ClientsDto> PutClientAsync(string id, UpdateClientDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -17729,7 +17729,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17739,15 +17739,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Client request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Client request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Client or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Client or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17755,14 +17755,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17786,7 +17786,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="id">The ID of the client that must be deleted.</param>
         /// <returns>Client deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ClientsDto> DeleteClientAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -17831,7 +17831,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ClientsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17839,7 +17839,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Client or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Client or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -17847,9 +17847,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -17857,14 +17857,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17884,7 +17884,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app contributors.
         /// </summary>
         /// <returns>Contributors returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> GetContributorsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -17925,7 +17925,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -17933,7 +17933,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -17941,14 +17941,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -17969,7 +17969,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Contributor object that needs to be added to the app.</param>
         /// <returns>Contributor assigned to app.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> PostContributorAsync(AssignContributorDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -18017,7 +18017,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18027,15 +18027,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Contributor request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Contributor request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18043,14 +18043,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18070,7 +18070,7 @@ namespace Squidex.ClientLibrary.Management
         /// Remove yourself.
         /// </summary>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18111,7 +18111,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18119,7 +18119,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Contributor or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Contributor or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -18127,9 +18127,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -18137,14 +18137,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18165,7 +18165,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the contributor.</param>
         /// <returns>Contributor removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<ContributorsDto> DeleteContributorAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -18210,7 +18210,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ContributorsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18218,7 +18218,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Contributor or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Contributor or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -18226,9 +18226,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -18236,14 +18236,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18263,7 +18263,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app image.
         /// </summary>
         /// <returns>App image found and content or (resized) image returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<FileResponse> GetImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18310,7 +18310,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18318,14 +18318,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18345,7 +18345,7 @@ namespace Squidex.ClientLibrary.Management
         /// Upload the app image.
         /// </summary>
         /// <returns>App image uploaded.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18401,7 +18401,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18411,15 +18411,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18427,14 +18427,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18454,7 +18454,7 @@ namespace Squidex.ClientLibrary.Management
         /// Remove the app image.
         /// </summary>
         /// <returns>App image removed.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> DeleteImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18495,7 +18495,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18503,7 +18503,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -18511,9 +18511,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -18521,14 +18521,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18548,7 +18548,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app languages.
         /// </summary>
         /// <returns>Languages returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppLanguagesDto> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18589,7 +18589,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18597,7 +18597,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18605,14 +18605,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18633,7 +18633,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The language to add to the app.</param>
         /// <returns>Language created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppLanguagesDto> PostLanguageAsync(AddLanguageDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -18681,7 +18681,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18691,15 +18691,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Language request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Language request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18707,14 +18707,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18736,7 +18736,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="language">The language to update.</param>
         /// <param name="request">The language object.</param>
         /// <returns>Language updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppLanguagesDto> PutLanguageAsync(string language, UpdateLanguageDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (language == null)
@@ -18788,7 +18788,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18798,15 +18798,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Language request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Language request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Language or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Language or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18814,14 +18814,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18842,7 +18842,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="language">The language to delete from the app.</param>
         /// <returns>Language deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppLanguagesDto> DeleteLanguageAsync(string language, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (language == null)
@@ -18887,7 +18887,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppLanguagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18897,15 +18897,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Language is master language.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Language is master language.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Language or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Language or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18913,14 +18913,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -18940,7 +18940,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app roles.
         /// </summary>
         /// <returns>Roles returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RolesDto> GetRolesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -18981,7 +18981,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -18989,7 +18989,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -18997,14 +18997,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19025,7 +19025,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">Role object that needs to be added to the app.</param>
         /// <returns>Role created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RolesDto> PostRoleAsync(AddRoleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -19073,7 +19073,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19083,15 +19083,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Role request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Role request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19099,14 +19099,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19126,7 +19126,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app permissions.
         /// </summary>
         /// <returns>App permissions returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetPermissionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -19167,7 +19167,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19175,7 +19175,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19183,14 +19183,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19212,7 +19212,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="roleName">The name of the role to be updated.</param>
         /// <param name="request">Role to be updated for the app.</param>
         /// <returns>Role updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RolesDto> PutRoleAsync(string roleName, UpdateRoleDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (roleName == null)
@@ -19264,7 +19264,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19274,15 +19274,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Role request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Role request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Role or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Role or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19290,14 +19290,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19318,7 +19318,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="roleName">The name of the role.</param>
         /// <returns>Role deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<RolesDto> DeleteRoleAsync(string roleName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (roleName == null)
@@ -19363,7 +19363,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<RolesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19373,15 +19373,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Role is in use by contributor or client or a default role.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Role is in use by contributor or client or a default role.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Role or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Role or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19389,14 +19389,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19420,7 +19420,7 @@ namespace Squidex.ClientLibrary.Management
         /// <br/>You will retrieve all apps, where you are assigned as a contributor.
         /// </remarks>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetAppsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -19461,7 +19461,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AppDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19471,14 +19471,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19503,7 +19503,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="request">The app object that needs to be added to Squidex.</param>
         /// <returns>App created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> PostAppAsync(CreateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -19551,7 +19551,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19561,9 +19561,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 409)
@@ -19571,9 +19571,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App name is already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App name is already in use.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -19581,14 +19581,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19613,7 +19613,7 @@ namespace Squidex.ClientLibrary.Management
         /// </remarks>
         /// <param name="team">The ID of the team.</param>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetTeamAppsAsync(string team, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (team == null)
@@ -19658,7 +19658,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AppDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19668,14 +19668,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19695,7 +19695,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get an app by name.
         /// </summary>
         /// <returns>Apps returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> GetAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -19736,7 +19736,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19744,7 +19744,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19752,14 +19752,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19780,7 +19780,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> PutAppAsync(UpdateAppDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -19828,7 +19828,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -19838,15 +19838,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -19854,14 +19854,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19881,7 +19881,7 @@ namespace Squidex.ClientLibrary.Management
         /// Delete the app.
         /// </summary>
         /// <returns>App deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task DeleteAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -19924,7 +19924,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -19932,9 +19932,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -19942,14 +19942,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -19970,7 +19970,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The team information.</param>
         /// <returns>App transferred.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppDto> PutAppTeamAsync(TransferToTeamDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -20018,7 +20018,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20028,15 +20028,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20044,14 +20044,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20071,7 +20071,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get the app settings.
         /// </summary>
         /// <returns>App settings returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppSettingsDto> GetSettingsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -20112,7 +20112,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20120,7 +20120,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20128,14 +20128,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20156,7 +20156,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The values to update.</param>
         /// <returns>App updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<AppSettingsDto> PutSettingsAsync(UpdateAppSettingsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -20204,7 +20204,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<AppSettingsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20214,15 +20214,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("App request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20230,14 +20230,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20257,7 +20257,7 @@ namespace Squidex.ClientLibrary.Management
         /// Get app workflow.
         /// </summary>
         /// <returns>Workflows returned.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<WorkflowsDto> GetWorkflowsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -20298,7 +20298,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20306,7 +20306,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("App not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20314,14 +20314,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20342,7 +20342,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="request">The new workflow.</param>
         /// <returns>Workflow created.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<WorkflowsDto> PostWorkflowAsync(AddWorkflowDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
@@ -20390,7 +20390,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20400,15 +20400,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Workflow request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Workflow request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Workflow or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Workflow or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20416,14 +20416,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20445,7 +20445,7 @@ namespace Squidex.ClientLibrary.Management
         /// <param name="id">The ID of the workflow to update.</param>
         /// <param name="request">The new workflow.</param>
         /// <returns>Workflow updated.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<WorkflowsDto> PutWorkflowAsync(string id, UpdateWorkflowDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -20497,7 +20497,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20507,15 +20507,15 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Workflow request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Workflow request not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Workflow or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Workflow or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 500)
@@ -20523,14 +20523,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20551,7 +20551,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         /// <param name="id">The ID of the workflow to update.</param>
         /// <returns>Workflow deleted.</returns>
-        /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<WorkflowsDto> DeleteWorkflowAsync(string id, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
@@ -20596,7 +20596,7 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<WorkflowsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
                         }
@@ -20604,7 +20604,7 @@ namespace Squidex.ClientLibrary.Management
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("Workflow or app not found.", status_, responseText_, headers_, null);
+                            throw new SquidexException("Workflow or app not found.", status_, responseText_, headers_, null);
                         }
                         else
                         if (status_ == 400)
@@ -20612,9 +20612,9 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -20622,14 +20622,14 @@ namespace Squidex.ClientLibrary.Management
                             var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
-                                throw new SquidexManagementException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            throw new SquidexManagementException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexManagementException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
                         }
                     }
                     finally
@@ -20675,7 +20675,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body string as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, responseText, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, responseText, headers, exception);
                 }
             }
             else
@@ -20694,7 +20694,7 @@ namespace Squidex.ClientLibrary.Management
                 catch (Newtonsoft.Json.JsonException exception)
                 {
                     var message = "Could not deserialize the response body stream as " + typeof(T).FullName + ".";
-                    throw new SquidexManagementException(message, (int)response.StatusCode, string.Empty, headers, exception);
+                    throw new SquidexException(message, (int)response.StatusCode, string.Empty, headers, exception);
                 }
             }
         }
@@ -21831,7 +21831,7 @@ namespace Squidex.ClientLibrary.Management
         /// </summary>
         [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, ResourceLink> _links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+        public System.Collections.Generic.Dictionary<string, ResourceLink> Links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
 
     }
 
@@ -26492,7 +26492,7 @@ namespace Squidex.ClientLibrary.Management
 
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class SquidexManagementException : System.Exception
+    public partial class SquidexException : System.Exception
     {
         public int StatusCode { get; private set; }
 
@@ -26500,7 +26500,7 @@ namespace Squidex.ClientLibrary.Management
 
         public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public SquidexManagementException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
+        public SquidexException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
@@ -26515,11 +26515,11 @@ namespace Squidex.ClientLibrary.Management
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class SquidexManagementException<TResult> : SquidexManagementException
+    public partial class SquidexException<TResult> : SquidexException
     {
         public TResult Result { get; private set; }
 
-        public SquidexManagementException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
+        public SquidexException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

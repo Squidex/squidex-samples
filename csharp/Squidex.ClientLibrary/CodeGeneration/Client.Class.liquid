@@ -27,7 +27,7 @@
 
     private {{ JsonSerializerSettingsType }} CreateSerializerSettings({% if UseRequestAndResponseSerializationSettings %}bool isRequest{% endif %})
     {
-        var settings = {{ JsonSerializerParameterCode }};
+        var settings = _options.SerializerSettings;
 {% if UseSystemTextJson == false and SerializeTypeInformation -%}
         settings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
 {% endif -%}

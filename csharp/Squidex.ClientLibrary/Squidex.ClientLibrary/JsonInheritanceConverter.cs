@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 /// <summary>
 /// A json converter that can handle inheritance.

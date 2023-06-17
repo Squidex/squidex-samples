@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;
@@ -118,7 +117,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
                         if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
                         {
-                            throw new SquidexException("Line does not start with data prefix.", 0, null);
+                            throw new SquidexException("Line does not start with data prefix.");
                         }
 
 #pragma warning disable IDE0057 // Use range operator

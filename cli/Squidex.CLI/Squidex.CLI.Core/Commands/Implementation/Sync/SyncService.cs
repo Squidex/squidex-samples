@@ -56,7 +56,7 @@ public sealed class SyncService : ISyncService
         jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
         {
             FlattenInheritanceHierarchy = true,
-            SchemaType = SchemaType.JsonSchema,
+            SchemaType = NJsonSchema.SchemaType.JsonSchema,
             SchemaNameGenerator = new DefaultSchemaNameGenerator(),
             SerializerSettings = jsonSerializerSettings
         };

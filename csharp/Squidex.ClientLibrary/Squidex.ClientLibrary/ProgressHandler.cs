@@ -7,7 +7,7 @@
 
 using Squidex.Assets;
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 /// <summary>
 /// Base class for all upload events.
@@ -110,14 +110,14 @@ public sealed class AssetUploadExceptionEvent : AssetUploadEvent
     /// <summary>
     /// The exception.
     /// </summary>
-    public SquidexManagementException Exception { get; }
+    public SquidexException Exception { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AssetUploadExceptionEvent"/> class with the thrown exception.
     /// </summary>
     /// <param name="fileId">The file id that can be used to resume an upload.</param>
     /// <param name="exception">The thrown exception.</param>
-    public AssetUploadExceptionEvent(string fileId, SquidexManagementException exception)
+    public AssetUploadExceptionEvent(string fileId, SquidexException exception)
         : base(fileId)
     {
         Exception = exception;

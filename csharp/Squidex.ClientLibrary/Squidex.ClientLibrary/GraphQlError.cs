@@ -10,7 +10,6 @@ namespace Squidex.ClientLibrary;
 /// <summary>
 /// Represents a GraphQL error.
 /// </summary>
-[Serializable]
 public sealed class GraphQlError
 {
     /// <summary>

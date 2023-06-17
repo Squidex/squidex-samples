@@ -8,7 +8,7 @@
 using Squidex.Assets;
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public partial interface IAssetsClient
@@ -34,7 +34,7 @@ public partial interface IAssetsClient
     /// <returns>
     /// Task for completion.
     /// </returns>
-    /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+    /// <exception cref="SquidexException">A server side error occurred.</exception>
     Task UploadAssetAsync(FileParameter file, AssetUploadOptions options = default,
         CancellationToken cancellationToken = default);
 
@@ -44,7 +44,7 @@ public partial interface IAssetsClient
     /// <returns>
     /// Assets returned.
     /// </returns>
-    /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+    /// <exception cref="SquidexException">A server side error occurred.</exception>
     Task<AssetsDto> GetAssetsAsync(AssetQuery? query = null,
         CancellationToken cancellationToken = default);
 
@@ -57,7 +57,7 @@ public partial interface IAssetsClient
     /// <returns>
     /// Assets returned.
     /// </returns>
-    /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+    /// <exception cref="SquidexException">A server side error occurred.</exception>
     Task GetAllAsync(Func<AssetDto, Task> callback, int batchSize = 200,
         CancellationToken cancellationToken = default);
 
@@ -71,7 +71,7 @@ public partial interface IAssetsClient
     /// <returns>
     /// Assets returned.
     /// </returns>
-    /// <exception cref="SquidexManagementException">A server side error occurred.</exception>
+    /// <exception cref="SquidexException">A server side error occurred.</exception>
     Task GetAllByQueryAsync(Func<AssetDto, Task> callback, AssetQuery? query = null, int batchSize = 200,
         CancellationToken cancellationToken = default);
 }

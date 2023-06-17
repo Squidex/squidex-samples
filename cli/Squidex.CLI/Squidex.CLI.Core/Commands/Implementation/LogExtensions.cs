@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation;
 
@@ -127,11 +127,11 @@ internal static class LogExtensions
     {
         switch (ex)
         {
-            case SquidexManagementException<ErrorDto> typed:
+            case SquidexException<ErrorDto> typed:
                 error(typed.Result.ToString());
                 break;
 
-            case SquidexManagementException typed:
+            case SquidexException typed:
                 error(typed.Message);
                 break;
 

@@ -7,7 +7,6 @@
 
 using System.Text;
 using Newtonsoft.Json.Linq;
-using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;

@@ -13,7 +13,6 @@ using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands;
 

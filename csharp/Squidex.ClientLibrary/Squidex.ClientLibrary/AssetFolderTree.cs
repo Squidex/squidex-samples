@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;
@@ -151,20 +150,26 @@ public sealed class AssetFolderTree
             return node;
         }
 
-        var folders = await assetsClient.GetAssetFoldersAsync(id);
-
         var current = rootNode;
-
-        foreach (var folder in folders.Path)
+        try
         {
-            current = TryAdd(current, folder.Id, folder.FolderName);
+            var folders = await assetsClient.GetAssetFoldersAsync(id);
+
+            foreach (var folder in folders.Path)
+            {
+                current = TryAdd(current, folder.Id, folder.FolderName);
+            }
+
+            current.HasBeenQueried = true;
+
+            foreach (var child in folders.Items)
+            {
+                TryAdd(current, child.Id, child.FolderName);
+            }
         }
-
-        current.HasBeenQueried = true;
-
-        foreach (var child in folders.Items)
+        catch (SquidexException ex) when (ex.StatusCode == 400)
         {
-            TryAdd(current, child.Id, child.FolderName);
+            return rootNode;
         }
 
         return current;

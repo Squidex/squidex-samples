@@ -12,7 +12,6 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
-using static Squidex.CLI.Commands.App;
 
 namespace Squidex.CLI.Commands;
 

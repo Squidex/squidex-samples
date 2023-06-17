@@ -26,6 +26,7 @@ public static partial class Program
         SchemaCleaner.RemoveUnusedSchemas(document);
 
         var generatorSettings = new CSharpClientGeneratorSettings();
+        generatorSettings.CSharpGeneratorSettings.TemplateDirectory = Directory.GetCurrentDirectory();
         generatorSettings.CSharpGeneratorSettings.ArrayBaseType = "System.Collections.Generic.List";
         generatorSettings.CSharpGeneratorSettings.ArrayInstanceType = "System.Collections.Generic.List";
         generatorSettings.CSharpGeneratorSettings.ArrayType = "System.Collections.Generic.List";
@@ -33,20 +34,21 @@ public static partial class Program
         generatorSettings.CSharpGeneratorSettings.DictionaryInstanceType = "System.Collections.Generic.Dictionary";
         generatorSettings.CSharpGeneratorSettings.DictionaryType = "System.Collections.Generic.Dictionary";
         generatorSettings.CSharpGeneratorSettings.ExcludedTypeNames = new[] { "JsonInheritanceConverter" };
-        generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary.Management";
+        generatorSettings.CSharpGeneratorSettings.Namespace = "Squidex.ClientLibrary";
+        generatorSettings.CSharpGeneratorSettings.PropertyNameGenerator = new CustomPropertyNameGenerator();
+        generatorSettings.CSharpGeneratorSettings.PropertySetterAccessModifier = string.Empty;
         generatorSettings.CSharpGeneratorSettings.RequiredPropertiesMustBeDefined = false;
-        generatorSettings.CSharpGeneratorSettings.TemplateDirectory = Directory.GetCurrentDirectory();
-        generatorSettings.CSharpGeneratorSettings.ValueGenerator = new ValueGenerator(generatorSettings.CSharpGeneratorSettings);
-        generatorSettings.ExceptionClass = "SquidexManagementException";
+        generatorSettings.CSharpGeneratorSettings.ValueGenerator = new CustomValueGenerator(generatorSettings.CSharpGeneratorSettings);
+        generatorSettings.ExceptionClass = "SquidexException";
         generatorSettings.GenerateClientInterfaces = true;
         generatorSettings.GenerateOptionalParameters = true;
-        generatorSettings.OperationNameGenerator = new TagNameGenerator();
+        generatorSettings.OperationNameGenerator = new CustomTagNameGenerator();
         generatorSettings.UseBaseUrl = false;
 
         var sourceCode =
             new CSharpClientGenerator(document, generatorSettings)
                 .GenerateFile().UseFixedVersion(); // Use a static version to keep the changes low.
 
-        File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Management\Generated.cs", sourceCode);
+        File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Generated.cs", sourceCode);
     }
 }

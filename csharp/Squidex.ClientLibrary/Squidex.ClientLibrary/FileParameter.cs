@@ -9,7 +9,7 @@ using HeyRed.Mime;
 using Squidex.Assets;
 using Squidex.ClientLibrary.Utils;
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 /// <summary>
 /// Holds information about a file.

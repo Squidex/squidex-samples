@@ -9,7 +9,7 @@ using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable SA1629 // Documentation text should end with a period
 
-namespace Squidex.ClientLibrary.Management;
+namespace Squidex.ClientLibrary;
 
 /// <summary>
 /// Represents an asset query.

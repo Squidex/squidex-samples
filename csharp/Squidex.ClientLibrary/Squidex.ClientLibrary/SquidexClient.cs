@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System.Collections.Concurrent;
-using Squidex.ClientLibrary.Management;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;

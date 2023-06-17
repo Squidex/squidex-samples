@@ -5,98 +5,43 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Runtime.Serialization;
-using Squidex.ClientLibrary.Management;
+#pragma warning disable RECS0096 // Type parameter is never used
 
 namespace Squidex.ClientLibrary;
 
-/// <summary>
-/// Default exception for all API requests.
-/// </summary>
-[Serializable]
-public class SquidexException : Exception
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+public partial class SquidexException<TResult>
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 {
     /// <summary>
-    /// The HTTP status code if available.
+    /// Initializes a new instance of the <see cref="SquidexException{TResult}"/> class with the message and status code.
     /// </summary>
-    public int StatusCode { get; }
-
-    /// <summary>
-    /// The error details if available.
-    /// </summary>
-    public ErrorDto? Details { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SquidexException"/> class.
-    /// </summary>
-    public SquidexException()
+    /// <param name="message">The message.</param>
+    /// <param name="statusCode">The status code.</param>
+    /// <param name="result">The result object.</param>
+    public SquidexException(string message, int statusCode = 0, TResult? result = default)
+        : this(message, statusCode, null, null, result, null)
     {
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SquidexException"/> class with the message.
-    /// </summary>
-    /// <param name="message">The exception message.</param>
-    /// <param name="statusCode">The HTTP status code if available.</param>
-    /// <param name="details">The error details if available.</param>
-    public SquidexException(string message, int statusCode, ErrorDto? details)
-        : base(message)
+    /// <inheritdoc/>
+    public override string ToString()
     {
-        StatusCode = statusCode;
-
-        Details = details;
+        return $"{Result}\n{base.ToString()}";
     }
+}
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+public partial class SquidexException
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+{
     /// <summary>
-    /// Initializes a new instance of the <see cref="SquidexException"/> class with the message and inner exception.
+    /// Initializes a new instance of the <see cref="SquidexException"/> class with the message and status code.
     /// </summary>
-    /// <param name="message">The exception message.</param>
-    /// <param name="statusCode">The HTTP status code if available.</param>
-    /// <param name="details">The error details if available.</param>
-    /// <param name="inner">The inner exception.</param>
-    public SquidexException(string message, int statusCode, ErrorDto? details, Exception inner)
-        : base(message, inner)
+    /// <param name="message">The message.</param>
+    /// <param name="statusCode">The status code.</param>
+    public SquidexException(string message, int statusCode = 0)
+        : this(message, statusCode, null, null, null)
     {
-        StatusCode = statusCode;
-
-        Details = details;
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SquidexException"/> class with the serialized data.
-    /// </summary>
-    /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-    /// <param name="context">The <see cref="StreamingContext "/>  that contains contextual information about the source or destination.</param>
-    protected SquidexException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-        foreach (SerializationEntry entry in info)
-        {
-            switch (entry.Name)
-            {
-                case nameof(StatusCode) when entry.Value != null:
-                    StatusCode = (int)entry.Value;
-                    break;
-                case nameof(Details) when entry.Value != null:
-                    Details = (ErrorDto)entry.Value;
-                    break;
-            }
-        }
-    }
-
-    /// <inheritdoc />
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        if (StatusCode > 0)
-        {
-            info.AddValue(nameof(StatusCode), StatusCode);
-        }
-
-        if (Details != null)
-        {
-            info.AddValue(nameof(Details), Details, typeof(ErrorDto));
-        }
-
-        base.GetObjectData(info, context);
     }
 }

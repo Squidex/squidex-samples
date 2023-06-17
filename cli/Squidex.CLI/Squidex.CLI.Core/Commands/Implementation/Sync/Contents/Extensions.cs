@@ -8,7 +8,6 @@
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents;
 

@@ -9,7 +9,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using NJsonSchema;
 using NJsonSchema.Generation;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync;
 

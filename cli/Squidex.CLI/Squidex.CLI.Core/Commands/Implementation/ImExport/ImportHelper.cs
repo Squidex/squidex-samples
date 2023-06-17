@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport;
 
@@ -79,11 +78,10 @@ public static class ImportHelper
 
                 var result = await contents.BulkUpdateAsync(update);
 
-                var error = result.Find(x => x.Error != null)?.Error;
-
-                if (error != null)
+                var firstError = result.Find(x => x.Error != null)?.Error;
+                if (firstError != null)
                 {
-                    throw new SquidexManagementException<ErrorDto>(error.Message, error.StatusCode, null, null, error, null);
+                    throw new SquidexException<ErrorDto>(firstError.Message, firstError.StatusCode, firstError);
                 }
 
                 totalWritten += update.Jobs.Count;

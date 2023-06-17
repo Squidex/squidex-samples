@@ -7,8 +7,10 @@
 
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation.TestData;
-using Squidex.ClientLibrary.Management;
+using Squidex.ClientLibrary;
 using Xunit;
+
+#pragma warning disable MA0132 // Do not convert implicitly to DateTimeOffset
 
 namespace Squidex.CLI;
 
