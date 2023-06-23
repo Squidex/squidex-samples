@@ -10,7 +10,7 @@ using NSwag.CodeGeneration.CSharp;
 
 namespace CodeGeneration;
 
-public static partial class Program
+public static class Program
 {
     public static async Task Main()
     {
@@ -23,8 +23,19 @@ public static partial class Program
 
         // This cleanup is only needed for .NET.
         SchemaCleaner.RemoveAppName(document);
+
+        // We also need a version without app name.
+        File.WriteAllText(@"..\..\..\..\..\..\..\sdk-fern\fern\api\openapi\openapi-noapp.json", document.ToJson().UseCloudUrl());
+
         SchemaCleaner.RemoveUnusedSchemas(document);
 
+        var sourceCode = GenerateCode(document);
+
+        File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Generated.cs", sourceCode);
+    }
+
+    private static string GenerateCode(OpenApiDocument document)
+    {
         var generatorSettings = new CSharpClientGeneratorSettings();
         generatorSettings.CSharpGeneratorSettings.TemplateDirectory = Directory.GetCurrentDirectory();
         generatorSettings.CSharpGeneratorSettings.ArrayBaseType = "System.Collections.Generic.List";
@@ -48,7 +59,6 @@ public static partial class Program
         var sourceCode =
             new CSharpClientGenerator(document, generatorSettings)
                 .GenerateFile().UseFixedVersion(); // Use a static version to keep the changes low.
-
-        File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Generated.cs", sourceCode);
+        return sourceCode;
     }
 }
