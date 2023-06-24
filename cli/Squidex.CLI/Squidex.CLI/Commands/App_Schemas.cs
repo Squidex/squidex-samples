@@ -14,6 +14,7 @@ using Squidex.CLI.Commands.Models;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
+#pragma warning disable MA0048 // File name must match type name
 #pragma warning disable IDE0059 // Value assigned to symbol is never used
 
 namespace Squidex.CLI.Commands;
@@ -50,7 +51,7 @@ public partial class App
                     table.AddRow(schema.Id, schema.Name, schema.IsPublished, schema.LastModified);
                 }
 
-                table.Write();
+                log.WriteLine(table.ToString());
             }
             else
             {
@@ -140,7 +141,7 @@ public partial class App
 
                 await session.Client.Schemas.PostSchemaAsync(request.Schema);
 
-                log.WriteLine("> Created schema because it does not exists in the target system.");
+                log.Completed("Creation of schema completed.");
             }
             else
             {
@@ -158,7 +159,7 @@ public partial class App
 
                 await session.Client.Schemas.PutSchemaSyncAsync(schemaName, request.Schema);
 
-                log.WriteLine("> Synchronized schema");
+                log.Completed("Synchronization of schema completed.");
             }
         }
 

@@ -8,6 +8,8 @@
 using Squidex.Assets;
 using Squidex.ClientLibrary.Utils;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.ClientLibrary;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

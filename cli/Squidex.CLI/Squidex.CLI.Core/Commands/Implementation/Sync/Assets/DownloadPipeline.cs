@@ -56,7 +56,6 @@ public sealed class DownloadPipeline
             var (asset, path) = item;
 
             var process = $"Downloading {path}";
-
             try
             {
                 var assetFile = fs.GetFile(path);

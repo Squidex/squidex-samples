@@ -14,6 +14,8 @@ using Squidex.CLI.Commands.Implementation.Sync.Assets;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public partial class App
@@ -104,7 +106,7 @@ public partial class App
                     }
                 }
 
-                log.WriteLine("> Import completed");
+                log.Completed("Import completed.");
             }
         }
 
@@ -157,7 +159,7 @@ public partial class App
                     await downloadPipeline.CompleteAsync();
                 }
 
-                log.WriteLine("> Export completed");
+                log.Completed("Export completed.");
             }
         }
 

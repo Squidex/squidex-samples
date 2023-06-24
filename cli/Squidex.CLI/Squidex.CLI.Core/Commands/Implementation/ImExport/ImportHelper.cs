@@ -93,7 +93,7 @@ public static class ImportHelper
             }
         }
 
-        log.WriteLine("> Imported: {0}. Completed.", totalWritten);
+        log.Completed($"Import of {totalWritten} content items completed");
     }
 
     public static IEnumerable<DynamicData> Read(this Csv2SquidexConverter converter, Stream stream, string delimiter)

@@ -6,16 +6,3 @@
 // ==========================================================================
 
 namespace Squidex.CLI.Configuration;
-
-public record ConfiguredApp
-{
-    public string ServiceUrl { get; init; }
-
-    public string ClientId { get; init; }
-
-    public string ClientSecret { get; init; }
-
-    public string Name { get; init; }
-
-    public bool IgnoreSelfSigned { get; init; }
-}

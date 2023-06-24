@@ -7,15 +7,20 @@
 
 using System.Globalization;
 using CommandDotNet;
+using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
+using Squidex.CLI.Commands.Implementation.AI;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
+using static Squidex.CLI.Commands.App.AI;
+
+#pragma warning disable MA0048 // File name must match type name
 
 namespace Squidex.CLI.Commands;
 
@@ -23,22 +28,22 @@ public partial class App
 {
     private const string JsonSeparator = "-----------------";
 
-    [Command("content", Description = "Manage contents.")]
+    [Command("contents", Description = "Manage contents.")]
     [Subcommand]
-    public sealed class Content
+    public sealed class Contents
     {
         private readonly IConfigurationService configuration;
         private readonly ILogger log;
 
-        public Content(IConfigurationService configuration, ILogger log)
+        public Contents(IConfigurationService configuration, ILogger log)
         {
             this.configuration = configuration;
 
             this.log = log;
         }
 
-        [Command("test-data", Description = "Generates test data.")]
-        public async Task TestData(TestDataArguments arguments)
+        [Command("generate", Description = "Generates test data.")]
+        public async Task GenerateDummies(GenerateDummiesArguments arguments)
         {
             var session = configuration.StartSession(arguments.App);
 
@@ -87,7 +92,7 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            if (arguments.Format == Format.JSON)
+            if (arguments.Format == ImExportFormat.JSON)
             {
                 var converter = new Json2SquidexConverter(arguments.Fields);
 
@@ -98,7 +103,7 @@ public partial class App
                     await session.ImportAsync(arguments, log, datas);
                 }
             }
-            else if (arguments.Format == Format.JSON_Separated)
+            else if (arguments.Format == ImExportFormat.JSON_Separated)
             {
                 var converter = new Json2SquidexConverter(arguments.Fields);
 
@@ -157,7 +162,7 @@ public partial class App
                 return file;
             }
 
-            if (arguments.Format == Format.JSON && arguments.FilePerContent)
+            if (arguments.Format == ImExportFormat.JSON && arguments.FilePerContent)
             {
                 var folderName = arguments.Output;
 
@@ -183,7 +188,7 @@ public partial class App
                     }
                 });
             }
-            else if (arguments.Format == Format.JSON && !arguments.FilePerContent)
+            else if (arguments.Format == ImExportFormat.JSON && !arguments.FilePerContent)
             {
                 var file = OpenFile(".json");
 
@@ -205,7 +210,7 @@ public partial class App
                     await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), file);
                 }
             }
-            else if (arguments.Format == Format.JSON_Separated && !arguments.FilePerContent)
+            else if (arguments.Format == ImExportFormat.JSON_Separated && !arguments.FilePerContent)
             {
                 var file = OpenFile(".json");
 
@@ -230,7 +235,7 @@ public partial class App
                     }
                 }
             }
-            else if (arguments.Format == Format.CSV && !arguments.FilePerContent)
+            else if (arguments.Format == ImExportFormat.CSV && !arguments.FilePerContent)
             {
                 var file = OpenFile(".csv");
 
@@ -280,7 +285,7 @@ public partial class App
             }
         }
 
-        public enum Format
+        public enum ImExportFormat
         {
             CSV,
             JSON,
@@ -308,7 +313,7 @@ public partial class App
             public string KeyField { get; set; }
 
             [Option("format", Description = "Defines the input format.")]
-            public Format Format { get; set; }
+            public ImExportFormat Format { get; set; }
 
             public sealed class Validator : AbstractValidator<ImportArguments>
             {
@@ -317,7 +322,7 @@ public partial class App
                     RuleFor(x => x.File).NotEmpty();
                     RuleFor(x => x.Schema).NotEmpty();
 
-                    When(x => x.Format == Format.CSV, () =>
+                    When(x => x.Format == ImExportFormat.CSV, () =>
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Fields).NotEmpty();
@@ -359,13 +364,13 @@ public partial class App
             public bool FullEntities { get; set; }
 
             [Option("format", Description = "Defines the output format.")]
-            public Format Format { get; set; }
+            public ImExportFormat Format { get; set; }
 
             public sealed class Validator : AbstractValidator<ExportArguments>
             {
                 public Validator()
                 {
-                    When(x => x.Format == Format.CSV, () =>
+                    When(x => x.Format == ImExportFormat.CSV, () =>
                     {
                         RuleFor(x => x.Delimiter).NotEmpty();
                         RuleFor(x => x.Fields).NotEmpty();
@@ -376,7 +381,7 @@ public partial class App
             }
         }
 
-        public sealed class TestDataArguments : AppArguments, IImportSettings
+        public sealed class GenerateDummiesArguments : AppArguments, IImportSettings
         {
             [Operand("schema", Description = "The name of the schema.")]
             public string Schema { get; set; }
@@ -392,7 +397,7 @@ public partial class App
 
             string? IImportSettings.KeyField => null;
 
-            public sealed class Validator : AbstractValidator<TestDataArguments>
+            public sealed class Validator : AbstractValidator<GenerateDummiesArguments>
             {
                 public Validator()
                 {

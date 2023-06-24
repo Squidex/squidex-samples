@@ -13,6 +13,7 @@ using CsvHelper.Configuration;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 
+#pragma warning disable MA0048 // File name must match type name
 #pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
 namespace Squidex.CLI.Commands;
@@ -60,8 +61,7 @@ public sealed partial class App
                         table.AddRow(item.Path, item.TotalCalls);
                     }
 
-                    table.Write();
-
+                    log.WriteLine(table.ToString());
                     log.WriteLine();
                     log.WriteLine("Most expensive requests:");
 
@@ -72,8 +72,7 @@ public sealed partial class App
                         table.AddRow(item.Path, item.TotalCosts);
                     }
 
-                    table.Write();
-
+                    log.WriteLine(table.ToString());
                     log.WriteLine();
                     log.WriteLine("Slowest requests (without assets)");
 
@@ -84,8 +83,7 @@ public sealed partial class App
                         table.AddRow(item.Path, item.AveragePerformance);
                     }
 
-                    table.Write();
-
+                    log.WriteLine(table.ToString());
                     log.WriteLine();
                     log.WriteLine("Summary");
 

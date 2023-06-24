@@ -8,6 +8,7 @@
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Betalgo.OpenAI" Version="7.0.0" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
     <PackageReference Include="Meziantou.Analyzer" Version="2.0.60">

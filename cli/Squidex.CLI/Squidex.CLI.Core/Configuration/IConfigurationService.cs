@@ -11,7 +11,7 @@ namespace Squidex.CLI.Configuration;
 
 public interface IConfigurationService
 {
-    Configuration GetConfiguration();
+    (string? CurrentApp, (string Name, ConfiguredApp)[] Apps) GetConfiguration();
 
     void Upsert(string entry, ConfiguredApp appConfig);
 

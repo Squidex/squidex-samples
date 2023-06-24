@@ -65,6 +65,6 @@ public static class ExportHelper
             while (totalRead < total);
         }
 
-        log.WriteLine("> Exported: {0} of {1}. Completed.", totalRead, total);
+        log.Completed($"Export of {totalRead}/{total} content items completed.");
     }
 }

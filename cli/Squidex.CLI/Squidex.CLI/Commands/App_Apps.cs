@@ -12,6 +12,8 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public partial class App
@@ -46,7 +48,7 @@ public partial class App
                     table.AddRow(app.Id, app.Name, app.LastModified);
                 }
 
-                table.Write();
+                log.WriteLine(table.ToString());
             }
             else
             {
@@ -73,7 +75,7 @@ public partial class App
 
             await session.Client.Apps.PostAppAsync(request);
 
-            log.WriteLine("> App created.");
+            log.Completed("App creation completed.");
         }
 
         [Command("delete", Description = "Delete the app.")]
@@ -95,7 +97,7 @@ public partial class App
 
             await session.Client.Apps.DeleteAppAsync();
 
-            log.WriteLine("> App deleted.");
+            log.Completed("App deletion completed.");
         }
 
         public sealed class ListArguments : AppArguments

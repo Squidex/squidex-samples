@@ -7,6 +7,7 @@
 
 using Squidex.ClientLibrary.Utils;
 
+#pragma warning disable MA0048 // File name must match type name
 #pragma warning disable SA1629 // Documentation text should end with a period
 
 namespace Squidex.ClientLibrary;
@@ -97,6 +98,8 @@ public sealed class AssetQuery
 
     internal string? ToIdString()
     {
+#pragma warning disable MA0089 // Optimize string method usage
         return Ids == null ? null : string.Join(",", Ids);
+#pragma warning restore MA0089 // Optimize string method usage
     }
 }

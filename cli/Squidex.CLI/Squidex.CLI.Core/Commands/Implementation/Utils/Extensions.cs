@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -103,6 +104,34 @@ internal static class Extensions
 
             yield return bucket.Select(x => x);
         }
+    }
+
+    public static string WithoutPrefix(this string value, string prefix)
+    {
+        if (value.EndsWith(prefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return value[..^prefix.Length];
+        }
+
+        return value;
+    }
+
+    public static string ToSha256Base64(this string value)
+    {
+        return ToSha256Base64(Encoding.UTF8.GetBytes(value));
+    }
+
+    public static string ToSha256Base64(this byte[] bytes)
+    {
+        var hashBytes = SHA256.HashData(bytes);
+
+        var result =
+            Convert.ToBase64String(hashBytes)
+                .Replace("+", string.Empty, StringComparison.Ordinal)
+                .Replace("=", string.Empty, StringComparison.Ordinal)
+                .ToLowerInvariant();
+
+        return result;
     }
 
     public static DirectoryInfo CreateDirectory(this DirectoryInfo directory, string name)

@@ -10,6 +10,8 @@ using CoreTweet;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public sealed partial class App

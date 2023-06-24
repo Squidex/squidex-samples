@@ -29,13 +29,15 @@ public static class Program
     {
         var serviceProvider =
             new ServiceCollection()
+                .AddSingleton<IConfigurationStore, ConfigurationStore>()
                 .AddSingleton<IConfigurationService, ConfigurationService>()
                 .AddSingleton<App>()
+                .AddSingleton<App.AI>()
                 .AddSingleton<App.Apps>()
                 .AddSingleton<App.Assets>()
                 .AddSingleton<App.Backup>()
                 .AddSingleton<App.Config>()
-                .AddSingleton<App.Content>()
+                .AddSingleton<App.Contents>()
                 .AddSingleton<App.Log>()
                 .AddSingleton<App.OpenLibrary>()
                 .AddSingleton<App.Schemas>()

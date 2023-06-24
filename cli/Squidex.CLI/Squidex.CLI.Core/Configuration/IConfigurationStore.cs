@@ -7,15 +7,11 @@
 
 namespace Squidex.CLI.Configuration;
 
-public record ConfiguredApp
+public interface IConfigurationStore
 {
-    public string ServiceUrl { get; init; }
+    DirectoryInfo WorkingDirectory { get; }
 
-    public string ClientId { get; init; }
+    (T? Value, DateTimeOffset Saved) Get<T>(string key) where T : class;
 
-    public string ClientSecret { get; init; }
-
-    public string Name { get; init; }
-
-    public bool IgnoreSelfSigned { get; init; }
+    void Set<T>(string key, T value) where T : class;
 }

@@ -13,6 +13,8 @@ using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public sealed partial class App
@@ -40,7 +42,7 @@ public sealed partial class App
 
             await synchronizer.GenerateTemplateAsync(arguments.Folder, session);
 
-            log.WriteLine("> Folder generated.");
+            log.Completed("Folder generated.");
         }
 
         [Command("out", Description = "Exports the app to a folder.")]
@@ -55,7 +57,7 @@ public sealed partial class App
                 await synchronizer.Describe(arguments.Folder, session);
             }
 
-            log.WriteLine("> Synchronization completed.");
+            log.Completed("Export to folder completed.");
         }
 
         [Command("in", Description = "Imports the app from a folder.")]
@@ -65,7 +67,7 @@ public sealed partial class App
 
             await synchronizer.ImportAsync(arguments.Folder, arguments.ToOptions(), session);
 
-            log.WriteLine("> Synchronization completed.");
+            log.Completed("Import from folder completed.");
         }
 
         [Command("describe", Description = "Describe the synced folder.")]
@@ -75,7 +77,7 @@ public sealed partial class App
 
             await synchronizer.Describe(arguments.Folder, session);
 
-            log.WriteLine("> Describing completed.");
+            log.Completed("Describing completed.");
         }
 
         [Command("targets", Description = "List all targets.")]
@@ -88,7 +90,7 @@ public sealed partial class App
                 table.AddRow(name.ToLowerInvariant(), description);
             }
 
-            table.Write();
+            log.WriteLine(table.ToString());
         }
 
         public sealed class NewArgument : AppArguments

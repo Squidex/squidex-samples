@@ -11,6 +11,9 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.OpenLibrary;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Configuration;
+using Squidex.ClientLibrary;
+
+#pragma warning disable MA0048 // File name must match type name
 
 namespace Squidex.CLI.Commands;
 
@@ -46,7 +49,7 @@ public sealed partial class App
                 Recreate = true
             }, session);
 
-            log.WriteLine("> Schemas generated.");
+            log.Completed("Creation of schema completed.");
         }
 
         [Command("authors", Description = "Import the authors.")]
@@ -61,7 +64,7 @@ public sealed partial class App
                 await importer.ImportAsync(stream);
             }
 
-            log.WriteLine("> Authors imports.");
+            log.Completed("Import of Authors completed.");
         }
 
         public sealed class NewArguments : AppArguments

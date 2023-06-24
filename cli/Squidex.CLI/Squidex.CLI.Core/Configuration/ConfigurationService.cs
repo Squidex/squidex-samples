@@ -5,9 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Newtonsoft.Json;
 using Squidex.CLI.Commands.Implementation;
-using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Configuration;
@@ -15,91 +13,28 @@ namespace Squidex.CLI.Configuration;
 public sealed class ConfigurationService : IConfigurationService
 {
     private const string CloudUrl = "https://cloud.squidex.io";
-    private readonly JsonSerializer jsonSerializer = new JsonSerializer();
-    private readonly Configuration configuration;
-    private readonly FileInfo configurationFile;
+    private readonly ConfigurationModel configuration;
+    private readonly IConfigurationStore configurationStore;
 
-    public DirectoryInfo WorkingDirectory => configurationFile.Directory!;
-
-    public ConfigurationService()
+    private sealed class ConfigurationModel
     {
-        (configuration, configurationFile) = LoadConfiguration();
+        public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+
+        public string? CurrentApp { get; set; }
     }
 
-    private (Configuration, FileInfo) LoadConfiguration()
+    public ConfigurationService(IConfigurationStore configurationStore)
     {
-        DirectoryInfo? workingDirectory = null;
+        this.configurationStore = configurationStore;
 
-        var folderPath = Environment.GetEnvironmentVariable("SQCLI_FOLDER");
-
-        if (!string.IsNullOrWhiteSpace(folderPath))
-        {
-            if (Directory.Exists(folderPath))
-            {
-                workingDirectory = new DirectoryInfo(folderPath);
-            }
-        }
-
-        if (workingDirectory == null)
-        {
-            var userFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-            if (Directory.Exists(userFolder))
-            {
-                workingDirectory = Directory.CreateDirectory(Path.Combine(userFolder, ".sqcli"));
-            }
-        }
-
-        if (workingDirectory == null)
-        {
-            workingDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
-        }
-
-        var file = workingDirectory.GetFile(".configuration");
-
-        try
-        {
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-            using (var stream = file.OpenRead())
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    using (var jsonReader = new JsonTextReader(streamReader))
-                    {
-                        var result = jsonSerializer.Deserialize<Configuration>(jsonReader);
-
-                        if (result == null)
-                        {
-                            return (new Configuration(), file);
-                        }
-
-                        foreach (var (key, config) in result.Apps)
-                        {
-                            if (string.IsNullOrWhiteSpace(config.Name))
-                            {
-                                config.Name = key;
-                            }
-                        }
-
-                        return (result, file);
-                    }
-                }
-            }
-        }
-        catch
-        {
-            return (new Configuration(), file);
-        }
+        configuration = configurationStore.Get<ConfigurationModel>(".configuration").Value ?? new ConfigurationModel();
     }
 
     private void Save()
     {
         try
         {
-            var fullPath = configurationFile.FullName;
-
-            File.WriteAllText(fullPath, JsonConvert.SerializeObject(configuration));
+            configurationStore.Set(".configuration", configuration);
         }
         catch (Exception ex)
         {
@@ -119,7 +54,7 @@ public sealed class ConfigurationService : IConfigurationService
     {
         if (string.IsNullOrWhiteSpace(appConfig.ServiceUrl))
         {
-            appConfig.ServiceUrl = CloudUrl;
+            appConfig = appConfig with { ServiceUrl = CloudUrl };
         }
 
         configuration.Apps[config] = appConfig;
@@ -167,14 +102,14 @@ public sealed class ConfigurationService : IConfigurationService
         {
             var options = CreateOptions(app, emulate);
 
-            return new Session(WorkingDirectory, new SquidexClient(options));
+            return new Session(configurationStore.WorkingDirectory, new SquidexClient(options));
         }
 
         if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
         {
             var options = CreateOptions(app, emulate);
 
-            return new Session(WorkingDirectory, new SquidexClient(options));
+            return new Session(configurationStore.WorkingDirectory, new SquidexClient(options));
         }
 
         throw new CLIException("Cannot find valid configuration.");
@@ -184,15 +119,15 @@ public sealed class ConfigurationService : IConfigurationService
     {
         var options = new SquidexOptions
         {
-            IgnoreSelfSignedCertificates = app.IgnoreSelfSigned,
+            Url = app.ServiceUrl,
             AppName = app.Name,
             ClientId = app.ClientId,
             ClientSecret = app.ClientSecret,
-            Url = app.ServiceUrl,
             Timeout = TimeSpan.FromHours(1)
         };
 
         options.UseFallbackSerializer();
+        options.IgnoreSelfSignedCertificates = app.IgnoreSelfSigned;
 
         if (emulate)
         {
@@ -202,8 +137,8 @@ public sealed class ConfigurationService : IConfigurationService
         return options;
     }
 
-    public Configuration GetConfiguration()
+    public (string? CurrentApp, (string Name, ConfiguredApp)[] Apps) GetConfiguration()
     {
-        return configuration;
+        return (configuration.CurrentApp, configuration.Apps.Select(x => (x.Key, x.Value)).ToArray());
     }
 }

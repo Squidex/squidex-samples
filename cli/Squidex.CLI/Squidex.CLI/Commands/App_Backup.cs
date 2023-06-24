@@ -11,6 +11,8 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public sealed partial class App
@@ -77,16 +79,16 @@ public sealed partial class App
 
                 if (arguments.DeleteAfterDownload)
                 {
-                    log.WriteLine("Removing backup from app...");
+                    log.WriteLine("Removing backup from app");
 
                     await session.Client.Backups.DeleteBackupAsync(foundBackup.Id);
                 }
 
-                log.WriteLine("> Backup completed and downloaded");
+                log.Completed("Backup Download completed.");
             }
             else
             {
-                log.WriteLine("> Failed to make the backup, check the logs for details.");
+                log.Completed("Backup failed, check the logs for details.");
             }
         }
 

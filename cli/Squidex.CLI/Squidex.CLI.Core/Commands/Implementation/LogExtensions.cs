@@ -123,6 +123,11 @@ internal static class LogExtensions
         HandleException(ex, log.StepFailed);
     }
 
+    public static void Completed(this ILogger log, string message)
+    {
+        log.WriteLine($"> {message}");
+    }
+
     public static void HandleException(Exception ex, Action<string> error)
     {
         switch (ex)

@@ -5,11 +5,15 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-namespace Squidex.CLI.Configuration;
+using Squidex.ClientLibrary;
 
-public sealed class Configuration
+namespace Squidex.CLI.Commands.Implementation.AI;
+
+public sealed class GeneratedContent
 {
-    public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+    public List<UpsertSchemaFieldDto> SchemaFields { get; set; }
 
-    public string? CurrentApp { get; set; }
+    public string SchemaName { get; set; }
+
+    public List<Dictionary<string, object>> Contents { get; set; }
 }

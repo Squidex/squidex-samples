@@ -59,6 +59,7 @@ public static class Program
         var sourceCode =
             new CSharpClientGenerator(document, generatorSettings)
                 .GenerateFile().UseFixedVersion(); // Use a static version to keep the changes low.
+
         return sourceCode;
     }
 }

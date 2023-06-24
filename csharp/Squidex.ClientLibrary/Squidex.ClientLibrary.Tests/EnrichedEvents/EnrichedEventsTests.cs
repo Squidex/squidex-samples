@@ -14,6 +14,16 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents;
 
 public class EnrichedEventsTests
 {
+    public class SchemaData
+    {
+        [JsonConverter(typeof(InvariantConverter))]
+        public string TestField { get; set; }
+    }
+
+    public class Schema : Content<SchemaData>
+    {
+    }
+
     private const string JsonEnrichedContentEvent = @"{
 			'type': 'SchemaUpdated',
 			'payload': {
@@ -141,26 +151,16 @@ public class EnrichedEventsTests
 
         var assetEvent = (EnrichedAssetEvent)envelope.Payload;
 
-        Assert.Equal("AssetCreatedFromSnapshot", assetEvent.Name);
-        Assert.Equal("testapp", assetEvent.App.Name);
         Assert.Equal("6025a698a825d86becf541fe", assetEvent.Actor.Id);
-        Assert.Equal("c5dc4403-713d-4ebd-9a8f-a17efdba924e", assetEvent.Id);
-        Assert.Equal(447021, assetEvent.FileSize);
-        Assert.Equal("name.pdf", assetEvent.FileName);
-        Assert.Equal("application/pdf", assetEvent.MimeType);
-        Assert.Equal("6025a698a825d86becf541fe", assetEvent.LastModifiedBy.Id);
-        Assert.Equal("subject", assetEvent.LastModifiedBy.Type);
         Assert.Equal("6025a698a825d86becf541fe", assetEvent.CreatedBy.Id);
+        Assert.Equal("6025a698a825d86becf541fe", assetEvent.LastModifiedBy.Id);
+        Assert.Equal("application/pdf", assetEvent.MimeType);
+        Assert.Equal("AssetCreatedFromSnapshot", assetEvent.Name);
+        Assert.Equal("c5dc4403-713d-4ebd-9a8f-a17efdba924e", assetEvent.Id);
+        Assert.Equal("name.pdf", assetEvent.FileName);
         Assert.Equal("subject", assetEvent.CreatedBy.Type);
+        Assert.Equal("subject", assetEvent.LastModifiedBy.Type);
+        Assert.Equal("testapp", assetEvent.App.Name);
+        Assert.Equal(447021, assetEvent.FileSize);
     }
-}
-
-public class SchemaData
-{
-    [JsonConverter(typeof(InvariantConverter))]
-    public string TestField { get; set; }
-}
-
-public class Schema : Content<SchemaData>
-{
 }

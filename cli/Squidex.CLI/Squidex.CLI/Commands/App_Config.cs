@@ -11,6 +11,8 @@ using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 
+#pragma warning disable MA0048 // File name must match type name
+
 namespace Squidex.CLI.Commands;
 
 public partial class App
@@ -43,8 +45,7 @@ public partial class App
                     table.AddRow(key, app.Name, app.ClientId, app.ClientSecret.Truncate(10), app.ServiceUrl);
                 }
 
-                table.Write();
-
+                log.WriteLine(table.ToString());
                 log.WriteLine();
                 log.WriteLine("Current App: {0}", config.CurrentApp);
             }
@@ -57,17 +58,28 @@ public partial class App
         [Command("add", Description = "Add or update an app.")]
         public void Add(AddArguments arguments)
         {
-            configuration.Upsert(arguments.ToEntryName(), arguments.ToModel());
+            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? arguments.Label : arguments.Name;
+
+            var appConfig = new ConfiguredApp
+            {
+                Name = arguments.Name,
+                ClientId = arguments.ClientId,
+                ClientSecret = arguments.ClientSecret,
+                IgnoreSelfSigned = arguments.IgnoreSelfSigned,
+                ServiceUrl = arguments.ServiceUrl
+            };
+
+            configuration.Upsert(entry, appConfig);
 
             if (arguments.Use)
             {
                 configuration.UseApp(arguments.Name);
 
-                log.WriteLine("> App added and selected.");
+                log.Completed("App added and selected.");
             }
             else
             {
-                log.WriteLine("> App added.");
+                log.Completed("App added.");
             }
         }
 
@@ -76,7 +88,7 @@ public partial class App
         {
             configuration.UseApp(arguments.Name);
 
-            log.WriteLine("> App selected.");
+            log.Completed("App selected.");
         }
 
         [Command("remove", Description = "Remove an app.")]
@@ -84,7 +96,7 @@ public partial class App
         {
             configuration.Remove(arguments.Name);
 
-            log.WriteLine("> App removed.");
+            log.Completed("App removed.");
         }
 
         [Command("reset", Description = "Reset the config.")]
@@ -92,7 +104,7 @@ public partial class App
         {
             configuration.Reset();
 
-            log.WriteLine("> Config reset.");
+            log.Completed("Config reset.");
         }
 
         public sealed class ListArguments : IArgumentModel
@@ -158,23 +170,6 @@ public partial class App
 
             [Option("use", Description = "Use the config.")]
             public bool Use { get; set; }
-
-            public string ToEntryName()
-            {
-                return !string.IsNullOrWhiteSpace(Label) ? Label : Name;
-            }
-
-            public ConfiguredApp ToModel()
-            {
-                return new ConfiguredApp
-                {
-                    Name = Name,
-                    ClientId = ClientId,
-                    ClientSecret = ClientSecret,
-                    IgnoreSelfSigned = IgnoreSelfSigned,
-                    ServiceUrl = ServiceUrl
-                };
-            }
 
             public sealed class Validator : AbstractValidator<AddArguments>
             {
