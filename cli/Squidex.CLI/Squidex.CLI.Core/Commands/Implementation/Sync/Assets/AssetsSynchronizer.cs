@@ -131,50 +131,69 @@ public sealed class AssetsSynchronizer : ISynchronizer
                     await uploader.CompleteAsync();
                 }
 
-                var request = new BulkUpdateAssetsDto();
+                // Use separate batches to not cause issues with older Squidex version.
+                var annotateBatch = new BulkUpdateAssetsDto
+                {
+                    Jobs = new List<BulkUpdateAssetsJobDto>()
+                };
+
+                foreach (var asset in model.Assets)
+                {
+                    annotateBatch.Jobs.Add(asset.ToAnnotate());
+                }
+
+                await ExecuteBatchAsync(session, batchIndex, model, annotateBatch, "Annotating");
+
+                var moveBatch = new BulkUpdateAssetsDto
+                {
+                    Jobs = new List<BulkUpdateAssetsJobDto>()
+                };
 
                 foreach (var asset in model.Assets)
                 {
                     var parentId = await sync.Folders.GetIdAsync(asset.FolderPath);
 
-                    request.Jobs.Add(asset.ToMove(parentId));
-                    request.Jobs.Add(asset.ToAnnotate());
+                    moveBatch.Jobs.Add(asset.ToMove(parentId));
                 }
 
-                var assetIndex = 0;
-
-                var results = await session.Client.Assets.BulkUpdateAssetsAsync(request);
-
-                foreach (var asset in model.Assets)
-                {
-                    // We create wo commands per asset.
-                    var result1 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2));
-                    var result2 = results.FirstOrDefault(x => x.JobIndex == (assetIndex * 2) + 1);
-
-                    log.StepStart($"Upserting #{batchIndex}/{assetIndex}");
-
-                    if (result1?.Error != null)
-                    {
-                        log.StepFailed(result1.Error.ToString());
-                    }
-                    else if (result2?.Error != null)
-                    {
-                        log.StepFailed(result2.Error.ToString());
-                    }
-                    else if (result1?.Id != null && result2?.Id != null)
-                    {
-                        log.StepSuccess();
-                    }
-                    else
-                    {
-                        log.StepSkipped("Unknown Reason");
-                    }
-
-                    assetIndex++;
-                }
+                await ExecuteBatchAsync(session, batchIndex, model, moveBatch, "Moving");
             }
 
             batchIndex++;
+        }
+    }
+
+    private async Task ExecuteBatchAsync(ISession session, int batchIndex, AssetsModel model, BulkUpdateAssetsDto request, string name)
+    {
+        var index = 0;
+        var results = await session.Client.Assets.BulkUpdateAssetsAsync(request);
+
+        foreach (var asset in model.Assets)
+        {
+            // We create wo commands per asset.
+            var result1 = results.FirstOrDefault(x => x.JobIndex == (index * 2));
+            var result2 = results.FirstOrDefault(x => x.JobIndex == (index * 2) + 1);
+
+            log.StepStart($"{name} #{batchIndex}/{index}");
+
+            if (result1?.Error != null)
+            {
+                log.StepFailed(result1.Error.ToString());
+            }
+            else if (result2?.Error != null)
+            {
+                log.StepFailed(result2.Error.ToString());
+            }
+            else if (result1?.Id != null && result2?.Id != null)
+            {
+                log.StepSuccess();
+            }
+            else
+            {
+                log.StepSkipped("Unknown Reason");
+            }
+
+            index++;
         }
     }
 

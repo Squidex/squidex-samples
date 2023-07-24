@@ -125,6 +125,8 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
         var mapper = new Extensions.Mapper(session.Url, session.App, options.Languages);
 
+        var batchIndex = 0;
+
         foreach (var (file, model) in models)
         {
             if (model?.Contents?.Count > 0)
@@ -151,7 +153,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
                 {
                     var result = results.Find(x => x.JobIndex == contentIndex);
 
-                    log.StepStart($"Upserting #{contentIndex}");
+                    log.StepStart($"Upserting #{batchIndex}/{contentIndex}");
 
                     if (result?.Error != null)
                     {
@@ -183,6 +185,8 @@ public sealed class ContentsSynchronizer : ISynchronizer
                     });
                 }
             }
+
+            batchIndex++;
         }
     }
 
