@@ -1453,6 +1453,15 @@ namespace Squidex.ClientLibrary
         /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Asks the chatbot a question a text.
+        /// </summary>
+        /// <param name="request">The question request.</param>
+        /// <returns>Question asked.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> PostQuestionAsync(AskDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
@@ -1534,6 +1543,102 @@ namespace Squidex.ClientLibrary
                         if (status_ == 200 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TranslationDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Asks the chatbot a question a text.
+        /// </summary>
+        /// <param name="request">The question request.</param>
+        /// <returns>Question asked.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> PostQuestionAsync(AskDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/apps/{app}/ask");
+            urlBuilder_.Replace("{app}", _options.AppName);
+
+            var client_ = _options.ClientProvider.Get();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200 || status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -12624,6 +12729,9 @@ namespace Squidex.ClientLibrary
         /// <exception cref="SquidexException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetWatchingUsersAsync(string resource, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
+            if (resource == null)
+                throw new System.ArgumentNullException("resource");
+
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/apps/{app}/watching/{resource}");
             urlBuilder_.Replace("{app}", _options.AppName);
@@ -14396,10 +14504,11 @@ namespace Squidex.ClientLibrary
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="auto">True to use auto format.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="deleted">Also return deleted content items.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, bool? deleted = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -14419,11 +14528,12 @@ namespace Squidex.ClientLibrary
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="auto">True to use auto format.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="deleted">Also return deleted content items.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
         [System.Obsolete]
-        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, bool? deleted = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -14668,13 +14778,17 @@ namespace Squidex.ClientLibrary
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="auto">True to use auto format.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="deleted">Also return deleted content items.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentBySlugAsync(string idOrSlug, string more, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, bool? deleted = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (idOrSlug == null)
                 throw new System.ArgumentNullException("idOrSlug");
+
+            if (more == null)
+                throw new System.ArgumentNullException("more");
 
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append("api/assets/{app}/{idOrSlug}/{more}?");
@@ -14732,6 +14846,10 @@ namespace Squidex.ClientLibrary
             if (force != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("force") + "=").Append(System.Uri.EscapeDataString(ConvertToString(force, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (deleted != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("deleted") + "=").Append(System.Uri.EscapeDataString(ConvertToString(deleted, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (format != null)
             {
@@ -14827,11 +14945,12 @@ namespace Squidex.ClientLibrary
         /// <param name="nofocus">True to ignore the asset focus point if any.</param>
         /// <param name="auto">True to use auto format.</param>
         /// <param name="force">True to force a new resize even if it already stored.</param>
+        /// <param name="deleted">Also return deleted content items.</param>
         /// <param name="format">True to force a new resize even if it already stored.</param>
         /// <returns>Asset found and content or (resized) image returned.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
         [System.Obsolete]
-        public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<FileResponse> GetAssetContentAsync(string id, long? version = null, long? cache = null, int? download = null, int? width = null, int? height = null, int? quality = null, ResizeMode? mode = null, string bg = null, float? focusX = null, float? focusY = null, bool? nofocus = null, bool? auto = null, bool? force = null, bool? deleted = null, ImageFormat? format = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -14891,6 +15010,10 @@ namespace Squidex.ClientLibrary
             if (force != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("force") + "=").Append(System.Uri.EscapeDataString(ConvertToString(force, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (deleted != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("deleted") + "=").Append(System.Uri.EscapeDataString(ConvertToString(deleted, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             if (format != null)
             {
@@ -22071,10 +22194,19 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// The result of the translation.
         /// </summary>
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public TranslationStatus Status { get; set; }
+
+        /// <summary>
+        /// The result of the translation.
+        /// </summary>
         [Newtonsoft.Json.JsonProperty("result", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public TranslationResultCode Result { get; set; }
+        [System.Obsolete("Use Status property now.")]
+        public TranslationStatus Result { get; set; }
 
         /// <summary>
         /// The translated text.
@@ -22085,7 +22217,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum TranslationResultCode
+    public enum TranslationStatus
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"Translated")]
@@ -22130,6 +22262,18 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("sourceLanguage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SourceLanguage { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class AskDto
+    {
+        /// <summary>
+        /// The text to ask.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("prompt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Prompt { get; set; }
 
     }
 
@@ -25564,6 +25708,9 @@ namespace Squidex.ClientLibrary
 
         [System.Runtime.Serialization.EnumMember(Value = @"Delete")]
         Delete = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Restore")]
+        Restore = 3,
 
     }
 
