@@ -72,7 +72,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
             await client.GetAllAsync(async content =>
             {
-                if (content.Created > options.LookbackDate || content.LastModified > options.LookbackDate)
+                if (content.Created >= options.MaxAgeDate || content.LastModified >= options.MaxAgeDate)
                 {
                     content.MapComponents(schemaMap);
 

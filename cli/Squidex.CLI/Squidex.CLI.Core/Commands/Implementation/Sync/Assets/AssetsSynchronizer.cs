@@ -63,7 +63,7 @@ public sealed class AssetsSynchronizer : ISynchronizer
 
             await session.Client.Assets.GetAllAsync(async asset =>
             {
-                if (asset.Created > options.LookbackDate || asset.LastModified > options.LookbackDate)
+                if (asset.Created >= options.MaxAgeDate || asset.LastModified >= options.MaxAgeDate)
                 {
                     var model = asset.ToModel();
 

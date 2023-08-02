@@ -21,5 +21,5 @@ public sealed class SyncOptions
 
     public bool UpdateCurrentClient { get; set; }
 
-    public DateTimeOffset LookbackDate { get; set; }
+    public DateTimeOffset MaxAgeDate { get; set; }
 }
