@@ -72,16 +72,19 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
             await client.GetAllAsync(async content =>
             {
-                content.MapComponents(schemaMap);
-
-                contents.Add(content.ToModel(schema.Name));
-
-                if (contents.Count > 50)
+                if (content.Created > options.LookbackDate || content.LastModified > options.LookbackDate)
                 {
-                    await SaveAsync();
+                    content.MapComponents(schemaMap);
 
-                    contents.Clear();
-                    contentBatch++;
+                    contents.Add(content.ToModel(schema.Name));
+
+                    if (contents.Count > 50)
+                    {
+                        await SaveAsync();
+
+                        contents.Clear();
+                        contentBatch++;
+                    }
                 }
             }, context: context);
 
