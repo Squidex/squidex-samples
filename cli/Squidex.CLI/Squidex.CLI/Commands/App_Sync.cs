@@ -168,7 +168,7 @@ public sealed partial class App
             [Option('t', "targets", Description = "The targets to sync, e.g. ‘sync out -t contents -t schemas’. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
-            [Option("max-age", Description = "Content & assets created or last modified within timeSpan defined")]
+            [Option("max-age", Description = "Content & assets created or last modified within time span defined.")]
             public TimeSpan? MaxAge { get; set; }
 
             [Option("describe", Description = "Create a README.md file.")]
