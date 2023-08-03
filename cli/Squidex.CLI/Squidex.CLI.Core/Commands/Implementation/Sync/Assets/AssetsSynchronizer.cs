@@ -63,24 +63,26 @@ public sealed class AssetsSynchronizer : ISynchronizer
 
             await session.Client.Assets.GetAllAsync(async asset =>
             {
-                if (asset.Created >= options.MaxAgeDate || asset.LastModified >= options.MaxAgeDate)
+                if (asset.LastModified < options.MaxAgeDate)
                 {
-                    var model = asset.ToModel();
-
-                    model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
-
-                    assets.Add(model);
-
-                    if (assets.Count > 50)
-                    {
-                        await SaveAsync();
-
-                        assets.Clear();
-                        assetBatch++;
-                    }
-
-                    await downloadPipeline.DownloadAsync(asset);
+                    return;
                 }
+
+                var model = asset.ToModel();
+
+                model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
+
+                assets.Add(model);
+
+                if (assets.Count > 50)
+                {
+                    await SaveAsync();
+
+                    assets.Clear();
+                    assetBatch++;
+                }
+
+                await downloadPipeline.DownloadAsync(asset);
             });
 
             if (assets.Count > 0)

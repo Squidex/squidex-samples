@@ -72,19 +72,21 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
             await client.GetAllAsync(async content =>
             {
-                if (content.Created >= options.MaxAgeDate || content.LastModified >= options.MaxAgeDate)
+                if (content.LastModified < options.MaxAgeDate)
                 {
-                    content.MapComponents(schemaMap);
+                    return;
+                }
 
-                    contents.Add(content.ToModel(schema.Name));
+                content.MapComponents(schemaMap);
 
-                    if (contents.Count > 50)
-                    {
-                        await SaveAsync();
+                contents.Add(content.ToModel(schema.Name));
 
-                        contents.Clear();
-                        contentBatch++;
-                    }
+                if (contents.Count > 50)
+                {
+                    await SaveAsync();
+
+                    contents.Clear();
+                    contentBatch++;
                 }
             }, context: context);
 
