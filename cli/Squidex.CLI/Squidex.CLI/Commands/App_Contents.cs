@@ -247,7 +247,7 @@ public partial class App
                     {
                         var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                         {
-                            Delimiter = ";"
+                            Delimiter = arguments.Delimiter
                         };
 
                         await using (var writer = new CsvWriter(streamWriter, csvOptions))
