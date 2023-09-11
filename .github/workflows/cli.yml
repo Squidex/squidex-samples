@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
         
     steps:
-    - uses: actions/checkout@v3.4.0
+    - uses: actions/checkout@v4.0.0
 
     - name: setup zip
       uses: montudor/action-zip@v1.0.0
