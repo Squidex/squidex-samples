@@ -72,6 +72,11 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
             await client.GetAllAsync(async content =>
             {
+                if (content.LastModified < options.MaxAgeDate)
+                {
+                    return;
+                }
+
                 content.MapComponents(schemaMap);
 
                 contents.Add(content.ToModel(schema.Name));

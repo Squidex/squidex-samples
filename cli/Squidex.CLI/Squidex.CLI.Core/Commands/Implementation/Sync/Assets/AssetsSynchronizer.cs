@@ -63,6 +63,11 @@ public sealed class AssetsSynchronizer : ISynchronizer
 
             await session.Client.Assets.GetAllAsync(async asset =>
             {
+                if (asset.LastModified < options.MaxAgeDate)
+                {
+                    return;
+                }
+
                 var model = asset.ToModel();
 
                 model.FolderPath = await sync.Folders.GetPathAsync(asset.ParentId);
