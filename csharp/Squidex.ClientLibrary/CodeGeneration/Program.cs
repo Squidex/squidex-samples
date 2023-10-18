@@ -16,22 +16,26 @@ public static class Program
     {
         var document = await OpenApiDocument.FromUrlAsync("https://localhost:5001/api/swagger/v1/swagger.json");
 
+        var rootFolder = Environment.GetEnvironmentVariable("SDKS_ROOT_FOLDER")!;
+
         SchemaCleaner.AddExtensions(document);
 
         // We write a more complete schema for fern code generation.
-        File.WriteAllText(@"..\..\..\..\..\..\..\sdk-fern\fern\api\openapi\openapi.json", document.ToJson().UseCloudUrl());
+        File.WriteAllText(Path.Combine(rootFolder, "sdk-php/openapi.json"), document.ToJson().UseCloudUrl());
+        File.WriteAllText(Path.Combine(rootFolder, "sdk-fern/fern/openapi/openapi.json"), document.ToJson().UseCloudUrl());
+        File.WriteAllText(Path.Combine(rootFolder, "sdk-fern/other-generators/openapi.json"), document.ToJson().UseCloudUrl());
 
         // This cleanup is only needed for .NET.
         SchemaCleaner.RemoveAppName(document);
 
         // We also need a version without app name.
-        File.WriteAllText(@"..\..\..\..\..\..\..\sdk-fern\fern\api\openapi\openapi-noapp.json", document.ToJson().UseCloudUrl());
+        File.WriteAllText(Path.Combine(rootFolder, "sdk-fern/other-generators/openapi-noapp.json"), document.ToJson().UseCloudUrl());
 
         SchemaCleaner.RemoveUnusedSchemas(document);
 
         var sourceCode = GenerateCode(document);
 
-        File.WriteAllText(@"..\..\..\..\Squidex.ClientLibrary\Generated.cs", sourceCode);
+        File.WriteAllText(Path.Combine(rootFolder, "samples/csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/Generated.cs"), sourceCode);
     }
 
     private static string GenerateCode(OpenApiDocument document)

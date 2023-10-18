@@ -941,6 +941,15 @@ namespace Squidex.ClientLibrary
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Update the user profile.
+        /// </summary>
+        /// <param name="request">The values to update.</param>
+        /// <returns>User updated.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PostUserAsync(UpdateProfileDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Get users by query.
         /// </summary>
         /// <remarks>
@@ -1047,6 +1056,96 @@ namespace Squidex.ClientLibrary
                                 throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the user profile.
+        /// </summary>
+        /// <param name="request">The values to update.</param>
+        /// <returns>User updated.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task PostUserAsync(UpdateProfileDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("api/user");
+            urlBuilder_.Replace("{app}", _options.AppName);
+
+            var client_ = _options.ClientProvider.Get();
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 500)
@@ -20924,23 +21023,6 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class UISettingsDto
-    {
-        /// <summary>
-        /// True when the user can create apps.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("canCreateApps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CanCreateApps { get; set; }
-
-        /// <summary>
-        /// True when the user can create teams.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("canCreateTeams", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CanCreateTeams { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class UpdateSettingDto
     {
         /// <summary>
@@ -20949,1114 +21031,6 @@ namespace Squidex.ClientLibrary
         [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public object Value { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, object>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class FieldDto : Resource
-    {
-        /// <summary>
-        /// The ID of the field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long FieldId { get; set; }
-
-        /// <summary>
-        /// The name of the field. Must be unique within the schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Defines if the field is hidden.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isHidden", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsHidden { get; set; }
-
-        /// <summary>
-        /// Defines if the field is locked.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsLocked { get; set; }
-
-        /// <summary>
-        /// Defines if the field is disabled.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isDisabled", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsDisabled { get; set; }
-
-        /// <summary>
-        /// Defines the partitioning of the field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("partitioning", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Partitioning { get; set; }
-
-        /// <summary>
-        /// The field properties.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public FieldPropertiesDto Properties { get; set; }
-
-        /// <summary>
-        /// The nested fields.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("nested", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<NestedFieldDto> Nested { get; set; }
-
-    }
-
-    [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "fieldType")]
-    [JsonInheritanceAttribute("Array", typeof(ArrayFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Assets", typeof(AssetsFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Boolean", typeof(BooleanFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Component", typeof(ComponentFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Components", typeof(ComponentsFieldPropertiesDto))]
-    [JsonInheritanceAttribute("DateTime", typeof(DateTimeFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Geolocation", typeof(GeolocationFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Json", typeof(JsonFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Number", typeof(NumberFieldPropertiesDto))]
-    [JsonInheritanceAttribute("References", typeof(ReferencesFieldPropertiesDto))]
-    [JsonInheritanceAttribute("String", typeof(StringFieldPropertiesDto))]
-    [JsonInheritanceAttribute("Tags", typeof(TagsFieldPropertiesDto))]
-    [JsonInheritanceAttribute("UI", typeof(UIFieldPropertiesDto))]
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public abstract partial class FieldPropertiesDto
-    {
-        /// <summary>
-        /// Optional label for the editor.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(100)]
-        public string Label { get; set; }
-
-        /// <summary>
-        /// Hints to describe the field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(1000)]
-        public string Hints { get; set; }
-
-        /// <summary>
-        /// Placeholder to show when no value has been entered.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.StringLength(100)]
-        public string Placeholder { get; set; }
-
-        /// <summary>
-        /// Indicates if the field is required.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsRequired { get; set; }
-
-        /// <summary>
-        /// Indicates if the field is required when publishing.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsRequiredOnPublish { get; set; }
-
-        /// <summary>
-        /// Indicates if the field should be rendered with half width only.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsHalfWidth { get; set; }
-
-        /// <summary>
-        /// Optional url to the editor.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EditorUrl { get; set; }
-
-        /// <summary>
-        /// Tags for automation processes.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> Tags { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ArrayFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The minimum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinItems { get; set; }
-
-        /// <summary>
-        /// The maximum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxItems { get; set; }
-
-        /// <summary>
-        /// The fields that must be unique.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("uniqueFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> UniqueFields { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class AssetsFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The preview mode for the asset.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("previewMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public AssetPreviewMode PreviewMode { get; set; }
-
-        /// <summary>
-        /// The language specific default value as a list of asset ids.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value as a list of asset ids.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> DefaultValue { get; set; }
-
-        /// <summary>
-        /// The initial id to the folder.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FolderId { get; set; }
-
-        /// <summary>
-        /// The preview format.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("previewFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PreviewFormat { get; set; }
-
-        /// <summary>
-        /// The minimum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinItems { get; set; }
-
-        /// <summary>
-        /// The maximum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxItems { get; set; }
-
-        /// <summary>
-        /// The minimum file size in bytes.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minSize", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinSize { get; set; }
-
-        /// <summary>
-        /// The maximum file size in bytes.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxSize", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxSize { get; set; }
-
-        /// <summary>
-        /// The minimum image width in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinWidth { get; set; }
-
-        /// <summary>
-        /// The maximum image width in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxWidth { get; set; }
-
-        /// <summary>
-        /// The minimum image height in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinHeight { get; set; }
-
-        /// <summary>
-        /// The maximum image height in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxHeight { get; set; }
-
-        /// <summary>
-        /// The image aspect width in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("aspectWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AspectWidth { get; set; }
-
-        /// <summary>
-        /// The image aspect height in pixels.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("aspectHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AspectHeight { get; set; }
-
-        /// <summary>
-        /// The expected type.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("expectedType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public AssetType? ExpectedType { get; set; }
-
-        /// <summary>
-        /// True to resolve first asset in the content list.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("resolveFirst", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool ResolveFirst { get; set; }
-
-        /// <summary>
-        /// True to resolve first image in the content list.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("mustBeImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use \'expectedType\' field now")]
-        public bool MustBeImage { get; set; }
-
-        /// <summary>
-        /// True to resolve first image in the content list.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("resolveImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use \'resolveFirst\' field now")]
-        public bool ResolveImage { get; set; }
-
-        /// <summary>
-        /// The allowed file extensions.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowedExtensions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> AllowedExtensions { get; set; }
-
-        /// <summary>
-        /// True, if duplicate values are allowed.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowDuplicates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool AllowDuplicates { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum AssetPreviewMode
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"ImageAndFileName")]
-        ImageAndFileName = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Image")]
-        Image = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"FileName")]
-        FileName = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class LocalizedValueOfReadonlyListOfString : System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum AssetType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Unknown")]
-        Unknown = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Image")]
-        Image = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Audio")]
-        Audio = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Video")]
-        Video = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class BooleanFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfNullableBoolean DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DefaultValue { get; set; }
-
-        /// <summary>
-        /// Indicates that the inline editor is enabled for this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool InlineEditable { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public BooleanFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class LocalizedValueOfNullableBoolean : System.Collections.Generic.Dictionary<string, bool?>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum BooleanFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Checkbox")]
-        Checkbox = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Toggle")]
-        Toggle = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ComponentFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The ID of the embedded schemas.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> SchemaIds { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ComponentsFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The minimum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinItems { get; set; }
-
-        /// <summary>
-        /// The maximum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxItems { get; set; }
-
-        /// <summary>
-        /// The ID of the embedded schemas.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> SchemaIds { get; set; }
-
-        /// <summary>
-        /// The fields that must be unique.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("uniqueFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> UniqueFields { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class DateTimeFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfNullableInstant DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DefaultValue { get; set; }
-
-        /// <summary>
-        /// The maximum allowed value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? MaxValue { get; set; }
-
-        /// <summary>
-        /// The minimum allowed value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? MinValue { get; set; }
-
-        /// <summary>
-        /// The format pattern when displayed in the UI.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("format", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Format { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public DateTimeFieldEditor Editor { get; set; }
-
-        /// <summary>
-        /// The calculated default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("calculatedDefaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public DateTimeCalculatedDefaultValue? CalculatedDefaultValue { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class LocalizedValueOfNullableInstant : System.Collections.Generic.Dictionary<string, System.DateTimeOffset?>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum DateTimeFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Date")]
-        Date = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"DateTime")]
-        DateTime = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum DateTimeCalculatedDefaultValue
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Now")]
-        Now = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Today")]
-        Today = 1,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class GeolocationFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public GeolocationFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum GeolocationFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Map")]
-        Map = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class JsonFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The GraphQL schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("graphQLSchema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string GraphQLSchema { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class NumberFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfNullableDouble DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? DefaultValue { get; set; }
-
-        /// <summary>
-        /// The maximum allowed value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? MaxValue { get; set; }
-
-        /// <summary>
-        /// The minimum allowed value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? MinValue { get; set; }
-
-        /// <summary>
-        /// The allowed values for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<double> AllowedValues { get; set; }
-
-        /// <summary>
-        /// Indicates if the field value must be unique. Ignored for nested fields and localized fields.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isUnique", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsUnique { get; set; }
-
-        /// <summary>
-        /// Indicates that the inline editor is enabled for this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool InlineEditable { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public NumberFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class LocalizedValueOfNullableDouble : System.Collections.Generic.Dictionary<string, double?>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum NumberFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
-        Input = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Radio")]
-        Radio = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
-        Dropdown = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Stars")]
-        Stars = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ReferencesFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value as a list of content ids.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value as a list of content ids.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> DefaultValue { get; set; }
-
-        /// <summary>
-        /// The minimum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinItems { get; set; }
-
-        /// <summary>
-        /// The maximum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxItems { get; set; }
-
-        /// <summary>
-        /// True, if duplicate values are allowed.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowDuplicates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool AllowDuplicates { get; set; }
-
-        /// <summary>
-        /// True to resolve references in the content list.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("resolveReference", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool ResolveReference { get; set; }
-
-        /// <summary>
-        /// True when all references must be published.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("mustBePublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool MustBePublished { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ReferencesFieldEditor Editor { get; set; }
-
-        /// <summary>
-        /// The ID of the referenced schemas.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> SchemaIds { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum ReferencesFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"List")]
-        List = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
-        Dropdown = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Tags")]
-        Tags = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Checkboxes")]
-        Checkboxes = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
-        Input = 4,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class StringFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfString DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string DefaultValue { get; set; }
-
-        /// <summary>
-        /// The pattern to enforce a specific format for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Pattern { get; set; }
-
-        /// <summary>
-        /// The validation message for the pattern.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("patternMessage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PatternMessage { get; set; }
-
-        /// <summary>
-        /// The initial id to the folder when the control supports file uploads.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string FolderId { get; set; }
-
-        /// <summary>
-        /// The minimum allowed length for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinLength { get; set; }
-
-        /// <summary>
-        /// The maximum allowed length for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxLength { get; set; }
-
-        /// <summary>
-        /// The minimum allowed of normal characters for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minCharacters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinCharacters { get; set; }
-
-        /// <summary>
-        /// The maximum allowed of normal characters for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxCharacters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxCharacters { get; set; }
-
-        /// <summary>
-        /// The minimum allowed number of words for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinWords { get; set; }
-
-        /// <summary>
-        /// The maximum allowed number of words for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxWords { get; set; }
-
-        /// <summary>
-        /// The allowed values for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> AllowedValues { get; set; }
-
-        /// <summary>
-        /// The allowed schema ids that can be embedded.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> SchemaIds { get; set; }
-
-        /// <summary>
-        /// Indicates if the field value must be unique. Ignored for nested fields and localized fields.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isUnique", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsUnique { get; set; }
-
-        /// <summary>
-        /// Indicates that other content items or references are embedded.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isEmbeddable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsEmbeddable { get; set; }
-
-        /// <summary>
-        /// Indicates that the inline editor is enabled for this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool InlineEditable { get; set; }
-
-        /// <summary>
-        /// Indicates whether GraphQL Enum should be created.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("createEnum", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CreateEnum { get; set; }
-
-        /// <summary>
-        /// How the string content should be interpreted.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("contentType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public StringContentType ContentType { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public StringFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class LocalizedValueOfString : System.Collections.Generic.Dictionary<string, string>
-    {
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum StringContentType
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
-        Unspecified = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Html")]
-        Html = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Markdown")]
-        Markdown = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum StringFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
-        Input = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Color")]
-        Color = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Markdown")]
-        Markdown = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
-        Dropdown = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Html")]
-        Html = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Radio")]
-        Radio = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"RichText")]
-        RichText = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Slug")]
-        Slug = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"StockPhoto")]
-        StockPhoto = 8,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"TextArea")]
-        TextArea = 9,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class TagsFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The language specific default value for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
-
-        /// <summary>
-        /// The default value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> DefaultValue { get; set; }
-
-        /// <summary>
-        /// The minimum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MinItems { get; set; }
-
-        /// <summary>
-        /// The maximum allowed items for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? MaxItems { get; set; }
-
-        /// <summary>
-        /// The allowed values for the field value.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> AllowedValues { get; set; }
-
-        /// <summary>
-        /// Indicates whether GraphQL Enum should be created.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("createEnum", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool CreateEnum { get; set; }
-
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public TagsFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum TagsFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Tags")]
-        Tags = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Checkboxes")]
-        Checkboxes = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
-        Dropdown = 2,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class UIFieldPropertiesDto : FieldPropertiesDto
-    {
-        /// <summary>
-        /// The editor that is used to manage this field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public UIFieldEditor Editor { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public enum UIFieldEditor
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Separator")]
-        Separator = 0,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class NestedFieldDto : Resource
-    {
-        /// <summary>
-        /// The ID of the field.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public long FieldId { get; set; }
-
-        /// <summary>
-        /// The name of the field. Must be unique within the schema.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Defines if the field is hidden.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isHidden", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsHidden { get; set; }
-
-        /// <summary>
-        /// Defines if the field is locked.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsLocked { get; set; }
-
-        /// <summary>
-        /// Defines if the field is disabled.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("isDisabled", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool IsDisabled { get; set; }
-
-        /// <summary>
-        /// The field properties.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public FieldPropertiesDto Properties { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public abstract partial class Resource
-    {
-        /// <summary>
-        /// The links.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.Dictionary<string, ResourceLink> Links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class ResourceLink
-    {
-        /// <summary>
-        /// The link url.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Href { get; set; }
-
-        /// <summary>
-        /// The link method.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Method { get; set; }
-
-        /// <summary>
-        /// Additional data about the link.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Metadata { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class AllContentsByPostDto
-    {
-        /// <summary>
-        /// The list of ids to query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("ids", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<string> Ids { get; set; }
-
-        /// <summary>
-        /// The start of the schedule.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("scheduledFrom", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? ScheduledFrom { get; set; }
-
-        /// <summary>
-        /// The end of the schedule.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("scheduledTo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? ScheduledTo { get; set; }
-
-        /// <summary>
-        /// The ID of the referencing content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("referencing", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Referencing { get; set; }
-
-        /// <summary>
-        /// The ID of the reference content item.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("references", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string References { get; set; }
-
-        /// <summary>
-        /// The optional odata query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("oData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string OData { get; set; }
-
-        /// <summary>
-        /// The optional json query.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("q", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object Q { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class BulkResultDto
-    {
-        /// <summary>
-        /// The error when the bulk job failed.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ErrorDto Error { get; set; }
-
-        /// <summary>
-        /// The index of the bulk job where the result belongs to. The order can change.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("jobIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int JobIndex { get; set; }
-
-        /// <summary>
-        /// The ID of the entity that has been handled successfully or not.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The ID of the entity that has been handled successfully or not.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.Obsolete("Use \'id\' field now.")]
-        public string ContentId { get; set; }
 
     }
 
@@ -22114,6 +21088,43 @@ namespace Squidex.ClientLibrary
         [Newtonsoft.Json.JsonProperty("permissions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.List<string> Permissions { get; set; } = new System.Collections.Generic.List<string>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public abstract partial class Resource
+    {
+        /// <summary>
+        /// The links.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("_links", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.Dictionary<string, ResourceLink> Links { get; set; } = new System.Collections.Generic.Dictionary<string, ResourceLink>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ResourceLink
+    {
+        /// <summary>
+        /// The link url.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("href", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Href { get; set; }
+
+        /// <summary>
+        /// The link method.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Method { get; set; }
+
+        /// <summary>
+        /// Additional data about the link.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("metadata", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Metadata { get; set; }
 
     }
 
@@ -22185,6 +21196,17 @@ namespace Squidex.ClientLibrary
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class ResourcesDto : Resource
     {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class UpdateProfileDto
+    {
+        /// <summary>
+        /// The answers from a questionaire.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("answers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.Dictionary<string, string> Answers { get; set; }
 
     }
 
@@ -22965,6 +21987,1026 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class FieldDto : Resource
+    {
+        /// <summary>
+        /// The ID of the field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long FieldId { get; set; }
+
+        /// <summary>
+        /// The name of the field. Must be unique within the schema.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Defines if the field is hidden.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isHidden", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHidden { get; set; }
+
+        /// <summary>
+        /// Defines if the field is locked.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// Defines if the field is disabled.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isDisabled", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsDisabled { get; set; }
+
+        /// <summary>
+        /// Defines the partitioning of the field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("partitioning", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Partitioning { get; set; }
+
+        /// <summary>
+        /// The field properties.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public FieldPropertiesDto Properties { get; set; }
+
+        /// <summary>
+        /// The nested fields.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("nested", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<NestedFieldDto> Nested { get; set; }
+
+    }
+
+    [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "fieldType")]
+    [JsonInheritanceAttribute("Array", typeof(ArrayFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Assets", typeof(AssetsFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Boolean", typeof(BooleanFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Component", typeof(ComponentFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Components", typeof(ComponentsFieldPropertiesDto))]
+    [JsonInheritanceAttribute("DateTime", typeof(DateTimeFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Geolocation", typeof(GeolocationFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Json", typeof(JsonFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Number", typeof(NumberFieldPropertiesDto))]
+    [JsonInheritanceAttribute("References", typeof(ReferencesFieldPropertiesDto))]
+    [JsonInheritanceAttribute("String", typeof(StringFieldPropertiesDto))]
+    [JsonInheritanceAttribute("Tags", typeof(TagsFieldPropertiesDto))]
+    [JsonInheritanceAttribute("UI", typeof(UIFieldPropertiesDto))]
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public abstract partial class FieldPropertiesDto
+    {
+        /// <summary>
+        /// Optional label for the editor.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("label", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Label { get; set; }
+
+        /// <summary>
+        /// Hints to describe the field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("hints", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(1000)]
+        public string Hints { get; set; }
+
+        /// <summary>
+        /// Placeholder to show when no value has been entered.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("placeholder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.StringLength(100)]
+        public string Placeholder { get; set; }
+
+        /// <summary>
+        /// Indicates if the field is required.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isRequired", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// Indicates if the field is required when publishing.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isRequiredOnPublish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsRequiredOnPublish { get; set; }
+
+        /// <summary>
+        /// Indicates if the field should be rendered with half width only.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isHalfWidth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHalfWidth { get; set; }
+
+        /// <summary>
+        /// Optional url to the editor.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EditorUrl { get; set; }
+
+        /// <summary>
+        /// Tags for automation processes.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> Tags { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ArrayFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The minimum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinItems { get; set; }
+
+        /// <summary>
+        /// The maximum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxItems { get; set; }
+
+        /// <summary>
+        /// The calculated default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("calculatedDefaultValue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ArrayCalculatedDefaultValue CalculatedDefaultValue { get; set; }
+
+        /// <summary>
+        /// The fields that must be unique.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("uniqueFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> UniqueFields { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum ArrayCalculatedDefaultValue
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EmptyArray")]
+        EmptyArray = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Null")]
+        Null = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class AssetsFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The preview mode for the asset.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("previewMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AssetPreviewMode PreviewMode { get; set; }
+
+        /// <summary>
+        /// The language specific default value as a list of asset ids.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value as a list of asset ids.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> DefaultValue { get; set; }
+
+        /// <summary>
+        /// The initial id to the folder.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FolderId { get; set; }
+
+        /// <summary>
+        /// The preview format.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("previewFormat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PreviewFormat { get; set; }
+
+        /// <summary>
+        /// The minimum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinItems { get; set; }
+
+        /// <summary>
+        /// The maximum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxItems { get; set; }
+
+        /// <summary>
+        /// The minimum file size in bytes.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minSize", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinSize { get; set; }
+
+        /// <summary>
+        /// The maximum file size in bytes.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxSize", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxSize { get; set; }
+
+        /// <summary>
+        /// The minimum image width in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinWidth { get; set; }
+
+        /// <summary>
+        /// The maximum image width in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxWidth { get; set; }
+
+        /// <summary>
+        /// The minimum image height in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinHeight { get; set; }
+
+        /// <summary>
+        /// The maximum image height in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxHeight { get; set; }
+
+        /// <summary>
+        /// The image aspect width in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("aspectWidth", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AspectWidth { get; set; }
+
+        /// <summary>
+        /// The image aspect height in pixels.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("aspectHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? AspectHeight { get; set; }
+
+        /// <summary>
+        /// The expected type.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("expectedType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AssetType? ExpectedType { get; set; }
+
+        /// <summary>
+        /// True to resolve first asset in the content list.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("resolveFirst", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ResolveFirst { get; set; }
+
+        /// <summary>
+        /// True to resolve first image in the content list.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("mustBeImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use \'expectedType\' field now")]
+        public bool MustBeImage { get; set; }
+
+        /// <summary>
+        /// True to resolve first image in the content list.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("resolveImage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use \'resolveFirst\' field now")]
+        public bool ResolveImage { get; set; }
+
+        /// <summary>
+        /// The allowed file extensions.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowedExtensions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> AllowedExtensions { get; set; }
+
+        /// <summary>
+        /// True, if duplicate values are allowed.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowDuplicates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowDuplicates { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum AssetPreviewMode
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ImageAndFileName")]
+        ImageAndFileName = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Image")]
+        Image = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FileName")]
+        FileName = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class LocalizedValueOfReadonlyListOfString : System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum AssetType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Unknown")]
+        Unknown = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Image")]
+        Image = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Audio")]
+        Audio = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Video")]
+        Video = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class BooleanFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableBoolean DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DefaultValue { get; set; }
+
+        /// <summary>
+        /// Indicates that the inline editor is enabled for this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool InlineEditable { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public BooleanFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class LocalizedValueOfNullableBoolean : System.Collections.Generic.Dictionary<string, bool?>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum BooleanFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Checkbox")]
+        Checkbox = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Toggle")]
+        Toggle = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ComponentFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The ID of the embedded schemas.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SchemaIds { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ComponentsFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The minimum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinItems { get; set; }
+
+        /// <summary>
+        /// The maximum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxItems { get; set; }
+
+        /// <summary>
+        /// The calculated default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("calculatedDefaultValue", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ArrayCalculatedDefaultValue CalculatedDefaultValue { get; set; }
+
+        /// <summary>
+        /// The ID of the embedded schemas.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SchemaIds { get; set; }
+
+        /// <summary>
+        /// The fields that must be unique.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("uniqueFields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> UniqueFields { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class DateTimeFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableInstant DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? DefaultValue { get; set; }
+
+        /// <summary>
+        /// The maximum allowed value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? MaxValue { get; set; }
+
+        /// <summary>
+        /// The minimum allowed value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? MinValue { get; set; }
+
+        /// <summary>
+        /// The format pattern when displayed in the UI.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("format", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Format { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public DateTimeFieldEditor Editor { get; set; }
+
+        /// <summary>
+        /// The calculated default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("calculatedDefaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public DateTimeCalculatedDefaultValue? CalculatedDefaultValue { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class LocalizedValueOfNullableInstant : System.Collections.Generic.Dictionary<string, System.DateTimeOffset?>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum DateTimeFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Date")]
+        Date = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DateTime")]
+        DateTime = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum DateTimeCalculatedDefaultValue
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Now")]
+        Now = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Today")]
+        Today = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class GeolocationFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public GeolocationFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum GeolocationFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Map")]
+        Map = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class JsonFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The GraphQL schema.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("graphQLSchema", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string GraphQLSchema { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class NumberFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfNullableDouble DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? DefaultValue { get; set; }
+
+        /// <summary>
+        /// The maximum allowed value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MaxValue { get; set; }
+
+        /// <summary>
+        /// The minimum allowed value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? MinValue { get; set; }
+
+        /// <summary>
+        /// The allowed values for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<double> AllowedValues { get; set; }
+
+        /// <summary>
+        /// Indicates if the field value must be unique. Ignored for nested fields and localized fields.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isUnique", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsUnique { get; set; }
+
+        /// <summary>
+        /// Indicates that the inline editor is enabled for this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool InlineEditable { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NumberFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class LocalizedValueOfNullableDouble : System.Collections.Generic.Dictionary<string, double?>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum NumberFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
+        Input = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Radio")]
+        Radio = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
+        Dropdown = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Stars")]
+        Stars = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ReferencesFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value as a list of content ids.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value as a list of content ids.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> DefaultValue { get; set; }
+
+        /// <summary>
+        /// The minimum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinItems { get; set; }
+
+        /// <summary>
+        /// The maximum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxItems { get; set; }
+
+        /// <summary>
+        /// True, if duplicate values are allowed.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowDuplicates", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool AllowDuplicates { get; set; }
+
+        /// <summary>
+        /// True to resolve references in the content list.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("resolveReference", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ResolveReference { get; set; }
+
+        /// <summary>
+        /// True when all references must be published.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("mustBePublished", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool MustBePublished { get; set; }
+
+        /// <summary>
+        /// The initial query that is applied in the UI.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("query", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Query { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ReferencesFieldEditor Editor { get; set; }
+
+        /// <summary>
+        /// The ID of the referenced schemas.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SchemaIds { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum ReferencesFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"List")]
+        List = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
+        Dropdown = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Tags")]
+        Tags = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Checkboxes")]
+        Checkboxes = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
+        Input = 4,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class StringFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfString DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DefaultValue { get; set; }
+
+        /// <summary>
+        /// The pattern to enforce a specific format for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("pattern", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Pattern { get; set; }
+
+        /// <summary>
+        /// The validation message for the pattern.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("patternMessage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PatternMessage { get; set; }
+
+        /// <summary>
+        /// The initial id to the folder when the control supports file uploads.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("folderId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FolderId { get; set; }
+
+        /// <summary>
+        /// The minimum allowed length for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinLength { get; set; }
+
+        /// <summary>
+        /// The maximum allowed length for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxLength", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxLength { get; set; }
+
+        /// <summary>
+        /// The minimum allowed of normal characters for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minCharacters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinCharacters { get; set; }
+
+        /// <summary>
+        /// The maximum allowed of normal characters for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxCharacters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxCharacters { get; set; }
+
+        /// <summary>
+        /// The minimum allowed number of words for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinWords { get; set; }
+
+        /// <summary>
+        /// The maximum allowed number of words for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxWords", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxWords { get; set; }
+
+        /// <summary>
+        /// The allowed values for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> AllowedValues { get; set; }
+
+        /// <summary>
+        /// The allowed schema ids that can be embedded.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("schemaIds", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SchemaIds { get; set; }
+
+        /// <summary>
+        /// Indicates if the field value must be unique. Ignored for nested fields and localized fields.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isUnique", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsUnique { get; set; }
+
+        /// <summary>
+        /// Indicates that other content items or references are embedded.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isEmbeddable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsEmbeddable { get; set; }
+
+        /// <summary>
+        /// Indicates that the inline editor is enabled for this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("inlineEditable", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool InlineEditable { get; set; }
+
+        /// <summary>
+        /// Indicates whether GraphQL Enum should be created.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("createEnum", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CreateEnum { get; set; }
+
+        /// <summary>
+        /// How the string content should be interpreted.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("contentType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public StringContentType ContentType { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public StringFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class LocalizedValueOfString : System.Collections.Generic.Dictionary<string, string>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum StringContentType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Unspecified")]
+        Unspecified = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Html")]
+        Html = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Markdown")]
+        Markdown = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum StringFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Input")]
+        Input = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Color")]
+        Color = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Markdown")]
+        Markdown = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
+        Dropdown = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Html")]
+        Html = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Radio")]
+        Radio = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RichText")]
+        RichText = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Slug")]
+        Slug = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StockPhoto")]
+        StockPhoto = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TextArea")]
+        TextArea = 9,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class TagsFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The language specific default value for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalizedValueOfReadonlyListOfString DefaultValues { get; set; }
+
+        /// <summary>
+        /// The default value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("defaultValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> DefaultValue { get; set; }
+
+        /// <summary>
+        /// The minimum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MinItems { get; set; }
+
+        /// <summary>
+        /// The maximum allowed items for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maxItems", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaxItems { get; set; }
+
+        /// <summary>
+        /// The allowed values for the field value.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("allowedValues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> AllowedValues { get; set; }
+
+        /// <summary>
+        /// Indicates whether GraphQL Enum should be created.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("createEnum", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool CreateEnum { get; set; }
+
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public TagsFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum TagsFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Tags")]
+        Tags = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Checkboxes")]
+        Checkboxes = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Dropdown")]
+        Dropdown = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class UIFieldPropertiesDto : FieldPropertiesDto
+    {
+        /// <summary>
+        /// The editor that is used to manage this field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("editor", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public UIFieldEditor Editor { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public enum UIFieldEditor
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Separator")]
+        Separator = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class NestedFieldDto : Resource
+    {
+        /// <summary>
+        /// The ID of the field.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("fieldId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long FieldId { get; set; }
+
+        /// <summary>
+        /// The name of the field. Must be unique within the schema.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^[a-z0-9]+(\-[a-z0-9]+)*$")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Defines if the field is hidden.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isHidden", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsHidden { get; set; }
+
+        /// <summary>
+        /// Defines if the field is locked.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isLocked", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsLocked { get; set; }
+
+        /// <summary>
+        /// Defines if the field is disabled.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isDisabled", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsDisabled { get; set; }
+
+        /// <summary>
+        /// The field properties.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("properties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public FieldPropertiesDto Properties { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class AddFieldDto
     {
         /// <summary>
@@ -23664,6 +23706,7 @@ namespace Squidex.ClientLibrary
     [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueRuleActionDto))]
     [JsonInheritanceAttribute("Comment", typeof(CommentRuleActionDto))]
     [JsonInheritanceAttribute("CreateContent", typeof(CreateContentRuleActionDto))]
+    [JsonInheritanceAttribute("DeepDetect", typeof(DeepDetectRuleActionDto))]
     [JsonInheritanceAttribute("Discourse", typeof(DiscourseRuleActionDto))]
     [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchRuleActionDto))]
     [JsonInheritanceAttribute("Email", typeof(EmailRuleActionDto))]
@@ -23794,6 +23837,23 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("publish", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool Publish { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class DeepDetectRuleActionDto : RuleActionDto
+    {
+        /// <summary>
+        /// The minimum probability for objects to be recognized (0 - 100).
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("minimumProbability", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long MinimumProbability { get; set; }
+
+        /// <summary>
+        /// The maximum number of tags to use.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("maximumTags", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long MaximumTags { get; set; }
 
     }
 
@@ -24975,6 +25035,12 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class ContentFieldData : System.Collections.Generic.Dictionary<string, object>
+    {
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class QueryDto
     {
         /// <summary>
@@ -25000,6 +25066,36 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("parentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ParentId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v12.0.0.0))")]
+    public partial class BulkResultDto
+    {
+        /// <summary>
+        /// The error when the bulk job failed.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ErrorDto Error { get; set; }
+
+        /// <summary>
+        /// The index of the bulk job where the result belongs to. The order can change.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("jobIndex", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int JobIndex { get; set; }
+
+        /// <summary>
+        /// The ID of the entity that has been handled successfully or not.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// The ID of the entity that has been handled successfully or not.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("contentId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use \'id\' field now.")]
+        public string ContentId { get; set; }
 
     }
 
@@ -25708,9 +25804,6 @@ namespace Squidex.ClientLibrary
 
         [System.Runtime.Serialization.EnumMember(Value = @"Delete")]
         Delete = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"Restore")]
-        Restore = 3,
 
     }
 
