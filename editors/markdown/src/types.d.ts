@@ -1,0 +1,1 @@
+declare module 'simplemde/dist/simplemde.min.js';

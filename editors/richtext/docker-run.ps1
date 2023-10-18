@@ -1,0 +1,1 @@
+docker run -p 3100:80 -v ${pwd}/dist:/usr/share/caddy/ caddy

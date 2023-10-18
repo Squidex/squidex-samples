@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+
 export async function getAllowedFiles(dataTransfer: DataTransfer | null) {
     const files: File[] = [];
 
