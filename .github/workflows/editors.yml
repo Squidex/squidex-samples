@@ -27,7 +27,6 @@ jobs:
         cd editors/markdown
         npm i
         npm run build-editor
-        mv dist/index.html dist/old-markdown.html
         mv dist/* ../../out/markdown
 
     - name: Build Rich Text
