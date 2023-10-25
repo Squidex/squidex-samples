@@ -17,7 +17,7 @@ jobs:
 
     - name: Move Files
       run: |
-        mdir out
+        mkdir out
         mv editors/*.* out/
 
     - name: Build Markdown
