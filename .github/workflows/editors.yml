@@ -18,6 +18,8 @@ jobs:
     - name: Move Files
       run: |
         mkdir out
+        mkdir out/markdown
+        mkdir out/richtext
         mv editors/*.* out/
 
     - name: Build Markdown
@@ -26,15 +28,14 @@ jobs:
         npm i
         npm run build-editor
         mv dist/index.html dist/old-markdown.html
-        mv dist/* ../../out/
+        mv dist/* ../../out/markdown
 
     - name: Build Rich Text
       run: |
         cd editors/richtext
         npm i
         npm run build-editor
-        mv dist/index.html dist/old-richtext.html
-        mv dist/* ../../out/
+        mv dist/* ../../out/richtext/
      
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4.4.3
