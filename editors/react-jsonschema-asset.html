@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/styles.css">
+
+    <style>
+        body {
+            background: none;
+        }
+
+        #root__title {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="editor"></div>
+
+    <script type="module">
+        import Form from "https://cdn.skypack.dev/@rjsf/core@5.0.0-beta.13";
+        import React from "https://cdn.skypack.dev/react@17.0.1";
+        import ReactDOM from "https://cdn.skypack.dev/react-dom@17.0.1";
+        import validator from "https://cdn.skypack.dev/@rjsf/validator-ajv8@5.0.0-beta.12";
+
+        const field = new SquidexFormField();
+
+        function Editor() {
+            const [disabled, setDisabled] = React.useState(false); 
+            const [formId, setFormId] = React.useState(undefined);
+            const [formData, setFormData] = React.useState(undefined);
+            const [saving, setSaving] = React.useState(false);
+            const [schema, setSchema] = React.useState(undefined);
+
+            React.useEffect(function () {
+                field.onDisabled(function (disabled) {
+                    setDisabled(disabled);
+                });
+                
+                field.onValueChanged(function (value) {
+                    if (Array.isArray(value) && value.length === 1) {
+                        async function loadData(id) {
+                            const context = field.getContext();
+
+                            // The asset is marked as protected so we need to add the access token.
+                            const url = `${context.apiUrl}/assets/${context.appName}/${id}?access_token=${context.user.accessToken}`; 
+
+                            const response = await fetch(url);
+                            const result = await response.json();
+
+                            setFormData(result);
+                            setFormId(id);
+                        }
+
+                        loadData(value[0]);
+                    } else {
+                        setFormData('');
+                    }                    
+                });
+
+                if (window.location.hash && window.location.hash.length > 1) {
+                    fetch(window.location.hash.substr(1))
+                        .then(x => x.json())
+                        .then(x => setSchema(x));
+                }
+            }, []);
+
+            const onChange = editor => {
+                if (editor.errors.length === 0) {
+                    setFormData(editor.formData);
+                }
+            };
+
+            const onClick = () => {
+                const context = field.getContext();
+
+                const body = new FormData();
+                body.append('file', new Blob([JSON.stringify(formData, null, 4)], { type: 'application/json' }));
+
+                if (formId) {
+                    // If we already have an ID, we make a put request to update the content.
+                    async function save() {
+                        setSaving(true);
+
+                        try {
+                            await fetch(`${context.apiUrl}/apps/${context.appName}/assets/${formId}/content`, {
+                                method: 'PUT',
+                                headers: {
+                                    Authorization: context.user.authorization
+                                },
+                                body
+                            });
+                        } finally {
+                            setTimeout(() => {
+                                setSaving(false);
+                            }, 1000);
+                        }
+                    }
+
+                    save();
+                } else {
+                    async function save() {
+                        setSaving(true);
+
+                        try {
+                            // We could also upload all assets to a folder if we add the parentId query string.
+                            const response = await fetch(`${context.apiUrl}/apps/${context.appName}/assets`, {
+                                method: 'POST',
+                                headers: {
+                                    Authorization: context.user.authorization
+                                },
+                                body
+                            });
+
+                            // Mark the asset as protected.
+                            await fetch(`${context.apiUrl}/apps/${context.appName}/assets/${formId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    Authorization: context.user.authorization,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    isProtected: true
+                                })
+                            });
+
+                            const result = await response.json();
+
+                            // Store the ID of the created asset in the field.
+                            field.valueChanged([result.id]);
+                        } finally {
+                            setTimeout(() => {
+                                setSaving(false);
+                            }, 1000);
+                        }
+                    }
+
+                    save();
+                }
+
+                field.touched();
+            };
+
+            if (!schema) {
+                return null;
+            }
+        
+            return (
+                React.createElement('div', {
+                }, 
+                    React.createElement('button', {
+                        className: 'btn btn-default mb-2',
+                        onClick,
+                        disabled: saving
+                    }, [
+                        saving ? 'Saving...' : 'Save'
+                    ]),
+                    React.createElement(Form, {
+                        children: [], // Hide submit button
+                        formData,
+                        disabled,
+                        onChange,
+                        schema,
+                        validator: validator
+                    })
+                )
+            );
+        }
+
+        ReactDOM.render(React.createElement(Editor), document.getElementById("editor"));
+    </script>
+</body>
+
+</html>

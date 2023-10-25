@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cloud.squidex.io/scripts/editor-sdk.js"></script>
+    
+    <link rel="stylesheet" href="https://cloud.squidex.io/styles.css">
+
+    <style>
+        body {
+            background: none;
+        }
+
+        #root__title {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="editor"></div>
+
+    <script type="module">
+        import Form from "https://cdn.skypack.dev/@rjsf/core@5.0.0-beta.13";
+        import React from "https://cdn.skypack.dev/react@17.0.1";
+        import ReactDOM from "https://cdn.skypack.dev/react-dom@17.0.1";
+        import validator from "https://cdn.skypack.dev/@rjsf/validator-ajv8@5.0.0-beta.12";
+
+        const field = new SquidexFormField();
+
+        function Editor() {
+            var [disabled, setDisabled] = React.useState(false); // Use ES5 language features only.
+            var [formData, setFormData] = React.useState(undefined);
+            var [schema, setSchema] = React.useState(undefined);
+
+            React.useEffect(function () {
+                field.onDisabled(function (disabled) {
+                    setDisabled(disabled);
+                });
+                
+                field.onValueChanged(function (value) {
+                    setFormData(value);
+                });
+
+                if (window.location.hash && window.location.hash.length > 1) {
+                    fetch(window.location.hash.substr(1))
+                        .then(x => x.json())
+                        .then(x => setSchema(x));
+                }
+            }, []);
+
+            const onBlur = React.useCallback(function () {
+                field.touched();
+            }, []);
+
+            const onChange = React.useCallback(function (editor) {
+                if (editor.errors.length === 0) {
+                    field.valueChanged(editor.formData);
+                }
+            }, []);
+
+            if (!schema) {
+                return null;
+            }
+        
+            return (
+                React.createElement(Form, {
+                    children: [], // Hide submit button
+                    formData,
+                    disabled,
+                    onChange,
+                    onBlur,
+                    schema,
+                    validator: validator
+                })
+            );
+        }
+
+        ReactDOM.render(React.createElement(Editor), document.getElementById("editor"));
+    </script>
+</body>
+
+</html>
