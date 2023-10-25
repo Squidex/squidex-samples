@@ -17,7 +17,7 @@ jobs:
 
     - name: Move Files
       run: |
-        md out
+        mdir out
         mv editors/*.* out/
 
     - name: Build Markdown
@@ -40,5 +40,6 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@v4.4.3
       with:
         branch: gh-pages
-        folder: dist
+        folder: out
+        target-folder: editors
         clean: true
