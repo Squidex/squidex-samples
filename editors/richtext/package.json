@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build-editor": "tsc && vite build --base=/editors/richtext",
+    "build-editor": "tsc && vite build --base=/squidex-samples/editors/richtext",
     "preview": "vite preview"
   },
   "devDependencies": {

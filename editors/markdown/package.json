@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build-editor": "tsc && vite build --base=/editors/markdown/",
+    "build-editor": "tsc && vite build --base=/squidex-samples/editors/markdown/",
     "preview": "vite preview",
     "server-local": "docker run -p 3100:3100 -v dist/index.html:/usr/share/caddy/index.html caddy caddy --root /var/www/html --listen :3100 --browse"
   },
