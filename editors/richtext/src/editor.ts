@@ -1,5 +1,6 @@
 import { ApiHelper } from "./api-helper";
 import tinymce, { Editor, RawEditorSettings } from 'tinymce';
+import 'tinymce/tinymce';
 import 'tinymce/icons/default/icons';
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/code';
@@ -8,8 +9,10 @@ import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/media';
 import 'tinymce/plugins/paste';
+import 'tinymce/skins/content/default/content.css';
+import 'tinymce/skins/content/default/content.min.css';
+import 'tinymce/skins/ui/oxide/skin.min.css';
 import 'tinymce/themes/silver';
-import 'tinymce/skins/ui/oxide/skin.css';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
@@ -22,6 +25,7 @@ let tinyEditor: Editor | undefined = undefined;
 let tinyValue: string | undefined = undefined;
 
 const options: RawEditorSettings = {
+    content_css: '/skins/tinymce/content/default/content.min.css',
     convert_fonts_to_spans: true,
     convert_urls: false,
     paste_data_images: true,
@@ -30,6 +34,7 @@ const options: RawEditorSettings = {
     max_height: 800,
     removed_menuitems: 'newdocument',
     resize: true,
+    skin: false,
     toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter | bullist numlist outdent indent | link image media | assets contents',
 
     images_upload_handler: async (blob: Any, success: (url: string) => void, failure: (message: string) => void) => {
@@ -145,15 +150,16 @@ function onValueChanged() {
 function setContent() {
     const value = editorSDK.getValue();
 
+    if (!tinyEditor || !tinyEditor.initialized) {
+        return;
+    }
+
     if (tinyValue === value) {
         return;
     }
 
     tinyValue = value;
-
-    if (tinyEditor && tinyEditor.initialized) {
-        tinyEditor.setContent(value || '');
-    }
+    tinyEditor.setContent(value || '');
 }
 
 function setReadOnly() {
