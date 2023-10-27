@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <!-- Load the editor sdk from the local folder or https://cloud.squidex.io/scripts/editor-sdk.js -->
+    <script src="editor-sdk.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cloud.squidex.io/styles.css">
+    <style>
+        body {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn btn-outline-secondary" id="alert">
+        ALERT
+    </button>
+
+    <button class="btn btn-outline-secondary" id="info">
+        INFO
+    </button>
+
+    <button class="btn btn-outline-secondary" id="confirm">
+        CONFIRM
+    </button>
+
+    <button class="btn btn-outline-secondary" id="pickAssets">
+        PICK ASSETS
+    </button>
+
+    <button class="btn btn-outline-secondary" id="pickContents">
+        PICK CONTENTS
+    </button>
+
+    <script>
+        // When the field is instantiated it notifies the UI that it has been loaded.
+        //
+        // Furthermore it sends the current size to the parent.
+        var field = new SquidexFormField();
+
+        let selectedContents;
+
+        document.getElementById('alert').addEventListener('click', function () {
+            field.notifyError('ERROR Text');
+        });
+
+        document.getElementById('info').addEventListener('click', function () {
+            field.notifyInfo('INFO Text');
+        });
+
+        document.getElementById('confirm').addEventListener('click', function () {
+            field.confirm('CONFIRM Title', 'CONFIRM Text', function (confirmed) {
+                console.log('CONFIRMED: ' + confirmed);
+            });
+        });
+
+        document.getElementById('pickAssets').addEventListener('click', function () {
+            field.pickAssets(function (assets) {
+                console.log('ASSETS: ' + JSON.stringify(assets, undefined, 2));
+            });
+        });
+
+        document.getElementById('pickContents').addEventListener('click', function () {
+            field.pickContents(undefined, function (contents) {
+                selectedContents = contents.map(x => x.id);
+
+                console.log('ASSETS: ' + JSON.stringify(contents, undefined, 2));
+            }, undefined, selectedContents);
+        });
+    </script>
+</body>
+
+</html>
