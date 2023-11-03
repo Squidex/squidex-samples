@@ -15,6 +15,8 @@ npm i
 npm run build
 ```
 
+If you want to run the editor from a subfolder of your domain instead of the domains root you have to configure your base (url) inside the vite.config.js before running the build.
+
 The build process will put all files to the dist folders. Put these files to a web server and use the URL to your webserver in the Squidex UI, for example:
 
 ```
