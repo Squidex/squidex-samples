@@ -120,6 +120,23 @@ public static class HttpClientExtensions
     }
 
     /// <summary>
+    /// Read a value from a JSON string.
+    /// </summary>
+    /// <typeparam name="T">The type of the value.</typeparam>
+    /// <param name="value">The JSON string.</param>
+    /// <returns>
+    /// The deserialized value.
+    /// </returns>
+    public static T FromJson<T>(this StringReader value)
+    {
+        using var jsonReader = new JsonTextReader(value);
+
+        var jsonSerializer = JsonSerializer.CreateDefault(SerializerSettings);
+
+        return jsonSerializer.Deserialize<T>(jsonReader)!;
+    }
+
+    /// <summary>
     /// Read a value from a JSON string and uses explicit type name handling.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>

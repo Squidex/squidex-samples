@@ -120,10 +120,14 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
                             throw new SquidexException("Line does not start with data prefix.");
                         }
 
-#pragma warning disable IDE0057 // Use range operator
-                        var contentJson = line.Substring(Prefix.Length);
-#pragma warning restore IDE0057 // Use range operator
-                        var contentItem = contentJson.FromJson<TEntity>();
+                        var stringReader = new StringReader(line);
+
+                        for (var i = 0; i < Prefix.Length; i++)
+                        {
+                            stringReader.Read();
+                        }
+
+                        var contentItem = stringReader.FromJson<TEntity>();
 
                         await callback(contentItem);
                     }
