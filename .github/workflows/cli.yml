@@ -41,10 +41,10 @@ jobs:
         cd cli/Squidex.CLI/Squidex.CLI
         dotnet publish -r linux-x64 --self-contained -c Release /p:PublishSingleFile=true
 
-    - name: publish ubuntu-x64
+    - name: publish osx-arm64
       run: |
         cd cli/Squidex.CLI/Squidex.CLI
-        dotnet publish -r ubuntu-x64 --self-contained -c Release /p:PublishSingleFile=true
+        dotnet publish -r osx-arm64 --self-contained -c Release /p:PublishSingleFile=true
 
     - name: publish osx-x64
       run: |
@@ -94,16 +94,16 @@ jobs:
       run: |
         cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/linux-x64/publish/
         zip -r '../../..//out/linux-x64.zip' *
-    
-    - name: archive ubuntu-x64
-      run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/ubuntu-x64/publish/
-        zip -r '../../../out/ubuntu-x64.zip' *
 
     - name: archive osx-x64
       run: |
         cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-x64/publish/
         zip -r '../../../out/osx-x64.zip' *
+
+    - name: archive osx-arm64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-arm644/publish/
+        zip -r '../../../out/osx-arm64.zip' *
 
     - name: release
       uses: fnkr/github-action-ghr@v1
