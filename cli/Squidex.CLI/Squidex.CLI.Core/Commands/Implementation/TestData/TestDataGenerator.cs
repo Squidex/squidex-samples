@@ -180,7 +180,7 @@ public sealed class TestDataGenerator
 
                     if (stringField.Editor == StringFieldEditor.Slug)
                     {
-                        result = slugify.GenerateSlug(result).Replace(".", "x", StringComparison.Ordinal);
+                        result = slugify.GenerateSlug(result).Replace('.', 'x');
                     }
 
                     return result;

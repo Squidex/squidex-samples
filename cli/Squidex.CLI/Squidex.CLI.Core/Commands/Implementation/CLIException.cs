@@ -25,9 +25,4 @@ public class CLIException : Exception
         : base(message, inner)
     {
     }
-
-    protected CLIException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-    }
 }

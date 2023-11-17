@@ -59,7 +59,7 @@ public sealed class AIContentGenerator
                     ChatMessage.FromSystem("Also create a JSON object with the field names of this list as keys and the json type as value (string)."),
                     ChatMessage.FromSystem("Also create a JSON array that only contains the name of the list above as valid slug."),
                 },
-                Model = OpenAI.ObjectModels.Models.ChatGpt3_5Turbo
+                Model = OpenAI.ObjectModels.Models.Gpt_3_5_Turbo
             }, cancellationToken: ct);
 
             configurationStore.Set(cacheKey, cachedResponse);

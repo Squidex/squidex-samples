@@ -103,7 +103,7 @@ public sealed class RulesSynchronizer : ISynchronizer
         {
             foreach (var (name, rule) in rulesByName.ToList())
             {
-                if (models.All(x => x.Name != name))
+                if (models.TrueForAll(x => x.Name != name))
                 {
                     await log.DoSafeAsync($"Rule '{name}' deleting", async () =>
                     {
@@ -181,7 +181,7 @@ public sealed class RulesSynchronizer : ISynchronizer
         }
     }
 
-    private async Task MapSchemaIdsToNamesAsync(ISession session, ExtendableRules current)
+    private async Task MapSchemaIdsToNamesAsync(ISession session, ExtendableRulesDto current)
     {
         var schemas = await session.Client.Schemas.GetSchemasAsync();
 
