@@ -41,15 +41,15 @@ jobs:
         cd cli/Squidex.CLI/Squidex.CLI
         dotnet publish -r linux-x64 --self-contained -c Release /p:PublishSingleFile=true
 
-    - name: publish osx-arm64
-      run: |
-        cd cli/Squidex.CLI/Squidex.CLI
-        dotnet publish -r osx-arm64 --self-contained -c Release /p:PublishSingleFile=true
-
     - name: publish osx-x64
       run: |
         cd cli/Squidex.CLI/Squidex.CLI
         dotnet publish -r osx-x64 --self-contained -c Release /p:PublishSingleFile=true
+
+    - name: publish osx-arm64
+      run: |
+        cd cli/Squidex.CLI/Squidex.CLI
+        dotnet publish -r osx-arm64 --self-contained -c Release /p:PublishSingleFile=true
 
     - name: pack dotnet tool
       run: |
