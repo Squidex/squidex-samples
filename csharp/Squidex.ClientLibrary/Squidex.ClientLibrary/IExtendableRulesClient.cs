@@ -23,7 +23,7 @@ public interface IExtendableRulesClient
     /// <returns>
     /// The rules.
     /// </returns>
-    Task<ExtendableRules> GetRulesAsync(
+    Task<ExtendableRulesDto> GetRulesAsync(
          CancellationToken ct = default);
 
     /// <summary>

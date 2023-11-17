@@ -62,7 +62,7 @@ public class Authenticator : IAuthenticator
 
         ThrowFromPreviousAttempt(clientId, clientSecret);
 
-        var httpRequest = BuildRequest(clientId, clientSecret);
+        var httpRequest = Authenticator.BuildRequest(clientId, clientSecret);
 
         using (var response = await httpClient.SendAsync(httpRequest, ct))
         {
@@ -97,7 +97,7 @@ public class Authenticator : IAuthenticator
         }
     }
 
-    private HttpRequestMessage BuildRequest(string clientId, string clientSecret)
+    private static HttpRequestMessage BuildRequest(string clientId, string clientSecret)
     {
         var parameters = new Dictionary<string, string>
         {

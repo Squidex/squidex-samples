@@ -86,7 +86,7 @@ public static class SquidexClientLibraryServiceExtensions
     /// <returns>The http client builder to make more customizatons.</returns>
     public static IHttpClientBuilder AddSquidexHttpClient(this IServiceCollection services, string name, Action<IServiceProvider, HttpClient>? configure = null)
     {
-        return services.AddHttpClient(ClientName(name), (c, httpClient) =>
+        var builder = services.AddHttpClient(ClientName(name), (c, httpClient) =>
         {
             var options = c.GetRequiredService<IOptionsMonitor<SquidexServiceOptions>>().Get(name);
 
@@ -101,7 +101,17 @@ public static class SquidexClientLibraryServiceExtensions
             }
 
             configure?.Invoke(c, httpClient);
-        }).ConfigureHttpMessageHandlerBuilder(builder =>
+        });
+
+#if NET8_0_OR_GREATER
+        builder.ConfigureAdditionalHttpMessageHandlers((handlers, serviceProvider) =>
+        {
+            var options = serviceProvider.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
+
+            handlers.Add(new AuthenticatingHttpMessageHandler(options));
+        });
+#else
+        builder.ConfigureHttpMessageHandlerBuilder(builder =>
         {
             var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
 
@@ -110,6 +120,8 @@ public static class SquidexClientLibraryServiceExtensions
                 AddSquidexAuthenticatorAsAdditionalHandler(builder);
             }
         });
+#endif
+        return builder;
     }
 
     /// <summary>

@@ -40,4 +40,11 @@ internal static class ListFallbackConverter
             {
                 Items = items
             });
+
+    public static readonly ListFallbackConverter<ExtendableRulesDto, ExtendableRuleDto> ExtendableRules =
+        new ListFallbackConverter<ExtendableRulesDto, ExtendableRuleDto>(
+            items => new ExtendableRulesDto
+            {
+                Items = items
+            });
 }

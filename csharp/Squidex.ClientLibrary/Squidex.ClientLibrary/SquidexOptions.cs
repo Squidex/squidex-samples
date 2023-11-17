@@ -204,6 +204,7 @@ public class SquidexOptions : OptionsBase
     public SquidexOptions UseFallbackSerializer()
     {
         SerializerSettings.Converters.Add(ListFallbackConverter.Clients);
+        SerializerSettings.Converters.Add(ListFallbackConverter.ExtendableRules);
         SerializerSettings.Converters.Add(ListFallbackConverter.Languages);
         SerializerSettings.Converters.Add(ListFallbackConverter.Rules);
         SerializerSettings.Converters.Add(ListFallbackConverter.Schemas);

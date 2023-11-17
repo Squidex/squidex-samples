@@ -28,10 +28,10 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
     }
 
     /// <inheritdoc/>
-    public Task<ExtendableRules> GetRulesAsync(
+    public Task<ExtendableRulesDto> GetRulesAsync(
          CancellationToken ct = default)
     {
-        return RequestJsonAsync<ExtendableRules>(HttpMethod.Get, BuildUrl(), null, null, ct);
+        return RequestJsonAsync<ExtendableRulesDto>(HttpMethod.Get, BuildUrl(), null, null, ct);
     }
 
     /// <inheritdoc/>

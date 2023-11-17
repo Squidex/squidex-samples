@@ -11,7 +11,7 @@ namespace Squidex.ClientLibrary;
 /// The result set of rules.
 /// </summary>
 /// <seealso cref="Resource" />
-public sealed class ExtendableRules : Resource
+public sealed class ExtendableRulesDto : Resource
 {
     /// <summary>
     /// Gets or sets the rules.
