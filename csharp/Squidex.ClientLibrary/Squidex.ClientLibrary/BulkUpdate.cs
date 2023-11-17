@@ -15,7 +15,7 @@ public sealed class BulkUpdate
     /// <summary>
     /// The contents to update or insert.
     /// </summary>
-    public List<BulkUpdateJob> Jobs { get; set; } = new List<BulkUpdateJob>();
+    public List<BulkUpdateJob> Jobs { get; set; } = [];
 
     /// <summary>
     /// True to automatically publish the content.

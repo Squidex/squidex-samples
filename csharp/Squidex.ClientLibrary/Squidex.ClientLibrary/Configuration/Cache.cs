@@ -9,7 +9,7 @@ namespace Squidex.ClientLibrary.Configuration;
 
 internal sealed class Cache<TKey, TValue> where TKey : notnull
 {
-    private readonly Dictionary<TKey, CacheEntry> items = new Dictionary<TKey, CacheEntry>();
+    private readonly Dictionary<TKey, CacheEntry> items = [];
 
     private sealed class CacheEntry
     {
@@ -81,7 +81,7 @@ internal sealed class Cache<TKey, TValue> where TKey : notnull
         {
             if (kvp.Value.Expires <= now)
             {
-                keysToRemove ??= new List<TKey>();
+                keysToRemove ??= [];
                 keysToRemove.Add(kvp.Key);
             }
         }

@@ -14,10 +14,10 @@ namespace Squidex.ClientLibrary;
 /// </summary>
 public sealed class AssetFolderTree
 {
-    private static readonly char[] TrimChars = { '/', '\\', ' ', '.' };
-    private static readonly char[] SplitChars = { '/', '\\' };
+    private static readonly char[] TrimChars = ['/', '\\', ' ', '.'];
+    private static readonly char[] SplitChars = ['/', '\\'];
     private static readonly string RootId = Guid.Empty.ToString();
-    private readonly Dictionary<string, AssetFolderNode> nodes = new Dictionary<string, AssetFolderNode>();
+    private readonly Dictionary<string, AssetFolderNode> nodes = [];
     private readonly IAssetsClient assetsClient;
     private readonly AssetFolderNode rootNode = new AssetFolderNode(RootId, string.Empty, string.Empty);
 

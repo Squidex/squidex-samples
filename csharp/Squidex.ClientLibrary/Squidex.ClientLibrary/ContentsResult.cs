@@ -21,7 +21,7 @@ public sealed class ContentsResult<TEntity, TData> : Resource where TEntity : Co
     /// <value>
     /// The content items.
     /// </value>
-    public List<TEntity> Items { get; } = new List<TEntity>();
+    public List<TEntity> Items { get; } = [];
 
     /// <summary>
     /// Gets or sets the total number of content items in the App.

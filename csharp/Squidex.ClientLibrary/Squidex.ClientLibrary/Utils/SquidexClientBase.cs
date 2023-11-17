@@ -78,7 +78,9 @@ public abstract class SquidexClientBase
         }
     }
 
+#pragma warning disable CA1822 // Mark members as static
     protected internal HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent? content, QueryContext? context)
+#pragma warning restore CA1822 // Mark members as static
     {
         var request = new HttpRequestMessage(method, path);
 

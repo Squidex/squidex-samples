@@ -11,7 +11,7 @@ namespace Squidex.ClientLibrary;
 
 internal sealed class ProgressHandlerAdapter : IProgressHandler
 {
-    private static readonly Dictionary<string, IEnumerable<string>> NullHeaders = new Dictionary<string, IEnumerable<string>>();
+    private static readonly Dictionary<string, IEnumerable<string>> NullHeaders = [];
     private readonly IAssetProgressHandler inner;
     private readonly AssetsClient client;
 

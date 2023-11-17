@@ -174,7 +174,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new NumberFieldPropertiesDto
                 {
-                    AllowedValues = new List<double> { 13, 27, 42 }
+                    AllowedValues = [13, 27, 42]
                 });
 
         Assert.Equal(3, values.Count);
@@ -264,7 +264,7 @@ public class TestDataGeneratorTests
             CreateManyStringTags(
                 new TagsFieldPropertiesDto
                 {
-                    AllowedValues = new List<string> { "foo", "bar" }
+                    AllowedValues = ["foo", "bar"]
                 });
 
         var distinct = values.SelectMany(x => x).Distinct().ToList();
@@ -347,7 +347,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    AllowedValues = new List<string> { "foo", "bar" }
+                    AllowedValues = ["foo", "bar"]
                 });
 
         Assert.Equal(2, values.Count);
@@ -526,15 +526,15 @@ public class TestDataGeneratorTests
     {
         var schema = new SchemaDto
         {
-            Fields = new List<FieldDto>
-            {
+            Fields =
+            [
                 new FieldDto
                 {
                     Name = "field",
                     Properties = field,
                     Partitioning = "invariant"
                 }
-            }
+            ]
         };
 
         var sut = new TestDataGenerator(schema, null!);

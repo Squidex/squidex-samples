@@ -17,7 +17,7 @@ public sealed record AssetFolderNode
     /// </summary>
     public static readonly string RootId = Guid.Empty.ToString();
 
-    private readonly Dictionary<string, AssetFolderNode> children = new Dictionary<string, AssetFolderNode>();
+    private readonly Dictionary<string, AssetFolderNode> children = [];
 
     /// <summary>
     /// Gets the children of this folder.
