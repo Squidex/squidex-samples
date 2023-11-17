@@ -102,7 +102,7 @@ jobs:
 
     - name: archive osx-arm64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-arm644/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-arm64/publish/
         zip -r '../../../out/osx-arm64.zip' *
 
     - name: release
