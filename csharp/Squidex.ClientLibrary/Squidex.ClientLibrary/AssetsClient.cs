@@ -122,7 +122,7 @@ public partial class AssetsClient
     public Task<AssetsDto> GetAssetsAsync(AssetQuery? query = null,
         CancellationToken cancellationToken = default)
     {
-        return GetAssetsAsync(query?.ParentId, query?.ToIdString(), query?.ToQueryJson(), query?.Top, query?.Skip, query?.OrderBy, query?.Filter, null, null, cancellationToken);
+        return GetAssetsAsync(query?.ParentId, query?.ToIdString(), query?.ToQueryJson(_options), query?.Top, query?.Skip, query?.OrderBy, query?.Filter, null, null, cancellationToken);
     }
 
     /// <inheritdoc />

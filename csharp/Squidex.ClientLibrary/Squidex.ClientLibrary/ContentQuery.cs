@@ -95,7 +95,7 @@ public class ContentQuery
     /// </summary>
     public int Random { get; set; }
 
-    internal string ToQuery(bool supportsSearch)
+    internal string ToQuery(bool supportsSearch, SquidexOptions options)
     {
         var queries = new List<string>();
 
@@ -121,7 +121,7 @@ public class ContentQuery
 
         if (JsonQuery != null)
         {
-            queries.Add($"q={JsonQuery.ToJson()}");
+            queries.Add($"q={JsonQuery.ToJson(options)}");
         }
 
         if (Ids != null && Ids.Count > 0)

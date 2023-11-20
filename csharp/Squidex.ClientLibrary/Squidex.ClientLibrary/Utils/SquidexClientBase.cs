@@ -73,7 +73,7 @@ public abstract class SquidexClientBase
             {
                 await EnsureResponseIsValidAsync(response);
 
-                return (await response.Content.ReadAsJsonAsync<T>())!;
+                return (await response.Content.ReadAsJsonAsync<T>(Options))!;
             }
         }
     }
@@ -94,7 +94,7 @@ public abstract class SquidexClientBase
         return request;
     }
 
-    protected internal static async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
+    protected internal async Task EnsureResponseIsValidAsync(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)
         {
@@ -122,7 +122,7 @@ public abstract class SquidexClientBase
             {
                 try
                 {
-                    details = message.FromJson<ErrorDto>();
+                    details = message.FromJson<ErrorDto>(Options);
                 }
                 catch
                 {

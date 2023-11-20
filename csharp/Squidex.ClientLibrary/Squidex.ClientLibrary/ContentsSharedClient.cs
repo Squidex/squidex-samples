@@ -37,7 +37,7 @@ public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IC
     {
         Guard.NotNull(requests, nameof(requests));
 
-        var response = await RequestJsonAsync<GraphQlResponse<TResponse>[]>(HttpMethod.Post, BuildUrl("graphql/batch", false, context), requests.ToContent(), context, ct);
+        var response = await RequestJsonAsync<GraphQlResponse<TResponse>[]>(HttpMethod.Post, BuildUrl("graphql/batch", false, context), requests.ToContent(Options), context, ct);
 
         return response;
     }
@@ -66,7 +66,7 @@ public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IC
     {
         Guard.NotNull(request, nameof(request));
 
-        var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildUrl("graphql", false, context), request.ToContent(), context, ct);
+        var response = await RequestJsonAsync<GraphQlResponse<TResponse>>(HttpMethod.Post, BuildUrl("graphql", false, context), request.ToContent(Options), context, ct);
 
         if (response.Errors?.Length > 0)
         {
@@ -94,7 +94,7 @@ public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IC
     {
         Guard.NotNull(update, nameof(update));
 
-        return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildUrl("bulk", false), update.ToContent(), null, ct);
+        return RequestJsonAsync<List<BulkResult>>(HttpMethod.Post, BuildUrl("bulk", false), update.ToContent(Options), null, ct);
     }
 
     private string BuildUrl(string path, bool query, QueryContext? context = null)

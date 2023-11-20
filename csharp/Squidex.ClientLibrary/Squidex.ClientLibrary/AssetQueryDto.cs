@@ -91,9 +91,9 @@ public sealed class AssetQuery
     /// </value>
     public string? ParentId { get; set; }
 
-    internal string? ToQueryJson()
+    internal string? ToQueryJson(SquidexOptions options)
     {
-        return Query?.ToJson();
+        return Query?.ToJson(options);
     }
 
     internal string? ToIdString()

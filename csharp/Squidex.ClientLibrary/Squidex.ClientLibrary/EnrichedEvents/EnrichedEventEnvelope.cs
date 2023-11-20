@@ -33,11 +33,12 @@ public class EnrichedEventEnvelope
     /// Utils to deserialize an Envelope.
     /// </summary>
     /// <param name="json">The string to be deserialized.</param>
+    /// <param name="options">The Squidex options.</param>
     /// <returns>
     /// The enriched event.
     /// </returns>
-    public static EnrichedEventEnvelope FromJson(string json)
+    public static EnrichedEventEnvelope FromJson(string json, SquidexOptions options)
     {
-        return json.FromJsonWithTypes<EnrichedEventEnvelope>();
+        return json.FromJsonWithTypes<EnrichedEventEnvelope>(options);
     }
 }

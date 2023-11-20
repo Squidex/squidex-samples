@@ -40,7 +40,7 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
     {
         Guard.NotNull(request, nameof(request));
 
-        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Post, BuildUrl(), request.ToContent(), null, ct);
+        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Post, BuildUrl(), request.ToContent(Options), null, ct);
     }
 
     /// <inheritdoc/>
@@ -50,7 +50,7 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(request, nameof(request));
 
-        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(), null, ct);
+        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(Options), null, ct);
     }
 
     /// <inheritdoc/>

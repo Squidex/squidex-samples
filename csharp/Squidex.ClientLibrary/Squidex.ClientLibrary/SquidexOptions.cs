@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
@@ -28,6 +29,17 @@ public class SquidexOptions : OptionsBase
     private IHttpClientProvider clientProvider;
     private TimeSpan? timeout;
     private TimeSpan tokenRetryTime = TimeSpan.FromHours(1);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SquidexOptions"/> class.
+    /// </summary>
+    public SquidexOptions()
+    {
+        SerializerSettings.ContractResolver = new JsonNullContractResolver();
+
+        SerializerSettings.Converters.Add(new StringEnumConverter());
+        SerializerSettings.Converters.Add(new UTCIsoDateTimeConverter());
+    }
 
     /// <summary>
     /// Gets or sets the URL to the Squidex installation.

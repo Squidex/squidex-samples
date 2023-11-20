@@ -14,6 +14,8 @@ namespace Squidex.ClientLibrary.Tests;
 
 public class SerializationTests
 {
+    private readonly SquidexOptions options = new SquidexOptions();
+
     public sealed record MyClass<T>
     {
         [JsonConverter(typeof(InvariantConverter))]
@@ -47,7 +49,7 @@ public class SerializationTests
             Value = utcTime
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
     }
@@ -62,7 +64,7 @@ public class SerializationTests
             Value = utcTime.ToLocalTime()
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
     }
@@ -77,7 +79,7 @@ public class SerializationTests
             Value = utcTime
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
     }
@@ -92,7 +94,7 @@ public class SerializationTests
             Value = utcTime.ToLocalTime()
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("2012-11-10T09:08:07Z", serialized, StringComparison.Ordinal);
     }
@@ -107,7 +109,7 @@ public class SerializationTests
             Value = utcTime.ToLocalTime()
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("2010-12-29T13:32:27Z", serialized, StringComparison.Ordinal);
     }
@@ -120,7 +122,7 @@ public class SerializationTests
             DoNotScript = false
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"doNotScript\": false", serialized, StringComparison.Ordinal);
     }
@@ -133,7 +135,7 @@ public class SerializationTests
             Type = BulkUpdateType.ChangeStatus
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"type\": \"ChangeStatus\"", serialized, StringComparison.Ordinal);
     }
@@ -146,7 +148,7 @@ public class SerializationTests
             Value = "hello"
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -159,7 +161,7 @@ public class SerializationTests
             Value = "hello"
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -172,7 +174,7 @@ public class SerializationTests
             Value = "hello"
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"iv\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -188,7 +190,7 @@ public class SerializationTests
             }
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"en\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -201,7 +203,7 @@ public class SerializationTests
             ["Property1"] = new JObject()
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"Property1\": {}", serialized, StringComparison.Ordinal);
     }
@@ -214,7 +216,7 @@ public class SerializationTests
             Value = "hello"
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"value\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -227,7 +229,7 @@ public class SerializationTests
             Value = "hello"
         };
 
-        var serialized = source.ToJson();
+        var serialized = source.ToJson(options);
 
         Assert.Contains("\"Value\": \"hello\"", serialized, StringComparison.Ordinal);
     }
@@ -237,7 +239,7 @@ public class SerializationTests
     {
         var json = "{ 'value': { 'iv': 'hello'} }";
 
-        var result = json.FromJson<MyClass<string>>();
+        var result = json.FromJson<MyClass<string>>(options);
 
         Assert.Equal("hello", result?.Value);
     }
@@ -247,7 +249,7 @@ public class SerializationTests
     {
         var json = "{ 'value': null }";
 
-        var result = json.FromJson<MyClass<string>>();
+        var result = json.FromJson<MyClass<string>>(options);
 
         Assert.Null(result?.Value);
     }
@@ -257,7 +259,7 @@ public class SerializationTests
     {
         var json = "{ 'value': {} }";
 
-        var result = json.FromJson<MyClass<string>>();
+        var result = json.FromJson<MyClass<string>>(options);
 
         Assert.Null(result?.Value);
     }
@@ -267,7 +269,7 @@ public class SerializationTests
     {
         var json = "{ 'value': { 'iv': 'hello'} }";
 
-        var result = json.FromJson<MyClass<JsonNull<string>>>();
+        var result = json.FromJson<MyClass<JsonNull<string>>>(options);
 
         Assert.Equal("hello", result?.Value.Value);
     }
@@ -277,7 +279,7 @@ public class SerializationTests
     {
         var json = "{ 'value': null }";
 
-        var result = json.FromJson<MyClass<JsonNull<string>>>();
+        var result = json.FromJson<MyClass<JsonNull<string>>>(options);
 
         Assert.Null(result?.Value.Value);
     }
@@ -287,7 +289,7 @@ public class SerializationTests
     {
         var json = "{ 'value': {} }";
 
-        var result = json.FromJson<MyClass<JsonNull<string>>>();
+        var result = json.FromJson<MyClass<JsonNull<string>>>(options);
 
         Assert.Null(result?.Value.Value);
     }
@@ -297,7 +299,7 @@ public class SerializationTests
     {
         var json = "{ 'value': { 'en': 'hello'} }";
 
-        var result = json.FromJson<MyCamelClass<Dictionary<string, JsonNull<string>>>>();
+        var result = json.FromJson<MyCamelClass<Dictionary<string, JsonNull<string>>>>(options);
 
         Assert.Equal("hello", result?.Value["en"].Value);
     }

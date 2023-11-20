@@ -8,7 +8,6 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Squidex.ClientLibrary.EnrichedEvents;
 
 namespace Squidex.ClientLibrary.Utils;
@@ -18,48 +17,19 @@ namespace Squidex.ClientLibrary.Utils;
 /// </summary>
 public static class HttpClientExtensions
 {
-    private static readonly JsonSerializerSettings SerializerSettings;
-    private static readonly JsonSerializerSettings SerializerSettingsWithTypes;
-    private static readonly JsonSerializer Serializer;
-
-    static HttpClientExtensions()
-    {
-        SerializerSettings = new JsonSerializerSettings().SetupSquidex();
-        SerializerSettingsWithTypes = new JsonSerializerSettings().SetupSquidex();
-        SerializerSettingsWithTypes.SerializationBinder = new EnrichedEventSerializationBinder();
-        SerializerSettingsWithTypes.TypeNameHandling = TypeNameHandling.Auto;
-
-        Serializer = JsonSerializer.CreateDefault(SerializerSettings);
-    }
-
-    /// <summary>
-    /// Converts the serializer settings to deal with squidex data.
-    /// </summary>
-    /// <param name="settings">The JSON settings.</param>
-    /// <returns>
-    /// The settings.
-    /// </returns>
-    public static JsonSerializerSettings SetupSquidex(this JsonSerializerSettings settings)
-    {
-        settings.ContractResolver = new JsonNullContractResolver();
-
-        settings.Converters.Add(new StringEnumConverter());
-        settings.Converters.Add(new UTCIsoDateTimeConverter());
-
-        return settings;
-    }
-
     /// <summary>
     /// Converts a value to a <see cref="HttpContent"/> instance which contains a JSON body.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The value to convert.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The created <see cref="HttpContent"/> instance.
     /// </returns>
-    public static HttpContent ToContent<T>(this T value)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static HttpContent ToContent<T>(this T value, SquidexOptions options)
     {
-        var json = value.ToJson();
+        var json = value.ToJson(options);
 
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -94,12 +64,16 @@ public static class HttpClientExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The value to convert.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The JSON string.
     /// </returns>
-    public static string ToJson<T>(this T value)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static string ToJson<T>(this T value, SquidexOptions options)
     {
-        var json = JsonConvert.SerializeObject(value, Formatting.Indented, SerializerSettings);
+        Guard.NotNull(options, nameof(options));
+
+        var json = JsonConvert.SerializeObject(value, Formatting.Indented, options.SerializerSettings);
 
         return json;
     }
@@ -109,12 +83,16 @@ public static class HttpClientExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The JSON string.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The deserialized value.
     /// </returns>
-    public static T FromJson<T>(this string value)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static T FromJson<T>(this string value, SquidexOptions options)
     {
-        var json = JsonConvert.DeserializeObject<T>(value, SerializerSettings)!;
+        Guard.NotNull(options, nameof(options));
+
+        var json = JsonConvert.DeserializeObject<T>(value, options.SerializerSettings)!;
 
         return json;
     }
@@ -124,14 +102,18 @@ public static class HttpClientExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The JSON string.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The deserialized value.
     /// </returns>
-    public static T FromJson<T>(this StringReader value)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static T FromJson<T>(this StringReader value, SquidexOptions options)
     {
+        Guard.NotNull(options, nameof(options));
+
         using var jsonReader = new JsonTextReader(value);
 
-        var jsonSerializer = JsonSerializer.CreateDefault(SerializerSettings);
+        var jsonSerializer = JsonSerializer.CreateDefault(options.SerializerSettings);
 
         return jsonSerializer.Deserialize<T>(jsonReader)!;
     }
@@ -141,12 +123,23 @@ public static class HttpClientExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="value">The JSON string.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The deserialized value.
     /// </returns>
-    public static T FromJsonWithTypes<T>(this string value)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static T FromJsonWithTypes<T>(this string value, SquidexOptions options)
     {
-        var json = JsonConvert.DeserializeObject<T>(value, SerializerSettingsWithTypes)!;
+        Guard.NotNull(options, nameof(options));
+
+        var serializerSettings = new JsonSerializerSettings(options.SerializerSettings)
+        {
+            SerializationBinder = new EnrichedEventSerializationBinder(),
+            TypeNameHandling = TypeNameHandling.Auto,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+        };
+
+        var json = JsonConvert.DeserializeObject<T>(value, serializerSettings)!;
 
         return json;
     }
@@ -156,11 +149,17 @@ public static class HttpClientExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <param name="content">The content to read from.</param>
+    /// <param name="options">The options.</param>
     /// <returns>
     /// The deserialized value.
     /// </returns>
-    public static async Task<T?> ReadAsJsonAsync<T>(this HttpContent content)
+    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+    public static async Task<T?> ReadAsJsonAsync<T>(this HttpContent content, SquidexOptions options)
     {
+        Guard.NotNull(options, nameof(options));
+
+        var serializer = JsonSerializer.CreateDefault(options.SerializerSettings);
+
 #if NET5_0_OR_GREATER
         await using (var stream = await content.ReadAsStreamAsync())
         {
@@ -168,7 +167,7 @@ public static class HttpClientExtensions
             {
                 using (var jsonReader = new JsonTextReader(reader))
                 {
-                    return Serializer.Deserialize<T>(jsonReader);
+                    return serializer.Deserialize<T>(jsonReader);
                 }
             }
         }
@@ -179,7 +178,7 @@ public static class HttpClientExtensions
             {
                 using (var jsonReader = new JsonTextReader(reader))
                 {
-                    return Serializer.Deserialize<T>(jsonReader);
+                    return serializer.Deserialize<T>(jsonReader);
                 }
             }
         }

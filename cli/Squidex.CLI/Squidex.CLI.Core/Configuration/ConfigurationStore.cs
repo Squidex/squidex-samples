@@ -12,7 +12,10 @@ namespace Squidex.CLI.Configuration;
 
 public sealed class ConfigurationStore : IConfigurationStore
 {
-    private readonly JsonSerializer jsonSerializer = new JsonSerializer();
+    private readonly JsonSerializer jsonSerializer = new JsonSerializer
+    {
+        Formatting = Formatting.Indented,
+    };
     private DirectoryInfo workingDirectory;
 
     public DirectoryInfo WorkingDirectory

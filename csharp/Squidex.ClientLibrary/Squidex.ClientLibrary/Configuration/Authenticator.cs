@@ -62,13 +62,19 @@ public class Authenticator : IAuthenticator
 
         ThrowFromPreviousAttempt(clientId, clientSecret);
 
-        var httpRequest = Authenticator.BuildRequest(clientId, clientSecret);
+        var httpRequest = BuildRequest(clientId, clientSecret);
 
         using (var response = await httpClient.SendAsync(httpRequest, ct))
         {
             if (!response.IsSuccessStatusCode)
             {
-                var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode}.");
+#if NET5_0_OR_GREATER
+                var errorString = await response.Content.ReadAsStringAsync(ct);
+#else
+                var errorString = await response.Content.ReadAsStringAsync();
+#endif
+
+                var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode} and error {errorString}.");
 
                 StorePreviousAttempt(clientId, clientSecret, exception);
                 throw exception;

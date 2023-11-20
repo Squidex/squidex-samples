@@ -18,7 +18,7 @@ public sealed class ConfigurationService : IConfigurationService
 
     private sealed class ConfigurationModel
     {
-        public Dictionary<string, ConfiguredApp> Apps { get; } = new Dictionary<string, ConfiguredApp>();
+        public Dictionary<string, ConfiguredApp> Apps { get; } = [];
 
         public string? CurrentApp { get; set; }
     }
