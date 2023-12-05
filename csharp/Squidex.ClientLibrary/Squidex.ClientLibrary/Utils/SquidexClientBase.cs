@@ -89,7 +89,7 @@ public abstract class SquidexClientBase
             request.Content = content;
         }
 
-        context?.AddToHeaders(request.Headers);
+        context?.AddToRequest(request);
 
         return request;
     }

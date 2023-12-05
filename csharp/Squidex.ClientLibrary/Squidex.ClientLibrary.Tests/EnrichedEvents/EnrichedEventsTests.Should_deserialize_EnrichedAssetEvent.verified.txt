@@ -1,0 +1,28 @@
+﻿{
+  Id: Guid_1,
+  Created: DateTimeOffset_1,
+  LastModified: DateTimeOffset_1,
+  CreatedBy: {
+    Id: 6025a698a825d86becf541fe,
+    Type: subject
+  },
+  LastModifiedBy: {
+    Id: 6025a698a825d86becf541fe,
+    Type: subject
+  },
+  MimeType: application/pdf,
+  FileName: name.pdf,
+  FileSize: 447021,
+  IsImage: false,
+  Actor: {
+    Id: 6025a698a825d86becf541fe,
+    Type: subject
+  },
+  App: {
+    Id: Guid_2,
+    Name: testapp
+  },
+  Timestamp: DateTimeOffset_2,
+  Name: AssetCreatedFromSnapshot,
+  Version: 1
+}

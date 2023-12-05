@@ -1,0 +1,40 @@
+﻿{
+  Type: Updated,
+  Id: Guid_1,
+  Created: DateTimeOffset_1,
+  LastModified: DateTimeOffset_2,
+  CreatedBy: {
+    Id: 601c2cbafa4e669f214c0438,
+    Type: subject
+  },
+  LastModifiedBy: {
+    Id: 601c2cbafa4e669f214c0438,
+    Type: subject
+  },
+  Data: {
+    testField: {
+      iv: []
+    }
+  },
+  DataOld: {
+    testField: {
+      iv: []
+    }
+  },
+  Status: Published,
+  Schema: {
+    Id: Guid_1,
+    Name: schema
+  },
+  Actor: {
+    Id: 601c2cbafa4e669f214c0438,
+    Type: subject
+  },
+  App: {
+    Id: Guid_2,
+    Name: testapp
+  },
+  Timestamp: DateTimeOffset_2,
+  Name: SchemaUpdated,
+  Version: 3
+}

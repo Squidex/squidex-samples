@@ -5,7 +5,6 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using System.Net.Http.Headers;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;
@@ -39,6 +38,14 @@ public sealed class QueryContext
     /// The languages to deliver.
     /// </value>
     public IEnumerable<string> Languages { get; private set; }
+
+    /// <summary>
+    /// Gets the content fields.
+    /// </summary>
+    /// <value>
+    /// The content fields.
+    /// </value>
+    public IEnumerable<string> Fields { get; private set; }
 
     /// <summary>
     /// Gets a value indicating whether content items will be flatten.
@@ -96,6 +103,14 @@ public sealed class QueryContext
     /// </value>
     public bool IsIgnoreFallback { get; private set; }
 
+    /// <summary>
+    /// Gets a delegate that is called once per request so that you can add custom headers.
+    /// </summary>
+    /// <value>
+    /// The request handler.
+    /// </value>
+    public Action<HttpRequestMessage>? CustomHeaderHandler { get; private set; }
+
     private QueryContext()
     {
     }
@@ -122,6 +137,18 @@ public sealed class QueryContext
     public QueryContext Unpublished(bool unpublished = true)
     {
         return Clone(c => c.IsUnpublished = unpublished);
+    }
+
+    /// <summary>
+    /// Creates a new copy of the context object and defines the custom header handler.
+    /// </summary>
+    /// <param name="handler">The custom header handler.</param>
+    /// <returns>
+    /// The new query context.
+    /// </returns>
+    public QueryContext WithHeaderHandler(Action<HttpRequestMessage>? handler)
+    {
+        return Clone(c => c.CustomHeaderHandler = handler);
     }
 
     /// <summary>
@@ -201,6 +228,20 @@ public sealed class QueryContext
     }
 
     /// <summary>
+    /// Creates a new copy of the context object with the content fields.
+    /// </summary>
+    /// <param name="fields">The content fields.</param>
+    /// <returns>
+    /// The new query context.
+    /// </returns>
+    public QueryContext WithFields(params string[] fields)
+    {
+        Guard.NotNull(fields, nameof(fields));
+
+        return Clone(c => c.Fields = fields);
+    }
+
+    /// <summary>
     /// Creates a new copy of the context object and defines fallback handling for undefined field languages will be turned off.
     /// </summary>
     /// <param name="value">if set to <c>true</c> fallback handling for undefined field languages will be turned off.</param>
@@ -212,9 +253,11 @@ public sealed class QueryContext
         return Clone(c => c.IsIgnoreFallback = value);
     }
 
-    internal void AddToHeaders(HttpRequestHeaders headers)
+    internal void AddToRequest(HttpRequestMessage request)
     {
-        Guard.NotNull(headers, nameof(headers));
+        Guard.NotNull(request, nameof(request));
+
+        var headers = request.Headers;
 
         if (IsFlatten)
         {
@@ -251,6 +294,16 @@ public sealed class QueryContext
             }
         }
 
+        if (Fields != null)
+        {
+            var fields = string.Join(", ", Fields.Where(x => !string.IsNullOrWhiteSpace(x)));
+
+            if (!string.IsNullOrWhiteSpace(fields))
+            {
+                headers.TryAddWithoutValidation("X-Fields", fields);
+            }
+        }
+
         if (AssetUrlsToResolve != null)
         {
             var assetFields = string.Join(", ", AssetUrlsToResolve.Where(x => !string.IsNullOrWhiteSpace(x)));
@@ -265,6 +318,8 @@ public sealed class QueryContext
         {
             headers.TryAddWithoutValidation("X-NoResolveLanguages", "1");
         }
+
+        CustomHeaderHandler?.Invoke(request);
     }
 
     private QueryContext Clone(Action<QueryContext> updater)

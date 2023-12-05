@@ -1,0 +1,14 @@
+﻿{
+  Text: @user@test.com testmessage,
+  Url: /app/testapp/content/schema/0e5955e3-cd2a-49f2-92ba-303acf4dd192/comments,
+  Actor: {
+    Id: 601c2cbafa4e669f214c0438,
+    Type: subject
+  },
+  App: {
+    Id: Guid_1,
+    Name: testapp
+  },
+  Timestamp: DateTimeOffset_1,
+  Name: UserMentioned
+}
