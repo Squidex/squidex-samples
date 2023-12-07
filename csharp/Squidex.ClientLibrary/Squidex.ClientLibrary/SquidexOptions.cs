@@ -7,6 +7,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Squidex.ClientLibrary.Configuration;
 using Squidex.ClientLibrary.Utils;
 
@@ -35,7 +36,13 @@ public class SquidexOptions : OptionsBase
     /// </summary>
     public SquidexOptions()
     {
-        SerializerSettings.ContractResolver = new JsonNullContractResolver();
+        SerializerSettings.ContractResolver = new JsonNullContractResolver()
+        {
+            NamingStrategy = new CamelCaseNamingStrategy
+            {
+                OverrideSpecifiedNames = true
+            }
+        };
 
         SerializerSettings.Converters.Add(new StringEnumConverter());
         SerializerSettings.Converters.Add(new UTCIsoDateTimeConverter());

@@ -303,4 +303,20 @@ public class SerializationTests
 
         Assert.Equal("hello", result?.Value["en"].Value);
     }
+
+    [Fact]
+    public void Should_keep_dictionary_keys()
+    {
+        var workflow = new UpdateWorkflowDto
+        {
+            Steps = new Dictionary<string, WorkflowStepDto>
+            {
+                ["Draft"] = new WorkflowStepDto()
+            }
+        };
+
+        var result = workflow.ToJson(options);
+
+        Assert.Contains("Draft", result, StringComparison.Ordinal);
+    }
 }
