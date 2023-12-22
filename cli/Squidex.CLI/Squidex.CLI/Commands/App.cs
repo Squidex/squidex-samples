@@ -10,15 +10,8 @@ using Squidex.CLI.Commands.Implementation;
 
 namespace Squidex.CLI.Commands;
 
-public partial class App
+public partial class App(ILogger log)
 {
-    private readonly ILogger log;
-
-    public App(ILogger log)
-    {
-        this.log = log;
-    }
-
     [Command("info", Description = "Shows information about the CLI.")]
     public void Info()
     {

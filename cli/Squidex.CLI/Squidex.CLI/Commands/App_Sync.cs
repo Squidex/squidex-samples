@@ -21,20 +21,8 @@ public sealed partial class App
 {
     [Command("sync", Description = "Synchronizes apps.")]
     [Subcommand]
-    public sealed class Sync
+    public sealed class Sync(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly Synchronizer synchronizer;
-        private readonly ILogger log;
-
-        public Sync(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
-        {
-            this.configuration = configuration;
-            this.synchronizer = synchronizer;
-
-            this.log = log;
-        }
-
         [Command("new", Description = "Creates a new folder with sample files how to create an app from json files.")]
         public async Task New(NewArgument arguments)
         {

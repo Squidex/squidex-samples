@@ -18,15 +18,8 @@ public sealed partial class App
 {
     [Command("twitter", Description = "Manage twitter.")]
     [Subcommand]
-    public sealed class Twitter
+    public sealed class Twitter(ILogger log)
     {
-        private readonly ILogger log;
-
-        public Twitter(ILogger log)
-        {
-            this.log = log;
-        }
-
         [Command("auth", Description = "Starts the authentication.")]
         public async Task Auth(AuthArguments arguments)
         {

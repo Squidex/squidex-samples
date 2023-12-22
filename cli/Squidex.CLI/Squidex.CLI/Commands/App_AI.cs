@@ -24,20 +24,8 @@ public partial class App
 {
     [Command("ai", Description = "Uses AI commands.")]
     [Subcommand]
-    public sealed class AI
+    public sealed class AI(IConfigurationService configuration, IConfigurationStore configurationStore, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly IConfigurationStore configurationStore;
-        private readonly ILogger log;
-
-        public AI(IConfigurationService configuration, IConfigurationStore configurationStore, ILogger log)
-        {
-            this.configuration = configuration;
-            this.configurationStore = configurationStore;
-
-            this.log = log;
-        }
-
         [Command("generate-contents", Description = "Generates content items and the corresponding schema.",
             ExtendedHelpText =
 @"Use descriptions with the following syntax:

@@ -11,7 +11,6 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.OpenLibrary;
 using Squidex.CLI.Commands.Implementation.Sync;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary;
 
 #pragma warning disable MA0048 // File name must match type name
 
@@ -21,20 +20,8 @@ public sealed partial class App
 {
     [Command("openlib", Description = "Openlibrary example.")]
     [Subcommand]
-    public sealed class OpenLibrary
+    public sealed class OpenLibrary(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly Synchronizer synchronizer;
-        private readonly ILogger log;
-
-        public OpenLibrary(IConfigurationService configuration, Synchronizer synchronizer, ILogger log)
-        {
-            this.configuration = configuration;
-            this.synchronizer = synchronizer;
-
-            this.log = log;
-        }
-
         [Command("generate", Description = "Generate the necessary schemas.")]
         public async Task New(NewArguments arguments)
         {

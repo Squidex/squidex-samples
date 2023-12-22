@@ -7,18 +7,15 @@
 
 using System.Globalization;
 using CommandDotNet;
-using ConsoleTables;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
-using Squidex.CLI.Commands.Implementation.AI;
 using Squidex.CLI.Commands.Implementation.ImExport;
 using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
-using static Squidex.CLI.Commands.App.AI;
 
 #pragma warning disable MA0048 // File name must match type name
 
@@ -30,18 +27,8 @@ public partial class App
 
     [Command("contents", Description = "Manage contents.")]
     [Subcommand]
-    public sealed class Contents
+    public sealed class Contents(IConfigurationService configuration, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly ILogger log;
-
-        public Contents(IConfigurationService configuration, ILogger log)
-        {
-            this.configuration = configuration;
-
-            this.log = log;
-        }
-
         [Command("generate", Description = "Generates test data.")]
         public async Task GenerateDummies(GenerateDummiesArguments arguments)
         {
@@ -79,6 +66,49 @@ public partial class App
             {
                 await session.ImportAsync(arguments, log, datas);
             }
+        }
+
+        [Command("enrich-defaults", Description = "Enrich the content items with its defaults.")]
+        public async Task EnrichDefaults(EnrichDefaultsArguments arguments)
+        {
+            var session = configuration.StartSession(arguments.App);
+
+            var line = log.WriteSameLine();
+
+            var idsRequest = new List<string>();
+            var idsTotal = 0;
+
+            async Task BulkUpdateAsync()
+            {
+                if (idsRequest.Count == 0)
+                {
+                    return;
+                }
+
+                var request = new BulkUpdate
+                {
+                    Jobs = idsRequest.Select(x => new BulkUpdateJob { Id = x, Type = BulkUpdateType.EnrichDefaults }).ToList()
+                };
+
+                await session.Client.DynamicContents(arguments.Schema).BulkUpdateAsync(request);
+
+                idsTotal += idsRequest.Count;
+                idsRequest.Clear();
+
+                line.WriteLine("Contents handled: {0}", idsTotal);
+            }
+
+            await session.Client.DynamicContents(arguments.Schema).GetAllAsync(async content =>
+            {
+                idsRequest.Add(content.Id);
+
+                if (idsRequest.Count >= 200)
+                {
+                    await BulkUpdateAsync();
+                }
+            }, context: QueryContext.Default.Unpublished(arguments.Unpublished));
+
+            await BulkUpdateAsync();
         }
 
         [Command("import", Description = "Import the content to a schema.",
@@ -404,6 +434,19 @@ public partial class App
                     RuleFor(x => x.Schema).NotEmpty();
                     RuleFor(x => x.Count).GreaterThan(0);
                 }
+            }
+        }
+
+        public sealed class EnrichDefaultsArguments : AppArguments
+        {
+            [Operand("schema", Description = "The name of the schema.")]
+            public string Schema { get; set; }
+
+            [Option('u', "unpublished", Description = "Handle unpublished content.")]
+            public bool Unpublished { get; set; }
+
+            public sealed class Validator : AbstractValidator<EnrichDefaultsArguments>
+            {
             }
         }
     }

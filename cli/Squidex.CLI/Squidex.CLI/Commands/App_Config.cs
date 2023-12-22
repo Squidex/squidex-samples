@@ -19,18 +19,8 @@ public partial class App
 {
     [Command("config", Description = "Manage configurations.")]
     [Subcommand]
-    public sealed class Config
+    public sealed class Config(IConfigurationService configuration, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly ILogger log;
-
-        public Config(IConfigurationService configuration, ILogger log)
-        {
-            this.configuration = configuration;
-
-            this.log = log;
-        }
-
         [Command("list", Description = "Shows the current configuration.")]
         public void List(ListArguments arguments)
         {

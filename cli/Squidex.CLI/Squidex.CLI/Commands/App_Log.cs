@@ -22,15 +22,8 @@ public sealed partial class App
 {
     [Command("log", Description = "Analyze request log.")]
     [Subcommand]
-    public sealed class Log
+    public sealed class Log(ILogger log)
     {
-        private readonly ILogger log;
-
-        public Log(ILogger log)
-        {
-            this.log = log;
-        }
-
         [Command("analyze", Description = "Analyzes request log files.")]
         public void Analyze(AnalyzeArguments arguments)
         {

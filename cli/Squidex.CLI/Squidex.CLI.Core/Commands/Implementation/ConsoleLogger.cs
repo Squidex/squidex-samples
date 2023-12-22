@@ -35,22 +35,22 @@ public class ConsoleLogger : ILogger
 
         public void WriteLine(string message, params object[] args)
         {
-            Console.WriteLine(message, args);
-
             if (consoleTop >= 0)
             {
                 Console.SetCursorPosition(0, consoleTop);
             }
+
+            Console.WriteLine(message, args);
         }
 
         public void WriteLine(string message)
         {
-            Console.WriteLine(message);
-
             if (consoleTop >= 0)
             {
                 Console.SetCursorPosition(0, consoleTop);
             }
+
+            Console.WriteLine(message);
         }
     }
 

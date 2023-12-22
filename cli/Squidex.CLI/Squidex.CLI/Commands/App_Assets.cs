@@ -22,18 +22,8 @@ public partial class App
 {
     [Command("assets", Description = "Manages assets.")]
     [Subcommand]
-    public sealed class Assets
+    public sealed class Assets(IConfigurationService configuration, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly ILogger log;
-
-        public Assets(IConfigurationService configuration, ILogger log)
-        {
-            this.configuration = configuration;
-
-            this.log = log;
-        }
-
         [Command("import", Description = "Import all files from the source folder.")]
         public async Task Import(ImportArguments arguments)
         {

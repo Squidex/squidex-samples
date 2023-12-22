@@ -20,18 +20,8 @@ public partial class App
 {
     [Command("apps", Description = "Manages apps.")]
     [Subcommand]
-    public sealed class Apps
+    public sealed class Apps(IConfigurationService configuration, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly ILogger log;
-
-        public Apps(IConfigurationService configuration, ILogger log)
-        {
-            this.configuration = configuration;
-
-            this.log = log;
-        }
-
         [Command("list", Description = "List all schemas.")]
         public async Task List(ListArguments arguments)
         {

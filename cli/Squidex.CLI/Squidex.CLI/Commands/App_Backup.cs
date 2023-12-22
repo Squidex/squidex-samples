@@ -19,18 +19,8 @@ public sealed partial class App
 {
     [Command("backup", Description = "Manage backups.")]
     [Subcommand]
-    public sealed class Backup
+    public sealed class Backup(IConfigurationService configuration, ILogger log)
     {
-        private readonly IConfigurationService configuration;
-        private readonly ILogger log;
-
-        public Backup(IConfigurationService configuration, ILogger log)
-        {
-            this.configuration = configuration;
-
-            this.log = log;
-        }
-
         [Command("create", Description = "Create and download an backup.")]
         public async Task Create(CreateArguments arguments)
         {
