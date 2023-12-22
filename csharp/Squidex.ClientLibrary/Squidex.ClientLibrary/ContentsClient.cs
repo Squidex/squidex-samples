@@ -227,7 +227,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNull(entity, nameof(entity));
 
-        return CreateDraftAsync(entity.Id, default, context, ct);
+        return CreateDraftAsync(entity.Id, options, context, ct);
     }
 
     /// <inheritdoc/>
@@ -303,7 +303,25 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNull(entity, nameof(entity));
 
-        return UpdateAsync(entity.Id, entity.Data, default, context, ct);
+        return UpdateAsync(entity.Id, entity.Data, options, context, ct);
+    }
+
+    /// <inheritdoc/>
+    public async Task<TEntity> EnrichDefaultsAsync(string id, ContentEnrichDefaultsOptions options = default, QueryContext? context = null,
+        CancellationToken ct = default)
+    {
+        Guard.NotNullOrEmpty(id, nameof(id));
+
+        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}/defaults", false), null, context, ct);
+    }
+
+    /// <inheritdoc/>
+    public Task<TEntity> EnrichDefaultsAsync(TEntity entity, ContentEnrichDefaultsOptions options = default, QueryContext? context = null,
+        CancellationToken ct = default)
+    {
+        Guard.NotNull(entity, nameof(entity));
+
+        return EnrichDefaultsAsync(entity.Id, options, context, ct);
     }
 
     /// <inheritdoc/>

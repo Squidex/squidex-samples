@@ -162,3 +162,10 @@ public record struct ContentDeleteDraftOptions
 public record struct ContentPatchOptions
 {
 }
+
+/// <summary>
+/// The options for enriching content items. Used for later.
+/// </summary>
+public record struct ContentEnrichDefaultsOptions
+{
+}

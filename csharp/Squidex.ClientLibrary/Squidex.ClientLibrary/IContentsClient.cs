@@ -194,6 +194,35 @@ public interface IContentsClient<TEntity, TData> where TEntity : Content<TData> 
          CancellationToken ct = default);
 
     /// <summary>
+    /// Enrich the content item with the default values.
+    /// </summary>
+    /// <param name="id">The ID of the content item to enrich. Cannot be null or empty.</param>
+    /// <param name="options">The additional options.</param>
+    /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
+    /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    /// <returns>
+    /// The updated content item.
+    /// </returns>
+    /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="id"/> is empty.</exception>
+    Task<TEntity> EnrichDefaultsAsync(string id, ContentEnrichDefaultsOptions options = default, QueryContext? context = null,
+         CancellationToken ct = default);
+
+    /// <summary>
+    /// Enrich the content item with the default values.
+    /// </summary>
+    /// <param name="entity">The content item to enrich.</param>
+    /// <param name="options">The additional options.</param>
+    /// <param name="context">The context object to add additonal headers to the request and change the behavior of the API when retrieving content items.</param>
+    /// <param name="ct">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+    /// <returns>
+    /// The updated content item.
+    /// </returns>
+    /// <exception cref="ArgumentNullException"><paramref name="entity"/> is null.</exception>
+    Task<TEntity> EnrichDefaultsAsync(TEntity entity, ContentEnrichDefaultsOptions options = default, QueryContext? context = null,
+         CancellationToken ct = default);
+
+    /// <summary>
     /// Deletes the content item with the specified ID.
     /// </summary>
     /// <param name="id">The ID of the content item to delete. Cannot be null or empty.</param>
