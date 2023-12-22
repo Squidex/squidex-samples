@@ -275,7 +275,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(data, nameof(data));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}?publish={options.Publish}&patch={options.Patch}", false), data.ToContent(Options), context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}?publish={options.Publish}&patch={options.Patch}&enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -294,7 +294,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(data, nameof(data));
 
-        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}", false), data.ToContent(Options), context, ct);
+        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}?enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>

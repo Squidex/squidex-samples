@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Squidex.ClientLibrary.Configuration;
-using Xunit;
 
 namespace Squidex.ClientLibrary.Tests;
 

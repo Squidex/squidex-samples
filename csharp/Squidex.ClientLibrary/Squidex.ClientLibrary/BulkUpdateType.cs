@@ -45,5 +45,10 @@ public enum BulkUpdateType
     /// <summary>
     /// Validate a content item.
     /// </summary>
-    Validate
+    Validate,
+
+    /// <summary>
+    /// Enrich the contents with its defaults.
+    /// </summary>
+    EnrichDefaults
 }

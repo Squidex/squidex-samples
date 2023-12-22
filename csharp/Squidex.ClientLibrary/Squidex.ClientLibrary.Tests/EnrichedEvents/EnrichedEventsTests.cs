@@ -5,11 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.EnrichedEvents;
-using Xunit;
 
 namespace Squidex.ClientLibrary.Tests.EnrichedEvents;
 

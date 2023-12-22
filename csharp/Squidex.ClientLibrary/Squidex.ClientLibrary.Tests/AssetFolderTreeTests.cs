@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using FakeItEasy;
-using Xunit;
 
 namespace Squidex.ClientLibrary;
 

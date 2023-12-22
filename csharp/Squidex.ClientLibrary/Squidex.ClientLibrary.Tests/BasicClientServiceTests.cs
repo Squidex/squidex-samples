@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace Squidex.ClientLibrary.Tests;
 

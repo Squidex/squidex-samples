@@ -70,6 +70,11 @@ public record struct ContentUpsertOptions
     public bool Patch { get; set; }
 
     /// <summary>
+    /// Enrich the content with defaults.
+    /// </summary>
+    public bool EnrichDefaults { get; set; }
+
+    /// <summary>
     /// A option where <see cref="Publish"/> is true.
     /// </summary>
     public static readonly ContentUpsertOptions AsPublish = new ContentUpsertOptions
@@ -83,6 +88,14 @@ public record struct ContentUpsertOptions
     public static readonly ContentUpsertOptions AsPatch = new ContentUpsertOptions
     {
         Patch = true
+    };
+
+    /// <summary>
+    /// A option where <see cref="EnrichDefaults"/> is true.
+    /// </summary>
+    public static readonly ContentUpsertOptions AsEnrichDefaults = new ContentUpsertOptions
+    {
+        EnrichDefaults = true
     };
 }
 
@@ -111,29 +124,41 @@ public record struct ContentDeleteOptions
 }
 
 /// <summary>
+/// The options for updating content items. Used for later.
+/// </summary>
+public record struct ContentUpdateOptions
+{
+    /// <summary>
+    /// Enrich the content with defaults.
+    /// </summary>
+    public bool EnrichDefaults { get; set; }
+
+    /// <summary>
+    /// A option where <see cref="EnrichDefaults"/> is true.
+    /// </summary>
+    public static readonly ContentUpsertOptions AsEnrichDefaults = new ContentUpsertOptions
+    {
+        EnrichDefaults = true
+    };
+}
+
+/// <summary>
 /// The options for creating content drafts. Used for later.
 /// </summary>
-public readonly struct ContentCreateDraftOptions
+public record struct ContentCreateDraftOptions
 {
 }
 
 /// <summary>
 /// The options for deleting content drafts. Used for later.
 /// </summary>
-public readonly struct ContentDeleteDraftOptions
-{
-}
-
-/// <summary>
-/// The options for updating content items. Used for later.
-/// </summary>
-public readonly struct ContentUpdateOptions
+public record struct ContentDeleteDraftOptions
 {
 }
 
 /// <summary>
 /// The options for patching content items. Used for later.
 /// </summary>
-public readonly struct ContentPatchOptions
+public record struct ContentPatchOptions
 {
 }

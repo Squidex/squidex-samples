@@ -8,7 +8,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary.Utils;
-using Xunit;
 
 namespace Squidex.ClientLibrary.Tests;
 
