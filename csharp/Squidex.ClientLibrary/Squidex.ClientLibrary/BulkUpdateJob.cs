@@ -48,6 +48,11 @@ public class BulkUpdateJob
     public BulkUpdateType Type { get; set; }
 
     /// <summary>
+    /// Enrich the data with the default values when updating a content item.
+    /// </summary>
+    public bool EnrichDefaults { get; set; }
+
+    /// <summary>
     /// To delete the content permanently.
     /// </summary>
     public bool Permanent { get; set; }
