@@ -136,7 +136,7 @@ public record struct ContentUpdateOptions
     /// <summary>
     /// A option where <see cref="EnrichDefaults"/> is true.
     /// </summary>
-    public static readonly ContentUpsertOptions AsEnrichDefaults = new ContentUpsertOptions
+    public static readonly ContentUpdateOptions AsEnrichDefaults = new ContentUpdateOptions
     {
         EnrichDefaults = true
     };
