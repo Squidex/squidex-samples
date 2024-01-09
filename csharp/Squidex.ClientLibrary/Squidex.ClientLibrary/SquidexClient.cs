@@ -22,12 +22,12 @@ public sealed class SquidexClient : ISquidexClient
     private IAppsClient appsClient;
     private IAssetsClient assetsClient;
     private IBackupsClient backupsClient;
-    private ICommentsClient commentsClient;
     private IContentsSharedClient<DynamicContent, DynamicData> contentsSharedClient;
     private IDiagnosticsClient diagnosticsClient;
     private IEventConsumersClient eventConsumersClient;
     private IExtendableRulesClient extendableRulesClient;
     private IHistoryClient historyClient;
+    private IJobsClient jobsCLient;
     private ILanguagesClient languagesClient;
     private IPingClient pingClient;
     private IPlansClient plansClient;
@@ -131,12 +131,6 @@ public sealed class SquidexClient : ISquidexClient
     }
 
     /// <inheritdoc/>
-    public ICommentsClient Comments
-    {
-        get => commentsClient ??= new CommentsClient(Options);
-    }
-
-    /// <inheritdoc/>
     public IContentsSharedClient<DynamicContent, DynamicData> SharedDynamicContents
     {
         get => contentsSharedClient ??= new ContentsSharedClient<DynamicContent, DynamicData>(Options);
@@ -164,6 +158,12 @@ public sealed class SquidexClient : ISquidexClient
     public IHistoryClient History
     {
         get => historyClient ??= new HistoryClient(Options);
+    }
+
+    /// <inheritdoc/>
+    public IJobsClient Jobs
+    {
+        get => jobsCLient ??= new JobsClient(Options);
     }
 
     /// <inheritdoc/>

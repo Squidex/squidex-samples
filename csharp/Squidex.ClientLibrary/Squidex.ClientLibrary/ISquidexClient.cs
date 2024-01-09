@@ -95,14 +95,6 @@ public interface ISquidexClient
     IBackupsClient Backups { get; }
 
     /// <summary>
-    /// Gets a client instance to query and manage comments.
-    /// </summary>
-    /// <returns>
-    /// The returned client.
-    /// </returns>
-    ICommentsClient Comments { get; }
-
-    /// <summary>
     /// Gets a client instance to query diagnostics data.
     /// </summary>
     /// <returns>
@@ -125,6 +117,14 @@ public interface ISquidexClient
     /// The returned client.
     /// </returns>
     IHistoryClient History { get; }
+
+    /// <summary>
+    /// Gets a client instance to query and manage jobs.
+    /// </summary>
+    /// <returns>
+    /// The returned client.
+    /// </returns>
+    IJobsClient Jobs { get; }
 
     /// <summary>
     /// Gets a client instance to query all supported languages.
