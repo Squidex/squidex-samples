@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.20.0" />
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="14.0.1" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Squidex.Text" Version="6.2.0" />
+    <PackageReference Include="Squidex.Text" Version="6.3.5" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -23,13 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Client.Class.ReadObjectResponse.liquid">
+    <None Update="Client.Class.ReadObjectResponse2.liquid">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Client.Class.liquid">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Client.Class.ProcessResponse.liquid">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

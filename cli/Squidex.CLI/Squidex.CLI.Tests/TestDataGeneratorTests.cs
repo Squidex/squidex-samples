@@ -533,7 +533,7 @@ public class TestDataGeneratorTests
                     Name = "field",
                     Properties = field,
                     Partitioning = "invariant"
-                }
+                },
             ]
         };
 

@@ -17,7 +17,7 @@ internal static class SchemaCleaner
     {
         static void AddExtensions(OpenApiOperation operation)
         {
-            operation.ExtensionData ??= new Dictionary<string, object>();
+            operation.ExtensionData ??= new Dictionary<string, object?>();
             operation.ExtensionData["x-fern-sdk-group-name"] = operation.Tags[0].ToCamelCase();
             operation.ExtensionData["x-fern-sdk-method-name"] = operation.OperationId.Split('_').Last().ToCamelCase();
 
@@ -25,7 +25,7 @@ internal static class SchemaCleaner
             {
                 if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
                 {
-                    parameter.ExtensionData ??= new Dictionary<string, object>();
+                    parameter.ExtensionData ??= new Dictionary<string, object?>();
                     parameter.ExtensionData["x-fern-sdk-variable"] = "appName";
                 }
             }
@@ -36,7 +36,7 @@ internal static class SchemaCleaner
             AddExtensions(description.Operation);
         }
 
-        document.ExtensionData ??= new Dictionary<string, object>();
+        document.ExtensionData ??= new Dictionary<string, object?>();
         document.ExtensionData["x-fern-sdk-variables"] = new
         {
             appName = new

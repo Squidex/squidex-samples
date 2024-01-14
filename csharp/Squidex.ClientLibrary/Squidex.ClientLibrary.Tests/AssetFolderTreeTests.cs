@@ -28,7 +28,7 @@ public class AssetFolderTreeTests
     [InlineData(".")]
     [InlineData("./")]
     [InlineData("\\")]
-    public async Task Should_provide_null_if_for_root_path(string path)
+    public async Task Should_provide_null_if_for_root_path(string? path)
     {
         var id = await sut.GetIdAsync(path);
 

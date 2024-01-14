@@ -70,7 +70,7 @@ public sealed class AIContentGenerator
 
     private static GeneratedContent ParseResult(string? schemaName, ChatCompletionCreateResponse cachedResponse)
     {
-        var parsed = Markdown.Parse(cachedResponse.Choices[0].Message.Content);
+        var parsed = Markdown.Parse(cachedResponse.Choices[0].Message.Content ?? string.Empty);
 
         var codeBlocks = parsed.OfType<FencedCodeBlock>().ToList();
         if (codeBlocks.Count != 3)

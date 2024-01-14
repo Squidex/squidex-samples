@@ -13,6 +13,7 @@ using NJsonSchema;
 using NJsonSchema.Generation;
 using NJsonSchema.Generation.TypeMappers;
 using NJsonSchema.Infrastructure;
+using NJsonSchema.NewtonsoftJson.Generation;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.ClientLibrary;
 
@@ -53,7 +54,7 @@ public sealed class SyncService : ISyncService
         jsonSerializerSettings.Formatting = Formatting.Indented;
         jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
-        jsonSchemaGeneratorSettings = new JsonSchemaGeneratorSettings
+        jsonSchemaGeneratorSettings = new NewtonsoftJsonSchemaGeneratorSettings
         {
             FlattenInheritanceHierarchy = true,
             SchemaType = NJsonSchema.SchemaType.JsonSchema,
@@ -87,7 +88,7 @@ public sealed class SyncService : ISyncService
 
         var errors = jsonSchema.Validate(jsonText);
 
-        if (errors.Any())
+        if (errors.Count != 0)
         {
             log.WriteLine("File {0} is not valid", file.FullName);
 

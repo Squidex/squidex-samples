@@ -18,7 +18,7 @@ public sealed class CustomValueGenerator : CSharpValueGenerator
     {
     }
 
-    public override string GetDefaultValue(JsonSchema schema, bool allowsNull, string targetType, string typeNameHint, bool useSchemaDefault, TypeResolverBase typeResolver)
+    public override string? GetDefaultValue(JsonSchema schema, bool allowsNull, string targetType, string? typeNameHint, bool useSchemaDefault, TypeResolverBase typeResolver)
     {
         if (!string.IsNullOrWhiteSpace(schema.ActualDiscriminator))
         {

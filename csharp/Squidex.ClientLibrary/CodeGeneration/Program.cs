@@ -57,6 +57,7 @@ public static class Program
         generatorSettings.ExceptionClass = "SquidexException";
         generatorSettings.GenerateClientInterfaces = true;
         generatorSettings.GenerateOptionalParameters = true;
+        generatorSettings.InjectHttpClient = false;
         generatorSettings.OperationNameGenerator = new CustomTagNameGenerator();
         generatorSettings.UseBaseUrl = false;
 

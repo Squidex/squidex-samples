@@ -6,19 +6,22 @@
 // ==========================================================================
 
 using NJsonSchema;
+using NJsonSchema.CodeGeneration;
 using NJsonSchema.CodeGeneration.CSharp;
 
 namespace CodeGeneration;
 
-public sealed class CustomPropertyNameGenerator : CSharpPropertyNameGenerator
+public sealed class CustomPropertyNameGenerator : IPropertyNameGenerator
 {
-    public override string Generate(JsonSchemaProperty property)
+    private readonly CSharpPropertyNameGenerator inner = new CSharpPropertyNameGenerator();
+
+    public string Generate(JsonSchemaProperty property)
     {
         if (property.Name == "_links")
         {
             return "Links";
         }
 
-        return base.Generate(property);
+        return inner.Generate(property);
     }
 }

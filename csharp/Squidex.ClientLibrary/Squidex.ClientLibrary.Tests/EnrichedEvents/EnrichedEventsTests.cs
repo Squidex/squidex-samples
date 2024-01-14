@@ -13,7 +13,6 @@ namespace Squidex.ClientLibrary.Tests.EnrichedEvents;
 [UsesVerify]
 public class EnrichedEventsTests
 {
-
     private readonly SquidexOptions options = new SquidexOptions();
 
     public class SchemaData

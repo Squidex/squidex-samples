@@ -111,6 +111,7 @@ public static class SquidexClientLibraryServiceExtensions
             handlers.Add(new AuthenticatingHttpMessageHandler(options));
         });
 #else
+#pragma warning disable CS0618 // Type or member is obsolete
         builder.ConfigureHttpMessageHandlerBuilder(builder =>
         {
             var options = builder.Services.GetRequiredService<IOptions<SquidexServiceOptions>>().Value;
@@ -120,6 +121,7 @@ public static class SquidexClientLibraryServiceExtensions
                 AddSquidexAuthenticatorAsAdditionalHandler(builder);
             }
         });
+#pragma warning restore CS0618 // Type or member is obsolete
 #endif
         return builder;
     }
