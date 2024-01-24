@@ -151,7 +151,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{id}/", true, context), null, context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{Uri.EscapeDataString(id)}/", true, context), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -160,7 +160,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{id}/?version={version}", true, context), null, context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Get, BuildUrl($"{Uri.EscapeDataString(id)}/?version={version}", true, context), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -180,7 +180,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
         var q = query?.ToQuery(true, Options) ?? string.Empty;
 
-        return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{id}/referencing{q}", true, context), null, context, ct);
+        return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{Uri.EscapeDataString(id)}/referencing{q}", true, context), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -200,7 +200,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
         var q = query?.ToQuery(true, Options) ?? string.Empty;
 
-        return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{id}/references{q}", true, context), null, context, ct);
+        return RequestJsonAsync<ContentsResult<TEntity, TData>>(HttpMethod.Get, BuildUrl($"{Uri.EscapeDataString(id)}/references{q}", true, context), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -209,7 +209,9 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNull(data, nameof(data));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"?publish={options.Publish}&id={options.Id ?? string.Empty}", false), data.ToContent(Options), context, ct);
+        var id = options.Id ?? string.Empty;
+
+        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"?publish={options.Publish}&id={Uri.EscapeDataString(id)}", false), data.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -218,7 +220,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}/draft", false), null, context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{Uri.EscapeDataString(id)}/draft", false), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -237,7 +239,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNull(id, nameof(id));
         Guard.NotNull(request, nameof(request));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}/status", false), request.ToContent(Options), context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/status", false), request.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -256,7 +258,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(patch, nameof(patch));
 
-        return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildUrl($"{id}/", false), patch.ToContent(Options), context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethodEx.Patch, BuildUrl($"{Uri.EscapeDataString(id)}/", false), patch.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -275,7 +277,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(data, nameof(data));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{id}?publish={options.Publish}&patch={options.Patch}&enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Post, BuildUrl($"{Uri.EscapeDataString(id)}?publish={options.Publish}&patch={options.Patch}&enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -294,7 +296,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(data, nameof(data));
 
-        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}?enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
+        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}?enrichDefaults={options.EnrichDefaults}", false), data.ToContent(Options), context, ct);
     }
 
     /// <inheritdoc/>
@@ -312,7 +314,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{id}/defaults", false), null, context, ct);
+        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/defaults", false), null, context, ct);
     }
 
     /// <inheritdoc/>
@@ -330,7 +332,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestAsync(HttpMethod.Delete, BuildUrl($"{id}?permanent={options.Permanent}&checkReferrers={options.CheckReferrers}", false), null, null, ct);
+        return RequestAsync(HttpMethod.Delete, BuildUrl($"{Uri.EscapeDataString(id)}?permanent={options.Permanent}&checkReferrers={options.CheckReferrers}", false), null, null, ct);
     }
 
     /// <inheritdoc/>
@@ -348,7 +350,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildUrl($"{id}/draft", false), null, context, ct);
+        return RequestJsonAsync<TEntity>(HttpMethod.Delete, BuildUrl($"{Uri.EscapeDataString(id)}/draft", false), null, context, ct);
     }
 
     /// <inheritdoc/>

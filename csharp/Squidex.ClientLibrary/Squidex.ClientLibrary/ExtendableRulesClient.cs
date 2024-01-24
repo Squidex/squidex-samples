@@ -50,7 +50,7 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
         Guard.NotNullOrEmpty(id, nameof(id));
         Guard.NotNull(request, nameof(request));
 
-        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}"), request.ToContent(Options), null, ct);
+        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}"), request.ToContent(Options), null, ct);
     }
 
     /// <inheritdoc/>
@@ -59,7 +59,7 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/enable"), null, null, ct);
+        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/enable"), null, null, ct);
     }
 
     /// <inheritdoc/>
@@ -68,7 +68,7 @@ public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesC
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{id}/disable"), null, null, ct);
+        return RequestJsonAsync<ExtendableRuleDto>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/disable"), null, null, ct);
     }
 
     /// <inheritdoc/>
