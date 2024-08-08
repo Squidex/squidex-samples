@@ -130,6 +130,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<UsersDto> GetUsersAsync(string query = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -215,6 +216,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -230,6 +232,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -315,6 +318,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -330,6 +334,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -408,6 +413,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -427,6 +433,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -519,6 +526,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -534,6 +542,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -626,6 +635,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -641,6 +651,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -741,6 +752,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -756,6 +768,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -856,6 +869,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -1058,6 +1072,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<ResourcesDto> GetUserResourcesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1129,6 +1144,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1144,6 +1160,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1223,6 +1240,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1238,6 +1256,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserDto>> GetUsersAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1315,6 +1334,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1330,6 +1350,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1408,6 +1429,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1423,6 +1445,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1500,6 +1523,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -1627,15 +1651,6 @@ namespace Squidex.ClientLibrary
         /// <exception cref="SquidexException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TranslationDto> PostTranslationAsync(TranslateDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Asks the chatbot a question a text.
-        /// </summary>
-        /// <param name="request">The question request.</param>
-        /// <returns>Question asked.</returns>
-        /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> PostQuestionAsync(AskDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1677,6 +1692,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -1764,108 +1780,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Asks the chatbot a question a text.
-        /// </summary>
-        /// <param name="request">The question request.</param>
-        /// <returns>Question asked.</returns>
-        /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> PostQuestionAsync(AskDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
-        {
-            if (request == null)
-                throw new System.ArgumentNullException("request");
-
-            var client_ = _options.ClientProvider.Get();
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
-                    var content_ = new System.Net.Http.StringContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    var urlBuilder_ = new System.Text.StringBuilder();
-                
-                    // Operation Path: "api/apps/{app}/ask"
-                    urlBuilder_.Append("api/apps/");
-                    urlBuilder_.Append(_options.AppName);
-                    urlBuilder_.Append("/ask");
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
-                        foreach (var item_ in response_.Headers)
-                            headers_[item_.Key] = item_.Value;
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<string>>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ == 400)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        if (status_ == 500)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-            }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -2038,6 +1953,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<TemplatesDto> GetTemplatesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2109,6 +2025,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2124,6 +2041,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("name");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2202,6 +2120,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -2471,6 +2390,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2550,6 +2470,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2569,6 +2490,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2662,6 +2584,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2677,6 +2600,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2766,6 +2690,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2785,6 +2710,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2875,6 +2801,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2890,6 +2817,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TeamDto>> GetTeamsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -2961,6 +2889,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2980,6 +2909,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3065,6 +2995,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3080,6 +3011,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3158,6 +3090,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3177,6 +3110,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3269,6 +3203,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3284,6 +3219,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3366,6 +3302,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3381,6 +3318,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3460,6 +3398,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3479,6 +3418,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3572,6 +3512,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -3794,6 +3735,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<LogDownloadDto> GetLogAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3873,6 +3815,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3892,6 +3835,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("toDate");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -3974,6 +3918,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3997,6 +3942,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("toDate");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4079,6 +4025,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4090,6 +4037,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<CurrentStorageDto> GetCurrentStorageSizeAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4169,6 +4117,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4184,6 +4133,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4263,6 +4213,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4282,6 +4233,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("toDate");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4364,6 +4316,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4387,6 +4340,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("toDate");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4469,6 +4423,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -4634,6 +4589,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SearchResultDto>> GetSearchResultsAsync(string query = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -4719,6 +4675,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -5226,6 +5183,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5331,6 +5289,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5354,6 +5313,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5461,6 +5421,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5480,6 +5441,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5575,6 +5537,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5594,6 +5557,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5689,6 +5653,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5712,6 +5677,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5809,6 +5775,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5832,6 +5799,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -5928,6 +5896,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5947,6 +5916,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6039,6 +6009,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6066,6 +6037,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6164,6 +6136,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6187,6 +6160,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6281,6 +6255,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6303,6 +6278,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6397,6 +6373,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6423,6 +6400,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6519,6 +6497,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6541,6 +6520,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6635,6 +6615,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6661,6 +6642,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6757,6 +6739,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6779,6 +6762,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6873,6 +6857,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -6899,6 +6884,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -6995,6 +6981,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7017,6 +7004,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7111,6 +7099,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7137,6 +7126,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7233,6 +7223,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7255,6 +7246,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7349,6 +7341,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7375,6 +7368,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7471,6 +7465,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7482,6 +7477,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<SchemasDto> GetSchemasAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7561,6 +7557,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7576,6 +7573,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7673,6 +7671,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7688,6 +7687,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("schema");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7768,6 +7768,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7787,6 +7788,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7881,6 +7883,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7896,6 +7899,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("schema");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -7980,6 +7984,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -7999,6 +8004,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8094,6 +8100,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8113,6 +8120,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8208,6 +8216,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8227,6 +8236,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8322,6 +8332,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8341,6 +8352,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8436,6 +8448,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8455,6 +8468,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8550,6 +8564,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8565,6 +8580,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("schema");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8657,6 +8673,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -8672,6 +8689,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("schema");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -8764,6 +8782,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -9089,6 +9108,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, RuleElementDto>> GetActionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9160,6 +9180,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9171,6 +9192,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<RulesDto> GetRulesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9250,6 +9272,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9265,6 +9288,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9358,6 +9382,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9369,6 +9394,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task DeleteRuleRunAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9446,6 +9472,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9465,6 +9492,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9559,6 +9587,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9574,6 +9603,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9658,6 +9688,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9673,6 +9704,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9765,6 +9797,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9780,6 +9813,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9872,6 +9906,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9887,6 +9922,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -9973,6 +10009,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -9989,6 +10026,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10075,6 +10113,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10090,6 +10129,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10169,6 +10209,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10184,6 +10225,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10277,6 +10319,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10292,6 +10335,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10373,6 +10417,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10387,6 +10432,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<RuleEventsDto> GetEventsAsync(string ruleId = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10480,6 +10526,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10491,6 +10538,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task DeleteEventsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10568,6 +10616,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10583,6 +10632,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10668,6 +10718,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10683,6 +10734,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10767,6 +10819,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10778,6 +10831,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetEventTypesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10849,6 +10903,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10864,6 +10919,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("type");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -10942,6 +10998,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -11133,6 +11190,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<PlansDto> GetPlansAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11212,6 +11270,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11227,6 +11286,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11320,6 +11380,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11335,6 +11396,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11414,6 +11476,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11433,6 +11496,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11526,6 +11590,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -11711,6 +11776,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, string>> GetInfoAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11782,6 +11848,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11796,6 +11863,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task GetPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11861,6 +11929,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -11875,6 +11944,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task GetAppPingAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -11941,6 +12011,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -12106,6 +12177,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<FeaturesDto> GetNewsAsync(int? version = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -12183,6 +12255,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -12352,6 +12425,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<LanguageDto>> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -12423,6 +12497,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -12610,6 +12685,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -12692,6 +12768,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12703,6 +12780,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<JobsDto> GetJobsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -12782,6 +12860,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -12797,6 +12876,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -12881,6 +12961,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -13056,6 +13137,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HistoryEventDto>> GetAppHistoryAsync(string channel = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13141,6 +13223,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13157,6 +13240,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13242,6 +13326,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -13432,6 +13517,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<EventConsumersDto> GetEventConsumersAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13503,6 +13589,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13518,6 +13605,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("consumerName");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13608,6 +13696,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13623,6 +13712,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("consumerName");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13713,6 +13803,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -13728,6 +13819,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("consumerName");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -13818,6 +13910,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -13989,6 +14082,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task GetDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14064,6 +14158,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14075,6 +14170,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task GetGCDumpAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14150,6 +14246,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -14376,6 +14473,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14454,6 +14552,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14470,6 +14569,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14554,6 +14654,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14572,6 +14673,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14658,6 +14760,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14670,6 +14773,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<BackupJobsDto> GetBackupsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14749,6 +14853,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14760,6 +14865,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task PostBackupAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14844,6 +14950,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14855,6 +14962,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<RestoreJobDto> GetRestoreJobAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -14926,6 +15034,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -14941,6 +15050,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -15020,6 +15130,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -15292,7 +15403,7 @@ namespace Squidex.ClientLibrary
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -15329,7 +15440,7 @@ namespace Squidex.ClientLibrary
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -15371,7 +15482,7 @@ namespace Squidex.ClientLibrary
         /// <param name="id">The ID of the asset.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -15443,6 +15554,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("more");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -15585,6 +15697,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15616,6 +15729,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -15754,6 +15868,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15770,6 +15885,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AssetFoldersDto> GetAssetFoldersAsync(string parentId = null, AssetFolderScope? scope = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -15859,6 +15975,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15874,6 +15991,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -15967,6 +16085,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -15986,6 +16105,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16080,6 +16200,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16095,6 +16216,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16179,6 +16301,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16198,6 +16321,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16293,6 +16417,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16307,6 +16432,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.IDictionary<string, int>> GetTagsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16386,6 +16512,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16405,6 +16532,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16499,6 +16627,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16522,6 +16651,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AssetsDto> GetAssetsAsync(string parentId = null, string ids = null, string q = null, double? top = null, double? skip = null, string orderby = null, string filter = null, bool? x_NoTotal = null, bool? x_NoSlowTotal = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16637,6 +16767,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16651,9 +16782,10 @@ namespace Squidex.ClientLibrary
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AssetDto> PostAssetAsync(string parentId = null, string id = null, bool? duplicate = null, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16673,6 +16805,20 @@ namespace Squidex.ClientLibrary
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
                         content_.Add(content_file_, "file", file.FileName ?? "file");
                     }
+
+                    if (fileUrl == null)
+                        throw new System.ArgumentNullException("fileUrl");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileUrl, System.Globalization.CultureInfo.InvariantCulture)), "fileUrl");
+                    }
+
+                    if (fileName == null)
+                        throw new System.ArgumentNullException("fileName");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileName, System.Globalization.CultureInfo.InvariantCulture)), "fileName");
+                    }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -16686,7 +16832,7 @@ namespace Squidex.ClientLibrary
             urlBuilder_.Append('?');
             if (parentId != null)
             {
-                urlBuilder_.Append(System.Uri.EscapeDataString("parentId")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                urlBuilder_.Append(System.Uri.EscapeDataString("ParentId")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(parentId, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
             }
             if (id != null)
             {
@@ -16782,6 +16928,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16802,6 +16949,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("query");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16901,6 +17049,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -16916,6 +17065,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -16996,6 +17146,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17010,12 +17161,13 @@ namespace Squidex.ClientLibrary
         /// <param name="duplicate">True to duplicate the asset, event if the file has been uploaded.</param>
         /// <returns>Asset created or updated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AssetDto> PostUpsertAssetAsync(string id, string parentId = null, bool? duplicate = null, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17034,6 +17186,20 @@ namespace Squidex.ClientLibrary
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
                         content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+
+                    if (fileUrl == null)
+                        throw new System.ArgumentNullException("fileUrl");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileUrl, System.Globalization.CultureInfo.InvariantCulture)), "fileUrl");
+                    }
+
+                    if (fileName == null)
+                        throw new System.ArgumentNullException("fileName");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileName, System.Globalization.CultureInfo.InvariantCulture)), "fileName");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -17141,6 +17307,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17160,6 +17327,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17254,6 +17422,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17271,6 +17440,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17365,6 +17535,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17380,6 +17551,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17473,6 +17645,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17485,12 +17658,13 @@ namespace Squidex.ClientLibrary
         /// <param name="id">The ID of the asset.</param>
         /// <returns>Asset updated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AssetDto> PutAssetContentAsync(string id, FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17509,6 +17683,20 @@ namespace Squidex.ClientLibrary
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
                         content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+
+                    if (fileUrl == null)
+                        throw new System.ArgumentNullException("fileUrl");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileUrl, System.Globalization.CultureInfo.InvariantCulture)), "fileUrl");
+                    }
+
+                    if (fileName == null)
+                        throw new System.ArgumentNullException("fileName");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileName, System.Globalization.CultureInfo.InvariantCulture)), "fileName");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
@@ -17607,6 +17795,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -17626,6 +17815,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -17721,6 +17911,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -17953,7 +18144,7 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -18205,6 +18396,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AssetScriptsDto> GetAssetScriptsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18284,6 +18476,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18299,6 +18492,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18392,6 +18586,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18406,6 +18601,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<ClientsDto> GetClientsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18485,6 +18681,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18504,6 +18701,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18597,6 +18795,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18619,6 +18818,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18713,6 +18913,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18731,6 +18932,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18821,6 +19023,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18832,6 +19035,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<ContributorsDto> GetContributorsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -18911,6 +19115,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -18926,6 +19131,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19019,6 +19225,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19030,6 +19237,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<ContributorsDto> DeleteMyselfAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19119,6 +19327,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19134,6 +19343,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19224,6 +19434,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19235,6 +19446,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<FileResponse> GetImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19312,6 +19524,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19320,9 +19533,10 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <returns>App image uploaded.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task<AppDto> UploadImageAsync(FileParameter file = null, string fileUrl = null, string fileName = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19341,6 +19555,20 @@ namespace Squidex.ClientLibrary
                         if (!string.IsNullOrEmpty(file.ContentType))
                             content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
                         content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
+
+                    if (fileUrl == null)
+                        throw new System.ArgumentNullException("fileUrl");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileUrl, System.Globalization.CultureInfo.InvariantCulture)), "fileUrl");
+                    }
+
+                    if (fileName == null)
+                        throw new System.ArgumentNullException("fileName");
+                    else
+                    {
+                        content_.Add(new System.Net.Http.StringContent(ConvertToString(fileName, System.Globalization.CultureInfo.InvariantCulture)), "fileName");
                     }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
@@ -19427,6 +19655,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19438,6 +19667,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AppDto> DeleteImageAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19527,6 +19757,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19538,6 +19769,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AppLanguagesDto> GetLanguagesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19617,6 +19849,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19632,6 +19865,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19725,6 +19959,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19744,6 +19979,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19838,6 +20074,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19853,6 +20090,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("language");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -19943,6 +20181,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -19954,6 +20193,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<RolesDto> GetRolesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20033,6 +20273,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20048,6 +20289,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20141,6 +20383,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20152,6 +20395,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<string>> GetPermissionsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20231,6 +20475,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20250,6 +20495,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20344,6 +20590,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20359,6 +20606,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("roleName");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20449,6 +20697,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20464,6 +20713,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AppDto>> GetAppsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20535,6 +20785,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20554,6 +20805,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20649,6 +20901,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20668,6 +20921,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("team");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20741,6 +20995,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20752,6 +21007,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AppDto> GetAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20830,6 +21086,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20845,6 +21102,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -20937,6 +21195,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -20948,6 +21207,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task DeleteAppAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21030,6 +21290,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21045,6 +21306,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21138,6 +21400,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21149,6 +21412,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<AppSettingsDto> GetSettingsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21228,6 +21492,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21243,6 +21508,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21336,6 +21602,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21347,6 +21614,7 @@ namespace Squidex.ClientLibrary
         public virtual async System.Threading.Tasks.Task<WorkflowsDto> GetWorkflowsAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21426,6 +21694,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21441,6 +21710,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21534,6 +21804,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21553,6 +21824,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21647,6 +21919,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -21662,6 +21935,7 @@ namespace Squidex.ClientLibrary
                 throw new System.ArgumentNullException("id");
 
             var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var disposeClient_ = false;
             try
             {
@@ -21752,6 +22026,7 @@ namespace Squidex.ClientLibrary
             finally
             {
             }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
         }
 
         protected struct ObjectResponseResult<T>
@@ -22183,24 +22458,6 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("sourceLanguage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SourceLanguage { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AskDto
-    {
-        /// <summary>
-        /// Optional conversation ID.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("conversationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ConversationId { get; set; }
-
-        /// <summary>
-        /// The text to ask.
-        /// </summary>
-        [Newtonsoft.Json.JsonProperty("prompt", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Prompt { get; set; }
 
     }
 
@@ -23683,6 +23940,9 @@ namespace Squidex.ClientLibrary
 
         [System.Runtime.Serialization.EnumMember(Value = @"Input")]
         Input = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Radio")]
+        Radio = 5,
 
     }
 
@@ -27773,8 +28033,6 @@ namespace Squidex.ClientLibrary
             Stream.Dispose();
             if (_response != null)
                 _response.Dispose();
-            if (_client != null)
-                _client.Dispose();
         }
     }
 

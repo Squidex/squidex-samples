@@ -61,7 +61,9 @@ public sealed partial class App
             {
                 log.WriteLine("Backup completed. Downloading...");
 
-                await using (var fs = new FileStream(arguments.File, FileMode.CreateNew))
+                var mode = arguments.Force ? FileMode.Create : FileMode.CreateNew;
+
+                await using (var fs = new FileStream(arguments.File, mode))
                 {
 #pragma warning disable CS0612 // Type or member is obsolete
                     using (var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id))
@@ -98,6 +100,9 @@ public sealed partial class App
 
             [Option("deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed.")]
             public bool DeleteAfterDownload { get; set; }
+
+            [Option("force", 'f', Description = "Overwrites the file if it already exists.")]
+            public bool Force { get; set; }
 
             public sealed class Validator : AbstractValidator<CreateArguments>
             {

@@ -165,6 +165,7 @@
 
 {%     endif -%}
         var client_ = _options.ClientProvider.Get();
+#pragma warning disable CS0219 // Variable is assigned but its value is never used
         var disposeClient_ = false;
         try
         {
@@ -444,6 +445,7 @@
         finally
         {
         }
+#pragma warning restore CS0219 // Variable is assigned but its value is never used
     }
 
 {% endfor %}
