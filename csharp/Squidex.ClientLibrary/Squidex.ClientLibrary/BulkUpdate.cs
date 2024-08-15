@@ -38,6 +38,11 @@ public sealed class BulkUpdate
     public bool DoNotValidateWorkflow { get; set; }
 
     /// <summary>
+    ///  True, to also enrich required fields. Default: false.
+    /// </summary>
+    public bool EnrichRequiredFields { get; set; }
+
+    /// <summary>
     /// True to check referrers of this content.
     /// </summary>
     public bool CheckReferrers { get; set; }
