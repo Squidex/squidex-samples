@@ -87,7 +87,14 @@ public partial class App
 
                 var request = new BulkUpdate
                 {
-                    Jobs = idsRequest.Select(x => new BulkUpdateJob { Id = x, Type = BulkUpdateType.EnrichDefaults }).ToList()
+                    Jobs = idsRequest
+                        .Select(x => new BulkUpdateJob
+                        {
+                            Id = x,
+                            Type = BulkUpdateType.EnrichDefaults
+                        })
+                        .ToList(),
+                    EnrichRequiredFields = arguments.RequiredFields,
                 };
 
                 await session.Client.DynamicContents(arguments.Schema).BulkUpdateAsync(request);
@@ -444,6 +451,9 @@ public partial class App
 
             [Option('u', "unpublished", Description = "Handle unpublished content.")]
             public bool Unpublished { get; set; }
+
+            [Option("required-fields", Description = "Also enrich required fields.")]
+            public bool RequiredFields { get; set; }
 
             public sealed class Validator : AbstractValidator<EnrichDefaultsArguments>
             {

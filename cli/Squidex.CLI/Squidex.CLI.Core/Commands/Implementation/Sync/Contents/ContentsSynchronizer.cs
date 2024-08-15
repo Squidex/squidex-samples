@@ -40,7 +40,14 @@ public sealed class ContentsSynchronizer : ISynchronizer
         var schemas = await session.Client.Schemas.GetSchemasAsync();
         var schemaMap = schemas.Items.ToDictionary(x => x.Id, x => x.Name);
 
-        var context = QueryContext.Default.Unpublished().IgnoreFallback();
+        var context =
+            QueryContext.Default
+                .Unpublished()
+                .WithHeaderHandler(request =>
+                {
+                    request.Headers.TryAddWithoutValidation("X-NoDefaults", "1");
+                })
+                .IgnoreFallback();
 
         foreach (var schema in schemas.Items)
         {
