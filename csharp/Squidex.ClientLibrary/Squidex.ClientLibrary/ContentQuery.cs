@@ -95,38 +95,20 @@ public class ContentQuery
     /// </summary>
     public int Random { get; set; }
 
-    internal string ToQuery(bool supportsSearch, SquidexOptions options)
+    internal Query ToQuery(bool supportsSearch, SquidexOptions options)
     {
-        var queries = new List<string>();
+        var q = Query.Create();
 
-        if (Skip.HasValue)
-        {
-            queries.Add($"$skip={Skip.Value}");
-        }
-
-        if (Top.HasValue)
-        {
-            queries.Add($"$top={Top.Value}");
-        }
-
-        if (Random > 0)
-        {
-            queries.Add($"$random={Random}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(OrderBy))
-        {
-            queries.Add($"$orderby={OrderBy}");
-        }
+        q.Append("$skip", Skip);
+        q.Append("$top", Top);
+        q.Append("$orderby", OrderBy);
+        q.Append("$filter", Filter);
+        q.Append("random", Random);
+        q.AppendMany("ids", Ids);
 
         if (JsonQuery != null)
         {
-            queries.Add($"q={JsonQuery.ToJson(options)}");
-        }
-
-        if (Ids != null && Ids.Count > 0)
-        {
-            queries.Add($"ids={string.Join(",", Ids)}");
+            q.Append("q", JsonQuery.ToJson(options));
         }
 
         if (!string.IsNullOrWhiteSpace(Search))
@@ -136,21 +118,9 @@ public class ContentQuery
                 throw new NotSupportedException("Full text search is not supported.");
             }
 
-            queries.Add($"$search=\"{Search}\"");
+            q.Append("$search", Search, true);
         }
 
-        if (!string.IsNullOrWhiteSpace(Filter))
-        {
-            queries.Add($"$filter={Filter}");
-        }
-
-        var queryString = string.Join("&", queries);
-
-        if (!string.IsNullOrWhiteSpace(queryString))
-        {
-            queryString = "?" + queryString;
-        }
-
-        return queryString;
+        return q;
     }
 }

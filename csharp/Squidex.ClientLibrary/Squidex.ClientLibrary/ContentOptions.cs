@@ -7,6 +7,8 @@
 
 #pragma warning disable MA0048 // File name must match type name
 
+using Squidex.ClientLibrary.Utils;
+
 namespace Squidex.ClientLibrary;
 
 /// <summary>
@@ -45,6 +47,13 @@ public record struct ContentCreateOptions
     /// </summary>
     public bool Publish { get; set; }
 
+    internal readonly Query ToQuery()
+    {
+        return Query.Create()
+            .Append("id", Id)
+            .Append("publish", Publish);
+    }
+
     /// <summary>
     /// A option where <see cref="Publish"/> is true.
     /// </summary>
@@ -73,6 +82,20 @@ public record struct ContentUpsertOptions
     /// Enrich the content with defaults.
     /// </summary>
     public bool EnrichDefaults { get; set; }
+
+    /// <summary>
+    ///  True, to also enrich required fields. Default: false.
+    /// </summary>
+    public bool EnrichRequiredFields { get; set; }
+
+    internal readonly Query ToQuery()
+    {
+        return Query.Create()
+            .Append("enrichDefaults", EnrichDefaults)
+            .Append("enrichRequiredFields", EnrichRequiredFields)
+            .Append("patch", Patch)
+            .Append("publish", Publish);
+    }
 
     /// <summary>
     /// A option where <see cref="Publish"/> is true.
@@ -114,6 +137,13 @@ public record struct ContentDeleteOptions
     /// </summary>
     public bool CheckReferrers { get; set; }
 
+    internal readonly Query ToQuery()
+    {
+        return Query.Create()
+            .Append("permanent", Permanent)
+            .Append("checkReferrers", CheckReferrers);
+    }
+
     /// <summary>
     /// A option where <see cref="Permanent"/> is true.
     /// </summary>
@@ -132,6 +162,18 @@ public record struct ContentUpdateOptions
     /// Enrich the content with defaults.
     /// </summary>
     public bool EnrichDefaults { get; set; }
+
+    /// <summary>
+    ///  True, to also enrich required fields. Default: false.
+    /// </summary>
+    public bool EnrichRequiredFields { get; set; }
+
+    internal readonly Query ToQuery()
+    {
+        return Query.Create()
+            .Append("enrichDefaults", EnrichDefaults)
+            .Append("enrichRequiredFields", EnrichRequiredFields);
+    }
 
     /// <summary>
     /// A option where <see cref="EnrichDefaults"/> is true.
@@ -172,6 +214,12 @@ public record struct ContentEnrichDefaultsOptions
     ///  True, to also enrich required fields. Default: false.
     /// </summary>
     public bool EnrichRequiredFields { get; set; }
+
+    internal readonly Query ToQuery()
+    {
+        return Query.Create()
+            .Append("enrichRequiredFields", EnrichRequiredFields);
+    }
 
     /// <summary>
     /// A option where <see cref="EnrichRequiredFields"/> is true.
