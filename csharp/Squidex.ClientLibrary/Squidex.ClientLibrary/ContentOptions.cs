@@ -93,7 +93,7 @@ public record struct ContentUpsertOptions
     /// <summary>
     /// A option where <see cref="EnrichDefaults"/> is true.
     /// </summary>
-    public static readonly ContentUpsertOptions AsEnrichDefaults = new ContentUpsertOptions
+    public static readonly ContentUpsertOptions WithEnrichedDefaults = new ContentUpsertOptions
     {
         EnrichDefaults = true
     };
@@ -136,7 +136,7 @@ public record struct ContentUpdateOptions
     /// <summary>
     /// A option where <see cref="EnrichDefaults"/> is true.
     /// </summary>
-    public static readonly ContentUpdateOptions AsEnrichDefaults = new ContentUpdateOptions
+    public static readonly ContentUpdateOptions WithEnrichedDefaults = new ContentUpdateOptions
     {
         EnrichDefaults = true
     };
@@ -168,4 +168,16 @@ public record struct ContentPatchOptions
 /// </summary>
 public record struct ContentEnrichDefaultsOptions
 {
+    /// <summary>
+    ///  True, to also enrich required fields. Default: false.
+    /// </summary>
+    public bool EnrichRequiredFields { get; set; }
+
+    /// <summary>
+    /// A option where <see cref="EnrichRequiredFields"/> is true.
+    /// </summary>
+    public static readonly ContentEnrichDefaultsOptions WithRequiredFields = new ContentEnrichDefaultsOptions
+    {
+        EnrichRequiredFields = true
+    };
 }

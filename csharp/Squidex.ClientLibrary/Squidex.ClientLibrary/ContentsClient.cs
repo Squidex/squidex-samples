@@ -314,7 +314,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
     {
         Guard.NotNullOrEmpty(id, nameof(id));
 
-        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/defaults", false), null, context, ct);
+        return await RequestJsonAsync<TEntity>(HttpMethod.Put, BuildUrl($"{Uri.EscapeDataString(id)}/defaults?enrichRequiredFields={options.EnrichRequiredFields}", false), null, context, ct);
     }
 
     /// <inheritdoc/>
