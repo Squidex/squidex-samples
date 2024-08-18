@@ -8,6 +8,8 @@
 using System.Globalization;
 using System.Text;
 
+#pragma warning disable MA0089 // Optimize string method usage
+
 namespace Squidex.ClientLibrary.Utils;
 
 internal sealed class Query

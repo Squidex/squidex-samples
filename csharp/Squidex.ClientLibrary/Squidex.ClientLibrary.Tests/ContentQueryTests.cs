@@ -124,7 +124,7 @@ public class ContentQueryTests
     [Fact]
     public void ContentUpsertOptions_with_everything()
     {
-        var query = new ContentUpsertOptions { Publish = true, Patch = true, EnrichDefaults = true, EnrichRequiredFields = true  }
+        var query = new ContentUpsertOptions { Publish = true, Patch = true, EnrichDefaults = true, EnrichRequiredFields = true }
             .ToQuery()
             .ToString();
 
@@ -164,11 +164,11 @@ public class ContentQueryTests
     [Fact]
     public void ContentUpdateOptions_with_everything()
     {
-        var query = new ContentUpdateOptions { EnrichDefaults = true, EnrichRequiredFields = true }
+        var query = new ContentUpdateOptions { EnrichDefaults = true }
             .ToQuery()
             .ToString();
 
-        Assert.Equal("?enrichDefaults=true&enrichRequiredFields=true", query);
+        Assert.Equal("?enrichDefaults=true", query);
     }
 
     [Fact]

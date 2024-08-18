@@ -163,16 +163,10 @@ public record struct ContentUpdateOptions
     /// </summary>
     public bool EnrichDefaults { get; set; }
 
-    /// <summary>
-    ///  True, to also enrich required fields. Default: false.
-    /// </summary>
-    public bool EnrichRequiredFields { get; set; }
-
     internal readonly Query ToQuery()
     {
         return Query.Create()
-            .Append("enrichDefaults", EnrichDefaults)
-            .Append("enrichRequiredFields", EnrichRequiredFields);
+            .Append("enrichDefaults", EnrichDefaults);
     }
 
     /// <summary>
