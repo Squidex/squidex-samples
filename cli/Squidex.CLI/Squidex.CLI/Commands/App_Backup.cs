@@ -11,6 +11,7 @@ using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
 
+#pragma warning disable CS0612 // Type or member is obsolete
 #pragma warning disable MA0048 // File name must match type name
 
 namespace Squidex.CLI.Commands;
@@ -26,8 +27,6 @@ public sealed partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var backupStarted = DateTimeOffset.UtcNow.AddMinutes(-5);
-
             await session.Client.Backups.PostBackupAsync();
 
             log.WriteLine("Backup started, waiting for completion...");
@@ -36,6 +35,9 @@ public sealed partial class App
 
             using (var tcs = new CancellationTokenSource(TimeSpan.FromMinutes(arguments.Timeout)))
             {
+                var backupStarted = DateTimeOffset.UtcNow.AddMinutes(-5);
+                var backupInterval = TimeSpan.FromSeconds(arguments.Interval);
+
                 while (!tcs.Token.IsCancellationRequested)
                 {
 #pragma warning disable CS0612 // Type or member is obsolete
@@ -48,9 +50,9 @@ public sealed partial class App
                         foundBackup = backup;
                         break;
                     }
-                }
 
-                await Task.Delay(5000, tcs.Token);
+                    await Task.Delay(backupInterval, tcs.Token);
+                }
             }
 
             if (foundBackup == null)
@@ -65,7 +67,6 @@ public sealed partial class App
 
                 await using (var fs = new FileStream(arguments.File, mode))
                 {
-#pragma warning disable CS0612 // Type or member is obsolete
                     using (var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id))
 #pragma warning restore CS0612 // Type or member is obsolete
                     {
@@ -98,6 +99,9 @@ public sealed partial class App
             [Option("timeout", Description = "The timeout to wait for the backup in minutes.")]
             public int Timeout { get; set; } = 30;
 
+            [Option("interval", Description = "The query interval to test if the backup is ready in seconds.")]
+            public int Interval { get; set; } = 30;
+
             [Option("deleteAfterDownload", Description = "Defines if the created backup shall be deleted from app after the backup task is completed.")]
             public bool DeleteAfterDownload { get; set; }
 
@@ -109,6 +113,7 @@ public sealed partial class App
                 public Validator()
                 {
                     RuleFor(x => x.File).NotEmpty();
+                    RuleFor(x => x.Interval).InclusiveBetween(1, 120);
                 }
             }
         }
