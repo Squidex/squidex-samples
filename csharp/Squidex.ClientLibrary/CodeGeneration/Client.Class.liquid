@@ -290,9 +290,6 @@
 {%            if pathPart contains "}" -%}
 {%                assign pathParameterParts = pathPart | split: "}" -%}
 {%                assign pathParameterFound = true -%}
-{%                if pathParameterParts[0] == "app" -%}
-                urlBuilder_.Append(_options.AppName);
-{%                endif -%}
 {%                for parameter in operation.PathParameters -%}
 {%                    if parameter.Name == pathParameterParts[0] -%}
 {%                        if parameter.IsOptional -%}
@@ -331,20 +328,21 @@
 {%        endunless -%}
 {%    endif -%}
 {%     if operation.HasQueryParameters -%}
-        urlBuilder_.Append('?');
+                urlBuilder_.Append('?');
 {%         for parameter in operation.QueryParameters -%}
 {%             if parameter.IsOptional -%}
-        if ({{ parameter.VariableName }} != null)
-        {
-            {% template Client.Class.QueryParameter %}
-        }
+                if ({{ parameter.VariableName }} != null)
+                {
+                    {% template Client.Class.QueryParameter %}
+                }
 {%             else -%}
         {% template Client.Class.QueryParameter %}
 {%             endif -%}
 {%         endfor -%}
-        urlBuilder_.Length--;
+                urlBuilder_.Length--;
 {%     endif -%}
-
+                urlBuilder_.Replace("$app$", _options.AppName);
+                
 {% if GeneratePrepareRequestAndProcessResponseAsAsyncMethods %}
                 await PrepareRequestAsync(client_, request_, urlBuilder_, cancellationToken).ConfigureAwait(false);
 {% else -%}

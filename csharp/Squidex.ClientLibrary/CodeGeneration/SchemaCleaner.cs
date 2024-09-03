@@ -13,52 +13,69 @@ namespace CodeGeneration;
 
 internal static class SchemaCleaner
 {
+    private static readonly HashSet<string> PathParametersToRemove = ["app", "more"];
+
     public static void AddExtensions(OpenApiDocument document)
     {
+        document.Security = null;
+        document.Components.SecuritySchemes.Clear();
+
         static void AddExtensions(OpenApiOperation operation)
         {
             operation.ExtensionData ??= new Dictionary<string, object?>();
-            operation.ExtensionData["x-fern-sdk-group-name"] = operation.Tags[0].ToCamelCase();
-            operation.ExtensionData["x-fern-sdk-method-name"] = operation.OperationId.Split('_').Last().ToCamelCase();
+            operation.ExtensionData["x-method-name"] = operation.OperationId.Split('_').Last().ToCamelCase();
 
-            foreach (var parameter in operation.Parameters)
+            foreach (var parameter in operation.Parameters.ToList())
             {
-                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
+                if (parameter.Kind == OpenApiParameterKind.Path && PathParametersToRemove.Contains(parameter.Name))
                 {
-                    parameter.ExtensionData ??= new Dictionary<string, object?>();
-                    parameter.ExtensionData["x-fern-sdk-variable"] = "appName";
+                    operation.Parameters.Remove(parameter);
                 }
+
+                if (parameter.Kind == OpenApiParameterKind.Header)
+                {
+                    const string Prefix = "X-";
+
+                    var name = parameter.Name;
+
+                    parameter.ExtensionData ??= new Dictionary<string, object?>();
+                    parameter.ExtensionData["x-header-name"] = name;
+
+                    if (name.StartsWith(Prefix, StringComparison.Ordinal))
+                    {
+                        name = name[Prefix.Length..];
+                    }
+
+                    parameter.Name = name.ToCamelCase();
+                }
+
+                operation.Security = null;
             }
         }
 
         foreach (var description in document.Operations)
         {
+            description.Path = CleanupPath(description.Path);
+
             AddExtensions(description.Operation);
         }
 
+        foreach (var (path, item) in document.Paths.ToList())
+        {
+            string newPath = CleanupPath(path);
+
+            document.Paths.Remove(path);
+            document.Paths[newPath] = item;
+        }
+
         document.ExtensionData ??= new Dictionary<string, object?>();
-        document.ExtensionData["x-fern-sdk-variables"] = new
-        {
-            appName = new
-            {
-                type = "string"
-            }
-        };
-    }
 
-    public static void RemoveAppName(OpenApiDocument document)
-    {
-        foreach (var description in document.Operations.ToList())
+        static string CleanupPath(string path)
         {
-            var parameters = description.Operation.Parameters;
+            path = path.Replace("{app}", "$app$");
+            path = path.Replace("{more}", string.Empty);
 
-            foreach (var parameter in parameters.ToList())
-            {
-                if (parameter.Kind == OpenApiParameterKind.Path && parameter.Name == "app")
-                {
-                    parameters.Remove(parameter);
-                }
-            }
+            return path;
         }
     }
 

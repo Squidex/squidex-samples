@@ -101,7 +101,7 @@ public sealed class DownloadPipeline
     {
         try
         {
-            return await session.Client.Assets.GetAssetContentBySlugAsync(asset.Id, string.Empty);
+            return await session.Client.Assets.GetAssetContentBySlugAsync(asset.Id);
         }
         catch (SquidexException ex) when (ex.StatusCode == 404)
         {

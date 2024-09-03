@@ -40,9 +40,7 @@ public sealed partial class App
 
                 while (!tcs.Token.IsCancellationRequested)
                 {
-#pragma warning disable CS0612 // Type or member is obsolete
                     var backups = await session.Client.Backups.GetBackupsAsync(tcs.Token);
-#pragma warning restore CS0612 // Type or member is obsolete
                     var backup = backups.Items.Find(x => x.Started >= backupStarted);
 
                     if (backup?.Stopped != null)
@@ -68,7 +66,6 @@ public sealed partial class App
                 await using (var fs = new FileStream(arguments.File, mode))
                 {
                     using (var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id))
-#pragma warning restore CS0612 // Type or member is obsolete
                     {
                         await download.Stream.CopyToAsync(fs);
                     }
@@ -78,9 +75,7 @@ public sealed partial class App
                 {
                     log.WriteLine("Removing backup from app");
 
-#pragma warning disable CS0612 // Type or member is obsolete
                     await session.Client.Backups.DeleteBackupAsync(foundBackup.Id);
-#pragma warning restore CS0612 // Type or member is obsolete
                 }
 
                 log.Completed("Backup Download completed.");
