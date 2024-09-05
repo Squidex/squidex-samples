@@ -72,6 +72,10 @@ internal sealed class UploadPipeline
                     log.ProcessCompleted(process);
                 }
             }
+            catch (SquidexException ex) when (ex.StatusCode == 413)
+            {
+                log.ProcessFailed(process, "File is too large. Increase max asset size in your deployment settings.");
+            }
             catch (FileNotFoundException)
             {
                 log.ProcessFailed(process, "File not found.");
