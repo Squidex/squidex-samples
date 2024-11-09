@@ -14,7 +14,6 @@ using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 
 #pragma warning disable MA0048 // File name must match type name
-#pragma warning disable RECS0014 // If all fields, properties and methods members are static, the class can be made static.
 
 namespace Squidex.CLI.Commands;
 

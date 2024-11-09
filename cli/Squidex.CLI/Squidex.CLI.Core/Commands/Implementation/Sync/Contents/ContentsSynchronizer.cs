@@ -84,6 +84,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
                     return;
                 }
 
+                // Convert schema IDs to schema names.
                 content.MapComponents(schemaMap);
 
                 contents.Add(content.ToModel(schema.Name));
@@ -120,7 +121,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
 
         if (rows.Length > 0)
         {
-            writer.Table(new[] { "Schema", "Counts" }, rows);
+            writer.Table(["Schema", "Counts"], rows);
         }
 
         return Task.CompletedTask;
@@ -153,7 +154,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
                     DoNotScript = true,
                     DoNotValidate = false,
                     DoNotValidateWorkflow = true,
-                    Jobs = model.Contents.Select(x => x.ToUpsert(schemas, options.ContentAction)).ToList()
+                    Jobs = model.Contents.Select(x => x.ToUpsert(schemas, schemaMap, options.ContentAction)).ToList()
                 };
 
                 var contentIdAssigned = false;

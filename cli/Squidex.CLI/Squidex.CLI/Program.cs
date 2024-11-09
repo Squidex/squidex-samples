@@ -38,6 +38,7 @@ public static class Program
                 .AddSingleton<App.Backup>()
                 .AddSingleton<App.Config>()
                 .AddSingleton<App.Contents>()
+                .AddSingleton<App.Indexes>()
                 .AddSingleton<App.Log>()
                 .AddSingleton<App.OpenLibrary>()
                 .AddSingleton<App.Schemas>()

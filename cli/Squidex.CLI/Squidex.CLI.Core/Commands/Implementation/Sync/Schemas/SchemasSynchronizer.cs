@@ -52,7 +52,7 @@ public sealed class SchemasSynchronizer : ISynchronizer
         {
             var rows = models.Select(x => new object[] { x.Name, x.SchemaType.ToString(), x.Schema.Fields.Count }).OrderBy(x => x[0]).ToArray();
 
-            writer.Table(new[] { "Schema", "Type", "Fields" }, rows);
+            writer.Table(["Schema", "Type", "Fields"], rows);
         }
 
         return Task.CompletedTask;

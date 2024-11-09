@@ -58,7 +58,7 @@ public partial class App
 
                         log.WriteLine($"Uploading: {file.FullName}");
 
-                        if (existings.Items.Any(x => string.Equals(x.FileHash, fileHash, StringComparison.Ordinal)))
+                        if (existings.Items.Exists(x => string.Equals(x.FileHash, fileHash, StringComparison.Ordinal)))
                         {
                             log.StepSkipped("Same hash.");
                         }

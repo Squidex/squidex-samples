@@ -70,7 +70,7 @@ public sealed class RulesSynchronizer : ISynchronizer
         {
             var rows = models.Select(x => new object[] { x.Name, x.Trigger.TypeName(), x.Action.TypeName() }).OrderBy(x => x[0]).ToArray();
 
-            writer.Table(new[] { "Name", "Trigger", "Action" }, rows);
+            writer.Table(["Name", "Trigger", "Action"], rows);
         }
 
         return Task.CompletedTask;

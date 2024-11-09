@@ -48,11 +48,11 @@ public partial class App
         [Command("add", Description = "Add or update an app.")]
         public void Add(AddArguments arguments)
         {
-            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? arguments.Label : arguments.Name;
+            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? arguments.Label : arguments.App;
 
             var appConfig = new ConfiguredApp
             {
-                Name = arguments.Name,
+                Name = arguments.App,
                 ClientId = arguments.ClientId,
                 ClientSecret = arguments.ClientSecret,
                 IgnoreSelfSigned = arguments.IgnoreSelfSigned,
@@ -63,7 +63,7 @@ public partial class App
 
             if (arguments.Use)
             {
-                configuration.UseApp(arguments.Name);
+                configuration.UseApp(arguments.App);
 
                 log.Completed("App added and selected.");
             }
@@ -76,7 +76,7 @@ public partial class App
         [Command("use", Description = "Use an app.")]
         public void Use(UseArguments arguments)
         {
-            configuration.UseApp(arguments.Name);
+            configuration.UseApp(arguments.App);
 
             log.Completed("App selected.");
         }
@@ -84,7 +84,7 @@ public partial class App
         [Command("remove", Description = "Remove an app.")]
         public void Remove(RemoveArguments arguments)
         {
-            configuration.Remove(arguments.Name);
+            configuration.Remove(arguments.App);
 
             log.Completed("App removed.");
         }
@@ -109,36 +109,36 @@ public partial class App
 
         public sealed class RemoveArguments : IArgumentModel
         {
-            [Operand("name", Description = "The name of the app.")]
-            public string Name { get; set; }
+            [Operand("app", Description = "The name of the app.")]
+            public string App { get; set; }
 
             public sealed class Validator : AbstractValidator<RemoveArguments>
             {
                 public Validator()
                 {
-                    RuleFor(x => x.Name).NotEmpty();
+                    RuleFor(x => x.App).NotEmpty();
                 }
             }
         }
 
         public sealed class UseArguments : IArgumentModel
         {
-            [Operand("name", Description = "The name of the app.")]
-            public string Name { get; set; }
+            [Operand("app", Description = "The name of the app.")]
+            public string App { get; set; }
 
             public sealed class Validator : AbstractValidator<UseArguments>
             {
                 public Validator()
                 {
-                    RuleFor(x => x.Name).NotEmpty();
+                    RuleFor(x => x.App).NotEmpty();
                 }
             }
         }
 
         public sealed class AddArguments : IArgumentModel
         {
-            [Operand("name", Description = "The name of the app.")]
-            public string Name { get; set; }
+            [Operand("app", Description = "The name of the app.")]
+            public string App { get; set; }
 
             [Operand("client-id", Description = "The client id.")]
             public string ClientId { get; set; }
@@ -165,7 +165,7 @@ public partial class App
             {
                 public Validator()
                 {
-                    RuleFor(x => x.Name).NotEmpty();
+                    RuleFor(x => x.App).NotEmpty();
                     RuleFor(x => x.ClientId).NotEmpty();
                     RuleFor(x => x.ClientSecret).NotEmpty();
                 }

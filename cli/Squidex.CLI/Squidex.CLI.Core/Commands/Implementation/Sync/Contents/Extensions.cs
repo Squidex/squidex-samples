@@ -13,7 +13,10 @@ namespace Squidex.CLI.Commands.Implementation.Sync.Contents;
 
 internal static class Extensions
 {
-    public static BulkUpdateJob ToUpsert(this ContentModel model, SchemasDto schemas, ContentAction action)
+    public static BulkUpdateJob ToUpsert(this ContentModel model,
+        SchemasDto schemas,
+        Dictionary<string, string> schemasMap,
+        ContentAction action)
     {
         var result = SimpleMapper.Map(model, new BulkUpdateJob());
 
@@ -24,6 +27,9 @@ internal static class Extensions
         {
             result.Id = singleton.Id;
         }
+
+        // Convert schema names back to IDs.
+        model.MapComponents(schemasMap);
 
         switch (action)
         {
@@ -42,7 +48,6 @@ internal static class Extensions
         }
 
         result.Data = model.Data;
-
         return result;
     }
 

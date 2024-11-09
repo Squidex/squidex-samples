@@ -14,7 +14,7 @@ public static class LoremIpsum
     private const int SentencesPerParagraph = 3;
 
     private static readonly string[] Words =
-    {
+    [
         "lorem",
         "ipsum",
         "dolor",
@@ -35,7 +35,7 @@ public static class LoremIpsum
         "magna",
         "aliquam",
         "erat"
-    };
+    ];
 
     public static string GetWord(Random random)
     {

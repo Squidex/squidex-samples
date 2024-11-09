@@ -54,7 +54,7 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var schema = await session.Client.Schemas.GetSchemaAsync(arguments.Name);
+            var schema = await session.Client.Schemas.GetSchemaAsync(arguments.Schema);
 
             if (arguments.WithReferencedNames)
             {
@@ -76,8 +76,7 @@ public partial class App
             var session = configuration.StartSession(arguments.App);
 
             var schemaText = string.Empty;
-            var schemaName = arguments.Name;
-
+            var schemaName = arguments.Schema;
             try
             {
                 schemaText = await File.ReadAllTextAsync(arguments.File);
@@ -120,7 +119,7 @@ public partial class App
             {
                 var request = SchemaWithRefs<CreateSchemaDto>.Parse(schemaText);
 
-                if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
+                if (!arguments.NoRefFix && request.ReferencedSchemas.Count != 0)
                 {
                     var allSchemas = await session.Client.Schemas.GetSchemasAsync();
 
@@ -137,7 +136,7 @@ public partial class App
             {
                 var request = SchemaWithRefs<SynchronizeSchemaDto>.Parse(schemaText);
 
-                if (!arguments.NoRefFix && request.ReferencedSchemas.Any())
+                if (!arguments.NoRefFix && request.ReferencedSchemas.Count != 0)
                 {
                     var allSchemas = await session.Client.Schemas.GetSchemasAsync();
 
@@ -165,8 +164,8 @@ public partial class App
 
         public sealed class GetArguments : AppArguments
         {
-            [Operand("name", Description = "The name of the schema.")]
-            public string Name { get; set; }
+            [Operand("schema", Description = "The name of the schema.")]
+            public string Schema { get; set; }
 
             [Option('r', "with-refs", Description = "Includes the names of the referenced schemas.")]
             public bool WithReferencedNames { get; set; }
@@ -175,7 +174,7 @@ public partial class App
             {
                 public Validator()
                 {
-                    RuleFor(x => x.Name).NotEmpty();
+                    RuleFor(x => x.Schema).NotEmpty();
                 }
             }
         }
@@ -185,8 +184,8 @@ public partial class App
             [Operand("file", Description = "The file with the schema json.")]
             public string File { get; set; }
 
-            [Option("name", Description = "The new schema name.")]
-            public string Name { get; set; }
+            [Option("schema", Description = "The new schema name.")]
+            public string Schema { get; set; }
 
             [Option("no-delete", Description = "Do not delete fields.")]
             public bool NoFieldDeletion { get; set; }

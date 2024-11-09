@@ -68,7 +68,7 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
         {
             var rows = models.Select(x => new object[] { x.Name, string.Join(", ", x.Steps.Select(y => y.Key)), x.Initial }).OrderBy(x => x[0]).ToArray();
 
-            writer.Table(new[] { "Name", "Steps", "Initial" }, rows);
+            writer.Table(["Name", "Steps", "Initial"], rows);
         }
 
         return Task.CompletedTask;

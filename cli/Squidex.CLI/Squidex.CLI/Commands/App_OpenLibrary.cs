@@ -29,10 +29,10 @@ public sealed partial class App
 
             await synchronizer.ImportAsync("assembly://Squidex.CLI.Commands.Implementation.OpenLibrary.Structure", new SyncOptions
             {
-                Targets = new[]
-                {
+                Targets =
+                [
                     "schemas"
-                },
+                ],
                 Recreate = true
             }, session);
 

@@ -100,7 +100,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
             writer.H3("Clients");
             writer.Paragraph($"{rows.Length} client(s).");
-            writer.Table(new[] { "Name", "Label", "Role" }, rows);
+            writer.Table(["Name", "Label", "Role"], rows);
         }
 
         if (model.Roles.Count > 0)
@@ -109,7 +109,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
             writer.H3("Roles");
             writer.Paragraph($"{rows.Length} role(s).");
-            writer.Table(new[] { "Name", "Permissions" }, rows);
+            writer.Table(["Name", "Permissions"], rows);
         }
 
         if (model.Contributors.Count > 0)
@@ -118,7 +118,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
             writer.H3("Contributors");
             writer.Paragraph($"{rows.Length} contributor(s).");
-            writer.Table(new[] { "Id", "Role" }, rows);
+            writer.Table(["Id", "Role"], rows);
         }
 
         if (model.Languages.Count > 0)
@@ -127,7 +127,7 @@ public sealed class AppSynchronizer : ISynchronizer
 
             writer.H3("Languages");
             writer.Paragraph($"{rows.Length} language(s).");
-            writer.Table(new[] { "Code", "Master" }, rows);
+            writer.Table(["Code", "Master"], rows);
         }
 
         return Task.CompletedTask;
