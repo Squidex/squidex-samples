@@ -156,6 +156,9 @@ public sealed partial class App
             [Option('t', "targets", Description = "The targets to sync, e.g. ‘sync out -t contents -t schemas’. Use 'sync targets' to view all targets.")]
             public string[] Targets { get; set; }
 
+            [Option("stream-contents", Description = "Use the new streaming API for contents.")]
+            public bool StreamContents { get; set; }
+
             [Option("max-age", Description = "Content & assets created or last modified within time span defined.")]
             public TimeSpan? MaxAge { get; set; }
 
@@ -164,7 +167,12 @@ public sealed partial class App
 
             public SyncOptions ToOptions()
             {
-                return new SyncOptions { Targets = Targets, MaxAgeDate = GetMaxAgeDate() };
+                return new SyncOptions
+                {
+                    Targets = Targets,
+                    MaxAgeDate = GetMaxAgeDate(),
+                    StreamContents = StreamContents
+                };
             }
 
             public sealed class Validator : AbstractValidator<OutArguments>

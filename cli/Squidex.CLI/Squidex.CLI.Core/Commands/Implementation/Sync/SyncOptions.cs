@@ -19,6 +19,8 @@ public sealed class SyncOptions
 
     public bool Recreate { get; set; }
 
+    public bool StreamContents { get; set; }
+
     public bool UpdateCurrentClient { get; set; }
 
     public DateTimeOffset MaxAgeDate { get; set; }

@@ -107,7 +107,7 @@ public sealed class SchemasSynchronizer : ISynchronizer
         {
             foreach (var name in current.Items.Select(x => x.Name))
             {
-                if (createModels.All(x => x.Name != name))
+                if (createModels.TrueForAll(x => x.Name != name))
                 {
                     await log.DoSafeAsync($"Schema {name} deleting", async () =>
                     {

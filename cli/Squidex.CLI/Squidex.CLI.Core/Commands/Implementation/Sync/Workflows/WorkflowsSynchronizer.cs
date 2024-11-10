@@ -101,7 +101,7 @@ public sealed class WorkflowsSynchronizer : ISynchronizer
         {
             foreach (var (name, workflow) in workflowsByName.ToList())
             {
-                if (models.All(x => x.Name == name))
+                if (models.TrueForAll(x => x.Name == name))
                 {
                     await log.DoSafeAsync($"Workflow '{name}' deleting", async () =>
                     {

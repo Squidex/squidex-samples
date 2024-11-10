@@ -77,7 +77,7 @@ public sealed class ContentsSynchronizer : ISynchronizer
                 });
             }
 
-            await client.GetAllAsync(async content =>
+            async Task HandleContentAsync(DynamicContent content)
             {
                 if (content.LastModified < options.MaxAgeDate)
                 {
@@ -96,7 +96,16 @@ public sealed class ContentsSynchronizer : ISynchronizer
                     contents.Clear();
                     contentBatch++;
                 }
-            }, context: context);
+            }
+
+            if (options.StreamContents)
+            {
+                await client.StreamAllAsync(HandleContentAsync, context: context);
+            }
+            else
+            {
+                await client.GetAllAsync(HandleContentAsync, context: context);
+            }
 
             if (contents.Count > 0)
             {
