@@ -55,7 +55,6 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
             var isAnyAdded = false;
 
             var getResult = await GetAsync(query, context, ct);
-
             foreach (var item in getResult.Items)
             {
                 if (added.Add(item.Id))
@@ -89,7 +88,7 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
         using (var request = BuildRequest(HttpMethod.Get, BuildUrl($"stream?skip={skip}", false), null, context))
         {
-            using (var response = await httpClient.SendAsync(request, ct))
+            using (var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct))
             {
                 await EnsureResponseIsValidAsync(response);
 
