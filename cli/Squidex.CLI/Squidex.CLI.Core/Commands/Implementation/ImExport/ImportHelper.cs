@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation.Utils;
@@ -70,7 +71,15 @@ public static class ImportHelper
                     }
                     else
                     {
-                        job.Type = BulkUpdateType.Create;
+                        data.TryGetValue(DynamicData.IdentityField, out var identity);
+                        job.Id = identity is not null ? identity.ToString() : null;
+                        job.Type = identity is not null ? BulkUpdateType.Upsert : BulkUpdateType.Create;
+
+                        var dynamicData = job.Data as DynamicData;
+                        if (dynamicData != null)
+                        {
+                            dynamicData.Remove(DynamicData.IdentityField);
+                        }
                     }
 
                     update.Jobs.Add(job);

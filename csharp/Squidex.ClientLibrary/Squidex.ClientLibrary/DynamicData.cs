@@ -18,4 +18,5 @@ namespace Squidex.ClientLibrary;
 [KeepCasing]
 public sealed class DynamicData : Dictionary<string, JToken>
 {
+    public const string IdentityField = "identity";
 }

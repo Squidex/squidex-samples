@@ -74,7 +74,11 @@ public sealed class Json2SquidexConverter
         {
             foreach (var (key, value) in item)
             {
-                if (value is JObject obj)
+                if (key == DynamicData.IdentityField)
+                {
+                    data[key] = value;
+                }
+                else if (value is JObject obj)
                 {
                     data[key] = obj;
                 }

@@ -7,6 +7,7 @@
 
 using System.Globalization;
 using CommandDotNet;
+using CoreTweet;
 using CsvHelper;
 using CsvHelper.Configuration;
 using FluentValidation;
@@ -16,6 +17,7 @@ using Squidex.CLI.Commands.Implementation.TestData;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
 using Squidex.ClientLibrary;
+using Squidex.ClientLibrary.Utils;
 
 #pragma warning disable MA0048 // File name must match type name
 
@@ -221,7 +223,7 @@ public partial class App
                     }
                     else
                     {
-                        await Helper.WriteJsonToFileAsync(entity.Data, filePath);
+                        await Helper.WriteJsonToFileAsync(entity.GetDataWithId(), filePath);
                     }
                 });
             }
@@ -244,7 +246,7 @@ public partial class App
                 }
                 else
                 {
-                    await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.Data), file);
+                    await Helper.WriteJsonToFileAsync(allRecords.Select(x => x.GetDataWithId()), file);
                 }
             }
             else if (arguments.Format == ImExportFormat.JSON_Separated && !arguments.FilePerContent)
@@ -263,7 +265,7 @@ public partial class App
                             }
                             else
                             {
-                                await writer.WriteJsonAsync(entity.Data);
+                                await writer.WriteJsonAsync(entity.GetDataWithId());
                             }
 
                             await writer.WriteLineAsync();
