@@ -91,6 +91,11 @@ public class ContentQuery
     public string? Search { get; set; }
 
     /// <summary>
+    /// The locale that is used to compare strings.
+    /// </summary>
+    public string? Collation { get; set; }
+
+    /// <summary>
     /// Pick a random number of elements from the result set.
     /// </summary>
     public int Random { get; set; }
@@ -103,6 +108,7 @@ public class ContentQuery
         q.Append("$top", Top);
         q.Append("$orderby", OrderBy);
         q.Append("$filter", Filter);
+        q.Append("collation", Collation);
         q.Append("random", Random);
         q.AppendMany("ids", Ids);
 

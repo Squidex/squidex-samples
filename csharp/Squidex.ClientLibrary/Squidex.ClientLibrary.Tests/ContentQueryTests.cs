@@ -82,6 +82,26 @@ public class ContentQueryTests
     }
 
     [Fact]
+    public void ContentQuery_with_random()
+    {
+        var query = new ContentQuery { Random = 42 }
+            .ToQuery(true, options)
+            .ToString();
+
+        Assert.Equal("?random=42", query);
+    }
+
+    [Fact]
+    public void ContentQuery_with_collation()
+    {
+        var query = new ContentQuery { Collation = "tr" }
+            .ToQuery(true, options)
+            .ToString();
+
+        Assert.Equal("?collation=tr", query);
+    }
+
+    [Fact]
     public void ContentQuery_with_ids()
     {
         var query = new ContentQuery { Ids = ["1", "2", "3"] }
