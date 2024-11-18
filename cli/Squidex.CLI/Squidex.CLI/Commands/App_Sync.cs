@@ -167,12 +167,7 @@ public sealed partial class App
 
             public SyncOptions ToOptions()
             {
-                return new SyncOptions
-                {
-                    Targets = Targets,
-                    MaxAgeDate = GetMaxAgeDate(),
-                    StreamContents = StreamContents
-                };
+                return SimpleMapper.Map(this, new SyncOptions());
             }
 
             public sealed class Validator : AbstractValidator<OutArguments>
