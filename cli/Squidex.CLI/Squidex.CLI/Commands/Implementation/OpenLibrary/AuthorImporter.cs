@@ -18,21 +18,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.OpenLibrary;
 
-public sealed class AuthorImporter
+public sealed class AuthorImporter(ISession session, ILogger log)
 {
-    private readonly IContentsClient<AuthorContent, AuthorData> client;
-    private readonly ILogger log;
+    private readonly IContentsClient<AuthorContent, AuthorData> client = session.Client.Contents<AuthorContent, AuthorData>("author");
 
     private sealed record CsvRecord(string Id, string Json);
 
     private sealed record AuthorRecord(string Id, AuthorData Author);
-
-    public AuthorImporter(ISession session, ILogger log)
-    {
-        client = session.Client.Contents<AuthorContent, AuthorData>("author");
-
-        this.log = log;
-    }
 
     public async Task ImportAsync(Stream stream)
     {

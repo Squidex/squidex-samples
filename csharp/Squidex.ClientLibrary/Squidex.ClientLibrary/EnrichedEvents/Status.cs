@@ -12,8 +12,12 @@ namespace Squidex.ClientLibrary.EnrichedEvents;
 /// <summary>
 /// Default status strings.
 /// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="Status"/> struct.
+/// </remarks>
+/// <param name="name">Status name.</param>
 [TypeConverter(typeof(StatusTypeConverter))]
-public readonly struct Status : IEquatable<Status>, IComparable<Status>
+public readonly struct Status(string name) : IEquatable<Status>, IComparable<Status>
 {
     /// <summary>
     /// Content is Archived (soft-delete).
@@ -30,23 +34,12 @@ public readonly struct Status : IEquatable<Status>, IComparable<Status>
     /// </summary>
     public static readonly Status Published = new Status("Published");
 
-    private readonly string name;
-
     /// <summary>
     /// Name of the status.
     /// </summary>
     public string Name
     {
         get { return name ?? "Unknown"; }
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Status"/> struct.
-    /// </summary>
-    /// <param name="name">Status name.</param>
-    public Status(string name)
-    {
-        this.name = name;
     }
 
     /// <inheritdoc />

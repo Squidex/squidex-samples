@@ -10,24 +10,16 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Configuration;
 
-public sealed class ConfigurationService : IConfigurationService
+public sealed class ConfigurationService(IConfigurationStore configurationStore) : IConfigurationService
 {
     private const string CloudUrl = "https://cloud.squidex.io";
-    private readonly ConfigurationModel configuration;
-    private readonly IConfigurationStore configurationStore;
+    private readonly ConfigurationModel configuration = configurationStore.Get<ConfigurationModel>(".configuration").Value ?? new ConfigurationModel();
 
     private sealed class ConfigurationModel
     {
         public Dictionary<string, ConfiguredApp> Apps { get; } = [];
 
         public string? CurrentApp { get; set; }
-    }
-
-    public ConfigurationService(IConfigurationStore configurationStore)
-    {
-        this.configurationStore = configurationStore;
-
-        configuration = configurationStore.Get<ConfigurationModel>(".configuration").Value ?? new ConfigurationModel();
     }
 
     private void Save()

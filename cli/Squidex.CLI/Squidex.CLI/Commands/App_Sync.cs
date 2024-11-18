@@ -167,7 +167,10 @@ public sealed partial class App
 
             public SyncOptions ToOptions()
             {
-                return SimpleMapper.Map(this, new SyncOptions());
+                return SimpleMapper.Map(this, new SyncOptions
+                {
+                    MaxAgeDate = GetMaxAgeDate()
+                });
             }
 
             public sealed class Validator : AbstractValidator<OutArguments>

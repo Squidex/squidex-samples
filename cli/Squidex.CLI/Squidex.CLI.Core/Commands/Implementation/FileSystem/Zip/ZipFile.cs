@@ -9,17 +9,15 @@ using System.IO.Compression;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip;
 
-public sealed class ZipFile : IFile
+public sealed class ZipFile(ZipArchive archive, string archivePath, string name, string filePath) : IFile
 {
-    private readonly ZipArchive archive;
-    private readonly string archivePath;
-    private ZipArchiveEntry? entry;
+    private ZipArchiveEntry? entry = archive.GetEntry(archivePath);
 
-    public string FullName { get; }
+    public string FullName { get; } = $"{filePath}//{archivePath}";
 
     public string FullLocalName => archivePath;
 
-    public string Name { get; }
+    public string Name { get; } = name;
 
     public long Size
     {
@@ -29,18 +27,6 @@ public sealed class ZipFile : IFile
     public bool Exists
     {
         get => entry != null;
-    }
-
-    public ZipFile(ZipArchive archive, string archivePath, string name, string filePath)
-    {
-        entry = archive.GetEntry(archivePath);
-
-        this.archive = archive;
-        this.archivePath = archivePath;
-
-        Name = name;
-
-        FullName = $"{filePath}//{archivePath}";
     }
 
     public void Delete()

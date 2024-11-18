@@ -11,19 +11,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Rules;
 
-public sealed class RulesSynchronizer : ISynchronizer
+public sealed class RulesSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "../__json/rule";
-    private readonly ILogger log;
 
     public string Name => "Rules";
 
     public string Description => "Synchronizes all rules, but not rule events.";
-
-    public RulesSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

@@ -7,13 +7,11 @@
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Default;
 
-public sealed class DefaultFile : IFile
+public sealed class DefaultFile(FileInfo fileInfo, string fullLocalName) : IFile
 {
-    private readonly FileInfo fileInfo;
-
     public string FullName => fileInfo.FullName;
 
-    public string FullLocalName { get; }
+    public string FullLocalName { get; } = fullLocalName;
 
     public string Name => fileInfo.Name;
 
@@ -28,13 +26,6 @@ public sealed class DefaultFile : IFile
     }
 
     public bool Readonly { get; init; }
-
-    public DefaultFile(FileInfo fileInfo, string fullLocalName)
-    {
-        this.fileInfo = fileInfo;
-
-        FullLocalName = fullLocalName;
-    }
 
     public Stream OpenRead()
     {

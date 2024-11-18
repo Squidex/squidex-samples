@@ -14,19 +14,14 @@ namespace Squidex.ClientLibrary;
 /// </summary>
 /// <seealso cref="SquidexClientBase" />
 /// <seealso cref="IExtendableRulesClient" />
-public sealed class ExtendableRulesClient : SquidexClientBase, IExtendableRulesClient
+/// <remarks>
+/// Initializes a new instance of the <see cref="ExtendableRulesClient"/> class
+/// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
+/// </remarks>
+/// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
+/// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+public sealed class ExtendableRulesClient(SquidexOptions options) : SquidexClientBase(options), IExtendableRulesClient
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ExtendableRulesClient"/> class
-    /// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
-    /// </summary>
-    /// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
-    public ExtendableRulesClient(SquidexOptions options)
-        : base(options)
-    {
-    }
-
     /// <inheritdoc/>
     public Task<ExtendableRulesDto> GetRulesAsync(
          CancellationToken ct = default)

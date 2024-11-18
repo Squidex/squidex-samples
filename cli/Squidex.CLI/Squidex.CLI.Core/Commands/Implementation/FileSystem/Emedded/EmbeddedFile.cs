@@ -9,15 +9,13 @@ using System.Reflection;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
 
-public sealed class EmbeddedFile : IFile
+public sealed class EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName) : IFile
 {
-    private readonly Assembly assembly;
+    public string FullName { get; } = fullName;
 
-    public string FullName { get; }
+    public string FullLocalName { get; } = fullLocalName;
 
-    public string FullLocalName { get; }
-
-    public string Name { get; }
+    public string Name { get; } = name;
 
     public long Size
     {
@@ -29,26 +27,11 @@ public sealed class EmbeddedFile : IFile
         get => CanOpen();
     }
 
-    public EmbeddedFile(Assembly assembly, string name, string fullName, string fullLocalName)
-    {
-        this.assembly = assembly;
-
-        Name = name;
-
-        FullName = fullName;
-        FullLocalName = fullLocalName;
-    }
-
     public Stream OpenRead()
     {
         var stream = assembly.GetManifestResourceStream(FullName);
 
-        if (stream == null)
-        {
-            throw new FileNotFoundException(null, FullName);
-        }
-
-        return stream;
+        return stream ?? throw new FileNotFoundException(null, FullName);
     }
 
     public Stream OpenWrite()

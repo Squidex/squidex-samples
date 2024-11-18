@@ -13,21 +13,15 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Schemas;
 
-public sealed class SchemasSynchronizer : ISynchronizer
+public sealed class SchemasSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "../__json/schema";
-    private readonly ILogger log;
 
     public int Order => -1000;
 
     public string Name => "Schemas";
 
     public string Description => "Synchronizes all schemas, but not the content.";
-
-    public SchemasSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

@@ -10,11 +10,11 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Configuration;
 
-public sealed class Session : ISession
+public sealed class Session(DirectoryInfo workingDirectory, ISquidexClient client) : ISession
 {
-    public DirectoryInfo WorkingDirectory { get; }
+    public DirectoryInfo WorkingDirectory { get; } = workingDirectory;
 
-    public ISquidexClient Client { get; }
+    public ISquidexClient Client { get; } = client;
 
     public string App => Client.Options.AppName;
 
@@ -23,11 +23,4 @@ public sealed class Session : ISession
     public string ClientSecret => Client.Options.ClientSecret;
 
     public string Url => Client.Options.Url;
-
-    public Session(DirectoryInfo workingDirectory, ISquidexClient client)
-    {
-        WorkingDirectory = workingDirectory;
-
-        Client = client;
-    }
 }

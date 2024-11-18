@@ -11,19 +11,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Contents;
 
-public sealed class ContentsSynchronizer : ISynchronizer
+public sealed class ContentsSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "../__json/contents";
-    private readonly ILogger log;
 
     public string Name => "Contents";
 
     public string Description => "Synchronizes all content items across all schemas.";
-
-    public ContentsSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

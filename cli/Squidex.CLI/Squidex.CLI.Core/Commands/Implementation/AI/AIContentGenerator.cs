@@ -20,15 +20,8 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.AI;
 
-public sealed class AIContentGenerator
+public sealed class AIContentGenerator(IConfigurationStore configurationStore)
 {
-    private readonly IConfigurationStore configurationStore;
-
-    public AIContentGenerator(IConfigurationStore configurationStore)
-    {
-        this.configurationStore = configurationStore;
-    }
-
     public async Task<GeneratedContent> GenerateAsync(string description, string apiKey, string? schemaName = null,
         CancellationToken ct = default)
     {

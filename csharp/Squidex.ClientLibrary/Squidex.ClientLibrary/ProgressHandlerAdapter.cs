@@ -9,17 +9,9 @@ using Squidex.Assets;
 
 namespace Squidex.ClientLibrary;
 
-internal sealed class ProgressHandlerAdapter : IProgressHandler
+internal sealed class ProgressHandlerAdapter(IAssetProgressHandler inner, AssetsClient client) : IProgressHandler
 {
     private static readonly Dictionary<string, IEnumerable<string>> NullHeaders = [];
-    private readonly IAssetProgressHandler inner;
-    private readonly AssetsClient client;
-
-    public ProgressHandlerAdapter(IAssetProgressHandler inner, AssetsClient client)
-    {
-        this.inner = inner;
-        this.client = client;
-    }
 
     public Task OnProgressAsync(UploadProgressEvent @event,
         CancellationToken ct)

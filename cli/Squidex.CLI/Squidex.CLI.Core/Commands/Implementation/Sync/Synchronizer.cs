@@ -10,18 +10,8 @@ using Squidex.CLI.Commands.Implementation.Utils;
 
 namespace Squidex.CLI.Commands.Implementation.Sync;
 
-public sealed class Synchronizer
+public sealed class Synchronizer(IEnumerable<ISynchronizer> synchronizers, ILogger log)
 {
-    private readonly ILogger log;
-    private readonly IEnumerable<ISynchronizer> synchronizers;
-
-    public Synchronizer(IEnumerable<ISynchronizer> synchronizers,  ILogger log)
-    {
-        this.synchronizers = synchronizers;
-
-        this.log = log;
-    }
-
     public IEnumerable<(string Name, string Description)> GetTargets()
     {
         return GetSynchronizers().Select(x => (x.Name, x.Description));

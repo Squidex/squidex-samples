@@ -73,16 +73,8 @@ public class SquidexLoggingTests
         Assert.Contains(loggingHandler.Log, x => x.Url.Contains("identity-server/connect/token", StringComparison.Ordinal));
     }
 
-    private class ClientProvider : StaticHttpClientProvider
+    private class ClientProvider(SquidexOptions options, SampleLoggingHandler sampleLoggingHandler) : StaticHttpClientProvider(options)
     {
-        private readonly SampleLoggingHandler sampleLoggingHandler;
-
-        public ClientProvider(SquidexOptions options, SampleLoggingHandler sampleLoggingHandler)
-            : base(options)
-        {
-            this.sampleLoggingHandler = sampleLoggingHandler;
-        }
-
         protected override HttpMessageHandler CreateMessageHandler(SquidexOptions options)
         {
             sampleLoggingHandler.InnerHandler = base.CreateMessageHandler(options);

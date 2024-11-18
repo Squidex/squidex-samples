@@ -8,12 +8,7 @@
 namespace Squidex.CLI.Commands.Implementation.Sync;
 
 [AttributeUsage(AttributeTargets.All)]
-public sealed class InheritanceAttribute : Attribute
+public sealed class InheritanceAttribute(string discriminator) : Attribute
 {
-    public string Discriminator { get; }
-
-    public InheritanceAttribute(string discriminator)
-    {
-        Discriminator = discriminator;
-    }
+    public string Discriminator { get; } = discriminator;
 }

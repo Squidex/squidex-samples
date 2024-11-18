@@ -11,19 +11,10 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.TestData;
 
-public sealed class TestDataGenerator
+public sealed class TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
 {
     private readonly SlugHelper slugify = new SlugHelper();
-    private readonly SchemaDto schema;
-    private readonly AppLanguagesDto languages;
     private readonly Random random = new Random();
-
-    public TestDataGenerator(SchemaDto schema, AppLanguagesDto languages)
-    {
-        this.schema = schema;
-
-        this.languages = languages;
-    }
 
     public DynamicData GenerateTestData()
     {

@@ -10,21 +10,15 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Assets;
 
-public sealed class AssetsSynchronizer : ISynchronizer
+public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "../__json/assets";
-    private readonly ILogger log;
 
     public int Order => -1000;
 
     public string Name => "Assets";
 
     public string Description => "Synchronizes all assets and creates asset folders if they do not exist yet.";
-
-    public AssetsSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

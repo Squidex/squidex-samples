@@ -7,16 +7,11 @@
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem;
 
-public sealed class FilePath
+public sealed class FilePath(params string[] elements)
 {
     public static readonly FilePath Root = new FilePath(string.Empty);
 
-    public string[] Elements { get; }
-
-    public FilePath(params string[] elements)
-    {
-        Elements = elements;
-    }
+    public string[] Elements { get; } = elements;
 
     public static FilePath Create(string path)
     {

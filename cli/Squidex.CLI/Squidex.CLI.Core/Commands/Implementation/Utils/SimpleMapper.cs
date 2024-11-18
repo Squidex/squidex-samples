@@ -14,15 +14,10 @@ namespace Squidex.CLI.Commands.Implementation.Utils;
 
 internal static class SimpleMapper
 {
-    private sealed class StringConversionPropertyMapper : PropertyMapper
+    private sealed class StringConversionPropertyMapper(
+        PropertyAccessor sourceAccessor,
+        PropertyAccessor targetAccessor) : PropertyMapper(sourceAccessor, targetAccessor)
     {
-        public StringConversionPropertyMapper(
-            PropertyAccessor sourceAccessor,
-            PropertyAccessor targetAccessor)
-            : base(sourceAccessor, targetAccessor)
-        {
-        }
-
         public override void MapProperty(object source, object target, CultureInfo culture)
         {
             var value = GetValue(source);
@@ -31,19 +26,11 @@ internal static class SimpleMapper
         }
     }
 
-    private sealed class ConversionPropertyMapper : PropertyMapper
+    private sealed class ConversionPropertyMapper(
+        PropertyAccessor sourceAccessor,
+        PropertyAccessor targetAccessor,
+        Type targetType) : PropertyMapper(sourceAccessor, targetAccessor)
     {
-        private readonly Type targetType;
-
-        public ConversionPropertyMapper(
-            PropertyAccessor sourceAccessor,
-            PropertyAccessor targetAccessor,
-            Type targetType)
-            : base(sourceAccessor, targetAccessor)
-        {
-            this.targetType = targetType;
-        }
-
         public override void MapProperty(object source, object target, CultureInfo culture)
         {
             var value = GetValue(source);
@@ -66,19 +53,11 @@ internal static class SimpleMapper
         }
     }
 
-    private sealed class TypeConverterPropertyMapper : PropertyMapper
+    private sealed class TypeConverterPropertyMapper(
+        PropertyAccessor sourceAccessor,
+        PropertyAccessor targetAccessor,
+        TypeConverter converter) : PropertyMapper(sourceAccessor, targetAccessor)
     {
-        private readonly TypeConverter converter;
-
-        public TypeConverterPropertyMapper(
-            PropertyAccessor sourceAccessor,
-            PropertyAccessor targetAccessor,
-            TypeConverter converter)
-            : base(sourceAccessor, targetAccessor)
-        {
-            this.converter = converter;
-        }
-
         public override void MapProperty(object source, object target, CultureInfo culture)
         {
             var value = GetValue(source);
@@ -101,17 +80,8 @@ internal static class SimpleMapper
         }
     }
 
-    private class PropertyMapper
+    private class PropertyMapper(PropertyAccessor sourceAccessor, PropertyAccessor targetAccessor)
     {
-        private readonly PropertyAccessor sourceAccessor;
-        private readonly PropertyAccessor targetAccessor;
-
-        public PropertyMapper(PropertyAccessor sourceAccessor, PropertyAccessor targetAccessor)
-        {
-            this.sourceAccessor = sourceAccessor;
-            this.targetAccessor = targetAccessor;
-        }
-
         public virtual void MapProperty(object source, object target, CultureInfo culture)
         {
             var value = GetValue(source);

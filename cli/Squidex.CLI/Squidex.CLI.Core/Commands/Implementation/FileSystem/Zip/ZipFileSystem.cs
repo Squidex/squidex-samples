@@ -9,21 +9,13 @@ using System.IO.Compression;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Zip;
 
-public sealed class ZipFileSystem : IFileSystem
+public sealed class ZipFileSystem(FileInfo fileInfo) : IFileSystem
 {
-    private readonly ZipArchive zipArchive;
-    private readonly FileInfo fileInfo;
+    private readonly ZipArchive zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);
 
     public string FullName => fileInfo.FullName;
 
     public bool CanAccessInParallel => false;
-
-    public ZipFileSystem(FileInfo fileInfo)
-    {
-        zipArchive = new ZipArchive(fileInfo.Open(FileMode.OpenOrCreate), ZipArchiveMode.Update);
-
-        this.fileInfo = fileInfo;
-    }
 
     public Task OpenAsync()
     {

@@ -11,18 +11,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.ImExport;
 
-public sealed class Squidex2CsvConverter
+public sealed class Squidex2CsvConverter(string? fields)
 {
-    private readonly JsonMapping mapping;
+    private readonly JsonMapping mapping = JsonMapping.ForJson2Csv(fields);
 
     public IEnumerable<string> FieldNames
     {
         get { return mapping.Select(x => x.Name); }
-    }
-
-    public Squidex2CsvConverter(string? fields)
-    {
-        mapping = JsonMapping.ForJson2Csv(fields);
     }
 
     public IEnumerable<object?> GetValues(DynamicContent entity)

@@ -11,19 +11,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.App;
 
-public sealed class AppSynchronizer : ISynchronizer
+public sealed class AppSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "__json/app";
-    private readonly ILogger log;
 
     public string Name => "App";
 
     public string Description => "Synchronize all app settings: clients, contributors, roles, languages and asset scripts. But not: workflows.";
-
-    public AppSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

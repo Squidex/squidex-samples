@@ -11,19 +11,13 @@ using Squidex.ClientLibrary;
 
 namespace Squidex.CLI.Commands.Implementation.Sync.Workflows;
 
-public sealed class WorkflowsSynchronizer : ISynchronizer
+public sealed class WorkflowsSynchronizer(ILogger log) : ISynchronizer
 {
     private const string Ref = "../__json/workflow";
-    private readonly ILogger log;
 
     public string Name => "Workflows";
 
     public string Description => "Synchronizes all workflows from the app settings.";
-
-    public WorkflowsSynchronizer(ILogger log)
-    {
-        this.log = log;
-    }
 
     public Task CleanupAsync(IFileSystem fs)
     {

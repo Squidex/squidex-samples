@@ -9,15 +9,8 @@ using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.ClientLibrary.ServiceExtensions;
 
-internal sealed class HttpClientProvider : IHttpClientProvider
+internal sealed class HttpClientProvider(Func<HttpClient> factory) : IHttpClientProvider
 {
-    private readonly Func<HttpClient> factory;
-
-    public HttpClientProvider(Func<HttpClient> factory)
-    {
-        this.factory = factory;
-    }
-
     /// <inheritdoc />
     public HttpClient Get()
     {

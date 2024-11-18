@@ -18,19 +18,14 @@ namespace Squidex.ClientLibrary;
 /// <typeparam name="TData">The type that represents the data structure.</typeparam>
 /// <seealso cref="SquidexClientBase" />
 /// <seealso cref="IContentsClient{TEntity, TData}" />
-public sealed class ContentsSharedClient<TEntity, TData> : SquidexClientBase, IContentsSharedClient<TEntity, TData> where TEntity : Content<TData> where TData : class, new()
+/// <remarks>
+/// Initializes a new instance of the <see cref="ContentsSharedClient{TEntity, TData}"/> class
+/// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
+/// </remarks>
+/// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
+/// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+public sealed class ContentsSharedClient<TEntity, TData>(SquidexOptions options) : SquidexClientBase(options), IContentsSharedClient<TEntity, TData> where TEntity : Content<TData> where TData : class, new()
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ContentsSharedClient{TEntity, TData}"/> class
-    /// with the name of the schema, the options from the <see cref="SquidexClient"/> and the HTTP client.
-    /// </summary>
-    /// <param name="options">The options from the <see cref="SquidexClient"/>. Cannot be null.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
-    public ContentsSharedClient(SquidexOptions options)
-        : base(options)
-    {
-    }
-
     /// <inheritdoc />
     public async Task<IEnumerable<GraphQlResponse<TResponse>>> GraphQlAsync<TResponse>(IEnumerable<object> requests, QueryContext? context = null,
          CancellationToken ct = default)

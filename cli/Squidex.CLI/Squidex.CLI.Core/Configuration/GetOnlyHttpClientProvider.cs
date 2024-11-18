@@ -10,13 +10,8 @@ using Squidex.ClientLibrary.Configuration;
 
 namespace Squidex.CLI.Configuration;
 
-public sealed class GetOnlyHttpClientProvider : StaticHttpClientProvider
+public sealed class GetOnlyHttpClientProvider(SquidexOptions options) : StaticHttpClientProvider(options)
 {
-    public GetOnlyHttpClientProvider(SquidexOptions options)
-        : base(options)
-    {
-    }
-
     protected override HttpMessageHandler CreateMessageHandler(SquidexOptions options)
     {
         var baseHandler = base.CreateMessageHandler(options);

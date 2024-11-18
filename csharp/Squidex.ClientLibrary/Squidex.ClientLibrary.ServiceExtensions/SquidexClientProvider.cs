@@ -10,15 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace Squidex.ClientLibrary.ServiceExtensions;
 
-internal sealed class SquidexClientProvider : ISquidexClientProvider
+internal sealed class SquidexClientProvider(IOptionsMonitor<SquidexServiceOptions> optionsMonitor) : ISquidexClientProvider
 {
     private readonly ConcurrentDictionary<string, ISquidexClient> clients = new ConcurrentDictionary<string, ISquidexClient>();
-    private readonly IOptionsMonitor<SquidexServiceOptions> optionsMonitor;
-
-    public SquidexClientProvider(IOptionsMonitor<SquidexServiceOptions> optionsMonitor)
-    {
-        this.optionsMonitor = optionsMonitor;
-    }
 
     public ISquidexClient Get()
     {

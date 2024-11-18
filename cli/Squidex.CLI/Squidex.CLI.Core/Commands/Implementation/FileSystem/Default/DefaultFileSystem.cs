@@ -7,18 +7,11 @@
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Default;
 
-public sealed class DefaultFileSystem : IFileSystem
+public sealed class DefaultFileSystem(DirectoryInfo directory) : IFileSystem
 {
-    private readonly DirectoryInfo directory;
-
     public string FullName => directory.FullName;
 
     public bool Readonly { get; init; }
-
-    public DefaultFileSystem(DirectoryInfo directory)
-    {
-        this.directory = directory;
-    }
 
     public Task OpenAsync()
     {

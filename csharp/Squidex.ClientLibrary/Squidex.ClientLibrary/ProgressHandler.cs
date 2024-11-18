@@ -14,116 +14,87 @@ namespace Squidex.ClientLibrary;
 /// <summary>
 /// Base class for all upload events.
 /// </summary>
-public abstract class AssetUploadEvent
+/// <remarks>
+/// Initializes a new instance of the <see cref="AssetUploadEvent"/> class.
+/// </remarks>
+/// <param name="fileId">The file id that can be used to resume an upload.</param>
+public abstract class AssetUploadEvent(string fileId)
 {
     /// <summary>
     /// The file id that can be used to resume an upload.
     /// </summary>
-    public string FileId { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssetUploadEvent"/> class.
-    /// </summary>
-    /// <param name="fileId">The file id that can be used to resume an upload.</param>
-    protected AssetUploadEvent(string fileId)
-    {
-        FileId = fileId;
-    }
+    public string FileId { get; } = fileId;
 }
 
 /// <summary>
 /// Contains information about a success upload process.
 /// </summary>
-public sealed class AssetUploadProgressEvent : AssetUploadEvent
+/// <remarks>
+/// Initializes a new instance of the <see cref="AssetUploadProgressEvent"/> class.
+/// </remarks>
+/// <param name="fileId">The file id that can be used to resume an upload.</param>
+/// <param name="progress">The progress from 1 to 100.</param>
+/// <param name="bytesWritten">The number of written bytes.</param>
+/// <param name="bytesTotal">The number of total bytes (length or file or asset).</param>
+public sealed class AssetUploadProgressEvent(string fileId, int progress, long bytesWritten, long bytesTotal) : AssetUploadEvent(fileId)
 {
     /// <summary>
     /// The progress from 1 to 100.
     /// </summary>
-    public int Progress { get; }
+    public int Progress { get; } = progress;
 
     /// <summary>
     /// The number of written bytes.
     /// </summary>
-    public long BytesWritten { get; }
+    public long BytesWritten { get; } = bytesTotal;
 
     /// <summary>
     /// The number of total bytes (length or file or asset).
     /// </summary>
-    public long BytesTotal { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssetUploadProgressEvent"/> class.
-    /// </summary>
-    /// <param name="fileId">The file id that can be used to resume an upload.</param>
-    /// <param name="progress">The progress from 1 to 100.</param>
-    /// <param name="bytesWritten">The number of written bytes.</param>
-    /// <param name="bytesTotal">The number of total bytes (length or file or asset).</param>
-    public AssetUploadProgressEvent(string fileId, int progress, long bytesWritten, long bytesTotal)
-        : base(fileId)
-    {
-        Progress = progress;
-        BytesWritten = bytesTotal;
-        BytesTotal = bytesWritten;
-    }
+    public long BytesTotal { get; } = bytesWritten;
 }
 
 /// <summary>
 /// Contains information about a success creation of an upload.
 /// </summary>
-public sealed class AssetUploadCreatedEvent : AssetUploadEvent
+/// <remarks>
+/// Initializes a new instance of the <see cref="AssetUploadCreatedEvent"/> class.
+/// </remarks>
+/// <param name="fileId">The file id that can be used to resume an upload.</param>
+public sealed class AssetUploadCreatedEvent(string fileId) : AssetUploadEvent(fileId)
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssetUploadCreatedEvent"/> class.
-    /// </summary>
-    /// <param name="fileId">The file id that can be used to resume an upload.</param>
-    public AssetUploadCreatedEvent(string fileId)
-        : base(fileId)
-    {
-    }
 }
 
 /// <summary>
 /// Contains information about a success upload process.
 /// </summary>
-public sealed class AssetUploadCompletedEvent : AssetUploadEvent
+/// <remarks>
+/// Initializes a new instance of the <see cref="AssetUploadCompletedEvent"/> class with the asset.
+/// </remarks>
+/// <param name="fileId">The file id that can be used to resume an upload.</param>
+/// <param name="asset">The created or updated asset.</param>
+public sealed class AssetUploadCompletedEvent(string fileId, AssetDto asset) : AssetUploadEvent(fileId)
 {
     /// <summary>
     /// The created or updated asset.
     /// </summary>
-    public AssetDto Asset { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssetUploadCompletedEvent"/> class with the asset.
-    /// </summary>
-    /// <param name="fileId">The file id that can be used to resume an upload.</param>
-    /// <param name="asset">The created or updated asset.</param>
-    public AssetUploadCompletedEvent(string fileId, AssetDto asset)
-        : base(fileId)
-    {
-        Asset = asset;
-    }
+    public AssetDto Asset { get; } = asset;
 }
 
 /// <summary>
 /// Contains information about a failed upload process.
 /// </summary>
-public sealed class AssetUploadExceptionEvent : AssetUploadEvent
+/// <remarks>
+/// Initializes a new instance of the <see cref="AssetUploadExceptionEvent"/> class with the thrown exception.
+/// </remarks>
+/// <param name="fileId">The file id that can be used to resume an upload.</param>
+/// <param name="exception">The thrown exception.</param>
+public sealed class AssetUploadExceptionEvent(string fileId, SquidexException exception) : AssetUploadEvent(fileId)
 {
     /// <summary>
     /// The exception.
     /// </summary>
-    public SquidexException Exception { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssetUploadExceptionEvent"/> class with the thrown exception.
-    /// </summary>
-    /// <param name="fileId">The file id that can be used to resume an upload.</param>
-    /// <param name="exception">The thrown exception.</param>
-    public AssetUploadExceptionEvent(string fileId, SquidexException exception)
-        : base(fileId)
-    {
-        Exception = exception;
-    }
+    public SquidexException Exception { get; } = exception;
 }
 
 /// <summary>

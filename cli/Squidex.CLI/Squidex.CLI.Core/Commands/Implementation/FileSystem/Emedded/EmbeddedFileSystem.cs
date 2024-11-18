@@ -9,22 +9,11 @@ using System.Reflection;
 
 namespace Squidex.CLI.Commands.Implementation.FileSystem.Emedded;
 
-public sealed class EmbeddedFileSystem : IFileSystem
+public sealed class EmbeddedFileSystem(Assembly assembly, string assemblyPath) : IFileSystem
 {
-    private readonly Assembly assembly;
-    private readonly string assemblyPath;
-
-    public string FullName { get; }
+    public string FullName { get; } = $"{assembly.FullName}/{assemblyPath}";
 
     public bool CanWrite => false;
-
-    public EmbeddedFileSystem(Assembly assembly, string assemblyPath)
-    {
-        this.assembly = assembly;
-        this.assemblyPath = assemblyPath;
-
-        FullName = $"{assembly.FullName}/{assemblyPath}";
-    }
 
     public Task OpenAsync()
     {

@@ -11,13 +11,8 @@ using NJsonSchema.CodeGeneration.CSharp;
 
 namespace CodeGeneration;
 
-public sealed class CustomValueGenerator : CSharpValueGenerator
+public sealed class CustomValueGenerator(CSharpGeneratorSettings settings) : CSharpValueGenerator(settings)
 {
-    public CustomValueGenerator(CSharpGeneratorSettings settings)
-        : base(settings)
-    {
-    }
-
     public override string? GetDefaultValue(JsonSchema schema, bool allowsNull, string targetType, string? typeNameHint, bool useSchemaDefault, TypeResolverBase typeResolver)
     {
         if (!string.IsNullOrWhiteSpace(schema.ActualDiscriminator))

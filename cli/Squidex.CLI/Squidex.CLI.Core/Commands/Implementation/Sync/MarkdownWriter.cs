@@ -9,15 +9,8 @@ using System.Globalization;
 
 namespace Squidex.CLI.Commands.Implementation.Sync;
 
-public sealed class MarkdownWriter
+public sealed class MarkdownWriter(TextWriter writer)
 {
-    private readonly TextWriter writer;
-
-    public MarkdownWriter(TextWriter writer)
-    {
-        this.writer = writer;
-    }
-
     public MarkdownWriter H1(string text)
     {
         writer.Write("# ");
