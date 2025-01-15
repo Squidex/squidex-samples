@@ -92,14 +92,14 @@ public sealed class ConfigurationService(IConfigurationStore configurationStore)
     {
         if (!string.IsNullOrWhiteSpace(appName) && configuration.Apps.TryGetValue(appName, out var app))
         {
-            var options = CreateOptions(app, emulate);
+            var options = CreateOptions(app, emulate, app.Headers);
 
             return new Session(configurationStore.WorkingDirectory, new SquidexClient(options));
         }
 
         if (!string.IsNullOrWhiteSpace(configuration.CurrentApp) && configuration.Apps.TryGetValue(configuration.CurrentApp, out app))
         {
-            var options = CreateOptions(app, emulate);
+            var options = CreateOptions(app, emulate, app.Headers);
 
             return new Session(configurationStore.WorkingDirectory, new SquidexClient(options));
         }
@@ -107,7 +107,7 @@ public sealed class ConfigurationService(IConfigurationStore configurationStore)
         throw new CLIException("Cannot find valid configuration.");
     }
 
-    private static SquidexOptions CreateOptions(ConfiguredApp app, bool emulate)
+    private static SquidexOptions CreateOptions(ConfiguredApp app, bool emulate, Dictionary<string, string>? headers)
     {
         var options = new SquidexOptions
         {
@@ -120,11 +120,7 @@ public sealed class ConfigurationService(IConfigurationStore configurationStore)
 
         options.UseFallbackSerializer();
         options.IgnoreSelfSignedCertificates = app.IgnoreSelfSigned;
-
-        if (emulate)
-        {
-            options.ClientProvider = new GetOnlyHttpClientProvider(options);
-        }
+        options.ClientProvider = new CLIHttpClientProvider(options, emulate, headers);
 
         return options;
     }

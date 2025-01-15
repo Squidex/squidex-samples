@@ -17,5 +17,7 @@ public record ConfiguredApp
 
     public string Name { get; init; }
 
+    public Dictionary<string, string>? Headers { get; init; }
+
     public bool IgnoreSelfSigned { get; init; }
 }

@@ -48,7 +48,37 @@ public partial class App
         [Command("add", Description = "Add or update an app.")]
         public void Add(AddArguments arguments)
         {
-            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? arguments.Label : arguments.App;
+            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? 
+                arguments.Label :
+                arguments.App;
+
+            var headers = new Dictionary<string, string>();
+
+            if (arguments.Header != null)
+            {
+                foreach (var header in arguments.Header)
+                {
+                    var parts = header.Split('=');
+                    if (parts.Length == 1)
+                    {
+                        continue;
+                    }
+
+                    var key = parts[0].Trim();
+                    if (string.IsNullOrWhiteSpace(key))
+                    {
+                        continue;
+                    }
+
+                    var value = string.Join('=', parts.Skip(1)).Trim();
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        continue;
+                    }
+
+                    headers[key] = value;
+                }
+            }
 
             var appConfig = new ConfiguredApp
             {
@@ -56,6 +86,7 @@ public partial class App
                 ClientId = arguments.ClientId,
                 ClientSecret = arguments.ClientSecret,
                 IgnoreSelfSigned = arguments.IgnoreSelfSigned,
+                Headers = headers,
                 ServiceUrl = arguments.ServiceUrl
             };
 
@@ -160,6 +191,9 @@ public partial class App
 
             [Option("use", Description = "Use the config.")]
             public bool Use { get; set; }
+
+            [Option("header", Description = "Adds a custom header in the format (Key=Value)")]
+            public string[] Header { get; set; }
 
             public sealed class Validator : AbstractValidator<AddArguments>
             {
