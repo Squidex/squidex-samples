@@ -1,0 +1,8 @@
+# NOTE: Requires **VS2019 16.3** or later
+
+# Squidex Rules
+# Description: Squidex Rules
+
+[*.html]
+indent_style = space
+indent_size = 4
