@@ -22,7 +22,7 @@ public partial class App
     [Subcommand]
     public sealed class Apps(IConfigurationService configuration, ILogger log)
     {
-        [Command("list", Description = "List all schemas.")]
+        [Command("list", Description = "List all apps.")]
         public async Task List(ListArguments arguments)
         {
             var session = configuration.StartSession(arguments.App);
