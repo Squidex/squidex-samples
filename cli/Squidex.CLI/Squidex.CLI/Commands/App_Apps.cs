@@ -73,8 +73,6 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var name = arguments.App;
-
             if (!string.Equals(session.App, arguments.Confirm, StringComparison.Ordinal))
             {
                 throw new CLIException("Confirmed app name does not match with the session app name.");
