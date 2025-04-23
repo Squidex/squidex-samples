@@ -73,9 +73,17 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            if (!string.Equals(session.App, arguments.Confirm, StringComparison.Ordinal))
+            var name = arguments.App;
+
+            if (!string.IsNullOrWhiteSpace(name) && !string.Equals(name, session.App, StringComparison.Ordinal))
             {
-                throw new CLIException("Confirmed app name does not match with the session app name.");
+                name = session.App;
+                log.WriteLine($"Provided app name does not match with the session app name {name}. We will fallback to use this as app name: {name}.");
+            }
+
+            if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
+            {
+                throw new CLIException($"Confirmed app name does not match with the session app name: {name}.");
             }
 
             await session.Client.Apps.DeleteAppAsync();
