@@ -75,14 +75,9 @@ public partial class App
 
             var name = arguments.App;
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (!string.Equals(session.App, arguments.Confirm, StringComparison.Ordinal))
             {
-                name = session.App;
-            }
-
-            if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
-            {
-                throw new CLIException("Confirmed app name does not match.");
+                throw new CLIException("Confirmed app name does not match with the session app name.");
             }
 
             await session.Client.Apps.DeleteAppAsync();
