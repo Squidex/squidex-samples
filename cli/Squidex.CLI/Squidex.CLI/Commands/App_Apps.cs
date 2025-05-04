@@ -22,7 +22,7 @@ public partial class App
     [Subcommand]
     public sealed class Apps(IConfigurationService configuration, ILogger log)
     {
-        [Command("list", Description = "List all schemas.")]
+        [Command("list", Description = "List all apps.")]
         public async Task List(ListArguments arguments)
         {
             var session = configuration.StartSession(arguments.App);
@@ -73,16 +73,16 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            var name = arguments.App;
+            var name = session.App;
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrWhiteSpace(arguments.App) && !string.Equals(name, arguments.App, StringComparison.Ordinal))
             {
-                name = session.App;
+                log.WriteLine($"Provided app name does not match with the session app name {name}. We will fallback to use this as app name: {name}.");
             }
 
             if (!string.Equals(name, arguments.Confirm, StringComparison.Ordinal))
             {
-                throw new CLIException("Confirmed app name does not match.");
+                throw new CLIException($"Confirmed app name does not match with the session app name: {name}.");
             }
 
             await session.Client.Apps.DeleteAppAsync();

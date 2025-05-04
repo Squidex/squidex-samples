@@ -20,11 +20,11 @@ namespace Squidex.CLI.Commands;
 
 public sealed partial class App
 {
-    [Command("indexes", Description = "Manage schemas.")]
+    [Command("indexes", Description = "Manage indexes.")]
     [Subcommand]
     public sealed partial class Indexes(IConfigurationService configuration, ILogger log)
     {
-        [Command("list", Description = "List all schemas.")]
+        [Command("list", Description = "List all indexes.")]
         public async Task List(ListArguments arguments)
         {
             var session = configuration.StartSession(arguments.App);

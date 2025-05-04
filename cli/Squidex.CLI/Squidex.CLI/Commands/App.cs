@@ -22,7 +22,7 @@ public partial class App(ILogger log)
 
     public abstract class AppArguments : IArgumentModel
     {
-        [Option("app", Description = "The name of the app. If not provided then app configured in currentApp gets created.")]
+        [Option("app", Description = "The name of the app. If not provided then app configured in currentApp gets used.")]
         public string App { get; set; }
     }
 }

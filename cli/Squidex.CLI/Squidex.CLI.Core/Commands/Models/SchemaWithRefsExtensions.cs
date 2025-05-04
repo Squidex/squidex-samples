@@ -42,17 +42,18 @@ public static class SchemaWithRefsExtensions
         return target;
     }
 
-    public static SchemaWithRefs<T> AdjustReferences<T>(this SchemaWithRefs<T> target, ICollection<SchemaDto> allSchemas) where T : UpsertSchemaDto
+    public static SchemaWithRefs<T> AdjustReferences<T>(this SchemaWithRefs<T> target,
+        ICollection<SchemaDto> allSchemas) where T : UpsertSchemaDto
     {
-        void Handle(ReferencesFieldPropertiesDto properties)
+        List<string>? Handle(List<string>? schemaIds)
         {
-            if (properties.SchemaIds?.Count > 0)
+            if (schemaIds?.Count > 0)
             {
-                var newSchemaIds = properties.SchemaIds.ToList();
+                var newSchemaIds = schemaIds.ToList();
 
                 var i = 0;
 
-                foreach (var schemaId in properties.SchemaIds)
+                foreach (var schemaId in schemaIds)
                 {
                     if (target.ReferencedSchemas.TryGetValue(schemaId, out var name))
                     {
@@ -67,22 +68,40 @@ public static class SchemaWithRefsExtensions
                     i++;
                 }
 
-                properties.SchemaIds = newSchemaIds;
+                return newSchemaIds;
             }
+
+            return null;
         }
 
         foreach (var field in target.Schema.Fields.OrEmpty())
         {
-            if (field.Properties is ReferencesFieldPropertiesDto reference)
+            switch (field.Properties)
             {
-                Handle(reference);
+                case ReferencesFieldPropertiesDto reference:
+                    reference.SchemaIds = Handle(reference.SchemaIds);
+                    break;
+                case ComponentsFieldPropertiesDto componentsReference:
+                    componentsReference.SchemaIds = Handle(componentsReference.SchemaIds);
+                    break;
+                case ComponentFieldPropertiesDto componentReference:
+                    componentReference.SchemaIds = Handle(componentReference.SchemaIds);
+                    break;
             }
 
             foreach (var nested in field.Nested.OrEmpty())
             {
-                if (nested.Properties is ReferencesFieldPropertiesDto nestedReference)
+                switch (nested.Properties)
                 {
-                    Handle(nestedReference);
+                    case ReferencesFieldPropertiesDto reference:
+                        reference.SchemaIds = Handle(reference.SchemaIds);
+                        break;
+                    case ComponentsFieldPropertiesDto componentsReference:
+                        componentsReference.SchemaIds = Handle(componentsReference.SchemaIds);
+                        break;
+                    case ComponentFieldPropertiesDto componentReference:
+                        componentReference.SchemaIds = Handle(componentReference.SchemaIds);
+                        break;
                 }
             }
         }

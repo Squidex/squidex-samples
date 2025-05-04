@@ -15,6 +15,6 @@
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>13.7</Version>
+    <Version>13.8</Version>
   </PropertyGroup>
 </Project>
