@@ -68,7 +68,7 @@ public class Authenticator : IAuthenticator
         {
             if (!response.IsSuccessStatusCode)
             {
-#if NET5_0_OR_GREATER
+#if NET8_0_OR_GREATER
                 var errorString = await response.Content.ReadAsStringAsync(ct);
 #else
                 var errorString = await response.Content.ReadAsStringAsync();
@@ -79,7 +79,7 @@ public class Authenticator : IAuthenticator
                 StorePreviousAttempt(clientId, clientSecret, exception);
                 throw exception;
             }
-#if NET5_0_OR_GREATER
+#if NET8_0_OR_GREATER
             var jsonString = await response.Content.ReadAsStringAsync(ct);
 #else
             var jsonString = await response.Content.ReadAsStringAsync();

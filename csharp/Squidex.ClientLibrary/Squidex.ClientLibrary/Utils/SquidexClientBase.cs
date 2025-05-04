@@ -54,7 +54,7 @@ public abstract class SquidexClientBase
             var response = await httpClient.SendAsync(request, ct);
 
             await EnsureResponseIsValidAsync(response);
-#if NET5_0_OR_GREATER
+#if NET8_0_OR_GREATER
             return await response.Content.ReadAsStreamAsync(ct);
 #else
             return await response.Content.ReadAsStreamAsync();

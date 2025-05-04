@@ -160,7 +160,7 @@ public static class HttpClientExtensions
 
         var serializer = JsonSerializer.CreateDefault(options.SerializerSettings);
 
-#if NET5_0_OR_GREATER
+#if NET8_0_OR_GREATER
         await using (var stream = await content.ReadAsStreamAsync())
         {
             using (var reader = new StreamReader(stream))
