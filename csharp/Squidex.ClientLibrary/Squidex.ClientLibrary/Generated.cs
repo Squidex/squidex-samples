@@ -25415,26 +25415,26 @@ namespace Squidex.ClientLibrary
     }
 
     [Newtonsoft.Json.JsonConverter(typeof(JsonInheritanceConverter), "stepType")]
-    [JsonInheritanceAttribute("Algolia", typeof(AlgoliaFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Comment", typeof(CommentFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("CreateContent", typeof(CreateContentFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Delay", typeof(DelayFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Discourse", typeof(DiscourseFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Email", typeof(EmailFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Fastly", typeof(FastlyFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("If", typeof(IfFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Medium", typeof(MediumFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Notification", typeof(NotificationFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("OpenSearch", typeof(OpenSearchFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Prerender", typeof(PrerenderFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Script", typeof(ScriptFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("SignalR", typeof(SignalRFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Slack", typeof(SlackFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Tweet", typeof(TweetFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Typesense", typeof(TypesenseFlowStepFlowStepDto))]
-    [JsonInheritanceAttribute("Webhook", typeof(WebhookFlowStepFlowStepDto))]
+    [JsonInheritanceAttribute("Algolia", typeof(AlgoliaFlowStepDto))]
+    [JsonInheritanceAttribute("AzureQueue", typeof(AzureQueueFlowStepDto))]
+    [JsonInheritanceAttribute("Comment", typeof(CommentFlowStepDto))]
+    [JsonInheritanceAttribute("CreateContent", typeof(CreateContentFlowStepDto))]
+    [JsonInheritanceAttribute("Delay", typeof(DelayFlowStepDto))]
+    [JsonInheritanceAttribute("Discourse", typeof(DiscourseFlowStepDto))]
+    [JsonInheritanceAttribute("ElasticSearch", typeof(ElasticSearchFlowStepDto))]
+    [JsonInheritanceAttribute("Email", typeof(EmailFlowStepDto))]
+    [JsonInheritanceAttribute("Fastly", typeof(FastlyFlowStepDto))]
+    [JsonInheritanceAttribute("If", typeof(IfFlowStepDto))]
+    [JsonInheritanceAttribute("Medium", typeof(MediumFlowStepDto))]
+    [JsonInheritanceAttribute("Notification", typeof(NotificationFlowStepDto))]
+    [JsonInheritanceAttribute("OpenSearch", typeof(OpenSearchFlowStepDto))]
+    [JsonInheritanceAttribute("Prerender", typeof(PrerenderFlowStepDto))]
+    [JsonInheritanceAttribute("Script", typeof(ScriptFlowStepDto))]
+    [JsonInheritanceAttribute("SignalR", typeof(SignalRFlowStepDto))]
+    [JsonInheritanceAttribute("Slack", typeof(SlackFlowStepDto))]
+    [JsonInheritanceAttribute("Tweet", typeof(TweetFlowStepDto))]
+    [JsonInheritanceAttribute("Typesense", typeof(TypesenseFlowStepDto))]
+    [JsonInheritanceAttribute("Webhook", typeof(WebhookFlowStepDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public abstract partial class FlowStepDto
     {
@@ -25442,7 +25442,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AlgoliaFlowStepFlowStepDto : FlowStepDto
+    public partial class AlgoliaFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The application ID.
@@ -25480,7 +25480,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AzureQueueFlowStepFlowStepDto : FlowStepDto
+    public partial class AzureQueueFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The connection string to the storage account.
@@ -25505,7 +25505,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CommentFlowStepFlowStepDto : FlowStepDto
+    public partial class CommentFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The comment text.
@@ -25523,7 +25523,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateContentFlowStepFlowStepDto : FlowStepDto
+    public partial class CreateContentFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The content data.
@@ -25554,7 +25554,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class DelayFlowStepFlowStepDto : FlowStepDto
+    public partial class DelayFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The delay in seconds.
@@ -25565,7 +25565,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class DiscourseFlowStepFlowStepDto : FlowStepDto
+    public partial class DiscourseFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The url to the discourse server.
@@ -25616,7 +25616,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ElasticSearchFlowStepFlowStepDto : FlowStepDto
+    public partial class ElasticSearchFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The url to the instance or cluster.
@@ -25659,7 +25659,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class EmailFlowStepFlowStepDto : FlowStepDto
+    public partial class EmailFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The IP address or host to the SMTP server.
@@ -25719,7 +25719,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FastlyFlowStepFlowStepDto : FlowStepDto
+    public partial class FastlyFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The API key to grant access to Squidex.
@@ -25738,7 +25738,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IfFlowStepFlowStepDto : FlowStepDto
+    public partial class IfFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The delay in seconds.
@@ -25764,7 +25764,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class MediumFlowStepFlowStepDto : FlowStepDto
+    public partial class MediumFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The self issued access token.
@@ -25814,7 +25814,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class NotificationFlowStepFlowStepDto : FlowStepDto
+    public partial class NotificationFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The user id or email.
@@ -25845,7 +25845,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class OpenSearchFlowStepFlowStepDto : FlowStepDto
+    public partial class OpenSearchFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The url to the instance or cluster.
@@ -25888,7 +25888,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class PrerenderFlowStepFlowStepDto : FlowStepDto
+    public partial class PrerenderFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The prerender token from your account.
@@ -25907,7 +25907,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ScriptFlowStepFlowStepDto : FlowStepDto
+    public partial class ScriptFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The script to execute.
@@ -25918,7 +25918,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SignalRFlowStepFlowStepDto : FlowStepDto
+    public partial class SignalRFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The connection string to the Azure SignalR.
@@ -25980,7 +25980,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SlackFlowStepFlowStepDto : FlowStepDto
+    public partial class SlackFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The slack webhook url.
@@ -25999,7 +25999,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class TweetFlowStepFlowStepDto : FlowStepDto
+    public partial class TweetFlowStepDto : FlowStepDto
     {
         /// <summary>
         ///  The generated access token.
@@ -26025,7 +26025,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class TypesenseFlowStepFlowStepDto : FlowStepDto
+    public partial class TypesenseFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The url to the instance or cluster.
@@ -26063,7 +26063,7 @@ namespace Squidex.ClientLibrary
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class WebhookFlowStepFlowStepDto : FlowStepDto
+    public partial class WebhookFlowStepDto : FlowStepDto
     {
         /// <summary>
         /// The type of the request.
