@@ -26076,9 +26076,9 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// The URL to the webhook.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("uri", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
-        public string Uri { get; set; }
+        public System.Uri Url { get; set; }
 
         /// <summary>
         /// Leave it empty to use the full event as body.
