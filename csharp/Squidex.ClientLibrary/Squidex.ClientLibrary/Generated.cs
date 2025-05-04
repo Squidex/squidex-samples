@@ -26609,9 +26609,8 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// The flow.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("flow", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public FlowDefinitionDto Flow { get; set; } = new FlowDefinitionDto();
+        [Newtonsoft.Json.JsonProperty("flow", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public FlowDefinitionDto Flow { get; set; }
 
         /// <summary>
         /// Enable or disable the rule.
