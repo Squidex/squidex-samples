@@ -15,6 +15,31 @@ internal static class SchemaCleaner
 {
     private static readonly HashSet<string> PathParametersToRemove = ["app", "more"];
 
+    public static void AddDeprecations(OpenApiDocument document)
+    {
+        foreach (var (name, scheme) in document.Components.Schemas)
+        {
+            if (scheme.IsDeprecated)
+            {
+                continue;
+            }
+
+            if (scheme.AllOf != null && scheme.AllOf.Count > 0)
+            {
+                foreach (var allOf in scheme.AllOf)
+                {
+                    if (!string.IsNullOrWhiteSpace(allOf.DeprecatedMessage))
+                    {
+                        Console.WriteLine($"Add Deprecation to: {name}");
+                        scheme.DeprecatedMessage = allOf.DeprecatedMessage;
+                        scheme.IsDeprecated = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public static void AddExtensions(OpenApiDocument document)
     {
         document.Security = null;

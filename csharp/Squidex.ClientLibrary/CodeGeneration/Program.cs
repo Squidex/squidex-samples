@@ -27,6 +27,7 @@ public static class Program
         WriteToFile(rootFolder, document, "sdk-spec/openapi.json");
 
         SchemaCleaner.AddExtensions(document);
+        SchemaCleaner.AddDeprecations(document);
 
         WriteToFile(rootFolder, document, "sdk-java/openapi.json");
         WriteToFile(rootFolder, document, "sdk-node/openapi.json");

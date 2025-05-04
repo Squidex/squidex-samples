@@ -48,7 +48,7 @@ public partial class App
         [Command("add", Description = "Add or update an app.")]
         public void Add(AddArguments arguments)
         {
-            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ? 
+            var entry = !string.IsNullOrWhiteSpace(arguments.Label) ?
                 arguments.Label :
                 arguments.App;
 
