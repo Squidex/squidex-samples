@@ -34,6 +34,7 @@ public static class Program
         WriteToFile(rootFolder, document, "sdk-php/openapi.json");
 
         SchemaCleaner.RemoveUnusedSchemas(document);
+        SchemaCleaner.RemoveEnrichedEvent(document);
 
         var sourceCode = GenerateCode(document);
 

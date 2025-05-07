@@ -15,7 +15,7 @@
     <PackageTags>Squidex HeadlessCMS</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>21.4.0</Version>
+    <Version>21.5.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">

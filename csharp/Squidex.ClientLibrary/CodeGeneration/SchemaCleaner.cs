@@ -8,6 +8,7 @@
 using NJsonSchema;
 using NSwag;
 using Squidex.Text;
+using System.Xml.Linq;
 
 namespace CodeGeneration;
 
@@ -128,6 +129,7 @@ internal static class SchemaCleaner
 
                     if (!string.IsNullOrWhiteSpace(key))
                     {
+                        Console.WriteLine($"Remove: {key}");
                         document.Definitions.Remove(key);
                     }
                 }
@@ -199,6 +201,18 @@ internal static class SchemaCleaner
         foreach (var property in schema.Properties)
         {
             HandleSchema(property.Value, handler);
+        }
+    }
+
+    public static void RemoveEnrichedEvent(OpenApiDocument document)
+    {
+        foreach (var (name, _) in document.Components.Schemas.ToList())
+        {
+            if (name.StartsWith("Enriched", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine($"Remove: {name}");
+                document.Components.Schemas.Remove(name);
+            }
         }
     }
 }
