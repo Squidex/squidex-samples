@@ -9345,7 +9345,7 @@ namespace Squidex.ClientLibrary
         /// <param name="request">The rule trigger that needs to be validate.</param>
         /// <returns>Rule trigger validated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ValidateRuleAsync(RuleTriggerDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task ValidateTriggerAsync(RuleTriggerDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -10574,7 +10574,7 @@ namespace Squidex.ClientLibrary
         /// <param name="request">The rule trigger that needs to be validate.</param>
         /// <returns>Rule trigger validated.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task ValidateRuleAsync(RuleTriggerDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task ValidateTriggerAsync(RuleTriggerDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
