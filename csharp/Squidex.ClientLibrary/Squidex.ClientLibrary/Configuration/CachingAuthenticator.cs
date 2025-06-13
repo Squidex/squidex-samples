@@ -41,7 +41,7 @@ public class CachingAuthenticator : IAuthenticator
         {
             result = await authenticator.GetBearerTokenAsync(appName, ct);
 
-            cache.Set(appName, result, TimeSpan.FromDays(50));
+            cache.Set(appName, result, TimeSpan.FromDays(29));
         }
 
         return result;
