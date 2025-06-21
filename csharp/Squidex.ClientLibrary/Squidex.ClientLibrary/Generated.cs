@@ -23879,6 +23879,12 @@ namespace Squidex.ClientLibrary
         public bool IsHalfWidth { get; set; }
 
         /// <summary>
+        /// Indicates if the field can only be created and not modified.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("isCreateOnly", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool IsCreateOnly { get; set; }
+
+        /// <summary>
         /// Optional url to the editor.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("editorUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -25496,6 +25502,7 @@ namespace Squidex.ClientLibrary
     [JsonInheritanceAttribute("AssetChanged", typeof(AssetChangedRuleTriggerDto))]
     [JsonInheritanceAttribute("Comment", typeof(CommentRuleTriggerDto))]
     [JsonInheritanceAttribute("ContentChanged", typeof(ContentChangedRuleTriggerDto))]
+    [JsonInheritanceAttribute("CronJob", typeof(CronJobRuleTriggerDto))]
     [JsonInheritanceAttribute("Manual", typeof(ManualRuleTriggerDto))]
     [JsonInheritanceAttribute("SchemaChanged", typeof(SchemaChangedRuleTriggerDto))]
     [JsonInheritanceAttribute("Usage", typeof(UsageRuleTriggerDto))]
@@ -25559,6 +25566,31 @@ namespace Squidex.ClientLibrary
 
         [Newtonsoft.Json.JsonProperty("condition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Condition { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CronJobRuleTriggerDto : RuleTriggerDto
+    {
+        /// <summary>
+        /// The cron expression that defines the interval.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("cronExpression", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string CronExpression { get; set; }
+
+        /// <summary>
+        /// The optional timezone.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("cronTimezone", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string CronTimezone { get; set; }
+
+        /// <summary>
+        /// The value sent to the flow.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public object Value { get; set; }
 
     }
 
@@ -25975,9 +26007,8 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// The delay in seconds.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("branches", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public System.Collections.Generic.List<IfFlowBranch> Branches { get; set; } = new System.Collections.Generic.List<IfFlowBranch>();
+        [Newtonsoft.Json.JsonProperty("branches", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<IfFlowBranch> Branches { get; set; }
 
         [Newtonsoft.Json.JsonProperty("elseStepId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid? ElseStepId { get; set; }
