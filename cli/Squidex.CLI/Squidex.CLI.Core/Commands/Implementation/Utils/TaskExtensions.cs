@@ -17,7 +17,7 @@ internal static class TaskExtensions
     {
         source.LinkTo(target, new DataflowLinkOptions
         {
-            PropagateCompletion = true
+            PropagateCompletion = true,
         });
 
         try

@@ -5,6 +5,8 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Newtonsoft.Json;
+
 namespace Squidex.CLI.Commands.Implementation;
 
 public class ConsoleLogger : ILogger
@@ -104,6 +106,11 @@ public class ConsoleLogger : ILogger
     public void WriteLine(string message, params object?[] args)
     {
         Console.WriteLine(message, args);
+    }
+
+    public void WriteJson(object message)
+    {
+        Console.WriteLine(JsonConvert.SerializeObject(message, Formatting.Indented));
     }
 
     public ILogLine WriteSameLine()

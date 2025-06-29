@@ -26,69 +26,68 @@ public sealed partial class App
         [Command("analyze", Description = "Analyzes request log files.")]
         public void Analyze(AnalyzeArguments arguments)
         {
-            using (var reader = new StreamReader(arguments.File))
+            var configuration = new CsvConfiguration(CultureInfo.CurrentCulture)
             {
-                using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.CurrentCulture)
-                {
-                    Delimiter = "|"
-                }))
-                {
-                    var records = csv.GetRecords<Record>().ToList();
+                Delimiter = "|",
+            };
 
-                    var groups = records.GroupBy(x => $"{x.RequestMethod} {x.RequestPath}").Select(x => new
-                    {
-                        Path = x.Key,
-                        TotalCalls = x.Count(),
-                        TotalCosts = Math.Round(x.Sum(x => x.Costs)),
-                        AveragePerformance = x.Average(x => x.RequestElapsedMs),
-                        IsAsset = x.Key.StartsWith("GET /api/assets", StringComparison.OrdinalIgnoreCase)
-                    }).ToList();
+            using var csvStream = new StreamReader(arguments.File);
+            using var csvReader = new CsvReader(csvStream, configuration);
 
-                    log.WriteLine("Most used requests:");
+            var records = csvReader.GetRecords<Record>().ToList();
 
-                    var table = new ConsoleTable("Path", "Count");
+            var groups = records.GroupBy(x => $"{x.RequestMethod} {x.RequestPath}").Select(x => new
+            {
+                Path = x.Key,
+                TotalCalls = x.Count(),
+                TotalCosts = Math.Round(x.Sum(x => x.Costs)),
+                AveragePerformance = x.Average(x => x.RequestElapsedMs),
+                IsAsset = x.Key.StartsWith("GET /api/assets", StringComparison.OrdinalIgnoreCase),
+            }).ToList();
 
-                    foreach (var item in groups.OrderByDescending(x => x.TotalCalls).Take(20))
-                    {
-                        table.AddRow(item.Path, item.TotalCalls);
-                    }
+            log.WriteLine("Most used requests:");
 
-                    log.WriteLine(table.ToString());
-                    log.WriteLine();
-                    log.WriteLine("Most expensive requests:");
+            var table = new ConsoleTable("Path", "Count");
 
-                    table = new ConsoleTable("Path", "Costs");
-
-                    foreach (var item in groups.OrderByDescending(x => x.TotalCosts).Take(20))
-                    {
-                        table.AddRow(item.Path, item.TotalCosts);
-                    }
-
-                    log.WriteLine(table.ToString());
-                    log.WriteLine();
-                    log.WriteLine("Slowest requests (without assets)");
-
-                    table = new ConsoleTable("Path", "Average Response Time");
-
-                    foreach (var item in groups.Where(x => !x.IsAsset).OrderByDescending(x => x.AveragePerformance).Take(20))
-                    {
-                        table.AddRow(item.Path, item.AveragePerformance);
-                    }
-
-                    log.WriteLine(table.ToString());
-                    log.WriteLine();
-                    log.WriteLine("Summary");
-
-                    table = new ConsoleTable("Key", "Value");
-
-                    table.AddRow("Total calls", groups.Sum(x => x.TotalCalls));
-                    table.AddRow("Total costs", groups.Sum(x => x.TotalCosts));
-                    table.AddRow("Average performance", groups.Average(x => x.AveragePerformance));
-                    table.AddRow("Average performance (without assets)", groups.Where(x => !x.IsAsset).Average(x => x.AveragePerformance));
-
-                    table.Write();
-                }
+            foreach (var item in groups.OrderByDescending(x => x.TotalCalls).Take(20))
+            {
+                table.AddRow(item.Path, item.TotalCalls);
             }
+
+            log.WriteLine(table.ToString());
+            log.WriteLine();
+            log.WriteLine("Most expensive requests:");
+
+            table = new ConsoleTable("Path", "Costs");
+
+            foreach (var item in groups.OrderByDescending(x => x.TotalCosts).Take(20))
+            {
+                table.AddRow(item.Path, item.TotalCosts);
+            }
+
+            log.WriteLine(table.ToString());
+            log.WriteLine();
+            log.WriteLine("Slowest requests (without assets)");
+
+            table = new ConsoleTable("Path", "Average Response Time");
+
+            foreach (var item in groups.Where(x => !x.IsAsset).OrderByDescending(x => x.AveragePerformance).Take(20))
+            {
+                table.AddRow(item.Path, item.AveragePerformance);
+            }
+
+            log.WriteLine(table.ToString());
+            log.WriteLine();
+            log.WriteLine("Summary");
+
+            table = new ConsoleTable("Key", "Value");
+
+            table.AddRow("Total calls", groups.Sum(x => x.TotalCalls));
+            table.AddRow("Total costs", groups.Sum(x => x.TotalCosts));
+            table.AddRow("Average performance", groups.Average(x => x.AveragePerformance));
+            table.AddRow("Average performance (without assets)", groups.Where(x => !x.IsAsset).Average(x => x.AveragePerformance));
+
+            table.Write();
         }
 
         public sealed class AnalyzeArguments : IArgumentModel

@@ -20,7 +20,7 @@ public sealed class CLIHttpClientProvider(SquidexOptions options, bool emulate, 
         {
             var newHandler = new GetOnlyHttpMessageHandler
             {
-                InnerHandler = handler
+                InnerHandler = handler,
             };
 
             handler = newHandler;
@@ -30,7 +30,7 @@ public sealed class CLIHttpClientProvider(SquidexOptions options, bool emulate, 
         {
             var newHandler = new CustomHeadersMessageHandler(headers)
             {
-                InnerHandler = handler
+                InnerHandler = handler,
             };
 
             handler = newHandler;

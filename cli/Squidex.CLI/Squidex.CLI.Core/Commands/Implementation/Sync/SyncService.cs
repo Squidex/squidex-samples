@@ -47,7 +47,7 @@ public sealed class SyncService : ISyncService
 
         jsonSerializerSettings = new JsonSerializerSettings
         {
-            ContractResolver = new CamelCaseExceptDictionaryKeysResolver()
+            ContractResolver = new CamelCaseExceptDictionaryKeysResolver(),
         };
 
         jsonSerializerSettings.Converters.Add(new StringEnumConverter());
@@ -59,7 +59,7 @@ public sealed class SyncService : ISyncService
             FlattenInheritanceHierarchy = true,
             SchemaType = NJsonSchema.SchemaType.JsonSchema,
             SchemaNameGenerator = new DefaultSchemaNameGenerator(),
-            SerializerSettings = jsonSerializerSettings
+            SerializerSettings = jsonSerializerSettings,
         };
 
         jsonSchemaGeneratorSettings.SchemaProcessors.Add(new InheritanceProcessor());
@@ -72,7 +72,7 @@ public sealed class SyncService : ISyncService
 
                 schema.AdditionalPropertiesSchema = new JsonSchema
                 {
-                    Description = "Any."
+                    Description = "Any.",
                 };
             }));
 
@@ -156,7 +156,7 @@ public sealed class SyncService : ISyncService
                 {
                     var withSchema = new JObject
                     {
-                        ["$schema"] = schemaRef
+                        ["$schema"] = schemaRef,
                     };
 
                     foreach (var (key, v) in JObject.FromObject(value, jsonSerializer))

@@ -10,12 +10,8 @@ using ConsoleTables;
 using FluentValidation;
 using Squidex.CLI.Commands.Implementation;
 using Squidex.CLI.Commands.Implementation.AI;
-using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary;
-using Squidex.Text;
 
-#pragma warning disable CS0618 // Type or member is obsolete
 #pragma warning disable MA0048 // File name must match type name
 
 namespace Squidex.CLI.Commands;
@@ -33,36 +29,33 @@ public partial class App
 ")]
         public async Task GenerateContents(GenerateArguments arguments)
         {
-            var generator = new AIContentGenerator(configurationStore);
-            var generated = await generator.GenerateAsync(arguments.Description, arguments.ApiKey, arguments.SchemaName);
+            var request = arguments.ToRequest();
+            var queryCache = new ConfigurationQueryCache(configurationStore);
+            var generator = new AIContentGenerator(queryCache);
+            var generated = await generator.GenerateAsync(request);
 
             if (!arguments.Execute)
             {
-                log.WriteLine($"Schema Name: {generated.SchemaName}");
+                log.WriteLine($"Schema Name: {generated.Schema.Name}");
                 log.WriteLine();
                 log.WriteLine("Schema Fields:");
 
-                var schemaTable = new ConsoleTable("Name", "Type");
+                var schemaTable = new ConsoleTable("Name", "Type", "Required", "Localized");
 
-                foreach (var field in generated.SchemaFields)
+                foreach (var field in generated.Schema.Fields)
                 {
-                    schemaTable.AddRow(field.Name, field.Properties.GetType().Name.WithoutPrefix(nameof(FieldPropertiesDto)).ToLowerInvariant());
+                    schemaTable.AddRow(field.Name, field.Type, field.IsRequired, field.IsLocalized);
                 }
 
                 log.WriteLine(schemaTable.ToString());
                 log.WriteLine();
                 log.WriteLine("Contents:");
 
-                var contentsTable = new ConsoleTable(generated.SchemaFields.Select(x => x.Name).ToArray());
-
-                foreach (var content in generated.Contents.Take(30))
+                foreach (var content in generated.Contents)
                 {
-                    var values = generated.SchemaFields.Select(x => x.Name).Select(x => content.GetValueOrDefault(x));
-
-                    contentsTable.AddRow(values.ToArray());
+                    log.WriteJson(content);
+                    log.WriteLine();
                 }
-
-                log.WriteLine(contentsTable.ToString());
 
                 if (generated.Contents.Count > 30)
                 {
@@ -72,62 +65,9 @@ public partial class App
             }
             else
             {
-                var session = configuration.StartSession(arguments.App);
+                var executor = new AIContentExecutor(configuration.StartSession(arguments.App), log);
 
-                if (arguments.DeleteSchema)
-                {
-                    try
-                    {
-                        await session.Client.Schemas.DeleteSchemaAsync(generated.SchemaName);
-                    }
-                    catch (SquidexException ex)
-                    {
-                        if (ex.StatusCode != 400)
-                        {
-                            throw;
-                        }
-                    }
-                }
-
-                var schemaProcess = "Creating Schema";
-
-                if (!arguments.NoSchema)
-                {
-                    await session.Client.Schemas.PostSchemaAsync(new CreateSchemaDto
-                    {
-                        Name = generated.SchemaName.Slugify(),
-                        IsPublished = true,
-                        IsSingleton = false,
-                        Fields = generated.SchemaFields
-                    });
-
-                    log.ProcessCompleted(schemaProcess);
-                }
-                else
-                {
-                    log.ProcessSkipped(schemaProcess, "Disabled");
-                }
-
-                var contentsProcess = $"Creating {generated.Contents} content items";
-
-                if (!arguments.NoContents)
-                {
-                    await session.Client.DynamicContents(generated.SchemaName).BulkUpdateAsync(new BulkUpdate
-                    {
-                        Jobs = generated.Contents.Select(x => new BulkUpdateJob
-                        {
-                            Data = x.ToDictionary(x => x.Key, x => new { iv = x.Value })
-                        }).ToList()
-                    });
-
-                    log.ProcessCompleted(contentsProcess);
-                }
-                else
-                {
-                    log.ProcessSkipped(contentsProcess, "Disabled");
-                }
-
-                log.Completed("Generation completed.");
+                await executor.ExecuteAsync(request, generated, default);
             }
         }
 
@@ -140,7 +80,7 @@ public partial class App
             public string SchemaName { get; set; }
 
             [Option('k', "key", Description = "The api key.")]
-            public string ApiKey { get; set; }
+            public string OpenAIApiKey { get; set; }
 
             [Option("no-schema", Description = "Do not create the schema.")]
             public bool NoSchema { get; set; }
@@ -148,8 +88,26 @@ public partial class App
             [Option("no-contents", Description = "Do not create the schema.")]
             public bool NoContents { get; set; }
 
+            [Option("images", Description = "Indicates if images should be generated.")]
+            public bool GenerateImages { get; set; }
+
             [Option("delete-schema", Description = "Delete the previous schema, if it exists.")]
             public bool DeleteSchema { get; set; }
+
+            [Option("model", Description = "The OpenAI chat model")]
+            public string OpenAIChatModel { get; set; } = "gpt-4-turbo";
+
+            [Option("image-model", Description = "The OpenAI image model")]
+            public string OpenAIImageModel { get; set; } = "dall-e-2";
+
+            [Option("num-contents", Description = "The number of content items to create.")]
+            public int NumberOfContentItems { get; set; } = 3;
+
+            [Option("num-attempts", Description = "The number of attempts. If an error happens the CLI will try to fix it with the AI.")]
+            public int NumberOfAttempts { get; set; } = 3;
+
+            [Option("language", Description = "The supported languages.")]
+            public List<string> Languages { get; set; } = ["en"];
 
             [Option("execute", Description = "Execture the result and do not describe it.")]
             public bool Execute { get; set; }
@@ -159,8 +117,26 @@ public partial class App
                 public Validator()
                 {
                     RuleFor(x => x.Description).NotEmpty();
-                    RuleFor(x => x.ApiKey).NotEmpty();
+                    RuleFor(x => x.OpenAIApiKey).NotEmpty();
                 }
+            }
+
+            public GenerateRequest ToRequest()
+            {
+                return new GenerateRequest
+                {
+                    Description = Description,
+                    GenerateImages = GenerateImages,
+                    NoContents = NoContents,
+                    NoSchema = NoSchema,
+                    NumberOfAttempts = NumberOfAttempts,
+                    NumberOfContentItems = NumberOfContentItems,
+                    Languages = [.. Languages],
+                    OpenAIApiKey = OpenAIApiKey,
+                    OpenAIChatModel = OpenAIChatModel,
+                    OpenAIImageModel = OpenAIImageModel,
+                    SchemaName = SchemaName,
+                };
             }
         }
     }

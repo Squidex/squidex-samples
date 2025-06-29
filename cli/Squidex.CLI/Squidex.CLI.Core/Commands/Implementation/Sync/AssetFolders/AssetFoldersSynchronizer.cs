@@ -34,7 +34,7 @@ public sealed class AssetFoldersSynchronizer(ILogger log) : ISynchronizer
     {
         var model = new AssetFoldersModel
         {
-            Paths = new List<string>()
+            Paths = new List<string>(),
         };
 
         async Task QueryAsync(string id)
@@ -109,8 +109,8 @@ public sealed class AssetFoldersSynchronizer(ILogger log) : ISynchronizer
             {
                 "images",
                 "documents",
-                "videos"
-            }
+                "videos",
+            },
         };
 
         await sync.WriteWithSchema(new FilePath("assetFolders", "__assetFolder.json"), sample, Ref);

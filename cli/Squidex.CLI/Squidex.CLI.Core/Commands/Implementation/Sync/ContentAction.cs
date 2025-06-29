@@ -13,5 +13,5 @@ public enum ContentAction
     UpsertPatch,
     Create,
     Update,
-    Patch
+    Patch,
 }

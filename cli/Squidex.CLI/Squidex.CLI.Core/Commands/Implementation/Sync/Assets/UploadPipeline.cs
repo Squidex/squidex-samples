@@ -48,7 +48,7 @@ internal sealed class UploadPipeline
         {
             MaxDegreeOfParallelism = 1,
             MaxMessagesPerTask = 1,
-            BoundedCapacity = 1
+            BoundedCapacity = 1,
         });
 
         var maxDegreeOfParallelism = fs.CanAccessInParallel ? Environment.ProcessorCount * 2 : 1;
@@ -88,7 +88,7 @@ internal sealed class UploadPipeline
         {
             MaxDegreeOfParallelism = maxDegreeOfParallelism,
             MaxMessagesPerTask = 1,
-            BoundedCapacity = maxDegreeOfParallelism * 2
+            BoundedCapacity = maxDegreeOfParallelism * 2,
         });
 
         fileNameStep.BidirectionalLinkTo(uploadStep);

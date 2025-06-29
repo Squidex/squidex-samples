@@ -33,7 +33,7 @@ public static class ExportHelper
                     OrderBy = settings.OrderBy,
                     Search = settings.FullText,
                     Skip = currentPage * 100,
-                    Top = 100
+                    Top = 100,
                 };
 
                 var content = await contents.GetAsync(query, ctx);

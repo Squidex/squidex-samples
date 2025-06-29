@@ -6,143 +6,177 @@
 // ==========================================================================
 
 using System.Text;
+using Betalgo.Ranul.OpenAI;
+using Betalgo.Ranul.OpenAI.Managers;
+using Betalgo.Ranul.OpenAI.ObjectModels.RequestModels;
+using Betalgo.Ranul.OpenAI.ObjectModels.ResponseModels;
 using Markdig;
 using Markdig.Syntax;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OpenAI;
-using OpenAI.Managers;
-using OpenAI.ObjectModels.RequestModels;
-using OpenAI.ObjectModels.ResponseModels;
-using Squidex.CLI.Commands.Implementation.Utils;
-using Squidex.CLI.Configuration;
-using Squidex.ClientLibrary;
+using Squidex.CLI.Properties;
 
 namespace Squidex.CLI.Commands.Implementation.AI;
 
-public sealed class AIContentGenerator(IConfigurationStore configurationStore)
+public sealed class AIContentGenerator(IQueryCache queryCache)
 {
-    public async Task<GeneratedContent> GenerateAsync(string description, string apiKey, string? schemaName = null,
+    public async Task<GeneratedContent> GenerateAsync(GenerateRequest request,
         CancellationToken ct = default)
     {
-        var cachedResponse = await MakeRequestAsync(description, apiKey, ct);
+        var cached = await queryCache.GetAsync(request.Description, ct);
+        if (cached != null)
+        {
+            return cached;
+        }
 
-        return ParseResult(schemaName, cachedResponse);
+        var result = await GenerateCoreAsync(request, ct);
+
+        await queryCache.StoreAsync(request.Description, result, ct);
+        return result;
     }
 
-    private async Task<ChatCompletionCreateResponse> MakeRequestAsync(string description, string apiKey,
-        CancellationToken ct)
+    private static async Task<GeneratedContent> GenerateCoreAsync(GenerateRequest request,
+        CancellationToken ct = default)
     {
-        var client = new OpenAIService(new OpenAiOptions
+        var client = new OpenAIService(new OpenAIOptions
         {
-            ApiKey = apiKey,
+            ApiKey = request.OpenAIApiKey,
         });
 
-        var cacheKey = $"openapi/query-cache/{description.ToSha256Base64()}";
-        var (cachedResponse, _) = configurationStore.Get<ChatCompletionCreateResponse>(cacheKey);
-
-        if (cachedResponse == null)
+        var systemPrompt = request.SystemPrompt;
+        if (string.IsNullOrWhiteSpace(systemPrompt))
         {
-            cachedResponse = await client.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
+            systemPrompt = Encoding.Default.GetString(Resources.AIPrompt);
+        }
+
+        var chatRequest = new ChatCompletionCreateRequest
+        {
+            Messages =
+            [
+                ChatMessage.FromSystem(systemPrompt),
+                ChatMessage.FromSystem($"Language Codes: {string.Join(',', request.Languages)}"),
+                ChatMessage.FromUser($"Create a schema for: {request.Description}"),
+            ],
+            Model = request.OpenAIChatModel,
+        };
+
+        if (request.NumberOfContentItems > 0)
+        {
+            chatRequest.Messages.Add(ChatMessage.FromUser($"Create furthermore {request.NumberOfContentItems} sample content items."));
+        }
+
+        for (var attempt = 1; attempt <= request.NumberOfAttempts; attempt++)
+        {
+            var chatResponse = await client.ChatCompletion.CreateCompletion(chatRequest, cancellationToken: ct);
+
+            var (parsed, error) = ParseResult(request, chatResponse);
+            if (parsed != null)
             {
-                Messages = new List<ChatMessage>
+                return parsed;
+            }
+
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                if (attempt == request.NumberOfAttempts)
                 {
-                    ChatMessage.FromSystem("Create a list as json array. The list is described as followed:"),
-                    ChatMessage.FromUser(description),
-                    ChatMessage.FromSystem("Also create a JSON object with the field names of this list as keys and the json type as value (string)."),
-                    ChatMessage.FromSystem("Also create a JSON array that only contains the name of the list above as valid slug."),
-                },
-                Model = OpenAI.ObjectModels.Models.Gpt_3_5_Turbo
-            }, cancellationToken: ct);
+                    ThrowParsingException(error);
+                    return null!;
+                }
 
-            configurationStore.Set(cacheKey, cachedResponse);
-        }
-
-        return cachedResponse;
-    }
-
-    private static GeneratedContent ParseResult(string? schemaName, ChatCompletionCreateResponse cachedResponse)
-    {
-        var parsed = Markdown.Parse(cachedResponse.Choices[0].Message.Content ?? string.Empty);
-
-        var codeBlocks = parsed.OfType<FencedCodeBlock>().ToList();
-        if (codeBlocks.Count != 3)
-        {
-            ThrowParsingException("3 code blocks expected");
-            return default!;
-        }
-
-        var schemaObject = ParseJson<JObject>(codeBlocks[1], "Schema");
-        var schemaFields = new List<UpsertSchemaFieldDto>();
-
-        foreach (var (key, value) in schemaObject)
-        {
-            var fieldType = value?.ToString();
-
-            switch (fieldType?.ToLowerInvariant())
+                chatRequest.Messages.Add(ChatMessage.FromUser(error));
+            }
+            else if (parsed == null)
             {
-                case "string":
-                case "text":
-                    schemaFields.Add(new UpsertSchemaFieldDto
-                    {
-                        Name = key!,
-                        Properties = new StringFieldPropertiesDto()
-                    });
-                    break;
-                case "double":
-                case "float":
-                case "int":
-                case "integer":
-                case "long":
-                case "number":
-                case "real":
-                    schemaFields.Add(new UpsertSchemaFieldDto
-                    {
-                        Name = key!,
-                        Properties = new NumberFieldPropertiesDto()
-                    });
-                    break;
-                case "bit":
-                case "bool":
-                case "boolean":
-                    schemaFields.Add(new UpsertSchemaFieldDto
-                    {
-                        Name = key!,
-                        Properties = new BooleanFieldPropertiesDto()
-                    });
-                    break;
-                default:
-                    ThrowParsingException($"Unexpected field type '{fieldType}' for field '{key}'");
-                    return default!;
+                break;
             }
         }
 
-        var nameArray = ParseJson<JArray>(codeBlocks[2], "SchemaName");
-        if (nameArray.Count != 1)
+        ThrowParsingException("Unknown");
+        return null!;
+    }
+
+    private static (GeneratedContent?, string? Error) ParseResult(GenerateRequest request, ChatCompletionCreateResponse response)
+    {
+        var error = response.Error;
+        if (error != null)
         {
-            ThrowParsingException("'SchemaName' json has an unexpected structure.");
-            return default!;
+            throw new InvalidOperationException($"Failed to get response. {error.FormatError(response.HttpStatusCode)}");
         }
 
-        if (string.IsNullOrWhiteSpace(schemaName))
+        var content = response.Choices.FirstOrDefault()?.Message.Content;
+        if (string.IsNullOrWhiteSpace(content))
         {
-            schemaName = nameArray[0].ToString();
+            throw new InvalidOperationException($"Failed to get image. No result provided.");
         }
 
-        var contentsBlock = ParseJson<JArray>(codeBlocks[0], "Contents");
-        var contentsList = new List<Dictionary<string, object>>();
+        var parsed = Markdown.Parse(content);
 
-        foreach (var obj in contentsBlock.OfType<JObject>())
+        var codeBlocks = parsed.OfType<FencedCodeBlock>().ToList();
+        if (codeBlocks.Count < 1 || codeBlocks.Count > 2)
         {
-            contentsList.Add(obj.OfType<JProperty>().ToDictionary(x => x.Name, x => (object)x.Value));
+            return (null, "One or two code blocks expected");
         }
 
-        return new GeneratedContent
+        var schema = ParseJson<SimplifiedSchema>(codeBlocks[0]);
+        if (schema == null)
         {
-            SchemaFields = schemaFields,
-            SchemaName = schemaName,
-            Contents = contentsList
-        };
+            return (null, "Schema does not match to the provided sample");
+        }
+
+        var validator = new Validator(schema, request.Languages);
+
+        var schemaErrors = validator.ValidateSchema();
+        if (schemaErrors.Count > 0)
+        {
+            return (null, FormatError(schemaErrors, "Schema is not valid. Correct the following errors:"));
+        }
+
+        var result = new GeneratedContent { Schema = schema };
+        if (request.NumberOfContentItems > 0 && codeBlocks.Count < 2)
+        {
+            return (null, $"Total number of request content items {request.NumberOfContentItems}, but no code block found.");
+        }
+
+        if (codeBlocks.Count >= 2)
+        {
+            var contents = ParseJson<List<Dictionary<string, JToken>>>(codeBlocks[1]);
+            if (contents == null)
+            {
+                return (null, "Contents do not match to the provided sample");
+            }
+
+            if (request.NumberOfContentItems != contents.Count)
+            {
+                return (null, $"Total number of request content items {request.NumberOfContentItems}, got {contents.Count}");
+            }
+
+            var contentErrors = validator.ValidateContents(contents);
+            if (contentErrors.Count > 0)
+            {
+                return (null, FormatError(contentErrors, "Contents are not valid. Correct the following errors:"));
+            }
+
+            result.Contents.AddRange(contents);
+        }
+
+        if (request.SchemaName != null)
+        {
+            result.Schema.Name = request.SchemaName;
+        }
+
+        return (result, null);
+    }
+
+    private static string FormatError(IReadOnlyList<string> errors, string startText)
+    {
+        var sb = new StringBuilder().AppendLine(startText);
+
+        foreach (var error in errors)
+        {
+            sb.AppendLine($" * {error}");
+        }
+
+        return sb.ToString();
     }
 
     private static void ThrowParsingException(string reason)
@@ -150,28 +184,18 @@ public sealed class AIContentGenerator(IConfigurationStore configurationStore)
         throw new InvalidOperationException($"OpenAPI does not return a parsable result: {reason}.");
     }
 
-    private static T ParseJson<T>(LeafBlock block, string name) where T : JToken
+    private static T? ParseJson<T>(LeafBlock block) where T : class
     {
-        JToken jsonNode;
         try
         {
             var jsonText = GetText(block);
 
-            jsonNode = JToken.Parse(jsonText);
+            return JsonConvert.DeserializeObject<T>(jsonText);
         }
         catch (JsonException)
         {
-            ThrowParsingException($"'{name}' code is not valid json.");
-            return default!;
+            return null;
         }
-
-        if (jsonNode is not T typed)
-        {
-            ThrowParsingException($"'{name}' json has an unexpected structure.");
-            return default!;
-        }
-
-        return typed;
 
         static string GetText(LeafBlock block)
         {

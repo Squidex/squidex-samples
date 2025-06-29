@@ -31,8 +31,9 @@ public sealed partial class App
 
             log.WriteLine("Backup started, waiting for completion...");
 
+#pragma warning disable CS0618 // Type or member is obsolete
             BackupJobDto? foundBackup = null;
-
+#pragma warning restore CS0618 // Type or member is obsolete
             using (var tcs = new CancellationTokenSource(TimeSpan.FromMinutes(arguments.Timeout)))
             {
                 var backupStarted = DateTimeOffset.UtcNow.AddMinutes(-5);
@@ -65,10 +66,8 @@ public sealed partial class App
 
                 await using (var fs = new FileStream(arguments.File, mode))
                 {
-                    using (var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id))
-                    {
-                        await download.Stream.CopyToAsync(fs);
-                    }
+                    using var download = await session.Client.Backups.GetBackupContentAsync(foundBackup.Id);
+                    await download.Stream.CopyToAsync(fs);
                 }
 
                 if (arguments.DeleteAfterDownload)

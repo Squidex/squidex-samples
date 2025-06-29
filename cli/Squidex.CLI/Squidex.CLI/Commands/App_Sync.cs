@@ -169,7 +169,7 @@ public sealed partial class App
             {
                 return SimpleMapper.Map(this, new SyncOptions
                 {
-                    MaxAgeDate = GetMaxAgeDate()
+                    MaxAgeDate = GetMaxAgeDate(),
                 });
             }
 

@@ -28,7 +28,7 @@ public class TestDataGeneratorTests
                 {
                     Editor = DateTimeFieldEditor.DateTime,
                     MinValue = minValue,
-                    MaxValue = maxValue
+                    MaxValue = maxValue,
                 });
 
         var dates = values.Cast<DateTime>();
@@ -54,7 +54,7 @@ public class TestDataGeneratorTests
                 {
                     Editor = DateTimeFieldEditor.DateTime,
                     MinValue = null,
-                    MaxValue = maxValue
+                    MaxValue = maxValue,
                 });
 
         var dates = values.Cast<DateTime>();
@@ -80,7 +80,7 @@ public class TestDataGeneratorTests
                 {
                     Editor = DateTimeFieldEditor.DateTime,
                     MinValue = minValue,
-                    MaxValue = null
+                    MaxValue = null,
                 });
 
         var dates = values.Cast<DateTime>();
@@ -104,7 +104,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new DateTimeFieldPropertiesDto
                 {
-                    Editor = DateTimeFieldEditor.DateTime
+                    Editor = DateTimeFieldEditor.DateTime,
                 });
 
         var dates = values.Cast<DateTime>();
@@ -146,7 +146,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new BooleanFieldPropertiesDto
                 {
-                    IsRequired = true
+                    IsRequired = true,
                 });
 
         Assert.Equal(2, values.Count);
@@ -174,7 +174,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new NumberFieldPropertiesDto
                 {
-                    AllowedValues = [13, 27, 42]
+                    AllowedValues = [13, 27, 42],
                 });
 
         Assert.Equal(3, values.Count);
@@ -191,7 +191,7 @@ public class TestDataGeneratorTests
                 new NumberFieldPropertiesDto
                 {
                     MinValue = 400,
-                    MaxValue = 550
+                    MaxValue = 550,
                 });
 
         var numbers = values.Cast<double>();
@@ -210,7 +210,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new NumberFieldPropertiesDto
                 {
-                    MaxValue = 550
+                    MaxValue = 550,
                 });
 
         var numbers = values.Cast<double>();
@@ -229,7 +229,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new NumberFieldPropertiesDto
                 {
-                    MinValue = 120
+                    MinValue = 120,
                 });
 
         var numbers = values.Cast<double>();
@@ -264,7 +264,7 @@ public class TestDataGeneratorTests
             CreateManyStringTags(
                 new TagsFieldPropertiesDto
                 {
-                    AllowedValues = ["foo", "bar"]
+                    AllowedValues = ["foo", "bar"],
                 });
 
         var distinct = values.SelectMany(x => x).Distinct().ToList();
@@ -282,7 +282,7 @@ public class TestDataGeneratorTests
                 new TagsFieldPropertiesDto
                 {
                     MinItems = 10,
-                    MaxItems = 30
+                    MaxItems = 30,
                 });
 
         var min = values.Min(x => x.Count);
@@ -299,7 +299,7 @@ public class TestDataGeneratorTests
             CreateManyStringTags(
                 new TagsFieldPropertiesDto
                 {
-                    MaxItems = 22
+                    MaxItems = 22,
                 });
 
         var min = values.Min(x => x.Count);
@@ -316,7 +316,7 @@ public class TestDataGeneratorTests
             CreateManyStringTags(
                 new TagsFieldPropertiesDto
                 {
-                    MinItems = 44
+                    MinItems = 44,
                 });
 
         var min = values.Min(x => x.Count);
@@ -347,7 +347,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    AllowedValues = ["foo", "bar"]
+                    AllowedValues = ["foo", "bar"],
                 });
 
         Assert.Equal(2, values.Count);
@@ -362,7 +362,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    Editor = StringFieldEditor.Color
+                    Editor = StringFieldEditor.Color,
                 });
 
         var strings = values.Cast<string>();
@@ -377,7 +377,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    MaxLength = 20
+                    MaxLength = 20,
                 });
 
         var strings = values.Cast<string>();
@@ -392,7 +392,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    MaxLength = 2
+                    MaxLength = 2,
                 });
 
         var strings = values.Cast<string>();
@@ -407,7 +407,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    Editor = StringFieldEditor.Input
+                    Editor = StringFieldEditor.Input,
                 });
 
         var strings = values.Cast<string>();
@@ -422,7 +422,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    Editor = StringFieldEditor.Markdown
+                    Editor = StringFieldEditor.Markdown,
                 });
 
         var strings = values.Cast<string>();
@@ -437,7 +437,7 @@ public class TestDataGeneratorTests
             CreateManyScalars(
                 new StringFieldPropertiesDto
                 {
-                    Editor = StringFieldEditor.Markdown
+                    Editor = StringFieldEditor.Markdown,
                 });
 
         var strings = values.Cast<string>();
@@ -454,7 +454,7 @@ public class TestDataGeneratorTests
                 {
                     MaxLength = 20,
                     MinLength = 20,
-                    Editor = StringFieldEditor.Slug
+                    Editor = StringFieldEditor.Slug,
                 });
 
         var strings = values.Cast<string>().Distinct();
@@ -532,9 +532,9 @@ public class TestDataGeneratorTests
                 {
                     Name = "field",
                     Properties = field,
-                    Partitioning = "invariant"
+                    Partitioning = "invariant",
                 },
-            ]
+            ],
         };
 
         var sut = new TestDataGenerator(schema, null!);

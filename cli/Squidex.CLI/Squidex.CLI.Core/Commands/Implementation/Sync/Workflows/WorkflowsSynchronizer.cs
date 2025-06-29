@@ -123,7 +123,7 @@ public sealed class WorkflowsSynchronizer(ILogger log) : ISynchronizer
 
                 var request = new AddWorkflowDto
                 {
-                    Name = workflow.Name
+                    Name = workflow.Name,
                 };
 
                 var created = await session.Client.Apps.PostWorkflowAsync(request);
@@ -220,20 +220,20 @@ public sealed class WorkflowsSynchronizer(ILogger log) : ISynchronizer
                     Color = "#ff0000",
                     Transitions = new Dictionary<string, WorkflowTransitionDto>
                     {
-                        ["Published"] = new WorkflowTransitionDto()
-                    }
+                        ["Published"] = new WorkflowTransitionDto(),
+                    },
                 },
                 ["Published"] = new WorkflowStepDto
                 {
                     Color = "#00ff00",
                     Transitions = new Dictionary<string, WorkflowTransitionDto>
                     {
-                        ["Draft"] = new WorkflowTransitionDto()
+                        ["Draft"] = new WorkflowTransitionDto(),
                     },
-                    NoUpdate = true
-                }
+                    NoUpdate = true,
+                },
             },
-            Initial = "Draft"
+            Initial = "Draft",
         };
 
         await sync.WriteWithSchema(new FilePath("workflows", "__workflow.json"), sample, Ref);

@@ -28,8 +28,8 @@ public class MapJsonToSquidexTests
                 boolean = true,
                 number = 1234,
                 array = new[] { "Squidex", "CLI" },
-                obj = new { Squidex = "CLI" }
-            }
+                obj = new { Squidex = "CLI" },
+            },
         };
 
         var json = JsonConvert.SerializeObject(data);
@@ -60,8 +60,8 @@ public class MapJsonToSquidexTests
         {
             ["text"] = new JObject
             {
-                ["iv"] = "Hello World"
-            }
+                ["iv"] = "Hello World",
+            },
         };
 
         EqualJson(expected, actual);
@@ -78,8 +78,8 @@ public class MapJsonToSquidexTests
         {
             ["boolean"] = new JObject
             {
-                ["iv"] = true
-            }
+                ["iv"] = true,
+            },
         };
 
         EqualJson(expected, actual);
@@ -96,8 +96,8 @@ public class MapJsonToSquidexTests
         {
             ["number"] = new JObject
             {
-                ["iv"] = 1234
-            }
+                ["iv"] = 1234,
+            },
         };
 
         EqualJson(expected, actual);
@@ -114,8 +114,8 @@ public class MapJsonToSquidexTests
         {
             ["text"] = new JObject
             {
-                ["de"] = "Hello World"
-            }
+                ["de"] = "Hello World",
+            },
         };
 
         EqualJson(expected, actual);
@@ -132,8 +132,8 @@ public class MapJsonToSquidexTests
         {
             ["array"] = new JObject
             {
-                ["iv"] = new JArray("Squidex", "CLI")
-            }
+                ["iv"] = new JArray("Squidex", "CLI"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -150,8 +150,8 @@ public class MapJsonToSquidexTests
         {
             ["obj"] = new JObject
             {
-                ["iv"] = new JObject(new JProperty("Squidex", "CLI"))
-            }
+                ["iv"] = new JObject(new JProperty("Squidex", "CLI")),
+            },
         };
 
         EqualJson(expected, actual);
@@ -168,8 +168,8 @@ public class MapJsonToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(JValue.CreateNull(), "Hello World")
-            }
+                ["iv"] = new JArray(JValue.CreateNull(), "Hello World"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -186,8 +186,8 @@ public class MapJsonToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(1234, "Hello World")
-            }
+                ["iv"] = new JArray(1234, "Hello World"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -204,8 +204,8 @@ public class MapJsonToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(JValue.CreateNull(), new JArray("Hello World"))
-            }
+                ["iv"] = new JArray(JValue.CreateNull(), new JArray("Hello World")),
+            },
         };
 
         EqualJson(expected, actual);
@@ -224,9 +224,9 @@ public class MapJsonToSquidexTests
             {
                 ["iv"] = new JObject
                 {
-                    ["a"] = "Hello World"
-                }
-            }
+                    ["a"] = "Hello World",
+                },
+            },
         };
 
         EqualJson(expected, actual);
@@ -246,9 +246,9 @@ public class MapJsonToSquidexTests
                 ["iv"] = new JObject
                 {
                     ["a"] = "Hello World",
-                    ["b"] = 1234
-                }
-            }
+                    ["b"] = 1234,
+                },
+            },
         };
 
         EqualJson(expected, actual);
@@ -269,10 +269,10 @@ public class MapJsonToSquidexTests
                 {
                     ["a0"] = new JObject
                     {
-                        ["a1"] = "Hello World"
-                    }
-                }
-            }
+                        ["a1"] = "Hello World",
+                    },
+                },
+            },
         };
 
         EqualJson(expected, actual);
@@ -289,21 +289,21 @@ public class MapJsonToSquidexTests
         {
             ["text"] = new JObject
             {
-                ["iv"] = "Hello World"
+                ["iv"] = "Hello World",
             },
             ["boolean"] = new JObject
             {
-                ["iv"] = true
+                ["iv"] = true,
             },
             ["number"] = new JObject
             {
-                ["iv"] = 1234
+                ["iv"] = 1234,
             },
             ["array"] = new JObject
             {
-                ["iv"] = new JArray("Squidex", "CLI")
+                ["iv"] = new JArray("Squidex", "CLI"),
             },
-            ["obj"] = new JObject(new JProperty("Squidex", "CLI"))
+            ["obj"] = new JObject(new JProperty("Squidex", "CLI")),
         };
 
         EqualJson(expected, actual);

@@ -62,7 +62,7 @@ public sealed class ContentsSynchronizer(ILogger log) : ISynchronizer
                 {
                     Contents = contents,
                     SourceApp = session.App,
-                    SourceUrl = session.Url
+                    SourceUrl = session.Url,
                 };
 
                 return log.DoSafeAsync($"Exporting {schema.Name} ({contentBatch})", async () =>
@@ -157,7 +157,7 @@ public sealed class ContentsSynchronizer(ILogger log) : ISynchronizer
                     DoNotScript = true,
                     DoNotValidate = false,
                     DoNotValidateWorkflow = true,
-                    Jobs = model.Contents.Select(x => x.ToUpsert(schemas, schemaMap, options.ContentAction)).ToList()
+                    Jobs = model.Contents.Select(x => x.ToUpsert(schemas, schemaMap, options.ContentAction)).ToList(),
                 };
 
                 var contentIdAssigned = false;
@@ -232,16 +232,16 @@ public sealed class ContentsSynchronizer(ILogger log) : ISynchronizer
                     {
                         ["id"] = new JObject
                         {
-                            ["iv"] = 1
+                            ["iv"] = 1,
                         },
                         ["text"] = new JObject
                         {
-                            ["iv"] = "Hello Squidex"
-                        }
+                            ["iv"] = "Hello Squidex",
+                        },
                     },
-                    Status = "Published"
-                }
-            }
+                    Status = "Published",
+                },
+            },
         };
 
         await sync.WriteWithSchema(new FilePath("contents", "__contents.json"), sample, Ref);

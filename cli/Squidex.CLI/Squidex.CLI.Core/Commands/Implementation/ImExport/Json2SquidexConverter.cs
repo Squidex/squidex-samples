@@ -82,7 +82,7 @@ public sealed class Json2SquidexConverter
                 {
                     data[key] = new JObject
                     {
-                        ["iv"] = value
+                        ["iv"] = value,
                     };
                 }
             }

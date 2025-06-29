@@ -64,12 +64,12 @@ public sealed class AuthorImporter(ISession session, ILogger log)
         {
             MaxDegreeOfParallelism = Environment.ProcessorCount,
             MaxMessagesPerTask = 1,
-            BoundedCapacity = 100
+            BoundedCapacity = 100,
         });
 
         var batchBlock = new BatchBlock<AuthorRecord>(100, new GroupingDataflowBlockOptions
         {
-            BoundedCapacity = 100
+            BoundedCapacity = 100,
         });
 
         var totalFailed = 0;
@@ -98,9 +98,9 @@ public sealed class AuthorImporter(ISession session, ILogger log)
                         {
                             Id = x.Id,
                             Data = x.Author,
-                            Type = BulkUpdateType.Upsert
+                            Type = BulkUpdateType.Upsert,
                         };
-                    }).ToList()
+                    }).ToList(),
                 };
 
                 var response = await client.BulkUpdateAsync(request);
@@ -116,36 +116,33 @@ public sealed class AuthorImporter(ISession session, ILogger log)
             {
                 MaxDegreeOfParallelism = Environment.ProcessorCount,
                 MaxMessagesPerTask = 1,
-                BoundedCapacity = Environment.ProcessorCount * 2
+                BoundedCapacity = Environment.ProcessorCount * 2,
             });
 
             deserializeBlock.BidirectionalLinkTo(batchBlock);
 
             batchBlock.BidirectionalLinkTo(importBlock);
 
-            using (var streamReader = new StreamReader(stream))
+            using (var csvStream = new StreamReader(stream))
             {
                 var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
                     BadDataFound = null,
-                    Delimiter = "\t"
+                    Delimiter = "\t",
                 };
 
-                using (var csvReader = new CsvReader(streamReader, configuration))
+                using var csvReader = new CsvReader(csvStream, configuration);
+                while (await csvReader.ReadAsync())
                 {
-                    while (await csvReader.ReadAsync())
-                    {
-                        var record = new CsvRecord(
-                            csvReader.GetField(1)!,
-                            csvReader.GetField(4)!);
+                    var record = new CsvRecord(
+                        csvReader.GetField(1)!,
+                        csvReader.GetField(4)!);
 
-                        await deserializeBlock.SendAsync(record);
-                    }
+                    await deserializeBlock.SendAsync(record);
                 }
             }
 
             deserializeBlock.Complete();
-
             await importBlock.Completion;
 
             if (!logLine.CanWriteToSameLine)

@@ -87,7 +87,7 @@ public partial class App
                 ClientSecret = arguments.ClientSecret,
                 IgnoreSelfSigned = arguments.IgnoreSelfSigned,
                 Headers = headers,
-                ServiceUrl = arguments.ServiceUrl
+                ServiceUrl = arguments.ServiceUrl,
             };
 
             configuration.Upsert(entry, appConfig);

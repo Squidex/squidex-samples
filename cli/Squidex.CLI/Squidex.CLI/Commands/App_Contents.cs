@@ -57,10 +57,8 @@ public partial class App
 
             if (!string.IsNullOrWhiteSpace(arguments.File))
             {
-                await using (var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write))
-                {
-                    await stream.WriteJsonAsync(datas);
-                }
+                await using var stream = new FileStream(arguments.File, FileMode.Create, FileAccess.Write);
+                await stream.WriteJsonAsync(datas);
             }
             else
             {
@@ -91,7 +89,7 @@ public partial class App
                         .Select(x => new BulkUpdateJob
                         {
                             Id = x,
-                            Type = BulkUpdateType.EnrichDefaults
+                            Type = BulkUpdateType.EnrichDefaults,
                         })
                         .ToList(),
                     EnrichRequiredFields = arguments.RequiredFields,
@@ -133,34 +131,28 @@ public partial class App
             {
                 var converter = new Json2SquidexConverter(arguments.Fields);
 
-                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                {
-                    var datas = converter.ReadAsArray(stream);
+                await using var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read);
+                var datas = converter.ReadAsArray(stream);
 
-                    await session.ImportAsync(arguments, log, datas);
-                }
+                await session.ImportAsync(arguments, log, datas);
             }
             else if (arguments.Format == ImExportFormat.JSON_Separated)
             {
                 var converter = new Json2SquidexConverter(arguments.Fields);
 
-                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                {
-                    var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
+                await using var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read);
+                var datas = converter.ReadAsSeparatedObjects(stream, JsonSeparator);
 
-                    await session.ImportAsync(arguments, log, datas);
-                }
+                await session.ImportAsync(arguments, log, datas);
             }
             else
             {
                 var converter = new Csv2SquidexConverter(arguments.Fields);
 
-                await using (var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read))
-                {
-                    var datas = converter.Read(stream, arguments.Delimiter);
+                await using var stream = new FileStream(arguments.File, FileMode.Open, FileAccess.Read);
+                var datas = converter.Read(stream, arguments.Delimiter);
 
-                    await session.ImportAsync(arguments, log, datas);
-                }
+                await session.ImportAsync(arguments, log, datas);
             }
         }
 
@@ -251,26 +243,22 @@ public partial class App
             {
                 var file = OpenFile(".json");
 
-                await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                await using var fileStream = new FileStream(file, FileMode.Create, FileAccess.Write);
+                await using var fileWriter = new StreamWriter(fileStream);
+                await session.ExportAsync(arguments, log, async entity =>
                 {
-                    await using (var writer = new StreamWriter(stream))
+                    if (arguments.FullEntities)
                     {
-                        await session.ExportAsync(arguments, log, async entity =>
-                        {
-                            if (arguments.FullEntities)
-                            {
-                                await writer.WriteJsonAsync(entity);
-                            }
-                            else
-                            {
-                                await writer.WriteJsonAsync(entity.Data);
-                            }
-
-                            await writer.WriteLineAsync();
-                            await writer.WriteLineAsync(JsonSeparator);
-                        });
+                        await fileWriter.WriteJsonAsync(entity);
                     }
-                }
+                    else
+                    {
+                        await fileWriter.WriteJsonAsync(entity.Data);
+                    }
+
+                    await fileWriter.WriteLineAsync();
+                    await fileWriter.WriteLineAsync(JsonSeparator);
+                });
             }
             else if (arguments.Format == ImExportFormat.CSV && !arguments.FilePerContent)
             {
@@ -278,43 +266,38 @@ public partial class App
 
                 var converter = new Squidex2CsvConverter(arguments.Fields);
 
-                await using (var stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+                await using var fileStream = new FileStream(file, FileMode.Create, FileAccess.Write);
+                await using var fileWriter = new StreamWriter(fileStream);
+
+                var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    await using (var streamWriter = new StreamWriter(stream))
+                    Delimiter = arguments.Delimiter,
+                };
+
+                await using var csvWriter = new CsvWriter(fileWriter, csvOptions);
+                foreach (var fieldName in converter.FieldNames)
+                {
+                    csvWriter.WriteField(fieldName);
+                }
+
+                await csvWriter.NextRecordAsync();
+
+                await session.ExportAsync(arguments, log, async entity =>
+                {
+                    foreach (var value in converter.GetValues(entity))
                     {
-                        var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
+                        if (value is string text)
                         {
-                            Delimiter = arguments.Delimiter
-                        };
-
-                        await using (var writer = new CsvWriter(streamWriter, csvOptions))
+                            csvWriter.WriteField(text, true);
+                        }
+                        else
                         {
-                            foreach (var fieldName in converter.FieldNames)
-                            {
-                                writer.WriteField(fieldName);
-                            }
-
-                            await writer.NextRecordAsync();
-
-                            await session.ExportAsync(arguments, log, async entity =>
-                            {
-                                foreach (var value in converter.GetValues(entity))
-                                {
-                                    if (value is string text)
-                                    {
-                                        writer.WriteField(text, true);
-                                    }
-                                    else
-                                    {
-                                        writer.WriteField(value);
-                                    }
-                                }
-
-                                await writer.NextRecordAsync();
-                            });
+                            csvWriter.WriteField(value);
                         }
                     }
-                }
+
+                    await csvWriter.NextRecordAsync();
+                });
             }
             else
             {
@@ -326,7 +309,7 @@ public partial class App
         {
             CSV,
             JSON,
-            JSON_Separated
+            JSON_Separated,
         }
 
         public sealed class ImportArguments : AppArguments, IImportSettings

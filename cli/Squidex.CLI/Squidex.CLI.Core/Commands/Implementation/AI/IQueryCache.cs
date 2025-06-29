@@ -5,18 +5,13 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Newtonsoft.Json.Linq;
-
-#pragma warning disable MA0048 // File name must match type name
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
 namespace Squidex.CLI.Commands.Implementation.AI;
 
-public sealed class GeneratedContent
+public interface IQueryCache
 {
-    public SimplifiedSchema Schema { get; set; }
+    Task<GeneratedContent?> GetAsync(string prompt,
+        CancellationToken ct = default);
 
-    public List<Dictionary<string, JToken>> Contents { get; } = [];
+    Task StoreAsync(string prompt, GeneratedContent content,
+        CancellationToken ct);
 }
-
-public record ReplaceableImage(SimplifiedImage Image, Action<JToken> Setter);

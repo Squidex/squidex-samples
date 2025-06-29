@@ -46,7 +46,7 @@ public sealed partial class App
                 ConsumerKey = arguments.ClientId,
                 ConsumerSecret = arguments.ClientSecret,
                 RequestToken = requestToken,
-                RequestTokenSecret = requestSecret
+                RequestTokenSecret = requestSecret,
             };
 
             var tokens = await session.GetTokensAsync(arguments.PinCode);

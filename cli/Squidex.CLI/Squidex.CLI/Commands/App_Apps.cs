@@ -28,7 +28,6 @@ public partial class App
             var session = configuration.StartSession(arguments.App);
 
             var apps = await session.Client.Apps.GetAppsAsync();
-
             if (arguments.Table)
             {
                 var table = new ConsoleTable("Id", "Name", "LastUpdate");
@@ -52,7 +51,6 @@ public partial class App
             var session = configuration.StartSession(arguments.App);
 
             var name = arguments.App;
-
             if (string.IsNullOrWhiteSpace(name))
             {
                 name = session.App;
@@ -60,7 +58,7 @@ public partial class App
 
             var request = new CreateAppDto
             {
-                Name = name
+                Name = name,
             };
 
             await session.Client.Apps.PostAppAsync(request);
@@ -74,7 +72,6 @@ public partial class App
             var session = configuration.StartSession(arguments.App);
 
             var name = session.App;
-
             if (!string.IsNullOrWhiteSpace(arguments.App) && !string.Equals(name, arguments.App, StringComparison.Ordinal))
             {
                 log.WriteLine($"Provided app name does not match with the session app name {name}. We will fallback to use this as app name: {name}.");

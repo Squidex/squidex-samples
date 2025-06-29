@@ -79,7 +79,7 @@ public sealed class GitFileSystem : IFileSystem
 
         inner = new DefaultFileSystem(repositoryFolder)
         {
-            Readonly = true
+            Readonly = true,
         };
 
         cloneDirectory = repositoryFolder;

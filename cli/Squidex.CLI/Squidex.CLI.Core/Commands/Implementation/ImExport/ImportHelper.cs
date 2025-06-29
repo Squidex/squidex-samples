@@ -33,7 +33,7 @@ public static class ImportHelper
                 Jobs = new List<BulkUpdateJob>(),
                 DoNotScript = false,
                 DoNotValidate = false,
-                Publish = !setting.Unpublished
+                Publish = !setting.Unpublished,
             };
 
             const string op = "eq";
@@ -63,7 +63,7 @@ public static class ImportHelper
                                 path = $"data.{keyField}.iv",
                                 op,
                                 value,
-                            }
+                            },
                         };
 
                         job.Type = BulkUpdateType.Upsert;
@@ -102,7 +102,7 @@ public static class ImportHelper
         {
             var csvOptions = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                Delimiter = delimiter
+                Delimiter = delimiter,
             };
 
             using (var reader = new CsvReader(streamReader, csvOptions))

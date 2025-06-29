@@ -69,7 +69,7 @@ public sealed class SchemasSynchronizer(ILogger log) : ISynchronizer
                     Name = schema.Name,
                     Schema = sync.Convert<SynchronizeSchemaDto>(details),
                     SchemaType = details.Type,
-                    IsSingleton = details.IsSingleton
+                    IsSingleton = details.IsSingleton,
                 };
 
                 await model.Schema.MapReferencesAsync(schemaMap);
@@ -174,7 +174,7 @@ public sealed class SchemasSynchronizer(ILogger log) : ISynchronizer
             {
                 Properties = new SchemaPropertiesDto
                 {
-                    Label = "My Schema"
+                    Label = "My Schema",
                 },
                 Fields = new List<UpsertSchemaFieldDto>
                 {
@@ -183,13 +183,13 @@ public sealed class SchemasSynchronizer(ILogger log) : ISynchronizer
                         Name = "my-string",
                         Properties = new StringFieldPropertiesDto
                         {
-                            IsRequired = true
+                            IsRequired = true,
                         },
-                        Partitioning = "invariant"
-                    }
+                        Partitioning = "invariant",
+                    },
                 },
-                IsPublished = true
-            }
+                IsPublished = true,
+            },
         };
 
         await sync.WriteWithSchema(new FilePath("schemas", "__schema.json"), sample, Ref);

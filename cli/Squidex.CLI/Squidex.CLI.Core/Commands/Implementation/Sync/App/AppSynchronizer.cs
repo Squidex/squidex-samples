@@ -28,7 +28,7 @@ public sealed class AppSynchronizer(ILogger log) : ISynchronizer
     {
         var model = new AppModel
         {
-            Contributors = new Dictionary<string, AppContributorModel>()
+            Contributors = new Dictionary<string, AppContributorModel>(),
         };
 
         await log.DoSafeAsync("Exporting clients", async () =>
@@ -359,32 +359,32 @@ public sealed class AppSynchronizer(ILogger log) : ISynchronizer
                 {
                     Permissions = new List<string>
                     {
-                        "schemas.*"
-                    }
-                }
+                        "schemas.*",
+                    },
+                },
             },
             Clients = new Dictionary<string, AppClientModel>
             {
                 ["test"] = new AppClientModel
                 {
-                    Role = "Owner"
-                }
+                    Role = "Owner",
+                },
             },
             Languages = new Dictionary<string, UpdateLanguageDto>
             {
                 ["en"] = new UpdateLanguageDto
                 {
-                    IsMaster = true
-                }
+                    IsMaster = true,
+                },
             },
             Contributors = new Dictionary<string, AppContributorModel>
             {
                 ["sebastian@squidex.io"] = new AppContributorModel
                 {
-                    Role = "Owner"
-                }
+                    Role = "Owner",
+                },
             },
-            AssetScripts = new AssetScriptsModel()
+            AssetScripts = new AssetScriptsModel(),
         };
 
         await sync.WriteWithSchema(new FilePath("__app.json"), sample, Ref);

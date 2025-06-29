@@ -34,7 +34,7 @@ public static class LoremIpsum
         "dolore",
         "magna",
         "aliquam",
-        "erat"
+        "erat",
     ];
 
     public static string GetWord(Random random)

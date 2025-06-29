@@ -29,75 +29,72 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            using (var fs = await FileSystems.CreateAsync(arguments.Path))
+            using var fs = await FileSystems.CreateAsync(arguments.Path);
+            var assetTree = new AssetFolderTree(session.Client.Assets);
+            var assetQuery = new AssetQuery();
+
+            foreach (var file in fs.GetFiles(FilePath.Root, ".*"))
             {
-                var folders = new AssetFolderTree(session.Client.Assets);
+                var targetFolder = file.LocalFolderPath();
 
-                var assetQuery = new AssetQuery();
-
-                foreach (var file in fs.GetFiles(FilePath.Root, ".*"))
+                if (!string.IsNullOrWhiteSpace(arguments.TargetFolder))
                 {
-                    var targetFolder = file.LocalFolderPath();
+                    targetFolder = Path.Combine(arguments.TargetFolder, targetFolder);
+                }
 
-                    if (!string.IsNullOrWhiteSpace(arguments.TargetFolder))
+                assetQuery.ParentId = await assetTree.GetIdAsync(targetFolder);
+                assetQuery.Filter = $"fileName eq '{file.Name}'";
+
+                var existings = await session.Client.Assets.GetAssetsAsync(assetQuery);
+                var existing = existings.Items.FirstOrDefault();
+
+                var fileHash = file.GetFileHash();
+
+                try
+                {
+                    var fileParameter = new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name));
+
+                    log.WriteLine($"Uploading: {file.FullName}");
+
+                    if (existings.Items.Exists(x => string.Equals(x.FileHash, fileHash, StringComparison.Ordinal)))
                     {
-                        targetFolder = Path.Combine(arguments.TargetFolder, targetFolder);
+                        log.StepSkipped("Same hash.");
                     }
-
-                    assetQuery.ParentId = await folders.GetIdAsync(targetFolder);
-                    assetQuery.Filter = $"fileName eq '{file.Name}'";
-
-                    var existings = await session.Client.Assets.GetAssetsAsync(assetQuery);
-                    var existing = existings.Items.FirstOrDefault();
-
-                    var fileHash = file.GetFileHash();
-
-                    try
+                    else if (existings.Items.Count > 1)
                     {
-                        var fileParameter = new FileParameter(file.OpenRead(), file.Name, MimeTypesMap.GetMimeType(file.Name));
+                        log.StepSkipped("Multiple candidates found.");
+                    }
+                    else if (existing != null)
+                    {
+                        await session.Client.Assets.PutAssetContentAsync(existing.Id, fileParameter);
 
-                        log.WriteLine($"Uploading: {file.FullName}");
+                        log.StepSuccess("Existing Asset");
+                    }
+                    else
+                    {
+                        var result = await session.Client.Assets.PostAssetAsync(assetQuery.ParentId, null, arguments.Duplicate, fileParameter);
 
-                        if (existings.Items.Exists(x => string.Equals(x.FileHash, fileHash, StringComparison.Ordinal)))
+                        if (result._meta?.IsDuplicate == "true")
                         {
-                            log.StepSkipped("Same hash.");
-                        }
-                        else if (existings.Items.Count > 1)
-                        {
-                            log.StepSkipped("Multiple candidates found.");
-                        }
-                        else if (existing != null)
-                        {
-                            await session.Client.Assets.PutAssetContentAsync(existing.Id, fileParameter);
-
-                            log.StepSuccess("Existing Asset");
+                            log.StepSkipped("duplicate.");
                         }
                         else
                         {
-                            var result = await session.Client.Assets.PostAssetAsync(assetQuery.ParentId, null, arguments.Duplicate, fileParameter);
-
-                            if (result._meta?.IsDuplicate == "true")
-                            {
-                                log.StepSkipped("duplicate.");
-                            }
-                            else
-                            {
-                                log.StepSuccess("New Asset");
-                            }
+                            log.StepSuccess("New Asset");
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        LogExtensions.HandleException(ex, error => log.WriteLine("Error: {0}", error));
-                    }
-                    finally
-                    {
-                        log.WriteLine();
-                    }
                 }
-
-                log.Completed("Import completed.");
+                catch (Exception ex)
+                {
+                    LogExtensions.HandleException(ex, error => log.WriteLine("Error: {0}", error));
+                }
+                finally
+                {
+                    log.WriteLine();
+                }
             }
+
+            log.Completed("Import completed.");
         }
 
         [Command("export", Description = "Export all files to the source folder.")]
@@ -105,52 +102,48 @@ public partial class App
         {
             var session = configuration.StartSession(arguments.App);
 
-            using (var fs = await FileSystems.CreateAsync(arguments.Path))
+            using var fs = await FileSystems.CreateAsync(arguments.Path);
+            var folderTree = new AssetFolderTree(session.Client.Assets);
+            var folderNames = new HashSet<string>();
+
+            var parentId = await folderTree.GetIdAsync(arguments.TargetFolder);
+
+            var downloadPipeline = new DownloadPipeline(session, log, fs)
             {
-                var folderTree = new AssetFolderTree(session.Client.Assets);
-                var folderNames = new HashSet<string>();
-
-                var parentId = await folderTree.GetIdAsync(arguments.TargetFolder);
-
-                var downloadPipeline = new DownloadPipeline(session, log, fs)
+                FilePathProviderAsync = async asset =>
                 {
-                    FilePathProviderAsync = async asset =>
+                    var assetFolder = await folderTree.GetPathAsync(asset.ParentId);
+                    var assetPath = asset.FileName;
+
+                    if (!string.IsNullOrWhiteSpace(assetFolder))
                     {
-                        var assetFolder = await folderTree.GetPathAsync(asset.ParentId);
-                        var assetPath = asset.FileName;
-
-                        if (!string.IsNullOrWhiteSpace(assetFolder))
-                        {
-                            assetPath = Path.Combine(assetFolder, assetPath);
-                        }
-
-                        if (!folderNames.Add(assetPath))
-                        {
-                            assetPath = Path.Combine(assetFolder!, $"{asset.Id}_{asset.FileName}");
-                        }
-
-                        return FilePath.Create(assetPath);
+                        assetPath = Path.Combine(assetFolder, assetPath);
                     }
-                };
 
-                try
-                {
-                    await session.Client.Assets.GetAllByQueryAsync(async asset =>
+                    if (!folderNames.Add(assetPath))
                     {
-                        await downloadPipeline.DownloadAsync(asset);
-                    },
+                        assetPath = Path.Combine(assetFolder!, $"{asset.Id}_{asset.FileName}");
+                    }
+
+                    return FilePath.Create(assetPath);
+                },
+            };
+
+            try
+            {
+                await session.Client.Assets.GetAllByQueryAsync(
+                    downloadPipeline.DownloadAsync,
                     new AssetQuery
                     {
-                        ParentId = parentId
+                        ParentId = parentId,
                     });
-                }
-                finally
-                {
-                    await downloadPipeline.CompleteAsync();
-                }
-
-                log.Completed("Export completed.");
             }
+            finally
+            {
+                await downloadPipeline.CompleteAsync();
+            }
+
+            log.Completed("Export completed.");
         }
 
         public sealed class ImportArguments : AppArguments

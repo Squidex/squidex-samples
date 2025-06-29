@@ -23,8 +23,8 @@ internal static class Helper
         {
             NamingStrategy = new CamelCaseNamingStrategy
             {
-                ProcessDictionaryKeys = false
-            }
+                ProcessDictionaryKeys = false,
+            },
         };
         SerializerSettings.Formatting = Formatting.Indented;
 

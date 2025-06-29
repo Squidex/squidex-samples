@@ -240,19 +240,21 @@ public sealed class RulesSynchronizer(ILogger log) : ISynchronizer
     {
         await sync.WriteJsonSchemaAsync<RuleModel>(new FilePath("rule.json"));
 
+#pragma warning disable CS0618 // Type or member is obsolete
         var sample = new RuleModel
         {
             Name = "My-Rule",
             Trigger = new ContentChangedRuleTriggerDto
             {
-                HandleAll = true
+                HandleAll = true,
             },
             TypedAction = new WebhookRuleActionDto
             {
-                Url = new Uri("https://squidex.io")
+                Url = new Uri("https://squidex.io"),
             },
-            IsEnabled = true
+            IsEnabled = true,
         };
+#pragma warning restore CS0618 // Type or member is obsolete
 
         await sync.WriteWithSchema(new FilePath("rules", "__rule.json"), sample, Ref);
     }

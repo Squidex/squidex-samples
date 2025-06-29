@@ -73,8 +73,8 @@ public class MapCSVToSquidexTests
         {
             ["text"] = new JObject
             {
-                ["iv"] = "Hello World"
-            }
+                ["iv"] = "Hello World",
+            },
         };
 
         EqualJson(expected, actual);
@@ -91,8 +91,8 @@ public class MapCSVToSquidexTests
         {
             ["boolean"] = new JObject
             {
-                ["iv"] = true
-            }
+                ["iv"] = true,
+            },
         };
 
         EqualJson(expected, actual);
@@ -109,8 +109,8 @@ public class MapCSVToSquidexTests
         {
             ["number"] = new JObject
             {
-                ["iv"] = 1234
-            }
+                ["iv"] = 1234,
+            },
         };
 
         EqualJson(expected, actual);
@@ -127,8 +127,8 @@ public class MapCSVToSquidexTests
         {
             ["number"] = new JObject
             {
-                ["iv"] = "1234"
-            }
+                ["iv"] = "1234",
+            },
         };
 
         EqualJson(expected, actual);
@@ -145,8 +145,8 @@ public class MapCSVToSquidexTests
         {
             ["path"] = new JObject
             {
-                ["iv"] = "1234"
-            }
+                ["iv"] = "1234",
+            },
         };
 
         EqualJson(expected, actual);
@@ -163,8 +163,8 @@ public class MapCSVToSquidexTests
         {
             ["text"] = new JObject
             {
-                ["de"] = "Hello World"
-            }
+                ["de"] = "Hello World",
+            },
         };
 
         EqualJson(expected, actual);
@@ -181,8 +181,8 @@ public class MapCSVToSquidexTests
         {
             ["array"] = new JObject
             {
-                ["iv"] = new JArray("Squidex", "CLI")
-            }
+                ["iv"] = new JArray("Squidex", "CLI"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -199,8 +199,8 @@ public class MapCSVToSquidexTests
         {
             ["object"] = new JObject
             {
-                ["iv"] = new JObject(new JProperty("Squidex", "CLI"))
-            }
+                ["iv"] = new JObject(new JProperty("Squidex", "CLI")),
+            },
         };
 
         EqualJson(expected, actual);
@@ -217,8 +217,8 @@ public class MapCSVToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(JValue.CreateNull(), "Hello World")
-            }
+                ["iv"] = new JArray(JValue.CreateNull(), "Hello World"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -235,8 +235,8 @@ public class MapCSVToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(1234, "Hello World")
-            }
+                ["iv"] = new JArray(1234, "Hello World"),
+            },
         };
 
         EqualJson(expected, actual);
@@ -253,8 +253,8 @@ public class MapCSVToSquidexTests
         {
             ["json"] = new JObject
             {
-                ["iv"] = new JArray(JValue.CreateNull(), new JArray("Hello World"))
-            }
+                ["iv"] = new JArray(JValue.CreateNull(), new JArray("Hello World")),
+            },
         };
 
         EqualJson(expected, actual);
@@ -273,9 +273,9 @@ public class MapCSVToSquidexTests
             {
                 ["iv"] = new JObject
                 {
-                    ["a"] = "Hello World"
-                }
-            }
+                    ["a"] = "Hello World",
+                },
+            },
         };
 
         EqualJson(expected, actual);
@@ -295,9 +295,9 @@ public class MapCSVToSquidexTests
                 ["iv"] = new JObject
                 {
                     ["a"] = "Hello World",
-                    ["b"] = 1234
-                }
-            }
+                    ["b"] = 1234,
+                },
+            },
         };
 
         EqualJson(expected, actual);
@@ -318,10 +318,10 @@ public class MapCSVToSquidexTests
                 {
                     ["a0"] = new JObject
                     {
-                        ["a1"] = "Hello World"
-                    }
-                }
-            }
+                        ["a1"] = "Hello World",
+                    },
+                },
+            },
         };
 
         EqualJson(expected, actual);

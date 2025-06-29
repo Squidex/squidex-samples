@@ -26,7 +26,9 @@ internal sealed class RuleModel
     public DynamicRuleAction Action { get; set; }
 
     [JsonIgnore]
+#pragma warning disable CS0618 // Type or member is obsolete
     public RuleActionDto TypedAction
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         set
         {

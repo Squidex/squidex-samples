@@ -26,7 +26,7 @@ public sealed class DefaultFileSystem(DirectoryInfo directory) : IFileSystem
 
         return new DefaultFile(new FileInfo(fullPath), relativePath)
         {
-            Readonly = Readonly
+            Readonly = Readonly,
         };
     }
 
@@ -46,7 +46,7 @@ public sealed class DefaultFileSystem(DirectoryInfo directory) : IFileSystem
 
                     yield return new DefaultFile(fileInfo, relativePath)
                     {
-                        Readonly = Readonly
+                        Readonly = Readonly,
                     };
                 }
             }

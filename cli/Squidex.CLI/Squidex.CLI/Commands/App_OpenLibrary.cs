@@ -31,9 +31,9 @@ public sealed partial class App
             {
                 Targets =
                 [
-                    "schemas"
+                    "schemas",
                 ],
-                Recreate = true
+                Recreate = true,
             }, session);
 
             log.Completed("Creation of schema completed.");

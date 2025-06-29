@@ -34,7 +34,7 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
     {
         var downloadPipeline = new DownloadPipeline(session, log, sync.FileSystem)
         {
-            FilePathProvider = asset => asset.Id.GetBlobPath()
+            FilePathProvider = asset => asset.Id.GetBlobPath(),
         };
 
         try
@@ -46,7 +46,7 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
             {
                 var model = new AssetsModel
                 {
-                    Assets = assets
+                    Assets = assets,
                 };
 
                 await log.DoSafeAsync($"Exporting Assets ({assetBatch})", async () =>
@@ -115,7 +115,7 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
             {
                 var uploader = new UploadPipeline(session, log, sync.FileSystem)
                 {
-                    FilePathProvider = asset => asset.Id.GetBlobPath()
+                    FilePathProvider = asset => asset.Id.GetBlobPath(),
                 };
 
                 try
@@ -133,7 +133,7 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
                 // Use separate batches to not cause issues with older Squidex version.
                 var annotateBatch = new BulkUpdateAssetsDto
                 {
-                    Jobs = new List<BulkUpdateAssetsJobDto>()
+                    Jobs = new List<BulkUpdateAssetsJobDto>(),
                 };
 
                 foreach (var asset in model.Assets)
@@ -145,7 +145,7 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
 
                 var moveBatch = new BulkUpdateAssetsDto
                 {
-                    Jobs = new List<BulkUpdateAssetsJobDto>()
+                    Jobs = new List<BulkUpdateAssetsJobDto>(),
                 };
 
                 foreach (var asset in model.Assets)
@@ -220,9 +220,9 @@ public sealed class AssetsSynchronizer(ILogger log) : ISynchronizer
                     Id = Guid.NewGuid().ToString(),
                     FileName = "my.file.txt",
                     FileHash = "<Optional Hash>",
-                    MimeType = "plain/text"
-                }
-            }
+                    MimeType = "plain/text",
+                },
+            },
         };
 
         await sync.WriteWithSchema(new FilePath("assets", "__asset.json"), sample, Ref);

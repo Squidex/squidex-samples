@@ -115,7 +115,7 @@ public sealed class ConfigurationService(IConfigurationStore configurationStore)
             AppName = app.Name,
             ClientId = app.ClientId,
             ClientSecret = app.ClientSecret,
-            Timeout = TimeSpan.FromHours(1)
+            Timeout = TimeSpan.FromHours(1),
         };
 
         options.UseFallbackSerializer();

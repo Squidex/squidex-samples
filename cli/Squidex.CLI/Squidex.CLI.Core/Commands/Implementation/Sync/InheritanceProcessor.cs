@@ -26,7 +26,7 @@ public sealed class InheritanceProcessor : ISchemaProcessor
             context.Schema.Properties[discriminator] = new JsonSchemaProperty
             {
                 Type = JsonObjectType.String,
-                IsRequired = true
+                IsRequired = true,
             };
         }
     }

@@ -21,37 +21,37 @@ public class MapSquidexToCSVTests
     {
         content = new DynamicContent
         {
-            Created = DateTimeOffset.Now
+            Created = DateTimeOffset.Now,
         };
 
         content.Data["name"] = new JObject
         {
-            ["iv"] = "Hello World"
+            ["iv"] = "Hello World",
         };
 
         content.Data["text"] = new JObject
         {
-            ["iv"] = "Hello World"
+            ["iv"] = "Hello World",
         };
 
         content.Data["localizedText"] = new JObject
         {
-            ["en"] = "Hello World"
+            ["en"] = "Hello World",
         };
 
         content.Data["multilineText"] = new JObject
         {
-            ["iv"] = "Hello\nWorld"
+            ["iv"] = "Hello\nWorld",
         };
 
         content.Data["user"] = new JObject
         {
-            ["iv"] = new JObject(new JProperty("name", "Squidex"))
+            ["iv"] = new JObject(new JProperty("name", "Squidex")),
         };
 
         content.Data["products"] = new JObject
         {
-            ["iv"] = new JArray("Squidex", "CLI")
+            ["iv"] = new JArray("Squidex", "CLI"),
         };
     }
 

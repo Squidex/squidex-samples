@@ -62,8 +62,8 @@ public static class Program
                 {
                     Arguments = new ArgumentAppSettings
                     {
-                        SkipArityValidation = true
-                    }
+                        SkipArityValidation = true,
+                    },
                 })
                 .UseMicrosoftDependencyInjection(serviceProvider)
                 .UseFluentValidation(true);

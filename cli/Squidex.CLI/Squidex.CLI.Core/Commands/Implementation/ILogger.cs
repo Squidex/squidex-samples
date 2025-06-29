@@ -19,6 +19,8 @@ public interface ILogger
 
     void WriteLine();
 
+    void WriteJson(object message);
+
     void WriteLine(string message);
 
     void WriteLine(string message, params object?[] args);
