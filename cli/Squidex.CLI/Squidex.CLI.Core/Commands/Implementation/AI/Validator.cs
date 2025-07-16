@@ -162,7 +162,7 @@ public sealed partial class Validator(SimplifiedSchema schema, HashSet<string> l
         }
     }
 
-    private void ValidateValue(JToken value, SimplifiedField field, string prefix)
+    private void ValidateValue(JToken? value, SimplifiedField field, string prefix)
     {
         if (value == null || value.Type == JTokenType.Null)
         {
@@ -186,6 +186,7 @@ public sealed partial class Validator(SimplifiedSchema schema, HashSet<string> l
                 ValidateImage(value, prefix);
                 break;
             case SimplifiedFieldType.Text:
+            case SimplifiedFieldType.Slug:
             case SimplifiedFieldType.Markdown:
             case SimplifiedFieldType.MultilineText:
                 ValidateText(value, field, prefix);

@@ -94,6 +94,8 @@ public sealed class SimplifiedField
                 return ToStringField(StringFieldEditor.Markdown);
             case SimplifiedFieldType.MultilineText:
                 return ToStringField(StringFieldEditor.TextArea);
+            case SimplifiedFieldType.Slug:
+                return ToStringField(StringFieldEditor.Slug);
             case SimplifiedFieldType.Text:
                 return ToStringField(StringFieldEditor.Input);
             default:
@@ -110,5 +112,6 @@ public enum SimplifiedFieldType
     Markdown,
     MultilineText,
     Number,
+    Slug,
     Text,
 }
