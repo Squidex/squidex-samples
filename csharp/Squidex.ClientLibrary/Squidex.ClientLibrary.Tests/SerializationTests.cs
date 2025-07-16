@@ -45,7 +45,7 @@ public class SerializationTests
 
         var source = new MyClass<DateTime>
         {
-            Value = utcTime
+            Value = utcTime,
         };
 
         var serialized = source.ToJson(options);
@@ -60,7 +60,7 @@ public class SerializationTests
 
         var source = new MyClass<DateTime>
         {
-            Value = utcTime.ToLocalTime()
+            Value = utcTime.ToLocalTime(),
         };
 
         var serialized = source.ToJson(options);
@@ -75,7 +75,7 @@ public class SerializationTests
 
         var source = new MyClass<DateTimeOffset>
         {
-            Value = utcTime
+            Value = utcTime,
         };
 
         var serialized = source.ToJson(options);
@@ -90,7 +90,7 @@ public class SerializationTests
 
         var source = new MyClass<DateTimeOffset>
         {
-            Value = utcTime.ToLocalTime()
+            Value = utcTime.ToLocalTime(),
         };
 
         var serialized = source.ToJson(options);
@@ -105,7 +105,7 @@ public class SerializationTests
 
         var source = new MyClass<DateTime>
         {
-            Value = utcTime.ToLocalTime()
+            Value = utcTime.ToLocalTime(),
         };
 
         var serialized = source.ToJson(options);
@@ -118,7 +118,7 @@ public class SerializationTests
     {
         var source = new BulkUpdate
         {
-            DoNotScript = false
+            DoNotScript = false,
         };
 
         var serialized = source.ToJson(options);
@@ -131,7 +131,7 @@ public class SerializationTests
     {
         var source = new BulkUpdateJob
         {
-            Type = BulkUpdateType.ChangeStatus
+            Type = BulkUpdateType.ChangeStatus,
         };
 
         var serialized = source.ToJson(options);
@@ -144,7 +144,7 @@ public class SerializationTests
     {
         var source = new MyClass<string>
         {
-            Value = "hello"
+            Value = "hello",
         };
 
         var serialized = source.ToJson(options);
@@ -157,7 +157,7 @@ public class SerializationTests
     {
         var source = new MyClass<JsonNull<string?>>
         {
-            Value = "hello"
+            Value = "hello",
         };
 
         var serialized = source.ToJson(options);
@@ -170,7 +170,7 @@ public class SerializationTests
     {
         var source = new MyWriteClass<JsonNull<string?>>
         {
-            Value = "hello"
+            Value = "hello",
         };
 
         var serialized = source.ToJson(options);
@@ -185,8 +185,8 @@ public class SerializationTests
         {
             value = new
             {
-                en = new JsonNull<string?>("hello")
-            }
+                en = new JsonNull<string?>("hello"),
+            },
         };
 
         var serialized = source.ToJson(options);
@@ -199,7 +199,7 @@ public class SerializationTests
     {
         var source = new DynamicData
         {
-            ["Property1"] = new JObject()
+            ["Property1"] = new JObject(),
         };
 
         var serialized = source.ToJson(options);
@@ -212,7 +212,7 @@ public class SerializationTests
     {
         var source = new MyCamelClass<string>
         {
-            Value = "hello"
+            Value = "hello",
         };
 
         var serialized = source.ToJson(options);
@@ -225,7 +225,7 @@ public class SerializationTests
     {
         var source = new MyPascalClass<string>
         {
-            Value = "hello"
+            Value = "hello",
         };
 
         var serialized = source.ToJson(options);
@@ -310,8 +310,8 @@ public class SerializationTests
         {
             Steps = new Dictionary<string, WorkflowStepDto>
             {
-                ["Draft"] = new WorkflowStepDto()
-            }
+                ["Draft"] = new WorkflowStepDto(),
+            },
         };
 
         var result = workflow.ToJson(options);

@@ -53,7 +53,7 @@ public static class HttpClientExtensions
 
         var requestContent = new MultipartFormDataContent
         {
-            { streamContent, "file", name }
+            { streamContent, "file", name },
         };
 
         return requestContent;
@@ -136,7 +136,7 @@ public static class HttpClientExtensions
         {
             SerializationBinder = new EnrichedEventSerializationBinder(),
             TypeNameHandling = TypeNameHandling.Auto,
-            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
         };
 
         var json = JsonConvert.DeserializeObject<T>(value, serializerSettings)!;

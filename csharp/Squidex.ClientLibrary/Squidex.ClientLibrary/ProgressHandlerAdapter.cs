@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.Assets;
+using Squidex.Assets.TusClient;
 
 namespace Squidex.ClientLibrary;
 
@@ -92,11 +92,19 @@ internal sealed class ProgressHandlerAdapter(IAssetProgressHandler inner, Assets
 
                 return new SquidexException<ErrorDto>("Operation failed.", status, text, NullHeaders, errorDto, exception);
             case 404:
+#if NET8_0_OR_GREATER
+                var responseText1 = await response.Content.ReadAsStringAsync(ct);
+#else
                 var responseText1 = await response.Content.ReadAsStringAsync();
+#endif
 
                 return new SquidexException("App not found.", status, responseText1, NullHeaders, exception);
             default:
+#if NET8_0_OR_GREATER
+                var responseText2 = await response.Content.ReadAsStringAsync(ct);
+#else
                 var responseText2 = await response.Content.ReadAsStringAsync();
+#endif
 
                 return new SquidexException($"Exception with unexpected status ({status}): {exception.Message}.", status, responseText2, NullHeaders, exception);
         }

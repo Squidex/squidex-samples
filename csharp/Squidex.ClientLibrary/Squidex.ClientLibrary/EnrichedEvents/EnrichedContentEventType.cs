@@ -40,5 +40,5 @@ public enum EnrichedContentEventType
     /// <summary>
     /// Content Unpublished.
     /// </summary>
-    Unpublished
+    Unpublished,
 }

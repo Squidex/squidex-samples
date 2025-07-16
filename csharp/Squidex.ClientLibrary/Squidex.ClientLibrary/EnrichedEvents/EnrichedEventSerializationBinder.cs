@@ -24,7 +24,7 @@ public sealed class EnrichedEventSerializationBinder : ISerializationBinder
         typeof(EnrichedManualEvent),
         typeof(EnrichedAssetEvent),
         typeof(EnrichedSchemaEvent),
-        typeof(EnrichedUsageExceededEvent)
+        typeof(EnrichedUsageExceededEvent),
     };
 
     /// <inheritdoc/>

@@ -59,7 +59,7 @@ public record struct ContentCreateOptions
     /// </summary>
     public static readonly ContentCreateOptions AsPublish = new ContentCreateOptions
     {
-        Publish = true
+        Publish = true,
     };
 }
 
@@ -102,7 +102,7 @@ public record struct ContentUpsertOptions
     /// </summary>
     public static readonly ContentUpsertOptions AsPublish = new ContentUpsertOptions
     {
-        Publish = true
+        Publish = true,
     };
 
     /// <summary>
@@ -110,7 +110,7 @@ public record struct ContentUpsertOptions
     /// </summary>
     public static readonly ContentUpsertOptions AsPatch = new ContentUpsertOptions
     {
-        Patch = true
+        Patch = true,
     };
 
     /// <summary>
@@ -118,7 +118,7 @@ public record struct ContentUpsertOptions
     /// </summary>
     public static readonly ContentUpsertOptions WithEnrichedDefaults = new ContentUpsertOptions
     {
-        EnrichDefaults = true
+        EnrichDefaults = true,
     };
 }
 
@@ -149,7 +149,7 @@ public record struct ContentDeleteOptions
     /// </summary>
     public static readonly ContentDeleteOptions AsPermanent = new ContentDeleteOptions
     {
-        Permanent = true
+        Permanent = true,
     };
 }
 
@@ -174,7 +174,7 @@ public record struct ContentUpdateOptions
     /// </summary>
     public static readonly ContentUpdateOptions WithEnrichedDefaults = new ContentUpdateOptions
     {
-        EnrichDefaults = true
+        EnrichDefaults = true,
     };
 }
 
@@ -220,6 +220,6 @@ public record struct ContentEnrichDefaultsOptions
     /// </summary>
     public static readonly ContentEnrichDefaultsOptions WithRequiredFields = new ContentEnrichDefaultsOptions
     {
-        EnrichRequiredFields = true
+        EnrichRequiredFields = true,
     };
 }

@@ -5,7 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
-using Squidex.Assets;
+using Squidex.Assets.TusClient;
 
 #pragma warning disable MA0048 // File name must match type name
 
@@ -142,7 +142,7 @@ public struct AssetUploadOptions
     {
         var result = new UploadOptions
         {
-            FileId = FileId
+            FileId = FileId,
         };
 
         var metadata = new Dictionary<string, string>();

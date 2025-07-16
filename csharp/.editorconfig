@@ -30,9 +30,6 @@ dotnet_diagnostic.CA2016.severity = none
 # CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 dotnet_diagnostic.CS8618.severity = none
 
-# IDE0063: Use simple 'using' statement
-dotnet_diagnostic.IDE0063.severity = none
-
 # IDE0066: Convert switch statement to expression
 dotnet_diagnostic.IDE0066.severity = none
 
@@ -52,7 +49,7 @@ dotnet_diagnostic.MA0004.severity = none
 dotnet_diagnostic.MA0006.severity = none
 
 # MA0007: Add a comma after the last value
-dotnet_diagnostic.MA0007.severity = none
+dotnet_diagnostic.MA0007.severity = warning
 
 # MA0008: Add StructLayoutAttribute
 dotnet_diagnostic.MA0008.severity = none    

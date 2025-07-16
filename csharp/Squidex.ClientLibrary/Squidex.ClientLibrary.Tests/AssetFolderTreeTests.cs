@@ -43,13 +43,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -58,8 +58,8 @@ public class AssetFolderTreeTests
                 Items = new List<AssetFolderDto>(),
                 Path = new List<AssetFolderDto>
                 {
-                    folder1
-                }
+                    folder1,
+                },
             });
 
         A.CallTo(() => assets.GetAssetFoldersAsync(folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -68,8 +68,8 @@ public class AssetFolderTreeTests
                 Items = new List<AssetFolderDto>(),
                 Path = new List<AssetFolderDto>
                 {
-                    folder2
-                }
+                    folder2,
+                },
             });
 
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
@@ -87,13 +87,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(folder2.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -103,8 +103,8 @@ public class AssetFolderTreeTests
                 Path = new List<AssetFolderDto>
                 {
                     folder1,
-                    folder2
-                }
+                    folder2,
+                },
             });
 
         Assert.Equal("folder1/folder2", await sut.GetPathAsync(folder2.Id));
@@ -122,13 +122,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -136,12 +136,12 @@ public class AssetFolderTreeTests
             {
                 Items = new List<AssetFolderDto>
                 {
-                    folder2
+                    folder2,
                 },
                 Path = new List<AssetFolderDto>
                 {
-                    folder1
-                }
+                    folder1,
+                },
             });
 
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
@@ -159,13 +159,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -174,9 +174,9 @@ public class AssetFolderTreeTests
                 Items = new List<AssetFolderDto>
                 {
                     folder1,
-                    folder2
+                    folder2,
                 },
-                Path = new List<AssetFolderDto>()
+                Path = new List<AssetFolderDto>(),
             });
 
         Assert.Equal(folder1.Id, await sut.GetIdAsync("folder1"));
@@ -194,13 +194,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(folder1.Id, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -208,12 +208,12 @@ public class AssetFolderTreeTests
             {
                 Items = new List<AssetFolderDto>
                 {
-                    folder2
+                    folder2,
                 },
                 Path = new List<AssetFolderDto>
                 {
-                    folder1
-                }
+                    folder1,
+                },
             });
 
         Assert.Equal("folder1", await sut.GetPathAsync(folder1.Id));
@@ -231,13 +231,13 @@ public class AssetFolderTreeTests
         var folder1 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder1"
+            FolderName = "folder1",
         };
 
         var folder2 = new AssetFolderDto
         {
             Id = Guid.NewGuid().ToString(),
-            FolderName = "folder2"
+            FolderName = "folder2",
         };
 
         A.CallTo(() => assets.GetAssetFoldersAsync(RootId, A<AssetFolderScope?>._, A<CancellationToken>._))
@@ -245,9 +245,9 @@ public class AssetFolderTreeTests
             {
                 Items = new List<AssetFolderDto>
                 {
-                    folder1
+                    folder1,
                 },
-                Path = new List<AssetFolderDto>()
+                Path = new List<AssetFolderDto>(),
             });
 
         A.CallTo(() => assets.PostAssetFolderAsync(

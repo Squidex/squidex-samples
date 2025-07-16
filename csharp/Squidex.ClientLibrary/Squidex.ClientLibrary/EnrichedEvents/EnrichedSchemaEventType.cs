@@ -35,5 +35,5 @@ public enum EnrichedSchemaEventType
     /// <summary>
     /// Schema updated.
     /// </summary>
-    Updated
+    Updated,
 }

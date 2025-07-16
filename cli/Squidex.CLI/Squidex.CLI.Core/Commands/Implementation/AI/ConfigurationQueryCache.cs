@@ -48,7 +48,9 @@ public sealed class ConfigurationQueryCache(IConfigurationStore configurationSto
 
     private static string CacheKey(string prompt)
     {
-        return $"openapi/query-cache/{prompt.ToSha256Base64()}";
+        var hash = prompt.ToSha256Base64().Replace("/", string.Empty).Replace("\\", string.Empty);
+
+        return $"openapi/query-cache/{hash}";
     }
 
     public sealed class CachedItem

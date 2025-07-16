@@ -174,7 +174,7 @@ public class SquidexClientManagerTests
             AppName = "app",
             ClientId = "id",
             ClientSecret = "secret",
-            Url = "https://squidex.io"
+            Url = "https://squidex.io",
         };
 
         configure?.Invoke(options);

@@ -19,7 +19,7 @@ public class BasicClientTests
         {
             AppName = "squidex-website",
             ClientId = "squidex-website:reader",
-            ClientSecret = "yy9x4dcxsnp1s34r2z19t88wedbzxn1tfq7uzmoxf60x"
+            ClientSecret = "yy9x4dcxsnp1s34r2z19t88wedbzxn1tfq7uzmoxf60x",
         });
     }
 

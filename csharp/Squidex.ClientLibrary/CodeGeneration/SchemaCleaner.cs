@@ -8,7 +8,6 @@
 using NJsonSchema;
 using NSwag;
 using Squidex.Text;
-using System.Xml.Linq;
 
 namespace CodeGeneration;
 

@@ -50,5 +50,5 @@ public enum BulkUpdateType
     /// <summary>
     /// Enrich the contents with its defaults.
     /// </summary>
-    EnrichDefaults
+    EnrichDefaults,
 }

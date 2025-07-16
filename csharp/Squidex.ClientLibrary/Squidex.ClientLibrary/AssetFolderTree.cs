@@ -132,7 +132,7 @@ public sealed class AssetFolderTree
         var request = new CreateAssetFolderDto
         {
             FolderName = name,
-            ParentId = current.Id
+            ParentId = current.Id,
         };
 
         var folder = await assetsClient.PostAssetFolderAsync(request);

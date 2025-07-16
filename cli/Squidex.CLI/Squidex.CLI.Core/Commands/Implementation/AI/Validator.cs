@@ -15,6 +15,40 @@ public sealed partial class Validator(SimplifiedSchema schema, HashSet<string> l
 {
     private readonly Regex colorRegex = ColorRegex();
     private readonly List<string> errors = [];
+    private readonly HashSet<string> fieldBlackList =
+    [
+        "approved",
+        "approvedAt",
+        "approvedBy",
+        "approvedStatus",
+        "created",
+        "createdAt",
+        "createdBy",
+        "dueDate",
+        "isDraft",
+        "isPending",
+        "isPublished",
+        "isReady",
+        "isReadyForPublish",
+        "lastModified",
+        "lastModifiedAt",
+        "lastModifiedBy",
+        "publishDate",
+        "published",
+        "rejected",
+        "rejectedAt",
+        "rejectedBy",
+        "status",
+        "submitted",
+        "submittedAt",
+        "submittedBy",
+        "taskStatus",
+        "updated",
+        "updatedAt",
+        "updatedBy",
+        "visibility",
+        "workflowState",
+    ];
 
     private void AddError(string prefix, string message)
     {
@@ -63,6 +97,11 @@ public sealed partial class Validator(SimplifiedSchema schema, HashSet<string> l
         else if (!BuildPropertyRegex().IsMatch(field.Name))
         {
             AddError($"{prefix}.name", "Not a property name");
+        }
+
+        if (fieldBlackList.Contains(field.Name))
+        {
+            AddError($"{prefix}.name", "Invalid metadata field");
         }
 
         if (field.MinValue > field.MaxValue)

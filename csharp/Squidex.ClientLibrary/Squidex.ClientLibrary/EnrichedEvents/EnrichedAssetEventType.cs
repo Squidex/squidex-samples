@@ -30,5 +30,5 @@ public enum EnrichedAssetEventType
     /// <summary>
     /// Asset Updated.
     /// </summary>
-    Updated
+    Updated,
 }

@@ -110,12 +110,12 @@ public class Authenticator : IAuthenticator
             ["grant_type"] = "client_credentials",
             ["client_id"] = clientId,
             ["client_secret"] = clientSecret,
-            ["scope"] = "squidex-api"
+            ["scope"] = "squidex-api",
         };
 
         return new HttpRequestMessage(HttpMethod.Post, TokenUrl)
         {
-            Content = new FormUrlEncodedContent(parameters!)
+            Content = new FormUrlEncodedContent(parameters!),
         };
     }
 }

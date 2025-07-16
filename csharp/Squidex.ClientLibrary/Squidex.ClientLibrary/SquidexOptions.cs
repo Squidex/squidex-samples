@@ -40,8 +40,8 @@ public class SquidexOptions : OptionsBase
         {
             NamingStrategy = new CamelCaseNamingStrategy
             {
-                OverrideSpecifiedNames = true
-            }
+                OverrideSpecifiedNames = true,
+            },
         };
 
         SerializerSettings.Converters.Add(new StringEnumConverter());

@@ -16,7 +16,7 @@ public class DynamicDataTests
     {
         var source = JsonConvert.SerializeObject(new
         {
-            myField = 42
+            myField = 42,
         });
 
         var result = JsonConvert.DeserializeObject<DynamicData>(source)!;
@@ -31,8 +31,8 @@ public class DynamicDataTests
         {
             myField = new
             {
-                iv = 42
-            }
+                iv = 42,
+            },
         });
 
         var result = JsonConvert.DeserializeObject<DynamicData>(source)!;

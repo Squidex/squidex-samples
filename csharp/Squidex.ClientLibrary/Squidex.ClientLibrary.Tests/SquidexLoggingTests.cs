@@ -53,7 +53,7 @@ public class SquidexLoggingTests
         {
             AppName = "invalid",
             ClientId = "invalid",
-            ClientSecret = "invalid"
+            ClientSecret = "invalid",
         };
 
         options.ClientProvider = new ClientProvider(options, loggingHandler);

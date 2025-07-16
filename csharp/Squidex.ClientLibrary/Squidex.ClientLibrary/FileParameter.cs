@@ -7,6 +7,7 @@
 
 using HeyRed.Mime;
 using Squidex.Assets;
+using Squidex.Assets.TusClient;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;

@@ -41,7 +41,7 @@ public class StaticHttpClientProvider : IHttpClientProvider
 
         var httpClient = new HttpClient(messageHandler, false)
         {
-            BaseAddress = new Uri(options.Url, UriKind.Absolute)
+            BaseAddress = new Uri(options.Url, UriKind.Absolute),
         };
 
         if (options.Timeout != null)
@@ -70,7 +70,7 @@ public class StaticHttpClientProvider : IHttpClientProvider
 
         var messageHandler = new AuthenticatingHttpMessageHandler(options)
         {
-            InnerHandler = innerHandler
+            InnerHandler = innerHandler,
         };
 
         return messageHandler;

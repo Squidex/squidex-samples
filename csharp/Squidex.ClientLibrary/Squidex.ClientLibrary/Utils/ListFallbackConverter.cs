@@ -17,34 +17,34 @@ internal static class ListFallbackConverter
         new ListFallbackConverter<AppLanguagesDto, AppLanguageDto>(
             items => new AppLanguagesDto
             {
-                Items = items
+                Items = items,
             });
 
     public static readonly ListFallbackConverter<ClientsDto, ClientDto> Clients =
         new ListFallbackConverter<ClientsDto, ClientDto>(
             items => new ClientsDto
             {
-                Items = items
+                Items = items,
             });
 
     public static readonly ListFallbackConverter<SchemasDto, SchemaDto> Schemas =
         new ListFallbackConverter<SchemasDto, SchemaDto>(
             items => new SchemasDto
             {
-                Items = items
+                Items = items,
             });
 
     public static readonly ListFallbackConverter<RulesDto, RuleDto> Rules =
         new ListFallbackConverter<RulesDto, RuleDto>(
             items => new RulesDto
             {
-                Items = items
+                Items = items,
             });
 
     public static readonly ListFallbackConverter<ExtendableRulesDto, ExtendableRuleDto> ExtendableRules =
         new ListFallbackConverter<ExtendableRulesDto, ExtendableRuleDto>(
             items => new ExtendableRulesDto
             {
-                Items = items
+                Items = items,
             });
 }

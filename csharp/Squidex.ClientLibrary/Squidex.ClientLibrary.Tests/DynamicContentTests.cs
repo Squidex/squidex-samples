@@ -18,8 +18,8 @@ public class DynamicContentTests
         {
             data = new
             {
-                myField = 42
-            }
+                myField = 42,
+            },
         });
 
         var result = JsonConvert.DeserializeObject<DynamicContent>(source)!;
@@ -36,9 +36,9 @@ public class DynamicContentTests
             {
                 myField = new
                 {
-                    iv = 42
-                }
-            }
+                    iv = 42,
+                },
+            },
         });
 
         var result = JsonConvert.DeserializeObject<DynamicContent>(source)!;

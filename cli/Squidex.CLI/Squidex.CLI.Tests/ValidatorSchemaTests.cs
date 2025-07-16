@@ -1,4 +1,11 @@
-﻿using Squidex.CLI.Commands.Implementation.AI;
+﻿// ==========================================================================
+//  Squidex Headless CMS
+// ==========================================================================
+//  Copyright (c) Squidex UG (haftungsbeschraenkt)
+//  All rights reserved. Licensed under the MIT license.
+// ==========================================================================
+
+using Squidex.CLI.Commands.Implementation.AI;
 using Xunit;
 
 namespace Squidex.CLI;
@@ -94,6 +101,27 @@ public class ValidatorSchemaTests
         var errors = ValidateSchema(schema);
 
         Assert.Equal(["fields[0].name: Not a property name"], errors);
+    }
+
+    [Fact]
+    public void Should_return_error_when_field_name_is_blacklisted()
+    {
+        var schema = new SimplifiedSchema
+        {
+            Name = "my-schema",
+            Fields =
+            [
+                new SimplifiedField
+                {
+                    Name = "approved",
+                    Type = SimplifiedFieldType.Text,
+                },
+            ],
+        };
+
+        var errors = ValidateSchema(schema);
+
+        Assert.Equal(["fields[0].name: Invalid metadata field"], errors);
     }
 
     [Fact]

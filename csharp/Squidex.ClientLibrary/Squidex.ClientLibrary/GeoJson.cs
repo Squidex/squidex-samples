@@ -35,7 +35,7 @@ public static class GeoJson
             {
                 longitude,
                 latitude,
-            }
+            },
         };
     }
 }
