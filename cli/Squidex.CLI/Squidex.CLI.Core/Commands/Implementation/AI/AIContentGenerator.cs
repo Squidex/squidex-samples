@@ -100,13 +100,13 @@ public sealed class AIContentGenerator(IQueryCache queryCache)
         var error = response.Error;
         if (error != null)
         {
-            throw new InvalidOperationException($"Failed to get response. {error.FormatError(response.HttpStatusCode)}");
+            throw new CLIException($"Failed to get response. {error.FormatError(response.HttpStatusCode)}");
         }
 
         var content = response.Choices.FirstOrDefault()?.Message.Content;
         if (string.IsNullOrWhiteSpace(content))
         {
-            throw new InvalidOperationException($"Failed to get image. No result provided.");
+            throw new CLIException($"Failed to get image. No result provided.");
         }
 
         var parsed = Markdown.Parse(content);
@@ -117,7 +117,7 @@ public sealed class AIContentGenerator(IQueryCache queryCache)
             return (null, "One or two code blocks expected");
         }
 
-        var schema = ParseJson<SimplifiedSchema>(codeBlocks[0]);
+        var (schema, _) = ParseJson<SimplifiedSchema>(codeBlocks[0]);
         if (schema == null)
         {
             return (null, "Schema does not match to the provided sample");
@@ -139,7 +139,7 @@ public sealed class AIContentGenerator(IQueryCache queryCache)
 
         if (codeBlocks.Count >= 2)
         {
-            var contents = ParseJson<List<Dictionary<string, JToken>>>(codeBlocks[1]);
+            var (contents, _) = ParseJson<List<Dictionary<string, JToken>>>(codeBlocks[1]);
             if (contents == null)
             {
                 return (null, "Contents do not match to the provided sample");
@@ -181,20 +181,20 @@ public sealed class AIContentGenerator(IQueryCache queryCache)
 
     private static void ThrowParsingException(string reason)
     {
-        throw new InvalidOperationException($"OpenAPI does not return a parsable result: {reason}.");
+        throw new CLIException($"OpenAPI does not return a parsable result: {reason}.");
     }
 
-    private static T? ParseJson<T>(LeafBlock block) where T : class
+    private static (T?, string?) ParseJson<T>(LeafBlock block) where T : class
     {
         try
         {
             var jsonText = GetText(block);
 
-            return JsonConvert.DeserializeObject<T>(jsonText);
+            return (JsonConvert.DeserializeObject<T>(jsonText), jsonText);
         }
         catch (JsonException)
         {
-            return null;
+            return default;
         }
 
         static string GetText(LeafBlock block)

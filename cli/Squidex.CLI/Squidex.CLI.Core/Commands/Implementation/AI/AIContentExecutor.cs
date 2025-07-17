@@ -94,13 +94,13 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
             var error = response.Error;
             if (error != null)
             {
-                throw new InvalidOperationException($"Failed to generate image. {error.FormatError(response.HttpStatusCode)}");
+                throw new CLIException($"Failed to generate image. {error.FormatError(response.HttpStatusCode)}");
             }
 
             var url = response.Results.FirstOrDefault()?.Url;
             if (string.IsNullOrEmpty(url))
             {
-                throw new InvalidOperationException($"Failed to generate image. No result provided.");
+                throw new CLIException($"Failed to generate image. No result provided.");
             }
 
             var asset = await session.Client.Assets.PostAssetAsync(url: url, cancellationToken: ct);
@@ -168,7 +168,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
 
         if (!request.NoContents)
         {
-            await session.Client.DynamicContents(generated.Schema.Name)
+            var result = await session.Client.DynamicContents(generated.Schema.Name)
                 .BulkUpdateAsync(new BulkUpdate
                 {
                     Jobs = generated.Contents.Select(
@@ -181,7 +181,21 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
                         }).ToList(),
                 }, ct);
 
-            log.ProcessCompleted(contentsProcess);
+            var errors = result.Where(x => x.Error != null).Select(x => x.Error!.Message).ToList();
+            if (errors.Count > 0)
+            {
+                var error = errors[0];
+                if (errors.Count > 1)
+                {
+                    error += $" + {errors.Count - 1} more";
+                }
+
+                throw new CLIException($"Failed to insert content: {error}");
+            }
+            else
+            {
+                log.ProcessCompleted(contentsProcess);
+            }
         }
         else
         {
