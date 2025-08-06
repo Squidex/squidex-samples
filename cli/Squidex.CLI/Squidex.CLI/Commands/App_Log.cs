@@ -39,11 +39,12 @@ public sealed partial class App
             var groups = records.GroupBy(x => $"{x.RequestMethod} {x.RequestPath}").Select(x => new
             {
                 Path = x.Key,
-                TotalCalls = x.Count(),
-                TotalCosts = Math.Round(x.Sum(x => x.Costs)),
                 AveragePerformance = x.Average(x => x.RequestElapsedMs),
                 IsAsset = x.Key.StartsWith("GET /api/assets", StringComparison.OrdinalIgnoreCase),
-            }).ToList();
+                IsCollaboration = x.Key.Contains("/collaboration/", StringComparison.OrdinalIgnoreCase),
+                TotalCalls = x.Count(),
+                TotalCosts = Math.Round(x.Sum(x => x.Costs)),
+            }).Where(x => !x.IsCollaboration).ToList();
 
             log.WriteLine("Most used requests:");
 
