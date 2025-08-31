@@ -15,6 +15,9 @@ yarn && yarn dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
+## Landing Page
+![LandingPage](./public/image.png)
+
 ## Available Scripts
 - `dev`: Runs the app in development mode
 - `build`: Compiles TypeScript and builds with Vite
