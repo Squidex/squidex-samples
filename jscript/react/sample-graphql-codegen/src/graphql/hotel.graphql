@@ -1,0 +1,12 @@
+query pageQuery {
+  queryPagesContentsWithTotal {
+    total
+    items {
+      id
+      flatData {
+        title
+        text
+      }
+    }
+  }
+}
