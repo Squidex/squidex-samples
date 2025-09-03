@@ -12,8 +12,8 @@ const squidexClient = new SquidexClient({
   tokenStore: new StorageTokenStore(sessionStorage, `${Environment.appName}-token-store`),
 })
 
-const authLink = new SetContextLink((prevContext) => {
-  const accessToken = squidexClient.clientOptions.tokenStore?.get()?.accessToken
+const authLink = new SetContextLink(async (prevContext) => {
+  const accessToken = await squidexClient.getToken();
   return {
     headers: {
       ...prevContext.headers,

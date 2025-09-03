@@ -1094,9 +1094,9 @@
   integrity sha512-xMmiWRR8sp72Zqwjgtf3QbZfF1wdh8X2ABu3EaozvZcyHJeU0r+XAnXdKgs4cCAp6ORoYoCygipYP1mjmbjrsg==
 
 "@squidex/squidex@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@squidex/squidex/-/squidex-2.0.0.tgz#041403fbff615f234630cb97d421767267029593"
-  integrity sha512-gARbYW7IcTF4KHm9AEvQ+tEQe0APWW9Yd07a8e+QKl3Tz6qEddYVlHfRpnmZtq/j5AJUJnZ6jx6nUo0hSHLoFw==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@squidex/squidex/-/squidex-2.0.1.tgz#bb995a0e7e3ea875f0835a61ae0311b349804f77"
+  integrity sha512-D3E3I5ZfbEhm5nHMNh+uWfo/JMA++lgd5X0J049cxSX0Dy6LozFkekg05V3gbyH3IjEBHrdbNgIT4ZmrnsXsaA==
 
 "@swc/core-darwin-arm64@1.13.5":
   version "1.13.5"

@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.3",
-    "@squidex/squidex": "^2.0.0",
+    "@squidex/squidex": "^2.0.1",
     "graphql": "^16.11.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
