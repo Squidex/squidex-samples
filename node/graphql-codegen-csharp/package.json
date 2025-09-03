@@ -1,0 +1,28 @@
+{
+  "name": "graphql-codegen-csharp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "dev": "ts-node ./src/export-json-schema.ts",
+    "format": "prettier --check --ignore-path .prettierignore .",
+    "format:fix": "prettier --write --ignore-path .prettierignore .",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@squidex/squidex": "^2.0.1",
+    "dotenv": "^17.2.1",
+    "graphql": "^16.11.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@graphql-codegen/c-sharp": "^5.1.2",
+    "@graphql-codegen/c-sharp-operations": "^3.2.0",
+    "@graphql-codegen/cli": "^5.0.7",
+    "eslint": "^9.33.0",
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1"
+  }
+}
