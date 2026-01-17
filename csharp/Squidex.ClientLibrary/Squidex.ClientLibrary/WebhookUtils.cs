@@ -39,13 +39,11 @@ public static class WebhookUtils
 
     private static string ToSha256Base64(this byte[] bytes)
     {
-        using (var sha = SHA256.Create())
-        {
-            var bytesHash = sha.ComputeHash(bytes);
+        using var sha = SHA256.Create();
+        var bytesHash = sha.ComputeHash(bytes);
 
-            var result = Convert.ToBase64String(bytesHash);
+        var result = Convert.ToBase64String(bytesHash);
 
-            return result;
-        }
+        return result;
     }
 }

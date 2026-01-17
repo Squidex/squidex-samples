@@ -16,7 +16,7 @@ namespace Squidex.ClientLibrary.Configuration;
 public class CachingAuthenticator : IAuthenticator
 {
     private readonly IAuthenticator authenticator;
-    private readonly Cache<string, string?> cache = new Cache<string, string?>();
+    private readonly Cache<string, AuthToken?> cache = new Cache<string, AuthToken?>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CachingAuthenticator"/> class with the cache key,
@@ -32,14 +32,13 @@ public class CachingAuthenticator : IAuthenticator
     }
 
     /// <inheritdoc/>
-    public async Task<string> GetBearerTokenAsync(string appName,
+    public async Task<AuthToken> GetAuthTokenAsync(string appName,
         CancellationToken ct)
     {
         var result = GetFromCache(appName);
-
         if (result == null)
         {
-            result = await authenticator.GetBearerTokenAsync(appName, ct);
+            result = await authenticator.GetAuthTokenAsync(appName, ct);
 
             cache.Set(appName, result, TimeSpan.FromDays(29));
         }
@@ -48,7 +47,7 @@ public class CachingAuthenticator : IAuthenticator
     }
 
     /// <inheritdoc/>
-    public Task RemoveTokenAsync(string appName, string token,
+    public Task RemoveTokenAsync(string appName, AuthToken token,
         CancellationToken ct)
     {
         cache.Remove(appName);
@@ -71,7 +70,7 @@ public class CachingAuthenticator : IAuthenticator
     /// <returns>
     /// The JWT bearer token or null if not found in the cache.
     /// </returns>
-    protected string? GetFromCache(string appName)
+    protected AuthToken? GetFromCache(string appName)
     {
         cache.TryGet(appName, out var token);
 
@@ -93,7 +92,7 @@ public class CachingAuthenticator : IAuthenticator
     /// <param name="appName">The name of the app.</param>
     /// <param name="token">The JWT bearer token.</param>
     /// <param name="expires">The date and time when the token will expire.</param>
-    public void SetToCache(string appName, string token, DateTimeOffset expires)
+    public void SetToCache(string appName, AuthToken token, DateTimeOffset expires)
     {
         cache.Set(appName, token, expires);
     }

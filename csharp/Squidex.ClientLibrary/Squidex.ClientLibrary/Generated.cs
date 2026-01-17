@@ -23979,6 +23979,7 @@ namespace Squidex.ClientLibrary
     [JsonInheritanceAttribute("String", typeof(StringFieldPropertiesDto))]
     [JsonInheritanceAttribute("Tags", typeof(TagsFieldPropertiesDto))]
     [JsonInheritanceAttribute("UI", typeof(UIFieldPropertiesDto))]
+    [JsonInheritanceAttribute("UserInfo", typeof(UserInfoFieldPropertiesDto))]
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public abstract partial class FieldPropertiesDto
     {
@@ -24955,6 +24956,12 @@ namespace Squidex.ClientLibrary
 
         [System.Runtime.Serialization.EnumMember(Value = @"Separator")]
         Separator = 0,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.1.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UserInfoFieldPropertiesDto : FieldPropertiesDto
+    {
 
     }
 

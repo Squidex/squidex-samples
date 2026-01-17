@@ -24,6 +24,7 @@ public class SquidexOptions : OptionsBase
     private string clientSecret;
     private string contentCDN;
     private string assetCDN;
+    private string apiKey;
     private bool readResponseAsString;
     private bool ignoreSelfSignedCertificates;
     private IAuthenticator authenticator;
@@ -78,10 +79,23 @@ public class SquidexOptions : OptionsBase
     }
 
     /// <summary>
+    /// Gets or sets authentication key pair.
+    /// </summary>
+    /// <value>
+    /// The authentication key pair.
+    /// </value>
+    /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
+    public string ApiKey
+    {
+        get => apiKey;
+        set => Set(ref apiKey, value);
+    }
+
+    /// <summary>
     /// Gets or sets the client identifier.
     /// </summary>
     /// <value>
-    /// The client identifier. This is a required option.
+    /// The client identifier. This is a required option if the client ID and client secret is not set.
     /// </value>
     /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
     public string ClientId
@@ -94,7 +108,7 @@ public class SquidexOptions : OptionsBase
     /// Gets or sets the client secret.
     /// </summary>
     /// <value>
-    /// The client secret. This is a required option.
+    /// The client secret. This is a required option if the client ID and client secret is not set.
     /// </value>
     /// <exception cref="InvalidOperationException">Option is frozen and cannot be changed anymore.</exception>
     public string ClientSecret
@@ -281,17 +295,24 @@ public class SquidexOptions : OptionsBase
 
         if (authenticator == null)
         {
-            if (string.IsNullOrWhiteSpace(clientId))
+            if (!string.IsNullOrWhiteSpace(apiKey))
             {
-                throw new ArgumentException("Client id is not defined.", nameof(ClientId));
+                authenticator = new ApiKeyAuthenticator(appName, apiKey);
             }
-
-            if (string.IsNullOrWhiteSpace(clientSecret))
+            else
             {
-                throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
-            }
+                if (string.IsNullOrWhiteSpace(clientId))
+                {
+                    throw new ArgumentException("Client id is not defined.", nameof(ClientId));
+                }
 
-            authenticator = new CachingAuthenticator(new Authenticator(this));
+                if (string.IsNullOrWhiteSpace(clientSecret))
+                {
+                    throw new ArgumentException("Client secret is not defined.", nameof(ClientSecret));
+                }
+
+                authenticator = new CachingAuthenticator(new Authenticator(this));
+            }
         }
 
         if (clientProvider == null)

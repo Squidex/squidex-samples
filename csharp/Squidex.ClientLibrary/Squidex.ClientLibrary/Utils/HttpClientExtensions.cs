@@ -161,27 +161,15 @@ public static class HttpClientExtensions
         var serializer = JsonSerializer.CreateDefault(options.SerializerSettings);
 
 #if NET8_0_OR_GREATER
-        await using (var stream = await content.ReadAsStreamAsync())
-        {
-            using (var reader = new StreamReader(stream))
-            {
-                using (var jsonReader = new JsonTextReader(reader))
-                {
-                    return serializer.Deserialize<T>(jsonReader);
-                }
-            }
-        }
+        await using var stream = await content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        using var jsonReader = new JsonTextReader(reader);
+        return serializer.Deserialize<T>(jsonReader);
 #else
-        using (var stream = await content.ReadAsStreamAsync())
-        {
-            using (var reader = new StreamReader(stream))
-            {
-                using (var jsonReader = new JsonTextReader(reader))
-                {
-                    return serializer.Deserialize<T>(jsonReader);
-                }
-            }
-        }
+        using var stream = await content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        using var jsonReader = new JsonTextReader(reader);
+        return serializer.Deserialize<T>(jsonReader);
 #endif
     }
 }

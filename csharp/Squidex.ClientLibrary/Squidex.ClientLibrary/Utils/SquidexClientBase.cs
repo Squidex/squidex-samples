@@ -35,13 +35,9 @@ public abstract class SquidexClientBase
     {
         var httpClient = Options.ClientProvider.Get();
 
-        using (var request = BuildRequest(method, path, content, context))
-        {
-            using (var response = await httpClient.SendAsync(request, ct))
-            {
-                await EnsureResponseIsValidAsync(response);
-            }
-        }
+        using var request = BuildRequest(method, path, content, context);
+        using var response = await httpClient.SendAsync(request, ct);
+        await EnsureResponseIsValidAsync(response);
     }
 
     protected internal async Task<Stream> RequestStreamAsync(HttpMethod method, string path, HttpContent? content, QueryContext? context,
@@ -49,17 +45,15 @@ public abstract class SquidexClientBase
     {
         var httpClient = Options.ClientProvider.Get();
 
-        using (var request = BuildRequest(method, path, content, context))
-        {
-            var response = await httpClient.SendAsync(request, ct);
+        using var request = BuildRequest(method, path, content, context);
+        var response = await httpClient.SendAsync(request, ct);
 
-            await EnsureResponseIsValidAsync(response);
+        await EnsureResponseIsValidAsync(response);
 #if NET8_0_OR_GREATER
-            return await response.Content.ReadAsStreamAsync(ct);
+        return await response.Content.ReadAsStreamAsync(ct);
 #else
-            return await response.Content.ReadAsStreamAsync();
+        return await response.Content.ReadAsStreamAsync();
 #endif
-        }
     }
 
     protected internal async Task<T> RequestJsonAsync<T>(HttpMethod method, string path, HttpContent? content, QueryContext? context,
@@ -67,15 +61,11 @@ public abstract class SquidexClientBase
     {
         var httpClient = Options.ClientProvider.Get();
 
-        using (var request = BuildRequest(method, path, content, context))
-        {
-            using (var response = await httpClient.SendAsync(request, ct))
-            {
-                await EnsureResponseIsValidAsync(response);
+        using var request = BuildRequest(method, path, content, context);
+        using var response = await httpClient.SendAsync(request, ct);
+        await EnsureResponseIsValidAsync(response);
 
-                return (await response.Content.ReadAsJsonAsync<T>(Options))!;
-            }
-        }
+        return (await response.Content.ReadAsJsonAsync<T>(Options))!;
     }
 
 #pragma warning disable CA1822 // Mark members as static

@@ -44,9 +44,10 @@ public class BasicClientTests
     }
 
     [Fact]
-    public async Task Should_get_content_with_invalid_token()
+    public async Task Should_get_content_with_invalid_token_for_anonymous_access()
     {
-        ((CachingAuthenticator)sut.Options.Authenticator).SetToCache(sut.Options.AppName, "TOKEN", DateTimeOffset.MaxValue);
+        ((CachingAuthenticator)sut.Options.Authenticator).SetToCache(sut.Options.AppName,
+            new AuthToken("Authorization", "Bearer TOKEN"), DateTimeOffset.MaxValue);
 
         var result = await sut.DynamicContents("blog").GetAsync();
 

@@ -13,14 +13,14 @@ namespace Squidex.ClientLibrary;
 public interface IAuthenticator
 {
     /// <summary>
-    /// Gets the JWT bearer token.
+    /// Gets the auth token.
     /// </summary>
     /// <param name="appName">The name of the app.</param>
     /// <param name="ct">The cancellation token.</param>
     /// <returns>
-    /// The JWT bearer token.
+    /// The auth token.
     /// </returns>
-    Task<string> GetBearerTokenAsync(string appName,
+    Task<AuthToken> GetAuthTokenAsync(string appName,
         CancellationToken ct);
 
     /// <summary>
@@ -32,7 +32,7 @@ public interface IAuthenticator
     /// <returns>
     /// The task for completion.
     /// </returns>
-    Task RemoveTokenAsync(string appName, string token,
+    Task RemoveTokenAsync(string appName, AuthToken token,
         CancellationToken ct);
 
     /// <summary>

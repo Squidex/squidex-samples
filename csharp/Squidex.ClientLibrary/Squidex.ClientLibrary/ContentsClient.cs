@@ -86,52 +86,46 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
         var httpClient = Options.ClientProvider.Get();
 
-        using (var request = BuildRequest(HttpMethod.Get, BuildUrl($"stream?skip={skip}", false), null, context))
-        {
-            using (var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct))
-            {
-                await EnsureResponseIsValidAsync(response);
+        using var request = BuildRequest(HttpMethod.Get, BuildUrl($"stream?skip={skip}", false), null, context);
+        using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+        await EnsureResponseIsValidAsync(response);
 
 #if NETSTANDARD2_0 || NETCOREAPP3_1
-                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
 #else
-                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct)))
+        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct));
 #endif
-                {
-                    string? line;
+        string? line;
 #if NET7_0_OR_GREATER
-                    while ((line = await reader.ReadLineAsync(ct)) != null)
+        while ((line = await reader.ReadLineAsync(ct)) != null)
 #else
-                    while ((line = await reader.ReadLineAsync()) != null)
+        while ((line = await reader.ReadLineAsync()) != null)
 #endif
-                    {
-                        ct.ThrowIfCancellationRequested();
+        {
+            ct.ThrowIfCancellationRequested();
 
-                        if (string.IsNullOrWhiteSpace(line))
-                        {
-                            continue;
-                        }
-
-                        const string Prefix = "data: ";
-
-                        if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
-                        {
-                            throw new SquidexException("Line does not start with data prefix.");
-                        }
-
-                        var stringReader = new StringReader(line);
-
-                        for (var i = 0; i < Prefix.Length; i++)
-                        {
-                            stringReader.Read();
-                        }
-
-                        var contentItem = stringReader.FromJson<TEntity>(Options);
-
-                        await callback(contentItem);
-                    }
-                }
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
             }
+
+            const string Prefix = "data: ";
+
+            if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new SquidexException("Line does not start with data prefix.");
+            }
+
+            var stringReader = new StringReader(line);
+
+            for (var i = 0; i < Prefix.Length; i++)
+            {
+                stringReader.Read();
+            }
+
+            var contentItem = stringReader.FromJson<TEntity>(Options);
+
+            await callback(contentItem);
         }
     }
 

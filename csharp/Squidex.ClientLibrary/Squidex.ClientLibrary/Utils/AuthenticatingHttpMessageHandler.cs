@@ -6,7 +6,6 @@
 // ==========================================================================
 
 using System.Net;
-using System.Net.Http.Headers;
 
 namespace Squidex.ClientLibrary.Utils;
 
@@ -49,12 +48,11 @@ public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
     private async Task<HttpResponseMessage> InterceptAsync(HttpRequestMessage request, bool retry,
         CancellationToken cancellationToken)
     {
-        var token = await options.Authenticator.GetBearerTokenAsync(options.AppName, cancellationToken);
+        var token = await options.Authenticator.GetAuthTokenAsync(options.AppName, cancellationToken);
 
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        request.Headers.TryAddWithoutValidation(token.HeaderName, token.HeaderName);
 
         var response = await base.SendAsync(request, cancellationToken);
-
         if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
             await options.Authenticator.RemoveTokenAsync(options.AppName, token, cancellationToken);

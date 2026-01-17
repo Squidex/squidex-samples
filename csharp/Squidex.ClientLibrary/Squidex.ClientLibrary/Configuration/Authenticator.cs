@@ -45,14 +45,14 @@ public class Authenticator : IAuthenticator
     }
 
     /// <inheritdoc/>
-    public Task RemoveTokenAsync(string appName, string token,
+    public Task RemoveTokenAsync(string appName, AuthToken token,
         CancellationToken ct)
     {
         return Task.CompletedTask;
     }
 
     /// <inheritdoc/>
-    public async Task<string> GetBearerTokenAsync(string appName,
+    public async Task<AuthToken> GetAuthTokenAsync(string appName,
         CancellationToken ct)
     {
         var httpClient = options.ClientProvider.Get();
@@ -64,30 +64,28 @@ public class Authenticator : IAuthenticator
 
         var httpRequest = BuildRequest(clientId, clientSecret);
 
-        using (var response = await httpClient.SendAsync(httpRequest, ct))
+        using var response = await httpClient.SendAsync(httpRequest, ct);
+        if (!response.IsSuccessStatusCode)
         {
-            if (!response.IsSuccessStatusCode)
-            {
 #if NET8_0_OR_GREATER
-                var errorString = await response.Content.ReadAsStringAsync(ct);
+            var errorString = await response.Content.ReadAsStringAsync(ct);
 #else
-                var errorString = await response.Content.ReadAsStringAsync();
+            var errorString = await response.Content.ReadAsStringAsync();
 #endif
 
-                var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode} and error {errorString}.");
+            var exception = new SecurityException($"Failed to retrieve access token for client '{options.ClientId}', got HTTP {response.StatusCode} and error {errorString}.");
 
-                StorePreviousAttempt(clientId, clientSecret, exception);
-                throw exception;
-            }
-#if NET8_0_OR_GREATER
-            var jsonString = await response.Content.ReadAsStringAsync(ct);
-#else
-            var jsonString = await response.Content.ReadAsStringAsync();
-#endif
-            var jsonToken = JToken.Parse(jsonString);
-
-            return jsonToken["access_token"]!.ToString();
+            StorePreviousAttempt(clientId, clientSecret, exception);
+            throw exception;
         }
+#if NET8_0_OR_GREATER
+        var jsonString = await response.Content.ReadAsStringAsync(ct);
+#else
+        var jsonString = await response.Content.ReadAsStringAsync();
+#endif
+        var jsonToken = JToken.Parse(jsonString);
+
+        return new AuthToken("Authorization", $"Beader {jsonToken["access_token"]!}");
     }
 
     private void StorePreviousAttempt(string clientId, string clientSecret, Exception exception)
