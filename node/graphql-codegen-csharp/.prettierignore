@@ -1,0 +1,5 @@
+dist
+*.md
+node_modules
+src/__generated__/
+dotnet-codegen
