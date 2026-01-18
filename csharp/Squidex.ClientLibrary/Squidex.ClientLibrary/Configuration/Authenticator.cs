@@ -85,7 +85,7 @@ public class Authenticator : IAuthenticator
 #endif
         var jsonToken = JToken.Parse(jsonString);
 
-        return new AuthToken("Authorization", $"Beader {jsonToken["access_token"]!}");
+        return new AuthToken("Authorization", $"Bearer {jsonToken["access_token"]!}");
     }
 
     private void StorePreviousAttempt(string clientId, string clientSecret, Exception exception)

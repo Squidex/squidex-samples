@@ -50,7 +50,7 @@ public sealed class AuthenticatingHttpMessageHandler : DelegatingHandler
     {
         var token = await options.Authenticator.GetAuthTokenAsync(options.AppName, cancellationToken);
 
-        request.Headers.TryAddWithoutValidation(token.HeaderName, token.HeaderName);
+        request.Headers.TryAddWithoutValidation(token.HeaderName, token.HeaderValue);
 
         var response = await base.SendAsync(request, cancellationToken);
         if (response.StatusCode == HttpStatusCode.Unauthorized)
