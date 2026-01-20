@@ -80,7 +80,7 @@ public class BasicClientServiceTests
 
     private class CountUrlHandler : DelegatingHandler
     {
-        public Dictionary<string, int> Counts { get; private set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> Counts { get; private set; } = [];
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)

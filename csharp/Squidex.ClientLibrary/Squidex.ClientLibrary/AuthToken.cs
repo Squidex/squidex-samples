@@ -12,29 +12,17 @@ namespace Squidex.ClientLibrary;
 /// <summary>
 /// The API key for authentication.
 /// </summary>
-public sealed class AuthToken
+public abstract class AuthToken
 {
     /// <summary>
-    /// Gets the header name.
+    /// Serializes the header value.
     /// </summary>
-    public string HeaderName { get; }
+    /// <returns>The header value.</returns>
+    public abstract (string Name, string Value) SerializeAsHeader();
 
     /// <summary>
-    /// Gets the header value.
+    /// Serializes the query string value.
     /// </summary>
-    public string HeaderValue { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthToken" /> class with all properties.
-    /// </summary>
-    /// <param name="headerName">The header name. Cannot be null or empty.</param>
-    /// <param name="headerValue">The header value. Cannot be null or empty.</param>
-    public AuthToken(string headerName, string headerValue)
-    {
-        Guard.NotNullOrEmpty(headerName, nameof(headerName));
-        Guard.NotNullOrEmpty(headerValue, nameof(headerValue));
-
-        HeaderName = headerName;
-        HeaderValue = headerValue;
-    }
+    /// <returns>The query string value.</returns>
+    public abstract (string Name, string Value) SerializeAsQuery();
 }

@@ -10,8 +10,7 @@ namespace Squidex.ClientLibrary.Configuration;
 internal sealed class ApiKeyAuthenticator(string appName, string apiKey) : IAuthenticator
 {
     private readonly Task<AuthToken> token =
-        Task.FromResult(
-            new AuthToken("Authorization", $"ApiKey {appName}:{apiKey}"));
+        Task.FromResult<AuthToken>(new ApiKeyAuthToken(appName, apiKey));
 
     public Task<AuthToken> GetAuthTokenAsync(string appName, CancellationToken ct)
     {
