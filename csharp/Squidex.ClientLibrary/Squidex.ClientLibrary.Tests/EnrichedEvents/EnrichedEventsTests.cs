@@ -57,7 +57,7 @@ public class EnrichedEventsTests
 	}";
 
     [Fact]
-    public async void Should_deserialize_EnrichedContentEvent()
+    public async Task Should_deserialize_EnrichedContentEvent()
     {
         var envelope = EnrichedEventEnvelope.FromJson(JsonEnrichedContentEvent, options);
 
