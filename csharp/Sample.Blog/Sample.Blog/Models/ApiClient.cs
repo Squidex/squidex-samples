@@ -23,13 +23,13 @@ namespace Sample.Blog.Models
         {
             var options = appOptions.Value;
 
-            options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+            options.IgnoreSelfSignedCertificates = true;
 
-            var clientManager =
-                new SquidexClientManager(options);
+            var client =
+                new SquidexClient(options);
 
-            pagesClient = clientManager.CreateContentsClient<Page, PageData>("pages");
-            postsClient = clientManager.CreateContentsClient<BlogPost, BlogPostData>("posts");
+            pagesClient = client.Contents<Page, PageData>("pages");
+            postsClient = client.Contents<BlogPost, BlogPostData>("posts");
         }
 
         public async Task<(long Total, List<BlogPost> Posts)> GetBlogPostsAsync(int page = 0, int pageSize = 3)

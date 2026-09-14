@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CodeGeneration/CodeGeneration.csproj" />
+  <Project Path="Integration.Localize/Integration.Localize.csproj" />
+</Solution>

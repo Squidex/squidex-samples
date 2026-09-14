@@ -33,9 +33,9 @@ namespace Sample.Profile
             {
                 var options = c.GetRequiredService<IOptions<SquidexOptions>>().Value;
 
-                options.Configurator = AcceptAllCertificatesConfigurator.Instance;
+                options.IgnoreSelfSignedCertificates = true;
 
-                return new SquidexClientManager(options);
+                return new SquidexClient(options);
             });
 
             services.AddMvc();

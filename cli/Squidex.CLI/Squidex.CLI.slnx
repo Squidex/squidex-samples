@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="../../csharp/Squidex.ClientLibrary/CodeGeneration/CodeGeneration.csproj" />
+  <Project Path="../../csharp/Squidex.ClientLibrary/Squidex.ClientLibrary.ServiceExtensions/Squidex.ClientLibrary.ServiceExtensions.csproj" />
+  <Project Path="../../csharp/Squidex.ClientLibrary/Squidex.ClientLibrary.Tests/Squidex.ClientLibrary.Tests.csproj" />
+  <Project Path="../../csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/Squidex.ClientLibrary.csproj" />
+  <Project Path="Squidex.CLI.Core/Squidex.CLI.Core.csproj" />
+  <Project Path="Squidex.CLI.Tests/Squidex.CLI.Tests.csproj" />
+  <Project Path="Squidex.CLI/Squidex.CLI.csproj" />
+</Solution>

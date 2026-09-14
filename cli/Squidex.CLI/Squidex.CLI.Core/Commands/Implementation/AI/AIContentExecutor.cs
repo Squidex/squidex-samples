@@ -6,8 +6,8 @@
 // ==========================================================================
 
 using Betalgo.Ranul.OpenAI;
+using Betalgo.Ranul.OpenAI.Contracts.Requests.Image;
 using Betalgo.Ranul.OpenAI.Managers;
-using Betalgo.Ranul.OpenAI.ObjectModels.RequestModels;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
 
@@ -89,7 +89,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
 
         await Parallel.ForEachAsync(targets, ct, async (target, ct) =>
         {
-            var response = await client.CreateImage(new ImageCreateRequest(target.Image.Description), ct);
+            var response = await client.CreateImage(new CreateImageRequest { Prompt = target.Image.Description }, ct);
 
             var error = response.Error;
             if (error != null)
@@ -97,7 +97,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
                 throw new CLIException($"Failed to generate image. {error.FormatError(response.HttpStatusCode)}");
             }
 
-            var url = response.Results.FirstOrDefault()?.Url;
+            var url = response.Results?.FirstOrDefault();
             if (string.IsNullOrEmpty(url))
             {
                 throw new CLIException($"Failed to generate image. No result provided.");

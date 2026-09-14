@@ -4,22 +4,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
     <NoWarn>1701;1702;NETSDK1138</NoWarn>
   </PropertyGroup>
 	
   <ItemGroup>
-    <PackageReference Include="Meziantou.Analyzer" Version="2.0.136">
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.257">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MimeTypesMap" Version="1.0.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Squidex.Assets.TusClient" Version="7.24.0" />
+    <PackageReference Include="MimeTypesMap" Version="1.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Squidex.Assets.TusClient" Version="8.0.4" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0">
       <PrivateAssets>all</PrivateAssets>

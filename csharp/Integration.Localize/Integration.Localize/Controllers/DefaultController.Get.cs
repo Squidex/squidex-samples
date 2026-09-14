@@ -9,7 +9,6 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Integration.Localize.Controllers;
 
@@ -18,7 +17,7 @@ public partial class DefaultController : ControllerBase
     public override async Task<CacheResponse> Cache(
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager();
+        var client = BuildClient();
 
         var response = new CacheResponse
         {
@@ -26,8 +25,7 @@ public partial class DefaultController : ControllerBase
         };
 
         var schemas =
-            await clientManager.CreateSchemasClient().GetSchemasAsync(clientManager.App,
-                cancellationToken);
+            await client.Schemas.GetSchemasAsync(cancellationToken);
 
         foreach (var schema in schemas.Items)
         {
@@ -39,7 +37,7 @@ public partial class DefaultController : ControllerBase
                 continue;
             }
 
-            var contents = clientManager.CreateDynamicContentsClient(schema.Name);
+            var contents = client.DynamicContents(schema.Name);
 
             await contents.GetAllAsync(content =>
             {
@@ -58,7 +56,7 @@ public partial class DefaultController : ControllerBase
     public override async Task<CacheItemsResponse> Items([FromBody] CacheItemsRequest body,
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager();
+        var client = BuildClient();
 
         var response = new CacheItemsResponse
         {
@@ -66,14 +64,12 @@ public partial class DefaultController : ControllerBase
         };
 
         var languages =
-            await clientManager.CreateAppsClient().GetLanguagesAsync(clientManager.App,
-                cancellationToken);
+            await client.Apps.GetLanguagesAsync(cancellationToken);
 
         var masterLanguage = languages.Items.Find(x => x.IsMaster)?.Iso2Code ?? "en";
 
         var schemas =
-            await clientManager.CreateSchemasClient().GetSchemasAsync(clientManager.App,
-                cancellationToken);
+            await client.Schemas.GetSchemasAsync(cancellationToken);
 
         var schemaDefinitions =
             schemas.Items.ToDictionary(
@@ -96,7 +92,7 @@ public partial class DefaultController : ControllerBase
             ContentField = x.Metadata[MetaFields.ContentField],
         }).ToLookup(x => x.ContentId);
 
-        var contentClient = clientManager.CreateDynamicContentsClient("none");
+        var contentClient = client.SharedDynamicContents;
         var contentIds = body.Items.Select(x => x.Metadata[MetaFields.ContentId]).Distinct().ToHashSet();
 
         foreach (var batch in contentIds.Batch(200))
@@ -140,7 +136,7 @@ public partial class DefaultController : ControllerBase
     public override async Task<TranslateResponse> Translate([FromBody] TranslateRequest body,
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager();
+        var client = BuildClient();
 
         var response = new TranslateResponse
         {
@@ -153,7 +149,7 @@ public partial class DefaultController : ControllerBase
             ContentField = x.Metadata[MetaFields.ContentField],
         }).ToLookup(x => x.ContentId);
 
-        var contentClient = clientManager.CreateDynamicContentsClient("none");
+        var contentClient = client.SharedDynamicContents;
         var contentIds = body.Items.Select(x => x.Metadata[MetaFields.ContentId]).Distinct().ToHashSet();
 
         foreach (var batch in contentIds.Batch(200))
@@ -172,7 +168,7 @@ public partial class DefaultController : ControllerBase
                     {
                         foreach (var (key, fieldValue) in value)
                         {
-                            if (fieldValue is not null && fieldValue.Type is not JTokenType.Array or JTokenType.Object)
+                            if (fieldValue is not null && fieldValue.Type is not (JTokenType.Array or JTokenType.Object))
                             {
                                 translations[key] = fieldValue.ToString();
                             }

@@ -38,7 +38,7 @@ public static class Program
 
         var sourceCode = GenerateCode(document);
 
-        File.WriteAllText(Path.Combine(rootFolder, "samples/csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/Generated.cs"), sourceCode);
+        File.WriteAllText(Path.Combine(rootFolder, "squidex-samples/csharp/Squidex.ClientLibrary/Squidex.ClientLibrary/Generated.cs"), sourceCode);
     }
 
     private static void WriteToFile(string rootFolder, OpenApiDocument document, string path)

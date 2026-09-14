@@ -12,7 +12,7 @@ public partial class DefaultController : ControllerBase
     public override async Task<EnvResponse> Env(
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager();
+        var client = BuildClient();
 
         var response = new EnvResponse
         {
@@ -27,8 +27,7 @@ public partial class DefaultController : ControllerBase
         };
 
         var languages =
-            await clientManager.CreateAppsClient().GetLanguagesAsync(clientManager.App,
-                cancellationToken);
+            await client.Apps.GetLanguagesAsync(cancellationToken);
 
         foreach (var language in languages.Items)
         {

@@ -25,15 +25,13 @@ public partial class DefaultController : ControllerBase
     public override async Task<IDictionary<string, string>> AuthPOST([FromBody] IDictionary<string, string>? body = null,
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager(body);
+        var client = BuildClient(body);
 
         // The permission is needed to get the schemas.
-        await clientManager.CreateSchemasClient().GetSchemasAsync(clientManager.App,
-            cancellationToken);
+        await client.Schemas.GetSchemasAsync(cancellationToken);
 
         // The permission is needed to get the languages.
-        await clientManager.CreateAppsClient().GetLanguagesAsync(clientManager.App,
-            cancellationToken);
+        await client.Apps.GetLanguagesAsync(cancellationToken);
 
         return body!;
     }

@@ -8,7 +8,6 @@
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Squidex.ClientLibrary;
-using Squidex.ClientLibrary.Management;
 
 namespace Integration.Localize.Controllers;
 
@@ -20,7 +19,7 @@ public static class TitleBuilder
 
         void Add(JToken value)
         {
-            if (value.Type is not JTokenType.Array or JTokenType.Object)
+            if (value.Type is not (JTokenType.Array or JTokenType.Object))
             {
                 var text = value.ToString();
 

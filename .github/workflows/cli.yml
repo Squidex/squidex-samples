@@ -11,15 +11,15 @@ jobs:
     runs-on: ubuntu-latest
         
     steps:
-    - uses: actions/checkout@v4.0.0
+    - uses: actions/checkout@v5
 
     - name: setup zip
       uses: montudor/action-zip@v1.0.0
  
     - name: setup dotnet
-      uses: actions/setup-dotnet@v4.0.0
+      uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 10.0.x
 
     - name: publish dotnet
       run: |
@@ -77,32 +77,32 @@ jobs:
 
     - name: archive dotnet
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/publish/
         zip -r '../../out/dotnet.zip' *
   
     - name: archive win-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/win-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/win-x64/publish/
         zip -r '../../../out/win-x64.zip' *
   
     - name: archive win-x86
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/win-x86/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/win-x86/publish/
         zip -r '../../../out/win-x86.zip' *
   
     - name: archive linux-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/linux-x64/publish/
-        zip -r '../../..//out/linux-x64.zip' *
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/linux-x64/publish/
+        zip -r '../../../out/linux-x64.zip' *
 
     - name: archive osx-x64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-x64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/osx-x64/publish/
         zip -r '../../../out/osx-x64.zip' *
 
     - name: archive osx-arm64
       run: |
-        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net8.0/osx-arm64/publish/
+        cd cli/Squidex.CLI/Squidex.CLI/bin/Release/net10.0/osx-arm64/publish/
         zip -r '../../../out/osx-arm64.zip' *
 
     - name: release

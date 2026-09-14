@@ -24,7 +24,7 @@ public partial class DefaultController : ControllerBase
         public const string DateUpdated = nameof(DateUpdated);
     }
 
-    private ISquidexClientManager BuildClientManager()
+    private ISquidexClient BuildClient()
     {
         if (!Request.Headers.TryGetValue("GE-Config", out var config))
         {
@@ -34,10 +34,10 @@ public partial class DefaultController : ControllerBase
         var decodedString = Encoding.UTF8.GetString(Convert.FromBase64String(config));
         var decodedObject = JsonSerializer.Deserialize<Dictionary<string, string>>(decodedString);
 
-        return BuildClientManager(decodedObject);
+        return BuildClient(decodedObject);
     }
 
-    private static ISquidexClientManager BuildClientManager(IDictionary<string, string>? properties)
+    private static ISquidexClient BuildClient(IDictionary<string, string>? properties)
     {
         if (properties == null)
         {
@@ -78,6 +78,6 @@ public partial class DefaultController : ControllerBase
             options.Url = url;
         }
 
-        return new SquidexClientManager(options);
+        return new SquidexClient(options);
     }
 }
