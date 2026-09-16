@@ -4974,12 +4974,14 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <remarks>
         /// Schema changes are not applied to the stored contents. This endpoint starts a job that rewrites all
-        /// <br/>contents of the schema so that the stored data matches the current schema.
+        /// <br/>contents of the schema so that the stored data matches the current schema. The draft and the published
+        /// <br/>version of a content are migrated independently.
         /// </remarks>
         /// <param name="schema">The name of the schema.</param>
+        /// <param name="request">The request object that defines which versions to migrate.</param>
         /// <returns>Content migration added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostContentMigrationAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -5397,15 +5399,20 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <remarks>
         /// Schema changes are not applied to the stored contents. This endpoint starts a job that rewrites all
-        /// <br/>contents of the schema so that the stored data matches the current schema.
+        /// <br/>contents of the schema so that the stored data matches the current schema. The draft and the published
+        /// <br/>version of a content are migrated independently.
         /// </remarks>
         /// <param name="schema">The name of the schema.</param>
+        /// <param name="request">The request object that defines which versions to migrate.</param>
         /// <returns>Content migration added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PostContentMigrationAsync(string schema, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
                 throw new System.ArgumentNullException("schema");
+
+            if (request == null)
+                throw new System.ArgumentNullException("request");
 
             var client_ = _options.ClientProvider.Get();
     #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -5414,7 +5421,10 @@ namespace Squidex.ClientLibrary
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
 
                     var urlBuilder_ = new System.Text.StringBuilder();
@@ -24170,6 +24180,24 @@ namespace Squidex.ClientLibrary
 
         [System.Runtime.Serialization.EnumMember(Value = @"Schema")]
         Schema = 5,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class MigrateContentsDto
+    {
+
+        /// <summary>
+        /// True, to migrate the draft versions. Default: true.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("migrateDraft", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MigrateDraft { get; set; }
+
+        /// <summary>
+        /// True, to migrate the published versions. Default: true.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("migratePublished", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MigratePublished { get; set; }
 
     }
 
