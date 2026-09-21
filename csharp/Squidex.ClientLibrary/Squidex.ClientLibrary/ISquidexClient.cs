@@ -170,6 +170,14 @@ public interface ISquidexClient
     ISchemasClient Schemas { get; }
 
     /// <summary>
+    /// Gets a client instance to query and manage script logs.
+    /// </summary>
+    /// <returns>
+    /// The returned client.
+    /// </returns>
+    IScriptLogsClient ScriptLogs { get; }
+
+    /// <summary>
     /// Gets a client instance to make searches across content and records.
     /// </summary>
     /// <returns>
