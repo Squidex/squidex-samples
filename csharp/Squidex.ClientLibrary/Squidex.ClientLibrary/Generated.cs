@@ -5268,9 +5268,24 @@ namespace Squidex.ClientLibrary
         /// </remarks>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request object that defines which versions to migrate.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Content migration added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Export the contents of the schema.
+        /// </summary>
+        /// <remarks>
+        /// Starts a job that writes the contents to a CSV or JSON file. The file can be downloaded from the job when it is completed.
+        /// </remarks>
+        /// <param name="schema">The name of the schema.</param>
+        /// <param name="request">The request object that defines the format and which contents to export.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
+        /// <returns>Content export added to job queue.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PostContentExportAsync(string schema, ExportContentsDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -5518,8 +5533,9 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request object that represents an index.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostIndexAsync(string schema, CreateIndexDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PostIndexAsync(string schema, CreateIndexDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -5527,9 +5543,10 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="name">The name of the index.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Schema index deletion added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task DeleteIndexAsync(string schema, string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task DeleteIndexAsync(string schema, string name, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -5693,9 +5710,10 @@ namespace Squidex.ClientLibrary
         /// </remarks>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request object that defines which versions to migrate.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Content migration added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PostContentMigrationAsync(string schema, MigrateContentsDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
                 throw new System.ArgumentNullException("schema");
@@ -5722,6 +5740,12 @@ namespace Squidex.ClientLibrary
                     urlBuilder_.Append("api/apps/$app$/schemas/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/contents/migrate");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
                 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -5760,6 +5784,125 @@ namespace Squidex.ClientLibrary
                                 throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             throw new SquidexException<ErrorDto>("Validation error.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new SquidexException("Schema or app not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Export the contents of the schema.
+        /// </summary>
+        /// <remarks>
+        /// Starts a job that writes the contents to a CSV or JSON file. The file can be downloaded from the job when it is completed.
+        /// </remarks>
+        /// <param name="schema">The name of the schema.</param>
+        /// <param name="request">The request object that defines the format and which contents to export.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
+        /// <returns>Content export added to job queue.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task PostContentExportAsync(string schema, ExportContentsDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            if (schema == null)
+                throw new System.ArgumentNullException("schema");
+
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/apps/$app$/schemas/{schema}/contents/export"
+                    urlBuilder_.Append("api/apps/$app$/schemas/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/contents/export");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+                    urlBuilder_.Replace("$app$", _options.AppName);
+                
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Field definition is not valid.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -8182,8 +8325,9 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="request">The request object that represents an index.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PostIndexAsync(string schema, CreateIndexDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PostIndexAsync(string schema, CreateIndexDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
                 throw new System.ArgumentNullException("schema");
@@ -8210,6 +8354,12 @@ namespace Squidex.ClientLibrary
                     urlBuilder_.Append("api/apps/$app$/schemas/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/indexes");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
                 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -8290,9 +8440,10 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="schema">The name of the schema.</param>
         /// <param name="name">The name of the index.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Schema index deletion added to job queue.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task DeleteIndexAsync(string schema, string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task DeleteIndexAsync(string schema, string name, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (schema == null)
                 throw new System.ArgumentNullException("schema");
@@ -8316,6 +8467,12 @@ namespace Squidex.ClientLibrary
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(schema, System.Globalization.CultureInfo.InvariantCulture)));
                     urlBuilder_.Append("/indexes/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(name, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
                 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -10037,9 +10194,10 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="id">The ID of the rule to run.</param>
         /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Rule started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -11087,9 +11245,10 @@ namespace Squidex.ClientLibrary
         /// </summary>
         /// <param name="id">The ID of the rule to run.</param>
         /// <param name="fromSnapshots">Runs the rule from snapeshots if possible.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Rule started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PutRuleRunAsync(string id, bool? fromSnapshots = null, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -11114,6 +11273,10 @@ namespace Squidex.ClientLibrary
                     if (fromSnapshots != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("fromSnapshots")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(fromSnapshots, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
@@ -15868,9 +16031,10 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Start a new backup.
         /// </summary>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Backup started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostBackupAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PostBackupAsync(string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -15885,9 +16049,10 @@ namespace Squidex.ClientLibrary
         /// Restore a backup.
         /// </summary>
         /// <param name="request">The backup to restore.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
     }
 
@@ -16316,9 +16481,10 @@ namespace Squidex.ClientLibrary
         /// <summary>
         /// Start a new backup.
         /// </summary>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Backup started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PostBackupAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PostBackupAsync(string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var client_ = _options.ClientProvider.Get();
     #pragma warning disable CS0219 // Variable is assigned but its value is never used
@@ -16334,6 +16500,12 @@ namespace Squidex.ClientLibrary
                 
                     // Operation Path: "api/apps/$app$/backups"
                     urlBuilder_.Append("api/apps/$app$/backups");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
                 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -16498,9 +16670,10 @@ namespace Squidex.ClientLibrary
         /// Restore a backup.
         /// </summary>
         /// <param name="request">The backup to restore.</param>
+        /// <param name="reference">An optional reference to find the job.</param>
         /// <returns>Restore operation started.</returns>
         /// <exception cref="SquidexException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public virtual async System.Threading.Tasks.Task PostRestoreJobAsync(RestoreRequestDto request, string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -16522,6 +16695,12 @@ namespace Squidex.ClientLibrary
                 
                     // Operation Path: "api/apps/restore"
                     urlBuilder_.Append("api/apps/restore");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
                     urlBuilder_.Replace("$app$", _options.AppName);
                 
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -24653,6 +24832,13 @@ namespace Squidex.ClientLibrary
     {
 
         /// <summary>
+        /// The time when the entry has been logged.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("timestamp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset Timestamp { get; set; }
+
+        /// <summary>
         /// The log level, for example 'log', 'info', 'warn' or 'error'.
         /// </summary>
         [Newtonsoft.Json.JsonProperty("level", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -24683,6 +24869,43 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("migratePublished", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? MigratePublished { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ExportContentsDto
+    {
+
+        /// <summary>
+        /// The format of the exported file. Default: Csv.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("format", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ExportFormat? Format { get; set; }
+
+        /// <summary>
+        /// The optional comma separated list of fields in the format 'name=path', for example 'id,Title=data.title.en'.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("fields", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Fields { get; set; }
+
+        /// <summary>
+        /// True, to export the unpublished versions. Default: false.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("unpublished", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Unpublished { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum ExportFormat
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Csv")]
+        Csv = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Json")]
+        Json = 1,
 
     }
 
@@ -28948,6 +29171,12 @@ namespace Squidex.ClientLibrary
         [Newtonsoft.Json.JsonProperty("taskName", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskName { get; set; }
+
+        /// <summary>
+        /// The optional reference that has been passed in when the job has been started.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("reference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reference { get; set; }
 
         /// <summary>
         /// The description of the job.
