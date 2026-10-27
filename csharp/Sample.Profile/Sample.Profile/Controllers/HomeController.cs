@@ -16,11 +16,11 @@ namespace Sample.Profile.Controllers
 {
     public sealed class HomeController : Controller
     {
-        private readonly SquidexClientManager clientManager;
+        private readonly SquidexClient client;
 
-        public HomeController(SquidexClientManager clientManager)
+        public HomeController(SquidexClient client)
         {
-            this.clientManager = clientManager;
+            this.client = client;
         }
 
         public async Task<IActionResult> Index()
@@ -40,35 +40,35 @@ namespace Sample.Profile.Controllers
 
         private async Task LoadSkillsAsync(HomeVM vm)
         {
-            var records = await clientManager.CreateContentsClient<Skill, SkillData>("skills").GetAsync();
+            var records = await client.Contents<Skill, SkillData>("skills").GetAsync();
 
             vm.Skills = records.Items;
         }
 
         private async Task LoadProjectsAsync(HomeVM vm)
         {
-            var records = await clientManager.CreateContentsClient<Project, ProjectData>("projects").GetAsync();
+            var records = await client.Contents<Project, ProjectData>("projects").GetAsync();
 
             vm.Projects = records.Items;
         }
 
         private async Task LoadPublicationsAsync(HomeVM vm)
         {
-            var records = await clientManager.CreateContentsClient<Publication, PublicationData>("publications").GetAsync();
+            var records = await client.Contents<Publication, PublicationData>("publications").GetAsync();
 
             vm.Publications = records.Items;
         }
 
         private async Task LoadExperienceAsync(HomeVM vm)
         {
-            var records = await clientManager.CreateContentsClient<Experience, ExperienceData>("experience").GetAsync();
+            var records = await client.Contents<Experience, ExperienceData>("experience").GetAsync();
 
             vm.Experiences = records.Items;
         }
 
         private async Task LoadEducationAsync(HomeVM vm)
         {
-            var records = await clientManager.CreateContentsClient<Education, EducationData>("education").GetAsync();
+            var records = await client.Contents<Education, EducationData>("education").GetAsync();
 
             vm.Education = records.Items;
         }
@@ -77,7 +77,7 @@ namespace Sample.Profile.Controllers
         {
             var query = new ContentQuery { Top = 1 };
 
-            var records = await clientManager.CreateContentsClient<Basics, BasicsData>("basics").GetAsync(query);
+            var records = await client.Contents<Basics, BasicsData>("basics").GetAsync(query);
 
             vm.Basics = records.Items.FirstOrDefault()?.Data ?? new BasicsData();
         }

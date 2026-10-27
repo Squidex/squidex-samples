@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CodeGeneration/CodeGeneration.csproj" />
+  <Project Path="Squidex.ClientLibrary.ServiceExtensions/Squidex.ClientLibrary.ServiceExtensions.csproj" />
+  <Project Path="Squidex.ClientLibrary.Tests/Squidex.ClientLibrary.Tests.csproj" />
+  <Project Path="Squidex.ClientLibrary/Squidex.ClientLibrary.csproj" />
+</Solution>

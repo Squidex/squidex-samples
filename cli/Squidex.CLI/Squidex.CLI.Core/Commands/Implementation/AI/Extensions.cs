@@ -16,6 +16,16 @@ public static class Extensions
 {
     public static string FormatError(this Error error, HttpStatusCode httpStatusCode)
     {
+        return FormatError(error.Code, error.Type, error.Message, httpStatusCode);
+    }
+
+    public static string FormatError(this ResponseError error, HttpStatusCode httpStatusCode)
+    {
+        return FormatError(error.Code, error.Type, error.Message, httpStatusCode);
+    }
+
+    private static string FormatError(string? code, string? type, string? message, HttpStatusCode httpStatusCode)
+    {
         var sb = new StringBuilder();
 
         void AddPart(string key, string? value)
@@ -33,9 +43,9 @@ public static class Extensions
             sb.Append($"{key}: {value}");
         }
 
-        AddPart(nameof(Error.Code), error.Code);
-        AddPart(nameof(Error.Type), error.Type);
-        AddPart(nameof(Error.Message), error.Message);
+        AddPart("Code", code);
+        AddPart("Type", type);
+        AddPart("Message", message);
 
         if (sb.Length == 0)
         {

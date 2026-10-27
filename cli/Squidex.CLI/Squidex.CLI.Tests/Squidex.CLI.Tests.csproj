@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">  
+﻿<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
@@ -7,16 +7,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="9.0.1" />
-    <PackageReference Include="Meziantou.Analyzer" Version="3.0.81">
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.257">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
     <PackageReference Include="CommandDotNet.FluentValidation" Version="7.1.0" />
     <PackageReference Include="RefactoringEssentials" Version="5.6.0" PrivateAssets="all" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
     <PackageReference Include="xunit" Version="2.9.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

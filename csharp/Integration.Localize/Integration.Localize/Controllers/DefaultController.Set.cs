@@ -15,14 +15,14 @@ public partial class DefaultController : ControllerBase
     public override async Task<PublishResponse> Publish([FromBody] PublishRequest body,
         CancellationToken cancellationToken = default)
     {
-        var clientManager = BuildClientManager();
+        var client = BuildClient();
 
         if (body.Items.Count == 0)
         {
             return new PublishResponse();
         }
 
-        var contentClient = clientManager.CreateDynamicContentsClient(body.Items[0].Metadata[MetaFields.SchemaName]);
+        var contentClient = client.DynamicContents(body.Items[0].Metadata[MetaFields.SchemaName]);
 
         var ordered = body.Items.OrderBy(x => x.GroupId);
 
@@ -67,7 +67,7 @@ public partial class DefaultController : ControllerBase
 
             if (error != null)
             {
-                throw new SquidexException(error.Message, 400, error);
+                throw new SquidexException<ErrorDto>(error.Message, 400, error);
             }
         }
 

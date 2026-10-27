@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using Newtonsoft.Json;
 using Squidex.ClientLibrary.Utils;
 
 namespace Squidex.ClientLibrary;
@@ -90,13 +91,20 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
         using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
         await EnsureResponseIsValidAsync(response);
 
-#if NETSTANDARD2_0 || NETCOREAPP3_1
-        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
+#if NET8_0_OR_GREATER
+        await using var stream = await response.Content.ReadAsStreamAsync(ct);
+        using var reader = new StreamReader(stream, leaveOpen: true);
 #else
-        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync(ct));
+        using var reader = new StreamReader(await response.Content.ReadAsStreamAsync());
 #endif
+
+        const string Prefix = "data: ";
+
+        var prefixBuffer = new char[Prefix.Length];
+        var serializer = JsonSerializer.CreateDefault(Options.SerializerSettings);
+
         string? line;
-#if NET7_0_OR_GREATER
+#if NET8_0_OR_GREATER
         while ((line = await reader.ReadLineAsync(ct)) != null)
 #else
         while ((line = await reader.ReadLineAsync()) != null)
@@ -109,8 +117,6 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
                 continue;
             }
 
-            const string Prefix = "data: ";
-
             if (!line.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
             {
                 throw new SquidexException("Line does not start with data prefix.");
@@ -118,12 +124,16 @@ public sealed class ContentsClient<TEntity, TData> : SquidexClientBase, IContent
 
             var stringReader = new StringReader(line);
 
-            for (var i = 0; i < Prefix.Length; i++)
-            {
-                stringReader.Read();
-            }
+            // Skip the prefix in one call, without allocating a substring.
+#if NET8_0_OR_GREATER
+            _ = await stringReader.ReadBlockAsync(prefixBuffer, ct);
+#else
+            _ = stringReader.Read(prefixBuffer, 0, Prefix.Length);
+#endif
 
-            var contentItem = stringReader.FromJson<TEntity>(Options);
+            using var jsonReader = new JsonTextReader(stringReader);
+
+            var contentItem = serializer.Deserialize<TEntity>(jsonReader)!;
 
             await callback(contentItem);
         }

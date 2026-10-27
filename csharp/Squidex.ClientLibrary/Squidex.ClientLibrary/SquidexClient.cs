@@ -34,6 +34,7 @@ public sealed class SquidexClient : ISquidexClient
     private IRulesClient rulesClient;
     private ISchemasClient schemasClient;
     private ISearchClient searchClient;
+    private IScriptLogsClient scriptLogsClient;
     private IStatisticsClient statisticsClient;
     private ITeamsClient teamsClient;
     private ITemplatesClient templatesClient;
@@ -200,6 +201,12 @@ public sealed class SquidexClient : ISquidexClient
     public ISearchClient Search
     {
         get => searchClient ??= new SearchClient(Options);
+    }
+
+    /// <inheritdoc/>
+    public IScriptLogsClient ScriptLogs
+    {
+        get => scriptLogsClient ??= new ScriptLogsClient(Options);
     }
 
     /// <inheritdoc/>
