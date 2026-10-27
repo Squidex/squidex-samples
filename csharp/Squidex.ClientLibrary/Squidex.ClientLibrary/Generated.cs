@@ -14172,6 +14172,15 @@ namespace Squidex.ClientLibrary
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Rebuild the full text index.
+        /// </summary>
+        /// <param name="reference">An optional reference to find the job.</param>
+        /// <returns>Rebuild started.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PostTextIndexRebuildAsync(string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Delete a job.
         /// </summary>
         /// <param name="id">The ID of the jobs to delete.</param>
@@ -14363,6 +14372,109 @@ namespace Squidex.ClientLibrary
                                 throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new SquidexException("App not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Rebuild the full text index.
+        /// </summary>
+        /// <param name="reference">An optional reference to find the job.</param>
+        /// <returns>Rebuild started.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task PostTextIndexRebuildAsync(string reference = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/apps/$app$/jobs/text-index"
+                    urlBuilder_.Append("api/apps/$app$/jobs/text-index");
+                    urlBuilder_.Append('?');
+                    if (reference != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("reference")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(reference, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+                    urlBuilder_.Replace("$app$", _options.AppName);
+                
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Another job is already running.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         if (status_ == 404)
@@ -19944,6 +20056,22 @@ namespace Squidex.ClientLibrary
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Get your apps.
+        /// </summary>
+        /// <remarks>
+        /// You can only retrieve the list of apps when you are authenticated as a user (OpenID implicit flow).
+        /// <br/>You will retrieve all apps, where you are assigned as a contributor.
+        /// <br/>Administrators retrieve all apps, paged and filtered by the query.
+        /// </remarks>
+        /// <param name="query">Optional query to search by app name. Only used for administrators.</param>
+        /// <param name="skip">The number of apps to skip. Only used for administrators.</param>
+        /// <param name="take">The number of apps to return. Only used for administrators.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<AppsDto> GetAppsV2Async(string query = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Get team apps.
         /// </summary>
         /// <remarks>
@@ -22675,6 +22803,113 @@ namespace Squidex.ClientLibrary
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
+        /// Get your apps.
+        /// </summary>
+        /// <remarks>
+        /// You can only retrieve the list of apps when you are authenticated as a user (OpenID implicit flow).
+        /// <br/>You will retrieve all apps, where you are assigned as a contributor.
+        /// <br/>Administrators retrieve all apps, paged and filtered by the query.
+        /// </remarks>
+        /// <param name="query">Optional query to search by app name. Only used for administrators.</param>
+        /// <param name="skip">The number of apps to skip. Only used for administrators.</param>
+        /// <param name="take">The number of apps to return. Only used for administrators.</param>
+        /// <returns>Apps returned.</returns>
+        /// <exception cref="SquidexException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<AppsDto> GetAppsV2Async(string query = null, int? skip = null, int? take = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        {
+            var client_ = _options.ClientProvider.Get();
+    #pragma warning disable CS0219 // Variable is assigned but its value is never used
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/v2/apps"
+                    urlBuilder_.Append("api/v2/apps");
+                    urlBuilder_.Append('?');
+                    if (query != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("query")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(query, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (skip != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("skip")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(skip, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (take != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("take")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(take, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+                    urlBuilder_.Replace("$app$", _options.AppName);
+                
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<AppsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ErrorDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new SquidexException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new SquidexException<ErrorDto>("Operation failed.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new SquidexException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+    #pragma warning restore CS0219 // Variable is assigned but its value is never used
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
         /// Get team apps.
         /// </summary>
         /// <remarks>
@@ -25163,6 +25398,12 @@ namespace Squidex.ClientLibrary
         [Newtonsoft.Json.JsonProperty("change", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Change { get; set; }
 
+        /// <summary>
+        /// The script that is executed when a content is indexed for the full text search.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("index", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Index { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -25341,6 +25582,34 @@ namespace Squidex.ClientLibrary
         /// </summary>
         [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<string> Tags { get; set; }
+
+        /// <summary>
+        /// Defines how the field is used for the full text search.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("searchMode", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public FieldSearchMode SearchMode { get; set; }
+
+        /// <summary>
+        /// Optional paths to the values that are indexed for the full text search, e.g. 'items.label'.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("searchPaths", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<string> SearchPaths { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum FieldSearchMode
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Default")]
+        Default = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Title")]
+        Title = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Exclude")]
+        Exclude = 2,
 
     }
 
@@ -30593,6 +30862,31 @@ namespace Squidex.ClientLibrary
         [Newtonsoft.Json.JsonProperty("roleProperties", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.Required]
         public System.Collections.Generic.Dictionary<string, object> RoleProperties { get; set; } = new System.Collections.Generic.Dictionary<string, object>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AppsDto : Resource
+    {
+
+        /// <summary>
+        /// The total number of apps.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("total", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public long Total { get; set; }
+
+        /// <summary>
+        /// The apps.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("items", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public System.Collections.Generic.List<AppDto> Items { get; set; } = new System.Collections.Generic.List<AppDto>();
+
+        /// <summary>
+        /// True, if all apps are returned and not only the apps where the user is assigned to.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("containsAllApps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool ContainsAllApps { get; set; }
 
     }
 
