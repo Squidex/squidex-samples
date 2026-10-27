@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Globalization;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 
@@ -14,7 +15,7 @@ internal static class Extensions
 {
     public static CreateSchemaDto ToCreate(this SchemaCreateModel model)
     {
-        var result = SimpleMapper.Map(model, new CreateSchemaDto());
+        var result = SimpleMapper.Map(model, new CreateSchemaDto(), CultureInfo.InvariantCulture);
 
         if (model.IsSingleton && model.SchemaType == SchemaType.Default)
         {

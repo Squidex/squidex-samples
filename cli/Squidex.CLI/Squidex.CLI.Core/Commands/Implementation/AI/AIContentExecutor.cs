@@ -6,6 +6,7 @@
 // ==========================================================================
 
 using Betalgo.Ranul.OpenAI;
+using Betalgo.Ranul.OpenAI.Contracts.Requests.Image;
 using Betalgo.Ranul.OpenAI.Managers;
 using Betalgo.Ranul.OpenAI.ObjectModels.RequestModels;
 using Newtonsoft.Json.Linq;
@@ -89,7 +90,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
 
         await Parallel.ForEachAsync(targets, ct, async (target, ct) =>
         {
-            var response = await client.CreateImage(new ImageCreateRequest(target.Image.Description), ct);
+            var response = await client.CreateImage(new CreateImageRequest(target.Image.Description), ct);
 
             var error = response.Error;
             if (error != null)
@@ -97,7 +98,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
                 throw new CLIException($"Failed to generate image. {error.FormatError(response.HttpStatusCode)}");
             }
 
-            var url = response.Results.FirstOrDefault()?.Url;
+            var url = response.Results?.FirstOrDefault();
             if (string.IsNullOrEmpty(url))
             {
                 throw new CLIException($"Failed to generate image. No result provided.");
@@ -145,7 +146,7 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
                 new SynchronizeSchemaDto
                 {
                     IsPublished = true,
-                    Fields = generated.Schema.Fields.Select(x => x.ToField()).ToList(),
+                    Fields = [.. generated.Schema.Fields.Select(x => x.ToField())],
                 }, ct);
 
             log.ProcessCompleted(schemaProcess);
@@ -171,14 +172,14 @@ public sealed class AIContentExecutor(ISession session, ILogger log)
             var result = await session.Client.DynamicContents(generated.Schema.Name)
                 .BulkUpdateAsync(new BulkUpdate
                 {
-                    Jobs = generated.Contents.Select(
+                    Jobs = [.. generated.Contents.Select(
                         x => new BulkUpdateJob
                         {
                             Data =
                                 x.ToDictionary(
                                     kvp => kvp.Key,
                                     kvp => kvp.Value.Type == JTokenType.Object ? (object)kvp : new { iv = kvp.Value }),
-                        }).ToList(),
+                        })],
                 }, ct);
 
             var errors = result.Where(x => x.Error != null).Select(x => x.Error!.Message).ToList();

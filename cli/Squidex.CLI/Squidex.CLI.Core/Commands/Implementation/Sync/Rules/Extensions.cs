@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Globalization;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
 
@@ -14,7 +15,7 @@ internal static class Extensions
 {
     public static UpdateExtendableRuleDto ToUpdate(this RuleModel model)
     {
-        var result = SimpleMapper.Map(model, new UpdateExtendableRuleDto());
+        var result = SimpleMapper.Map(model, new UpdateExtendableRuleDto(), CultureInfo.InvariantCulture);
 
         result.Action = model.Action;
 
@@ -23,7 +24,7 @@ internal static class Extensions
 
     public static CreateExtendableRuleDto ToCreate(this RuleModel model)
     {
-        var result = SimpleMapper.Map(model, new CreateExtendableRuleDto());
+        var result = SimpleMapper.Map(model, new CreateExtendableRuleDto(), CultureInfo.InvariantCulture);
 
         result.Action = model.Action;
 

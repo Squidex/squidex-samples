@@ -66,7 +66,7 @@ public sealed class TestDataGenerator(SchemaDto schema, AppLanguagesDto language
                         {
                             1 => true,
                             2 => false,
-                            _ => null
+                            _ => null,
                         };
                     }
                 }

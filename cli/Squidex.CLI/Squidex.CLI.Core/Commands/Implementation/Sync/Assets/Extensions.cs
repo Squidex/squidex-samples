@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Globalization;
 using Squidex.CLI.Commands.Implementation.FileSystem;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
@@ -41,7 +42,7 @@ internal static class Extensions
     {
         var bulkJob = model.ToJob(BulkUpdateAssetType.Annotate);
 
-        SimpleMapper.Map(bulkJob, model);
+        SimpleMapper.Map(bulkJob, model, CultureInfo.InvariantCulture);
 
         return bulkJob;
     }
@@ -53,6 +54,6 @@ internal static class Extensions
 
     public static AssetModel ToModel(this AssetDto asset)
     {
-        return SimpleMapper.Map(asset, new AssetModel());
+        return SimpleMapper.Map(asset, new AssetModel(), CultureInfo.InvariantCulture);
     }
 }

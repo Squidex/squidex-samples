@@ -10,7 +10,6 @@ using Squidex.ClientLibrary.EnrichedEvents;
 
 namespace Squidex.ClientLibrary.Tests.EnrichedEvents;
 
-[UsesVerify]
 public class EnrichedEventsTests
 {
     private readonly SquidexOptions options = new SquidexOptions();
@@ -58,7 +57,7 @@ public class EnrichedEventsTests
 	}";
 
     [Fact]
-    public async void Should_deserialize_EnrichedContentEvent()
+    public async Task Should_deserialize_EnrichedContentEvent()
     {
         var envelope = EnrichedEventEnvelope.FromJson(JsonEnrichedContentEvent, options);
 

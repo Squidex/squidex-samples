@@ -5,6 +5,7 @@
 //  All rights reserved. Licensed under the MIT license.
 // ==========================================================================
 
+using System.Globalization;
 using Newtonsoft.Json.Linq;
 using Squidex.CLI.Commands.Implementation.Utils;
 using Squidex.ClientLibrary;
@@ -18,7 +19,7 @@ internal static class Extensions
         Dictionary<string, string> schemasMap,
         ContentAction action)
     {
-        var result = SimpleMapper.Map(model, new BulkUpdateJob());
+        var result = SimpleMapper.Map(model, new BulkUpdateJob(), CultureInfo.InvariantCulture);
 
 #pragma warning disable CS0618 // Type or member is obsolete
         var singleton = schemas.Items.Find(x => x.Name == model.Schema && (x.IsSingleton || x.Type == SchemaType.Singleton));
@@ -53,7 +54,7 @@ internal static class Extensions
 
     public static ContentModel ToModel(this DynamicContent content, string schema)
     {
-        var result = SimpleMapper.Map(content, new ContentModel());
+        var result = SimpleMapper.Map(content, new ContentModel(), CultureInfo.InvariantCulture);
 
         result.Schema = schema;
 
